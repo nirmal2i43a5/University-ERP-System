@@ -1,0 +1,42 @@
+{% load auth_extras %}
+<ul class="list-group">
+
+  <li class="list-group-item active" style="background-color:#094089;"><strong>UpComing Events</strong>
+    {% if request.user|has_group:'Admin' or request.user.is_superuser or request.user|has_group:'Teacher' %}
+    <a href="{% url 'manage_event' %}" class="btn btn-sm  text-bold float-right" style="background-color: white;">
+      Manage Event</a>
+    {% endif %}
+  </li>
+
+  {% if events %}
+
+
+  {% for event in events %}
+  <a href="{% url 'event_detail' event.id %}">
+    <li class="list-group-item">{{ event.title }} <span class="float-right"><strong>Time : </strong>{{ event.start|date:'M, d, g a' }} </span></li>
+  </a>
+
+  {% endfor %}
+
+  {% if request.user|has_group:'Admin' or request.user.is_superuser or request.user|has_group:'Teacher' %}
+  <li>
+    <a href="{% url 'manage_event' %}" class=" list-group-item dropdown-item btn dropdown-footer"><strong>See More
+        Events</strong></a>
+
+  </li>
+  {% endif %}
+  {% endif %}
+  
+  {% if not events %}
+  <li>
+    <a class=" list-group-item dropdown-item btn dropdown-footer"><strong>  No Upcoming Events
+
+        </strong></a>
+
+  </li>
+    
+  {% endif %}
+    
+
+
+</ul>

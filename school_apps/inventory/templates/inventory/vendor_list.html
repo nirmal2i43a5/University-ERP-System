@@ -1,0 +1,78 @@
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+{% load static  %}
+
+{% block title %} Vendors {% endblock %}
+{% block main_content %}
+
+<section class="content">
+  <div class="container-fluid">
+
+  {% include "includes/messages.html" %}
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card" >
+                <div class="card-header" style="background-color: #094089;color:white;" >
+                    <span>Vendors</span>
+                </div>
+
+                <div class="card-body table-responsive">
+            
+                    <table id="dataTable" class="table table-sm  table-striped table-bordered table-hover text-nowrap dataTable no-footer">
+                    <thead>
+                        <tr>
+                        <th></th>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>Contact</th>
+                        <th>Pan Number</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in vendor %}
+                            <tr>
+                                    <td></td>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{item.name}}</td>
+                                    <td>{{item.address}}</td>
+                                    <td>{{item.contact_no}}</td>
+                                    <td>{{item.pan_number}}</td>
+                            </tr>
+                            
+                        {% endfor %}
+                        {% include 'enquiry/mail_modal.html'%}
+                    </tbody>
+                    </table>
+                </div>
+            <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+  </div>
+
+  
+</section>
+<!-- /.content -->
+
+{% endblock main_content %}
+
+{% block custom_js %}
+<script>
+    $(".modal_display").click(function(e){
+        var id = $(this).data('id')
+        
+        $.ajax({
+            url:" {% url 'enquiry:show_modal' %}",
+            data: {'id':id},
+            success: function(data){
+                $("#modal_body").html(data);
+            }
+        })
+    })
+</script>
+
+{% endblock custom_js %}

@@ -1,0 +1,82 @@
+
+<!-- -----------------attendance -------------------->
+<li class="nav-item menu-close">
+    <a href="#" class="nav-link">
+        <i class="fas fa-xs fa-clipboard"></i>
+        <p>
+            Children Attendances
+            <i class="right fas fa-angle-left"></i>
+
+        </p>
+
+
+    </a>
+    <ul class="nav nav-treeview">
+
+        <li class="nav-item">
+            <a href="{% url 'parent:student_view_by_parent' %}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Attendance</p>
+            </a>
+        </li>
+
+
+
+    </ul>
+
+<!-- -----------------attendance  end-------------------->
+    <!-- ----------------------------------grades --------------->
+<li class="nav-item menu-close">
+    <a href="#" class="nav-link">
+        <i class="fas fa-xs fa-book"></i>
+        <p>
+            Children Grades
+            <i class="right fas fa-angle-left"></i>
+
+        </p>
+
+
+    </a>
+    <ul class="nav nav-treeview">
+
+        <li class="nav-item">
+            <a href="{% url 'student:parent_checkscore' %}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>View Grade</p>
+            </a>
+        </li>
+
+
+
+    </ul>
+
+        <!-- ----------------------------------grades end  --------------->
+    
+        <li class="nav-item menu-close">
+            <a href="#" class="nav-link">
+                <i class="fas fa-xs fa-cog"></i>
+                <p>
+                    Settings
+                    <i class="right fas fa-angle-left"></i>
+        
+                </p>
+        
+        
+            </a>
+            <ul class="nav nav-treeview">
+        
+                <li class="nav-item">
+                    <a href="{% url 'parent_profile_update' %}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Profile</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'change_password' %}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Reset Password</p>
+                    </a>
+                </li>
+        
+        
+            </ul>

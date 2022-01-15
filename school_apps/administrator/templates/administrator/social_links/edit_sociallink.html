@@ -1,0 +1,40 @@
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block custom_js %}
+<script type="text/javascript" src="{% static 'administrator/user_role.js' %}"></script>
+{% endblock custom_js %}
+
+
+  
+{% block main_content %}
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+
+    {% include "includes/messages.html" %}
+
+    <div class="row">
+      <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="card card-info">
+          <div class="card-header">
+            <h3 class="card-title">Edit SocialLink</h3>
+          </div>
+          <!-- /.card-header -->
+          
+          <!-- form start -->
+          {% include 'admin_templates/form.html' with messages=messages form=form  button_text="Edit SocialLink" %}
+
+        <!-- /.card -->
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+{% endblock main_content %}
+
+

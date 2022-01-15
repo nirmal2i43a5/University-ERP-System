@@ -1,0 +1,123 @@
+{% extends 'admin_templates/base_admin.html' %}
+{% block page_title %}
+Add Subject
+{% endblock page_title %}
+{% block main_content %}
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        {% include "includes/messages.html" %}
+          <div class="row">
+              <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="card card-info">
+              <div class="card-header">
+                <h3 class="card-title">Add Subject</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+              <form role="form" method="post" >
+                  {% csrf_token %}
+
+                <div class="card-body">
+
+              
+                  <div class="form-group">
+                    <label for="title">Title </label><span>*</span>
+                    <input type="text" id = "id_title" class="form-control" name="title" placeholder="Enter Pass Mark" autocomplete="off" required>
+                  </div>
+
+
+                  <div class="form-group">
+
+
+                    <label for="id_role">User Role </label><span>*</span>
+                    <select id = "id_role" class="form-control" name="role" required>
+                      <!-- <option  value="" selected disabled hidden>Choose Your Course</option> -->
+                   
+                          <option value="1">Admin</option>
+                          <option value="2">Teacher</option>
+                          <option value="3">Student</option>
+                          <option value="4">Parent</option>
+                       
+
+                    </select>
+                  </div>
+                 
+                  <label for="id_user">User  </label><span>*</span>
+                  <select id = "id_user" class="form-control" name="user" required>
+                  
+                 
+                    
+                        <option value="">Select User</option>
+                       
+                       
+                     
+
+                  </select>
+                </div>
+
+          
+
+                </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-sm btn-info btn-block">Add Complain</button>
+                </div>
+              </form>
+            </div>
+            <!-- /.card -->
+
+
+
+          </div>
+          </div>
+      </div>
+    </section>
+    <!-- /.content -->
+{% endblock main_content %}
+
+{% block custom_js %}
+
+<script>
+  $('#id_role').on('click', function(e){
+    var role = $('#id_role').val();
+    options = ''
+    console.log(role)
+    $.ajax({
+
+      url : "{% url 'admin_app:user_role' %}",
+     method: 'POST',
+      dataType: 'json',
+      data: {role:role},
+      error: function(){
+        alert("Something Went Wrong!")
+      },
+      success: function(response){
+
+        user = response
+        console.log(user,"-----I am response-------")
+
+      for  (var i = 0;i<user.length;i++){
+        console.log(user[i].full_name)
+
+        options+= ` 
+        <option value = "${user[i].id}">${user[i].full_name}</option>
+        `
+        $('#id_user').html(options)
+       // $("#citylist option:first").attr('selected', 'selected');
+        
+      }
+      
+
+      }
+
+
+    });
+   
+  });
+</script>
+  
+{% endblock custom_js %}
+  

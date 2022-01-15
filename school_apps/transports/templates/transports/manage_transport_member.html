@@ -1,0 +1,113 @@
+
+
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+{% load static %}
+{% block main_content %}
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+  <!-- /.card-header -->
+
+  {% include "includes/messages.html" %}
+
+    <div class="row">
+      <div class="col-12">
+
+
+        <div class="card card-info">
+          
+          <div class="card-header ">
+            
+
+            <span>Transport Member</span>
+
+            <form class="float-right mb-2" role="search"  method="GET" style="height: 27px;margin:auto;position:relative;">
+              <div class="input-group">
+             
+          
+                {{ form|crispy }} 
+            
+                <div class="input-group-btn ">
+                  <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+    
+                </div>
+              </div>
+            </form>
+          
+
+          </div>
+
+          <!-- /.card-header -->
+          <div class="card-body table-responsive">
+                     
+            
+
+            <table id="dataTable" class="table table-sm  table-striped table-bordered table-hover text-nowrap dataTable no-footer">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>#</th>
+                  <th>Photo</th>
+                  <th>Full Name</th>
+                  <th>Roll#</th>
+              
+                  <th>Email</th>
+                  <th>Route</th>
+                
+                  <!-- <th>Action</th> -->
+                </tr>
+              </thead>
+              <tbody>
+                {% for student in students %}
+                <tr>
+                  <td></td>
+                  <td>{{ student.student_user.id }}</td>
+
+                  <td>
+
+                    {% if student.image %}
+
+                    <img src="{{ student.image.url }}" alt="" style="width:35px;height:35px;" class="img-circle" />
+
+                    {% else %}
+                    <img src="{% static 'image/default_profile.png' %}" alt="" style="width:35px;height:35px;" class="img-circle" />
+                    {% endif %}
+
+                  </td>
+                  <a href="">
+                    <td>{{ student.student_user.full_name }} </td>
+                  </a>
+                  <td>{{ student.roll_no }}</td>
+                  <td>{{ student.student_user.email }}</td>
+                  <td>{{ student.transport }}</td>
+
+                  <td>
+                    <!-- <a href="{% url 'admin_app:edit_student' student.student_user.id %}" class="btn btn-xs btn-success"><i class="fas fa-xs fa-edit"></i></a> -->
+                    <!-- <a href="{% url 'admin_app:delete_student' student.student_user.id %}" class="btn btn-xs btn-danger"><i class="fas fa-xs fa-trash-alt"></i></a> -->
+                  </td>
+               
+                </tr>
+               
+         
+
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+
+{% endblock main_content %}
+
+{% block custom_js %}
+
+{% endblock custom_js %}

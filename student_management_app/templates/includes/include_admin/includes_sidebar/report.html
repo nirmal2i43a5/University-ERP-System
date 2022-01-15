@@ -1,0 +1,84 @@
+
+        <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="fas  fa-clipboard"></i>
+              <p>
+                View Report
+  
+                <i class="fas fa-angle-left right"></i>
+  
+  
+              </p>
+            </a>
+  
+            <ul class="nav nav-treeview">
+              <li class="nav-item ml-3">
+                <a href="#" class="nav-link">
+                  <i class="far fa-circle "></i>
+                  <p>
+                    Attendence
+                    <i class="fas fa-angle-left right"></i>
+  
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                 
+                  <li class="nav-item ml-3">
+                    <a href="{% url 'attendance_app:manage_student_attendance' %}" class="nav-link">
+                      <i class="far fa-xs fa-circle "></i>
+                      <p>
+                        Student Attendence
+      
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item ml-3">
+                    <a href="{% url 'attendance_app:manage_teacher_attendance' %}" class="nav-link">
+                      <i class="far fa-xs fa-circle "></i>
+                      <p>
+                        Teacher Attendence
+      
+                      </p>
+                    </a>
+                  </li>
+                 
+                </ul>
+              </li>
+  
+            </ul>
+  
+            <ul class="nav nav-treeview">
+              <li class="nav-item ml-3">
+                <a href="#" class="nav-link">
+                  <i class="far fa-circle "></i>
+                  <p>
+                    Exam
+                    <i class="fas fa-angle-left right"></i>
+  
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                 
+                  <li class="nav-item ml-3">
+                    <a href="{% url 'courses:examreport'%}" class="nav-link">
+                      <i class="far fa-xs fa-circle "></i>
+                      <p>
+                        Exam results
+      
+                      </p>
+                    </a>
+                  </li>
+                 
+                </ul>
+              </li>
+  
+            </ul>
+  
+           
+         
+  
+  
+          </li>
+  
+  
+  

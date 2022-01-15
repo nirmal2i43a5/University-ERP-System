@@ -1,0 +1,38 @@
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+{% load static  %}
+
+{% block title %} Admission Applications {% endblock %}
+{% block main_content %}
+
+<section class="content">
+  <div class="container-fluid">
+
+  {% include "includes/messages.html" %}
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card" >
+                <div class="card-header" style="background-color: #094089;color:white;" >
+                    <span>Select Department</span>
+                </div>
+
+                <div class="card-body table-responsive">
+                    <form action = "{% url 'formapi:form_submit'%}" method="POST">
+                        {% csrf_token %}
+                        <label for="dept_select">Select department: </label>
+                        <select name="dept_id" id="dept_select">
+                            {% for item in department %}
+                                <option value="{{item.pk}}">{{item}}</option>
+                            {% endfor %}
+                        </select>
+                        <input type="submit" value="Confirm">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+{% endblock %}

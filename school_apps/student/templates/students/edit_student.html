@@ -1,0 +1,64 @@
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+{% block title %}
+  {{title}}
+{% endblock title %}
+{% block main_content %}
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+
+    {% include "includes/messages.html" %}
+    <div class="row">
+      <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="card card-info">
+          {% include 'override_table/header.html' with card_title='Edit Student' %}
+          <!-- /.card-header -->
+          <!-- form start -->
+          <form role="form" id="student_parent-modelform" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="card-body">
+              {% crispy custom_form %}
+              {% crispy student_form %}
+              {% crispy parent_form %}
+   
+
+            </div>
+           
+           
+            <!-- /.card-body -->
+
+           <!--I am using submit from forms.py django-->
+          </form>
+        </div>
+        <!-- /.card -->
+
+
+
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+{% endblock main_content %}
+
+
+{% block custom_js %}
+<script>
+  $("#id_semester").change(function(){
+    var class_id = $(this).val();
+    
+    $.ajax({
+        url:" {% url 'courses:fill_section_select'%}",
+        data:{'class':class_id},
+        success:function(data){
+            $("#id_section").html(data);
+        }
+    })
+})
+</script>
+{% endblock custom_js %}
+  

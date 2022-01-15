@@ -1,0 +1,19 @@
+https://stackoverflow.com/questions/56074090/how-to-restrict-views-to-user-groups/56076027
+
+add permisison dynamically
+https://stackoverflow.com/questions/45831933/how-can-dynamically-create-permission-in-django
+
+
+https://coderbook.com/@marcus/how-to-restrict-access-with-django-permissions/
+
+https://medium.com/djangotube/django-roles-groups-and-permissions-introduction-a54d1070544#:~:text=Permissions%20are%20a%20rule(or,users%20and%20groups%20of%20users.
+
+https://www.youtube.com/watch?v=zszYgUXnId8
+
+django -guardain
+------------------
+https://thecodinginterface.com/blog/django-auth-part2/
+
+from django.contrib.auth.decorators import login_required, permission_required  
+
+@permission_required('parent:add_parent',raise_exception = True)#('app_name.codename)

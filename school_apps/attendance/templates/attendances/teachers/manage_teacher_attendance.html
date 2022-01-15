@@ -1,0 +1,151 @@
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block title %} Manage Attendance {% endblock %}
+{% block main_content %}
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <!-- /.card-header -->
+
+    {% include "includes/messages.html" %}
+
+
+
+
+    <div class="d-flex bd-highlight">
+
+      {% if not teacher_attendances %}
+      <div class="p-2 flex-grow-1 bd-highlight">
+        <div class="alert alert-default-warning">
+          Please, Filter Date To See Attendance Details.
+        </div>
+      </div>
+
+      {% endif %}
+
+    </div>
+ 
+
+
+  </div>
+
+
+  <div class="row">
+
+   
+    <div class="col-md-12">
+
+
+      <div class="card">
+
+        <div class="card-header " style="background-color: #094089;color:white;">
+
+
+          <span> <strong>Teacher Attendance List</strong></span>
+          <form method="POST" class="float-right mb-2"  style="height: 27px;margin:auto;position:relative;">
+            <div class="input-group">
+              {% csrf_token %}
+  
+              {{ attendance_details_form_search|crispy }}
+           
+              <div class="input-group-btn ">
+                <button type="submit" class="btn  btn-primary ml-2">
+                  <strong>Fetch Attendance</strong></button>
+  
+              </div>
+           
+            </div>
+           
+  
+          </form>
+
+        </div>
+
+        <!-- /.card-header -->
+        <div class="card-body table-responsive">
+
+        
+
+            {% url 'attendance_app:teacher_attendance' as button_url %}
+
+            {% include 'override_table/header_button.html' with button_title='attendance' button_url=button_url %}
+
+          <table id="dataTable"
+            class="table table-sm  table-striped table-bordered table-hover text-nowrap dataTable no-footer">
+            <thead>
+              <tr>
+                <th></th>
+                <th># </th>
+                <th>Teacher Name</th>
+              
+                <th>Attendance Status</th>
+            
+                <!-- <th>Teacher</th> -->
+
+
+                <th>Action</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for attendance in teacher_attendances %}
+              <tr>
+                <td></td>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ attendance.staff }}</td>
+               
+                <td>
+
+                  {% if attendance.status == 'Present' %}
+
+                  <span class="badge badge-sm badge-success">Present</span>
+
+                  {% elif attendance.status ==	'Absent(Informed)' or attendance.status ==	'Late' or attendance.status ==	'Excused' %}
+
+                  <span class="badge badge-warning">{{attendance.status}}</span>
+                  {% elif attendance.status ==	'Absent(Not Informed)' %}
+
+                  <span class="badge badge-danger">{{attendance.status}}</span>
+            
+                  {% endif %}
+
+                </td>
+               
+                <!-- <td></td> -->
+
+                <td>
+
+                
+                    
+               
+                  <a href="{% url 'admin_app:view_teacher' attendance.staff.staff_user.id %}" class="btn btn-xs btn-info"><i class="fas fa-xs fa-eye"></i></a>
+               
+                </td>
+
+              </tr>
+
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <!-- /.card-body -->
+      </div>
+      <!-- /.card -->
+    </div>
+  </div>
+  </div>
+</section>
+<!-- /.content -->
+
+{% endblock main_content %}
+
+{% block custom_js %}
+
+
+
+{% endblock custom_js %}

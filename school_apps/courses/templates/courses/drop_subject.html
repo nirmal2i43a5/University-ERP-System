@@ -1,0 +1,142 @@
+{% extends 'student_base.html'%}
+
+    
+{% block content %}
+<link rel="stylesheet" href="https://unpkg.com/@trevoreyre/autocomplete-js/dist/style.css" />
+{% include "includes/messages.html" %}
+<div style="margin-left: 25px; margin-right: 25px;">
+    <!-- <h4>Assign subjects to teacher</h4> -->
+    {% include 'override_table/header.html' with card_title='Drop subject' %}
+    <div>
+        <form id='student_form'>
+
+
+            <div class="container ">
+
+                <div id="autocomplete" class="autocomplete">
+                    <input type="text"  class="autocomplete-input mt-4 mr-4" name="student_id" id="student_id" placeholder="Enter Student Username">
+                    <ul class="autocomplete-result-list"></ul>
+            <button type="submit" class='btn btn-primary mt-2'>Confirm</button>
+
+                </div>
+        
+            </div>
+       
+        </form>
+
+
+        <!-- <div class="student_data"></div> -->
+      
+        <div id="subjectlist" style="margin-top: 15px;">
+        </div>
+    </div>
+
+    
+
+    <script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>
+   
+{% endblock %}
+
+{% block javascript %}
+    <!-- <script>
+        $("#student_form").submit(function(e){
+            e.preventDefault();
+            var student_id = $('#student_id').val();
+            
+            $.ajax({
+                url:"{% url 'courses:return_student_subject'%}",
+                data: {'student':student_id},
+                statusCode:{
+                    500:function(data){
+                        alert(data['message'])
+                    },
+                    201:function(data){
+                        $('#subjectlist').html(data);
+                    }
+                }
+            })
+
+        })
+
+        //
+        $("#student_id").keyup(function(){
+            var student_id = $(this).val();
+            
+            $.ajax({
+                url:" {% url 'student:student_ajax_autocomplete'%}",
+                data:{'student':student_id},
+                success:function(data){
+
+                    $(".student_data").html(data);
+                }
+            })
+        })
+
+//-----------------------------
+       
+          
+    </script> -->
+
+    <script>
+
+        /*
+        For subject retrieve call*/
+        $("#student_form").submit(function(e){
+            e.preventDefault();
+            var student_id = $('#student_id').val();
+            
+            $.ajax({
+                url:"{% url 'courses:return_student_subject'%}",
+                data: {'student':student_id},
+                statusCode:{
+                    500:function(data){
+                        alert(data['message'])
+                    },
+                    201:function(data){
+                        $('#subjectlist').html(data);
+                    }
+                }
+            })
+
+        })
+        /*
+        for autocomplet js*/
+        new Autocomplete('#autocomplete', {
+
+            search: input => {
+                console.log(input)
+                const url = `/student_autocomplete/?student=${(input)}`
+                return new Promise(resolve => {
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data)
+                            resolve(data.data)
+                        })
+                })
+            },
+
+
+            renderResult: (result, props) => {
+                console.log(props)
+        
+                let group = ''
+                if (result.index % 3 === 0) {
+                    group = `<li class="group" >Group</li>`
+                }
+                return `
+      ${group}
+      <li ${props}>
+        <div class="wiki-title">
+          ${result}
+        </div>
+        
+      </li>
+    `
+            },
+
+
+        })
+    </script>
+    
+{% endblock %}

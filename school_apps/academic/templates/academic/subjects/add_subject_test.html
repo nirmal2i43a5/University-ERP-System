@@ -1,0 +1,131 @@
+{% extends 'admin_templates/base_admin.html' %}
+{% block page_title %}
+Add Subject
+{% endblock page_title %}
+{% block main_content %}
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    {% include "includes/messages.html" %}
+    <div class="row">
+      <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="card card-info">
+          <div class="card-header">
+            <h3 class="card-title">Add Subject</h3>
+          </div>
+          <!-- /.card-header -->
+          <!-- form start -->
+          <form role="form" method="post">
+            {% csrf_token %}
+
+             <div class="card-body">
+
+
+              <div class="row">
+                <div class="col-md-6">
+                  <!-- <div class="form-group">
+
+                    <label>Class Name</label><span>*</span>
+                    <select class="form-control" name="semester">
+
+                      <option value="" selected disabled hidden>Select Class</option>
+
+                      {% for semester in semesters %}
+                      <option value="{{ semester.id }}">{{ semester.name }}</option>
+                      {% endfor %}
+
+                    </select>
+                  </div> -->
+
+
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <option value="" selected disabled hidden>Select Teacher Name</option>
+                    <label for="teacher_name">Teacher Name</label><span>*</span>
+                    <select id="teacher_name" class="form-control" name="staff">
+
+                      <!-- <option  value="" selected disabled hidden>Select Teacher</option> -->
+
+                      {% for staff in staffs %}
+                      <option value="{{ staff.id }}">{{ staff.full_name }} </option>
+                      {% endfor %}
+
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="subject_name">Subject Name </label><span>*</span>
+                    <input id="subject_name" type="text" class="form-control" name="subject"
+                      placeholder="Enter Subject Name" autocomplete="off" required>
+                  </div>
+                </div>
+                <div class="col-md-6">
+
+                  <div class="form-group">
+                    <label for="subject_code">Subject Code </label>
+                    <input id="subject_code" type="text" class="form-control" name="code"
+                      placeholder="Enter Subject Code" autocomplete="off">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="pass">Pass Mark </label><span>*</span>
+                    <input type="text" id="pass" class="form-control" name="pass_mark" placeholder="Enter Pass Mark"
+                      autocomplete="off" required>
+                  </div>
+                </div>
+
+
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="full">Full Mark </label><span>*</span>
+                    <input id="full" type="text" class="form-control" name="full_mark" placeholder="Enter Full Mark"
+                      autocomplete="off" required>
+                  </div>
+                </div>
+              </div> -->
+
+
+
+              <!-- <div class="form-group">
+
+
+                <label for="course_name">Course </label><span>*</span>
+                <select id="course_name" class="form-control" name="course" required>
+                  {% for course in courses %}
+                  <option value="{{ course.id }}">{{ course.course_name }}</option>
+                  {% endfor %}
+
+                </select>
+              </div> -->
+
+
+
+
+
+            </div>
+
+            <div class="card-footer">
+              <a href = "{% url 'admin_app:manage_subject' %}" class="btn btn-sm btn-danger">Back</a>
+              <button type="submit" class="btn btn-sm btn-success">Save</button>
+            </div>
+          </form>
+        </div>
+        <!-- /.card -->
+
+
+
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+{% endblock main_content %}

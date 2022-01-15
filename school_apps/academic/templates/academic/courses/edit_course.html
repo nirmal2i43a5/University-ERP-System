@@ -1,0 +1,56 @@
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+
+
+  {% block page_title %}
+  Edit Course |  Course ID : {{ course.id }}
+  {% endblock page_title %}
+  
+  {% block main_content %}
+      <!-- Main content -->
+      <section class="content">
+        <div class="container-fluid">
+
+       {% include "includes/messages.html" %}
+          
+            <div class="row">
+                <div class="col-md-12">
+              <!-- general form elements -->
+              <div class="card card-info">
+                <div class="card-header" style="background-color: #094089;color:white;">
+                  <h3 class="card-title">Edit Course</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form role="form" action="{% url 'admin_app:save_edit_course' %}" method="post" class="col-md-6">
+                    {% csrf_token %}
+                  <div class="card-body">
+                    <div class="form-group">
+                      <input type="hidden" value = "{{course.id}}" name="course_id">
+                     {{ form|crispy }}
+
+                    </div>
+                     
+  
+                  </div>
+                  <!-- /.card-body -->
+  
+                  <div class="card-footer">
+                    <a href="{% url 'admin_app:add_manage_course' %}" class="btn btn-danger">Back</a>
+                    <button type="submit" class="btn btn-success">Save Course</button>
+                  </div>
+                </form>
+              </div>
+              <!-- /.card -->
+  
+  
+  
+            </div>
+            </div>
+        </div>
+      </section>
+      <!-- /.content -->
+  {% endblock main_content %}
+  
+  

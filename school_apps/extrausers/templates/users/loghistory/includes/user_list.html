@@ -1,0 +1,23 @@
+{% for extrauser in extrausers_logs %}
+<tr>
+  
+  <td><strong>extrauser</strong></td>
+  <td>{{extrauser.extrauser_user.full_name}}</td>
+  <td>{{extrauser.extrauser_user.username}}</td>
+  <td>{{extrauser.history_date}}</td>
+
+
+  {% if extrauser.get_history_type_display == 'Changed'  %}
+  <td><span class="badge badge-sm badge-info">Edited</span></td>
+  {% elif extrauser.get_history_type_display == 'Deleted'  %}
+  <td><span class="badge badge-sm badge-danger">Deleted</span></td>
+  {% elif extrauser.get_history_type_display == 'Created'  %}
+  <td><span class="badge badge-sm badge-info">Created</span></td>
+  {% endif %}
+    
+
+  <td>{{extrauser.history_user}}</td>
+
+
+</tr>
+{% endfor %}

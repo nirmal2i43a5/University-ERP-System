@@ -1,0 +1,118 @@
+
+
+    <div class="panel-body profile-view-dis">
+        <div class="row">
+           
+                <div class="col-sm-6">
+                    <div class="profile-view-tab">
+                        <p><span>Program </span>: {{ student.program }} </p>
+                    </div>
+                </div>
+                <!-- <div class="col-sm-6">
+                    <div class="profile-view-tab">
+                        <p><span>Optional Subject </span>: {{ student.optional_subject.subject_name }}</p>
+                    </div>
+                </div> -->
+         
+                <div class="col-sm-6">
+                    <div class="profile-view-tab">
+                        <p><span>Date of Birth </span>: 
+                       {{ student.dob }}</p>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="profile-view-tab">
+                        <p><span>Date Year </span>: 
+                       {{ student.join_year }}</p>
+                    </div>
+                </div>
+               
+            
+         
+                <div class="col-sm-6">
+                    <div class="profile-view-tab">
+                        <p><span>Email </span>:  {{ student.student_user.email }}</p>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="profile-view-tab">
+                        <p><span>Phone </span>:  {{ student.contact }}</p>
+                    </div>
+                </div>
+           
+                <div class="col-sm-6">
+                    <div class="profile-view-tab">
+                        <p><span>Previous School Name </span>:  {{ student.previous_school_name }}</p>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="profile-view-tab">
+                        <p><span>See Gpa </span>:  {{ student.see_gpa }}</p>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="profile-view-tab">
+                        <p><span>Shift </span>:  {{ student.shift }}</p>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="profile-view-tab">
+                        <p><span>Status</span>:  {{ student.status }}</p>
+                    </div>
+                </div>
+           <!--sjsjs-->
+             <!------->
+            
+     
+        
+            <div class="col-sm-6">
+                <div class="profile-view-tab">
+                    <p><span>Username </span>: {{ student.student_user.username }}</p>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="profile-view-tab">
+                    <p><span>Temporary Address </span>:  {{ student.temporary_address }}</p>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="profile-view-tab">
+                    <p><span>Permanent Address </span>: {{ student.temporary_address }}</p>
+                </div>
+            </div>
+
+            <!-- <div class="col-sm-6">
+                <div class="profile-view-tab">
+                    <p><span>Date Joined </span>:  {{ student.student_user.date_joined }}</p>
+                </div>
+            </div> -->
+            <div class="col-sm-6">
+                <div class="profile-view-tab">
+                    <p><span>Gender </span>: 
+                        {{ student.gender }}</p>
+                </div>
+            </div>
+
+       <!------->
+            <div class="col-sm-6">
+                <div class="profile-view-tab">
+                    <p><span>Blood Group </span>:   {{ student.blood_group }}</p>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="profile-view-tab">
+                    <p><span>Last Login </span>: {{ student.student_user.last_login }}</p>
+                </div>
+            </div>
+
+       
+        </div>
+    </div>
+ <style>
+     p{
+         font-weight: 300;
+     }
+    span{
+        font-weight: 400;
+    }
+ </style>

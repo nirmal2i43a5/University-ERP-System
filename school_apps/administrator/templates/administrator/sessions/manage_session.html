@@ -1,0 +1,35 @@
+<div class="card card-info">
+    <div class="card-header">
+      <h3 class="card-title">Manage Sessions Details</h3>          
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body table-responsive">
+      <table id="dataTable" class="table table-sm table-striped table-bordered table-hover dataTable no-footer">
+        <thead>
+          <tr>
+            <th></th>
+            <th>ID</th>
+            <th>Session Year</th>
+            
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for session in sessions %}
+          <tr>
+            <td></td>
+            <td>{{ session.id }}</td>
+            <td>{{ session.session_start_year }} <strong>TO</strong> {{ session.session_end_year }}</td>
+         
+            <td>
+              <a href="{% url 'admin_app:edit_session' session.id %}" class="btn btn-success btn-xs"><i class="fas fa-xs fa-edit"></i></a>
+              <a href="{% url 'admin_app:delete_session' session.id %}" class="btn btn-danger btn-xs"><i class="fas fa-xs fa-trash-alt"></i></a>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <!-- /.card-body -->
+  </div>
+  

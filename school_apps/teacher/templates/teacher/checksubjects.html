@@ -1,0 +1,27 @@
+{% extends 'student_base.html' %}
+{% block content %}
+    <div style="margin-left: 10px; margin-right: 10px;">
+        {% include 'override_table/header.html' with card_title='Your taught subjects' %}
+
+    <table class ="table table-hover">
+        <thead class="thead" style="background-color: #094089;color:white;">
+            <tr>
+                <th>Subject code</th>
+                <th>Subject name</th>
+                <th>Class/Section</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in subjects %}
+                <tr>
+                    <td> {{ item.subject.subject_code}}</td>
+                    <td> {{ item.subject.subject_name}}</td>
+                    <td> {{ item.section}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    </div>
+
+{% endblock%}

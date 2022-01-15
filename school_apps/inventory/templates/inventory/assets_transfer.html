@@ -1,0 +1,264 @@
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+{% load static  %}
+
+{% block title %} Assets Transfer {% endblock %}
+{% block main_content %}
+
+<section class="content">
+  <div class="container-fluid">
+
+  {% include "includes/messages.html" %}
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card" >
+                <div class="card-header" style="background-color: #094089;color:white;" >
+                    <span>Assets Transfer</span>
+                </div>
+
+                <div class="card-body table-responsive">
+                    <form method="POST" id="form">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-6">
+                                <h5>From:</h5>
+                            </div>
+
+                            <div class="col-6">
+                                <h5>To  :</h5>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-2">
+                                <label for="department">Department: </label>
+                            </div>
+                            
+                            <div class="col-4">
+                                <select name="from_dept" id="from_dept">
+                                    <option value='-----------------'>
+                                        -----------------
+                                    </option>
+                                    {% for item in department %}
+                                        <option value="{{ item.pk }}">
+                                            {{item.name}}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="col-2">
+                                <label for="department">Department: </label>
+                            </div>
+                            
+                            <div class="col-4">
+                                <select name="to_dept" id="to_dept">
+                                    <option value='-----------------'>
+                                        -----------------
+                                    </option>
+                                    {% for item in department %}
+                                        <option value="{{ item.pk }}">
+                                            {{item.name}}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-2">
+                                <label for="department">Branch: </label>
+                            </div>
+                            
+                            <div class="col-4">
+                                <select name="from_branch" id="from_branch">
+                                    <option value='-----------------'>
+                                        -----------------
+                                    </option>
+                                    {% for item in branch %}
+                                        <option value="{{ item.pk }}">
+                                            {{item.name}}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="col-2">
+                                <label for="department">Branch: </label>
+                            </div>
+                            
+                            <div class="col-4">
+                                <select name="to_branch" id="to_branch">
+                                    <option value='-----------------'>
+                                        -----------------
+                                    </option>
+                                    {% for item in branch %}
+                                        <option value="{{ item.pk }}">
+                                            {{item.name}}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row"> 
+                            <div class="col-2">
+                                <label for="item">Item:</label>
+                            </div>
+                            <div class="col-6">
+                                <select name="item" id="item">
+                                    <option value='-----------------'>
+                                        -----------------
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <hr><!---------------------------------------------->
+                        
+                        <div class="col-4">
+                            <input type="text" name="source" id="source_text" hidden readonly>
+                        </div>
+                        
+                        <div class="col-4">
+                            <input type="text" name="destination" id="destination_text" hidden readonly>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-12" style="text-align: center;">
+                                <input type="submit" value="Confirm" id="Confirm" class="btn btn-md btn-primary">
+                            </div>
+                        </div>
+                        
+                    </form>
+                </div>
+            <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+  </div>
+
+  
+</section>
+<!-- /.content -->
+
+{% endblock main_content %}
+
+{% block custom_js %}
+<script>
+    
+    $("#item").change(function(){
+        
+        if ($(this).val()!="-----------------"){
+            var amount=$("option:selected", this).data('amount');
+            $("#amount").attr('max', amount)
+        }
+    })
+
+    $("#to_dept").change(function(){
+        var department=$(this).val()
+
+        if (department!="-----------------"){
+            $("#to_branch").prop('disabled','disabled');
+            $("#destination_text").val("department")
+        }else{
+            $("#to_branch").removeAttr('disabled');
+            $("#destination_text").val("")
+        }
+    })
+
+    $("#to_branch").change(function(){
+        var branch=$(this).val()
+
+        if (branch!="-----------------"){
+            $("#to_dept").prop('disabled','disabled');
+            $("#destination_text").val("branch")
+        }else{
+            $("#to_dept").removeAttr('disabled');
+            $("#destination_text").val("")
+        }
+    })
+
+    $("#from_dept").change(function(){
+        var department=$(this).val()
+
+        if (department!="-----------------"){
+            $.ajax({
+                url:"{% url 'inventory:get_dept_assets_ajax' %}",
+                data:{
+                    'department':department, 
+                },
+                success:function(data){
+                    $("#item").html(data);
+                    $("#from_branch").prop('disabled','disabled');
+                    $("#source_text").val("department")
+                },
+                error:function(){
+                    alert("Something went wrong.")
+                }
+            })
+        }else{
+            $("#from_branch").removeAttr('disabled');
+            $("#source_text").val("")
+        }
+    })
+
+    $("#from_branch").change(function(){
+        var branch=$(this).val()
+
+        if (branch!="-----------------"){
+            $.ajax({
+                url:"{% url 'inventory:get_branch_assets_ajax' %}",
+                data:{
+                    'branch':branch, 
+                },
+                success:function(data){
+                    $("#item").html(data);
+                    $("#from_dept").prop('disabled','disabled');
+                    $("#source_text").val("branch")
+                },
+                error:function(){
+                    alert("Something went wrong.")
+                }
+            })
+            
+        }else{
+            $("#from_dept").removeAttr('disabled');
+            $("#source_text").val("")
+        }
+    })
+
+    $("#Confirm").click(function(event){
+        event.preventDefault();
+        var from_dept_check=$("#from_dept").val()!="-----------------"
+        var to_dept_check=$("#to_dept").val()!="-----------------"
+        var from_branch_check=$("#from_branch").val()!="-----------------"
+        var to_branch_check=$("#to_branch").val()!="-----------------"
+        var item_check=$("#item").val()!="-----------------"
+        
+        from_check = from_branch_check||from_dept_check
+        console.log(from_check)
+        to_check = to_branch_check||to_dept_check
+        console.log(to_check)
+
+        var from_dept_to_dept_equal = ($("#from_dept").val() != $("#to_dept").val())
+
+        if(!from_dept_check && !to_dept_check && to_branch_check && from_branch_check){
+            from_dept_to_dept_equal=true
+        }
+        
+        console.log(from_dept_to_dept_equal)
+        var from_branch_to_branch_equal = $("#from_branch").val() != $("#to_branch").val()
+
+        if(from_check && item_check && to_check && from_dept_to_dept_equal){
+            $("#form").submit();
+        }
+
+    })
+</script>
+
+{% endblock custom_js %}

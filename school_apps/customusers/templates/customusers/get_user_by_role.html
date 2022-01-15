@@ -1,0 +1,6 @@
+
+<!-- This gives the users based on respective role with ajax call -->
+<option>--------------</option>
+{% for user in users %}
+<option value={{user.pk}}>{{user}}</option>
+{% endfor %}

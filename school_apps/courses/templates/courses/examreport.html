@@ -1,0 +1,155 @@
+{% extends 'student_base.html'%}
+{% block content %}
+
+
+
+
+<section class="content">
+  <div class="container-fluid">
+
+
+    <div class="row">
+      <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="card card-info">
+
+          {% include 'override_table/header.html' with card_title=' Select exam to view results:' %}
+        
+          <!-- /.card-header -->
+          <!-- form start -->
+          <form class="mt-4 ml-2 mb-2 " id="term_form">
+            <select name='term' id='term_select'> 
+              <option value="">Select Exam Term</option>
+              {% for item in terms%}
+              <option name='option' value='{{ item.pk }}'>{{ item.term_name}}</option>
+              {% endfor%}
+            </select>
+            <input type='submit' class="btn btn-xs btn-success" id="term_submit">
+          </form>
+
+          <form action="{% url 'courses:examreport' %}" method='POST' class="mt-4 ml-2 mb-2 " id="exam_form">
+            {% csrf_token%}
+            <select name='exam' id="exam_select">
+              <option value="">Select Examination</option>
+              
+            </select>
+            <input type='submit' class="btn btn-xs btn-success" id="exam_submit">
+          </form>
+
+
+        </div>
+        <!-- /.card -->
+
+
+        {% if results %}
+        <hr>
+        <table class="table table-hover mt-4 ml-2 mb-2" id="result_table">
+          <thead class="thead" style="background-color: #094089;color:white;"> 
+            <tr style=" text-align: center">
+              <th>Student Name</th>
+              <th>Marks</th>
+              <th>Rank</th>
+            </tr>
+          </thead>
+            {% for result in results%}
+            <tr>
+              <td style="width: 50%; text-align: center">{{result.application_id.student.student_user.full_name}}</td>
+              <td style="width: 25%; text-align: center">{{result.marks}}</td>
+              <td style="width: 25%; text-align: center">{{result.rank}}</td>
+
+            </tr>
+            {% endfor%}
+          </table>
+        <div>Students with -1 marks are not graded yet.</div>
+
+        <form hidden action = "{% url 'courses:printexamreport' selectdexam.exam_id %}" id="print">
+        </form>
+        {% else %}
+        {% if selectdexam %}
+        No results for {{selectdexam}}
+        {% else %}
+        Please select an exam
+        {% endif %}
+    {% endif %}
+
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block javascript %}
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-html5-1.7.0/b-print-1.7.0/sl-1.3.3/datatables.min.css"/>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-html5-1.7.0/b-print-1.7.0/sl-1.3.3/datatables.min.js"></script>
+    
+  <script>
+  var exam_id;
+
+  $(document).ready( function() { 
+    
+
+    var result_datatable = $('#result_table').DataTable({
+      dom: 'Bfrtip',
+      buttons: [
+        {
+          text: 'Print',
+          action: function ( e, dt, node, config ) {
+            printbutton();
+            
+          },
+          attr:  {
+              id: 'printexamreport'
+        },
+    },],
+      columnDefs: [ {
+        orderable: false}]
+    })
+
+    $("#exam_select").prop( "disabled", true );
+    $("#exam_submit").prop( "disabled", true );
+    $("#term_submit").prop( "disabled", true );      
+
+    $("#term_select").change(function(){
+      a = $(this).val()
+      if(a!=""){
+        $("#term_submit").prop( "disabled", false ); 
+      }else{
+        $("#term_submit").prop( "disabled", true ); 
+      }
+    })
+
+    $("#exam_select").change(function(){
+      a = $(this).val()
+      if(a!=""){
+        $("#exam_submit").prop( "disabled", false ); 
+      }else{
+        $("#exam_submit").prop( "disabled", true ); 
+      }
+    })
+
+    $("#term_form").on('submit', function(e){
+      e.preventDefault();
+      term_id = $("#term_select").val();
+
+      $.ajax({
+        url: "{% url 'courses:returnexamlist_ajax' %}",
+        data: {"term":term_id},
+        success: function(data){
+          $("#exam_select").html(data);
+          $("#exam_select").prop('disabled', false);
+
+        }
+      })
+    });
+
+    function printbutton(){
+      $("#print").submit();
+    }
+    
+  })
+
+  
+  </script>
+{% endblock %}

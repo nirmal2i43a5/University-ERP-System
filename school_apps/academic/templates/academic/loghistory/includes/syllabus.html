@@ -1,0 +1,18 @@
+{% for syllabus in syllabus_logs %}
+<tr>
+  
+  <td><strong>Syllabus</strong></td>
+  <td>{{syllabus.title}}, {{syllabus.semester}}</td>
+  <td>{{syllabus.history_date}}</td>
+
+  
+  {% if syllabus.get_history_type_display == 'Changed'  %}
+  <td><span class="badge badge-sm badge-info">Edited</span></td>
+  {% elif syllabus.get_history_type_display == 'Deleted'  %}
+  <td><span class="badge badge-sm badge-danger">Deleted</span></td>
+  {% elif syllabus.get_history_type_display == 'Created'  %}
+  <td><span class="badge badge-sm badge-info">Created</span></td>
+  {% endif %}
+  <td>{{syllabus.history_user}}</td>
+</tr>
+{% endfor %}

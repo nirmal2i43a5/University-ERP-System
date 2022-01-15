@@ -1,0 +1,24 @@
+<table class="table table-hover" id="marks_table">
+    {% for item in question %}
+        <tr>
+            <td> {{item.question.question_no}}</td>
+            <td><strong> {{item.marks}}</strong></td>
+            {% if item.question.has_sub_question %}
+                    {% for sub in sub_question %}
+                        {% if sub.sub_question.question == item.question %}
+                            <tr>
+                                <td  style="margin-left:10px;"> {{sub.sub_question.question_no}}</td>
+                                <td style="margin-left:10px;"> {{sub.marks}}</td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+            {% endif %}
+        </tr>
+    {% endfor %}
+    <tr>
+        <td><strong>Total</strong></td>
+        <td><strong>{{total}}</strong></td>
+    </tr>
+  </table>
+
+  

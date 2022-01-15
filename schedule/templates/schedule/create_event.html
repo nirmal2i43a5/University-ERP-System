@@ -1,0 +1,56 @@
+
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load static %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+
+{% block main_content %}
+
+<!--for admin widget use-->
+<script src="{% url 'js-catlog' %}"></script>
+<script src="{% static '/admin/js/core.js' %}"></script>
+<link rel="stylesheet" href="{% static 'admin/css/base.css' %}">
+<link rel="stylesheet" href="{% static 'admin/css/widgets.css' %}">
+
+
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+
+    {% include "includes/messages.html" %}
+
+    <div class="row">
+      <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="card">
+         
+            {% include 'override_table/add_edit_header.html' with edit_title='Edit Event' add_title='Add Event' check_title=event.id %}
+          <!-- /.card-header -->
+          <!-- form start -->
+          <form role="form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="card-body">
+
+
+          {% crispy form %}<!--Using django formhelper-->
+           
+
+            </div>
+         
+         <!--for submit i am using django form helper so i am not using submit here rather in forms.py-->
+            
+          </form>
+        </div>
+        <!-- /.card -->
+
+
+
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+{% endblock main_content %}

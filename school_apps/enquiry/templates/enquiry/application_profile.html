@@ -1,0 +1,98 @@
+
+
+    <div class="panel-body profile-view-dis">
+        <div class="row">
+           
+                <div class="col-sm-9">
+                    <div class="profile-view-tab">
+                        <p><span>Name </span>: {{ application.name }} </p>
+                    </div>
+                </div>
+                <!-- <div class="col-sm-9">
+                    <div class="profile-view-tab">
+                        <p><span>Optional Subject </span>: {{ student.optional_subject.subject_name }}</p>
+                    </div>
+                </div> -->
+         
+                <div class="col-sm-9">
+                    <div class="profile-view-tab">
+                        <p><span>Address </span>: 
+                       {{ application.temporary_address }}</p>
+                    </div>
+                </div>
+                <div class="col-sm-9">
+                    <div class="profile-view-tab">
+                        <p><span>Home Phone </span>: 
+                       {{ application.home_phone }}</p>
+                    </div>
+                </div>
+               
+            
+                <div class="col-sm-9">
+                    <div class="profile-view-tab">
+                        <p><span>Mobile Phone </span>:  {{ application.contact_no }}</p>
+                    </div>
+                </div>
+                
+                <div class="col-sm-9">
+                    <div class="profile-view-tab">
+                        <p><span>Email </span>:  {{ application.email }}</p>
+                    </div>
+                </div>
+<!--                 
+                <div class="col-sm-9">
+                    <div class="profile-view-tab">
+                        <p><span>Discovery Method </span>:  {{ student.previous_school_name }}</p>
+                    </div>
+                </div> -->
+                <!-- <div class="col-sm-9">
+                    <div class="profile-view-tab">
+                        <p><span>Called </span>:{% if object.called %}
+                                                Yes
+                                                {% else %}
+                                                No
+                                                {% endif %}</p>
+                    </div>
+                </div> -->
+                <div class="col-sm-9">
+                    <div class="profile-view-tab">
+                        <p><span>Status </span>:  {{ application.get_status_display }}</p>
+                    </div>
+                </div>
+
+                <div class="col-sm-5">
+                    <div class="profile-view-tab">
+                        <p><span>Entrance Marks </span>:  {{ application.entrance_marks }}</p>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="profile-view-tab">
+                        <p><span>Entrance Result </span>:  {{application.get_entrance_result_display}}</p>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="profile-view-tab">
+                        <p><span>Interview Result </span>:  {{application.get_interview_result_display}}</p>
+                    </div>
+                </div>
+
+            <!-- <div class="col-sm-9">
+                <div class="profile-view-tab">
+                    <p><span>Remarks </span>: {{ object.remarks }}</p>
+                </div>
+            </div>
+           -->
+
+       
+        </div>
+    </div>
+ <style>
+     p{
+         font-weight: 300;
+     }
+    span{
+        font-weight: 400;
+    }
+ </style>

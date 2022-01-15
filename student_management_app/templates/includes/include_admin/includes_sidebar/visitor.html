@@ -1,0 +1,39 @@
+
+
+{% if perms.visitor.add_visitor or  perms.visitor.view_visitor %}
+  
+  
+<li class="nav-item has-treeview">
+    <a href="#" class="nav-link">
+      <i class="fas  fa-university mr-1"></i>
+      <p>
+        Visitors
+        <i class="fas fa-angle-left right"></i>
+  
+      </p>
+    </a>
+    <ul class="nav nav-treeview">
+      {% if perms.visitor.add_visitor %}
+      <li class="nav-item ml-3">
+        <a href="{% url 'visitor:visitorform' %}" class="nav-link">
+          <i class="fas  fa-sitemap"></i>
+          <p>
+            Visitor Form
+  
+          </p>
+        </a>
+      </li>
+      {% endif %}
+      {% if perms.visitor.view_visitor %}
+      <li class="nav-item ml-3">
+        <a href="{% url 'visitor:visitor_list' %}" class="nav-link">
+          <i class="fas  fa-star"></i>
+          <p>
+            Visitor List
+          </p>
+        </a>
+      </li>
+      {% endif %}
+    </ul>
+  </li>
+{% endif %}

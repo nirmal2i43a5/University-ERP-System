@@ -1,0 +1,63 @@
+{% extends 'admin_templates/base_admin.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    {{title}}
+{% endblock title %}
+    
+{% block main_content %}
+<!-- Main content -->
+
+<section class="content">
+  <div class="container-fluid">
+
+  
+    {% include "includes/messages.html" %}
+
+    <div class="row">
+      <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="card card-info">
+          
+          {% if paper_instance %}
+          {% include 'override_table/header.html' with card_title='Edit Question Paper' %}
+{% else %}
+{% include 'override_table/header.html' with card_title='Add Question Paper' %}
+
+            
+          {% endif %}
+            
+          <!-- /.card-header -->
+          <!-- form start -->
+          <form role="form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="card-body">
+              
+              {{ form|crispy }}
+
+                
+                
+
+
+              <a href="{% url 'exam:question-index' %}" class="btn btn-sm btn-danger">Back</a>
+              <button type="submit" class="btn btn-sm btn-success">Save</button>
+            </div>
+
+
+
+        </div>
+        <!-- /.card-body -->
+
+        </form>
+      </div>
+      <!-- /.card -->
+
+
+
+    </div>
+  </div>
+  </div>
+</section>
+<!-- /.content -->
+{% endblock main_content %}

@@ -1,0 +1,85 @@
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+
+
+
+{% block main_content %}
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <div class="alert alert-default-warning">
+      
+        <h4>Please,upload syllabus with .pdf file extension.</h4>
+    </div>
+    {% include "includes/messages.html" %}
+
+    
+
+    <div class="row">
+      <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="card card-info">
+          {% include 'override_table/header.html' with card_title='Add Syllabus' %}
+          <!-- /.card-header -->
+          {% url 'admin_app:manage_syllabus' as url %}
+          <!-- form start -->
+          {% include 'admin_templates/form.html' with messages=messages form=form back_url=url  button_text="Save" %}
+
+        <!-- /.card -->
+
+
+
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+{% endblock main_content %}
+
+{% block javascript %}
+<script>
+
+  $("#div_id_course_category input:radio").click(function(){
+    var course_category_id = $(this).val();
+    
+    $.ajax({
+        url:" {% url 'attendance_app:fill_semester_select' %}",
+        data:{'course_category':course_category_id},
+        success:function(data){
+            $("#id_semester").html(data);
+        }
+    })
+})
+
+
+$("#id_semester").change(function(){
+  var semester_id = $(this).val();
+  
+  
+  $.ajax({
+      url:" {% url 'attendance_app:fill_section_select' %}",
+      data:{'semester':semester_id},
+      success:function(data){
+          $("#id_section").html(data);
+      }
+  })
+})
+
+
+$("#id_semester").change(function(){
+  var semester_id = $(this).val();
+  var course_category_id = $('#id_course_category').val();
+  
+  
+  $.ajax({
+      url:" {% url 'attendance_app:fill_subject_select' %}",
+      data:{'semester':semester_id,'course_category':course_category_id},
+      success:function(data){
+          $("#id_Subject").html(data);
+      }
+  })
+})
+</script>
+
+{% endblock javascript %}

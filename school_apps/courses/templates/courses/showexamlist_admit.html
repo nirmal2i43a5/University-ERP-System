@@ -1,0 +1,31 @@
+<table class="table table-hover">
+    <thead class="thead thead-dark">
+        <th>Exam code</th>
+        <th>Exam title</th>
+        <th>Subject</th>
+        <th>Date</th>
+        <th>Action</th>
+    </thead>
+    
+    <tbody>
+        {% for item in exams %}
+            <tr>
+                <td>{{item.exam_id}}</td>
+                <td>{{item.exam_title}}</td>
+                <td>{{item.subject_id}}</td>
+                <td>{{item.date}}</td>
+                <td><button type="button" class="btn btn-primary" id="exam-submit" data-examid="{{item.exam_id}}">Confirm</button></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    
+</table>
+
+{% block javascript %}
+    <script>
+        $("button#exam-submit").click(function(event){
+            var exam_id=$(this).data("examid");
+            sendexamcode(exam_id);
+        })
+    </script>
+{% endblock%}

@@ -1,0 +1,57 @@
+<hr>
+<h5>Select semester to view grades.</h5>
+<hr>
+{% if is_published%}
+    {% if records%}
+    <h4>Your grades are as follows:</h4>
+        <table class="table table-hover">
+            <thead class="thead thead-dark">
+                <tr>
+                    <th>Exam</th>
+                    <th>Marks Obtained</th>
+                    <th>Grade</th>
+                    <th>Subject Rank</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for records in records%}
+                <tr>
+                    <td>{{ records.exam_id.exam_title}}</td>
+                    <td>{% if records.marks == -1 %}
+                        Absent
+                        {% else %}
+                        {{ records.marks }}
+                        {% endif %}
+                    </td>
+                    <td>{{ records.grade }}</td>
+                    <td> {{records.rank}} </td>
+                </tr>
+            {% endfor %}    
+            </tbody>
+            <!-- {% if not remaining %}
+                <tr>
+                    <td colspan="4" align="right">
+                        <a href="{% url 'student:printresults' records.last.application_id.application_id  %}"><button class="btn btn-primary">Print</button></a>
+                    </td>
+                </tr>
+            {% endif %} -->
+        </table>
+    {% else %}
+    <h4>There are no exam records yet.</h4>
+    <hr>
+    {% endif %}
+
+    {% if remaining %}
+    <hr>
+        <h4>You have the following exams ungraded:</h4>
+            <table class="table table-hover">
+                {% for remaining in remaining%}
+                    <tr><td>{{ remaining.exam_id.exam_title }}</td></tr>
+                {% endfor %}
+            </table>
+    {% endif %}
+{% else %}
+<h4>The results are yet to be published.</h4>
+{% endif %}
+
+  

@@ -1,0 +1,135 @@
+<li class="nav-item menu-close">
+    <a href="#" class="nav-link">
+      <i class="fas  fa-book-open mr-1"></i>
+      <p>
+       Exams
+    
+      </p>
+      <i class="right fas fa-angle-left"></i>
+    </a>
+    <ul class="nav nav-treeview">
+  
+      <li class="nav-item">
+        <a href="{% url 'courses:addterm' %}" class="nav-link">
+          <i class="far fa-xs fa-circle"></i>
+          <p>
+        Add term
+          </p>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a href="{% url 'courses:viewterm' %}" class="nav-link">
+          <i class="far fa-xs fa-circle"></i>
+          <p>
+        View terms
+          </p>
+        </a>
+      </li>
+      
+        <li class="nav-item">
+            <a href="{% url 'courses:addexam' %}" class="nav-link">
+                  <i class="far fa-xs fa-circle"></i>
+              <p>
+                 Add exam
+              </p>
+            </a>
+        </li>
+        
+        <li class="nav-item">
+            <a href="{% url 'courses:examresults' %}" class="nav-link">
+                  <i class="far fa-xs fa-circle"></i>
+              <p>
+                 Exam results
+              </p>
+            </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="{% url 'courses:addexammarks' %}" class="nav-link">
+                <i class="far fa-xs fa-circle"></i>
+            <p>
+               Add grades
+            </p>
+          </a>
+      </li>
+
+      <li class="nav-item">
+        <a href="{% url 'courses:addremarks' %}" class="nav-link">
+              <i class="far fa-xs fa-circle"></i>
+          <p>
+             Add Remarks
+          </p>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a href="{% url 'courses:publishresults' %}" class="nav-link">
+              <i class="far fa-xs fa-circle"></i>
+          <p>
+             Publish Results
+          </p>
+        </a>
+    </li>
+
+
+        <li class="nav-item">
+           <a href="{% url 'courses:examtoppers' %}" class="nav-link">
+                 <i class="far fa-xs fa-circle"></i>
+             <p>
+               Exam toppers
+             </p>
+           </a>
+         </li>
+
+         <!-- <li class="nav-item">
+           <a href="{% url 'courses:addstudentmarks' %}" class="nav-link">
+                 <i class="far fa-xs fa-circle"></i>
+             <p>
+               Add student marks
+             </p>
+           </a>
+         </li> -->
+
+         <li class="nav-item">
+           <a href="{% url 'courses:confirmexamapplication' %}" class="nav-link">
+                 <i class="far fa-xs fa-circle"></i>
+             <p>
+               Confirm exam application
+             </p>
+           </a>
+         </li>
+
+         <li class="nav-item">
+          <a href="{% url 'courses:massexamapplication' %}" class="nav-link">
+                <i class="far fa-xs fa-circle"></i>
+            <p>
+              Mass Exam Application
+            </p>
+          </a>
+        </li>
+
+         <!-- <li class="nav-item">
+           <a href="{% url 'courses:bulkprintadmitcard' %}" class="nav-link">
+                 <i class="far fa-xs fa-circle"></i>
+             <p>
+               Print admit card
+             </p>
+           </a>
+         </li> -->
+
+         <li class="nav-item">
+           <a href="{% url 'courses:bulkprintresults' %}" class="nav-link">
+                 <i class="far fa-xs fa-circle"></i>
+             <p>
+               Print results
+             </p>
+           </a>
+         </li>
+         <li class="nav-item">
+          <a href=" {% url 'exam:student-answer-upload' %}" class="nav-link">
+            <i class="far fa-xs fa-circle"></i>
+            <p>Upload Exam Answer</p>
+          </a>
+        </li>
+  </ul>

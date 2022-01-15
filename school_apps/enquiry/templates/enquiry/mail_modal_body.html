@@ -1,0 +1,22 @@
+<div class= "container-fluid">
+      <div class="row">
+        <div class="col-12 text-center">
+            <form action = "{% url 'enquiry:send_application_email' item.pk item.email %}" method='post'>
+              {% csrf_token %}
+              <button type="submit" class="btn btn-s btn-info"
+                {% if item.status == "ENQ" or item.status == "APL_SENT"%}
+                {% else %} 
+                disabled
+                {% endif %}
+                ><strong>Send application form</strong></button>
+            </form>
+            <span class="badge badge-xs badge-info">
+              {% if item.application_sent == True %}
+              Application already sent
+              {% else %}
+              Application not yet sent
+              {% endif %}
+            </span> 
+        </div>
+      </div>
+</div>

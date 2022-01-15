@@ -1,0 +1,67 @@
+{% extends 'admin_templates/base_admin.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Account{% endblock %}
+
+{% block main_content %}
+
+{% include "includes/messages.html" %}
+
+    <div class="row ml-2">
+        <div class="col-md-9">
+            <div class="p-3" style=" background-color:white;border-radius:10px;box-shadow: 0px 0px 10px 0px #000;">
+                <div class="row">
+                    <div class="col-md-3 ">
+                        {% if request.user.staff.image %}
+
+                        <img src="{{ request.user.staff.image.url }}" alt="" id="profile-pic" class="img-circle" />
+
+                        {% else %}
+                        <img src="{% static 'image/default_profile.png' %}" alt="" id="profile-pic"
+                            class="img-circle" />
+                        {% endif %}
+
+                    </div>
+                    <div class="col-md-4 mt-4">
+                        <h3><strong>{{request.user.full_name}}</strong></h3>
+                        <p><strong>{{user.email}}</strong></p>
+                    </div>
+                </div>
+                <hr>
+                <h4 class="text-center">Profile Informaion</h4>
+                <hr>
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    {% crispy custom_form %}
+
+
+                    {% crispy teacher_form %}
+
+                    <!-- <button type="submit" name="profile_edit" class="btn btn-info">Update Information</button> -->
+
+                </form>
+            </div>
+        </div>
+
+
+        <div class="col-md-3">
+
+           {% include "profile/change_password.html" %}
+        </div>
+
+
+
+</div>
+<div>
+
+
+
+    <link rel="stylesheet" href="{% static 'profile/css/style.css' %}">
+
+</div>
+
+
+
+{% endblock %}

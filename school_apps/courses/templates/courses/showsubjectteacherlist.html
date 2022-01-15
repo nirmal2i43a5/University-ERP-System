@@ -1,0 +1,80 @@
+{% extends 'student_base.html'%}
+
+{% block content %}
+<div style="margin-left: 10px; margin-right: 10px;">
+  {% include 'override_table/header.html' with card_title='Teacher Subject Management' %}
+    <hr>
+
+    <div style="margin-left: 10px; margin-right: 10px;">
+      <table class="table table-hover " id="teachers_table">
+        <thead class="thead" style="background-color: #094089;color:white;"> 
+            <tr>
+                <th hidden>Teacher ID</th>   
+                <th>Teacher Name</th>
+                <th>Subject Code</th>
+                <th>Subject</th>
+                <th>Class</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+    
+        <tbody>
+            {% for item in teacherlist%}
+                <tr>
+                    <td hidden>{{item.teacher.pk}}</td>
+                    <td>{{item.teacher.full_name}}</td>
+                    <td>{{item.subject.subject_code}}</td>
+                    <td>{{item.subject.subject_name}}</td>
+                    <td>{{item.section}}</td>
+                    <td>
+                        <!-- <a href="" class="btn btn-primary btn-sm">Edit</a> -->
+                        <a href=" {% url 'courses:deletesubjectteacher' item.pk %}" class="btn btn-primary btn-sm">Delete</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    
+    </table>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script>  
+    {% if messages %}
+        {% for message in messages %}
+            $(window).on('load', function() {
+              $('#messageModal').modal('show');
+              {% if 'safe' in message.tags %}
+              $('#message_text').html('{{message|safe}}');
+              {% else %}
+              $('#message_text').html("{{message}}");
+              {% endif %}
+
+              
+            }); 
+        {% endfor %}   
+    {% endif %}
+</script>
+
+<!-- Modal -->
+<div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Message</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <span id="message_text"></span>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends 'student_base.html' %}
+
+    {% block content %}
+
+
+    <section class="content">
+      <div class="container-fluid">
+    
+    
+        <div class="row">
+          <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="card card-info">
+              <div class="card-header">
+                <h3 class="card-title">Subject Course</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+              <form class = "form-group mt-4 ml-2" id="form">
+                <label for = "entry-field">Enter subject course: </label>
+                <input type ="text" id="entry-field" placeholder="Subject code">
+                <input type ="submit" value="Confirm" class="btn btn-sm btn-success">
+            </form>
+          </div>
+          <!-- /.card -->
+    
+    
+    
+        </div>
+      </div>
+      </div>
+    </section>
+      
+
+        <div id="entryfield"></div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Message</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <span id="message_text"></span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+    {% endblock %}
+    
+{% block title%}| Add Course{% endblock %}
+
+
+
+{% block javascript %}
+<script>
+    $("#form").submit(function(event){
+        event.preventDefault();
+        search_string = $("#entry-field").val();
+
+        $.ajax({
+            url: "{% url 'student:addAjax'%}",
+            data: {'search_string':search_string},
+            success: function (data) {
+                $("#entryfield").html(data);
+            }
+        })
+    })
+    
+</script>
+{% endblock %}
+

@@ -1,0 +1,83 @@
+
+
+
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+{% block title %}
+  {{title}}
+{% endblock title %}
+
+{% block main_content %}
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+
+  {% include "includes/messages.html" %}
+
+ 
+    <div class="row">
+      <div class="col-md-4">
+        {% include "academic/classes/add_class.html" %}
+      </div>
+
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header"  style="background-color: #094089;color:white;">
+            <h3 class="card-title">Manage Class</h3>
+          </div>
+        
+        <!-- /.card-header -->
+        <div class="card-body table-responsive">
+
+         
+          <a href="{% url 'academic:semester_log' %}" class="btn btn-xs float-right mr-2 text-white" style="background-color: #094089;"  >
+            <span><i class="fas fa-sm fa-history"></i> <strong>Log History</strong></span>
+        </a>
+      <table id="dataTable"
+        class="table table-sm  table-striped table-bordered table-hover  text-nowrap  dataTable no-footer">
+        <thead>
+          <tr>
+            <th></th>
+            <th>ID</th>
+            <th>Course</th>
+            <th>Year</th>
+         
+
+            <!-- <th>Facilitator</th> -->
+            <th>Description</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+
+
+<!-- -------------------------------------------------------------------A-level classes------------------------------------ -->
+
+{% include "academic/classes/includes/a_level_classes.html" %}
+          <!-- -------------------------------------------------------------------Bachelor classes------------------------------------ -->
+  
+          {% include "academic/classes/includes/bachelors_semesters.html" %}
+          <!-- ------------------------------------------------------------------Master classes------------------------------------ -->
+          {% include "academic/classes/includes/master_semesters.html" %}
+    
+        </tbody>
+      </table>
+    </div>
+        <!-- /.card-body -->
+      </div>
+        <!-- /.card -->
+      </div>
+
+
+    </div>
+</section>
+<!-- /.content -->
+
+
+
+{% endblock main_content %}
+
+{% block custom_js %}
+{% endblock custom_js %}

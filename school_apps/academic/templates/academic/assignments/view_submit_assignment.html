@@ -1,0 +1,145 @@
+{% extends 'admin_templates/base_admin.html' %}
+{% load crispy_forms_tags %}
+{% block title %}{{title}}{% endblock %}
+{% block main_content %}
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+  <!-- /.card-header -->
+
+  {% include "includes/messages.html" %}
+  
+    <div class="row">
+      <div class="col-12">
+
+
+        <div class="card">
+          
+          <div class="card-header" style="background-color: #094089;color:white;">
+            <span>{{title}}</span>
+
+   
+          </div>
+         
+          <!-- /.card-header -->
+          <div class="card-body table-responsive">
+            
+            {% url 'admin_app:add_subject' as button_url %}
+            
+                 
+            <table id="dataTable" class="table table-sm  table-striped table-bordered table-hover  text-nowrap  dataTable no-footer">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>ID</th>
+                  <th>Student Name</th>
+                  <th>Status</th>
+                  <th>Submitted Date</th>
+                  <th>Answer</th>
+                  <!-- <th>Class</th>
+                  <th>Section</th> -->
+
+                
+                
+                </tr>
+              </thead>
+              <tbody>
+                {% for assignment_grade in assignments %}
+                <tr>
+                  <td></td>
+                  <td>{{ forloop.counter }}</td>
+                  <td>{{ assignment_grade.student }}</td>
+                  {% if assignment_grade.answer_upload %}
+                  <td><span class="badge badge-success"> Handed in</span></td>
+                      {% else %}
+                      <td><span class="badge badge-danger">Not handed in</span></td>
+                  {% endif %}
+
+                  {% if assignment_grade.answer_upload %}
+                  <td>{{ assignment_grade.date_submitted }}</td>
+                  {% else %}
+                  <td></td>
+                  {% endif %}
+                  {% if assignment_grade.answer_upload %}
+                  <td><a href="{% url 'academic:add_assignment_grade' assignment_grade.pk %}" class="btn btn-xs btn-info" style="background-color: #094089;"><strong>View File</strong></a></td>
+                      {% else %}
+                      <td></td>
+                  {% endif %}
+                 
+
+                      
+
+                  <!-- <td>{{ assignment_grade.semester.name }}</td> -->
+                    
+
+              
+                
+                  
+              
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+
+{% endblock main_content %}
+
+{% block custom_js %}
+
+<script>
+  
+  $(document).ready(function () {
+
+    $('#subjectTable').DataTable({
+
+      dom: 'lBfrtip',//if i use buttons then entries goes away
+      pagingType: "full_numbers",
+      
+      buttons: [
+        {
+          'extend': 'copy',
+          'text': '<i class="fas  fa-copy" aria-hidden="true"></i> Copy',
+          
+          className: '<div class = "btn btn-info"></div>',//button css does not work
+
+        },
+        {
+          extend: 'excel',
+          text: '<i class="fas  fa-file-excel" aria-hidden="true"></i> Excel',
+
+
+        },
+        {
+          extend: 'csv',
+          text: '<i class="fas  fa-file-csv" aria-hidden="true"></i> Csv',
+
+
+        },
+        {
+          extend: 'pdf',
+          text: '<i class="fas  fa-file-pdf" aria-hidden="true"></i> Pdf',
+
+
+        },
+        {
+          extend: 'print',
+          text: '<i class="fas  fa-print" aria-hidden="true"></i> Print',
+
+
+        }
+
+      ],
+    });
+  });
+</script>
+
+{% endblock custom_js %}

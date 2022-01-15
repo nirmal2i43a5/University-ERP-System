@@ -1,0 +1,92 @@
+
+{% extends 'admin_templates/base_admin.html' %}
+{% load auth_extras %}
+{% load crispy_forms_tags %}
+{% block title %}
+  {{title}}
+{% endblock title %}
+{% block main_content %}
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+  <!-- /.card-header -->
+
+  {% include "includes/messages.html" %}
+  
+    <div class="row">
+      <div class="col-12">
+
+
+        <div class="card">
+          
+          <div class="card-header" style="background-color: #094089;color:white;">
+            <span>All Notifications</span>
+          
+          </div>
+         
+          <!-- /.card-header -->
+          <div class="card-body table-responsive">
+
+              {% include "notifications/delete.html" %}
+              <!-- {% if request.user|has_group:'Admin' or request.user.is_superuser %}
+            <button class="btn btn-danger btn-xs float-right" data-target='#deleteNotification'
+            data-toggle="modal"><i class="fas fa-sm fa-trash-alt"></i> <strong>Delete All</strong></button>
+            {% endif %} -->
+            <table id="dataTable" class="table table-sm  table-striped table-bordered table-hover  text-nowrap  dataTable no-footer">
+              <thead>
+                <tr>
+                  <th></th>
+                    <th class="serial">SN</th>
+                  
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Created By</th>
+                    <th>Created Date</th>
+                    <th>View</th>
+                    
+                    
+                </tr>
+              </thead>
+              <tbody>
+
+                {% if notifications %} {% for notifi in notifications %}
+                <tr>
+                  <td></td>
+                    <td class="serial">{{ forloop.counter }}</td>
+                    <td>{{ notifi.post }}</td>
+                    <td>{{notifi.type|title }}</td>
+                    <td>{{notifi.created_by }}
+                        
+                        {% if notifi.created_by.is_superuser %}
+                        <span class="badge badge-info">Admin</span>
+                        {% else %}
+                        <span class="badge badge-info">{{notifi.created_by.user_type }}</span>
+                        {% endif %}
+                            
+                  
+                        </td>
+                    <td>{{ notifi.created_at}}</td>
+                <td>   <a href="{% url 'notifications:notification_detail' notifi.pk %}" class="btn btn-xs text-white btn-info  mt-3  "><strong>View</strong></a></td>
+                    
+                </tr>
+                {% endfor %} 
+                {% endif %}
+            </tbody>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+
+{% endblock main_content %}
+
+{% block custom_js %}
+
+
+{% endblock custom_js %}

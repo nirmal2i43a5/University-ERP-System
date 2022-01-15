@@ -1,0 +1,67 @@
+{% extends 'student_base.html'%}
+{% block content %}
+<section class="content">
+  <div class="container-fluid">
+
+
+    <div class="row">
+      <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="card card-info">
+
+          {% include 'override_table/header.html' with card_title=' Select exam to view results:' %}
+        
+          <!-- /.card-header -->
+          <!-- form start -->
+          <form action="{% url 'courses:examresults' %}" method='POST' class="mt-4 ml-2 mb-2 ">
+            {% csrf_token%}
+            <select name='exam'>
+              <option>Select Exam Term</option>
+              {% for exams in exams%}
+              <option name='option' value='{{ exams.exam_id}}'>{{ exams.exam_title}}</option>
+              {% endfor%}
+            </select>
+            <input type='submit' class="btn btn-xs btn-success">
+          </form>
+
+        </div>
+        <!-- /.card -->
+
+
+        {% if results %}
+        <h4>Here are the results for {{selectdexam.exam_title}}</h4>
+        <hr>
+        <table class="table table-hover">
+          <thead class="thead-dark">
+            <tr style=" text-align: center">
+              <th>Student Name</th>
+              <th>Marks</th>
+              <th>Rank</th>
+            </tr>
+          </thead>
+            {% for result in results%}
+            <tr>
+              <td style="width: 50%; text-align: center">{{result.application_id.student.student_user.full_name}}</td>
+              <td style="width: 25%; text-align: center">{{result.marks}}</td>
+              <td style="width: 25%; text-align: center">{{result.rank}}</td>
+
+            </tr>
+            {% endfor%}
+          </table>
+        <div>Students with -1 marks are not graded yet.</div>
+        {% else %}
+        {% if selectdexam %}
+        No results for {{selectdexam}}
+        {% else %}
+        Please select an exam
+        {% endif %}
+    {% endif %}
+
+
+
+
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

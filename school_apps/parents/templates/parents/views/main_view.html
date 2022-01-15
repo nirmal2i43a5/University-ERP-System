@@ -1,0 +1,300 @@
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block main_content %}
+
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+
+
+<!--populate message after ajax submit is successful-->
+<div class="row">
+  <div class="col-lg-12" >
+        <div class="alert alert-success" id="upt_success" style="display:none">
+        </div>
+         <div class="alert alert-danger" id="upt_error" style="display:none">
+
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+
+        </div>
+  </div>
+</div>
+
+    <div class="row">
+      <div class="col-md-3">
+
+        <!-- Profile Image -->
+        <div class="card  card-outline">
+          <div class="card-body box-profile">
+            <div class="text-center">
+
+              {% if parent.image %}
+              <img class="profile-user-img img-responsive  img-circle" src="{{ parent.image.url }}">
+              {% else %}
+
+              <img src="{% static 'image/default_profile.png' %}" alt="" class="profile-user-img   img-circle" />
+
+
+              {% endif %}
+
+
+            </div>
+
+            <h5 class="profile-username text-center">{{ parent.parent_user.full_name }}</h5>
+
+            <p class="text-muted text-center">Parent</p>
+
+            <ul class="list-group list-group-unbordered mb-3">
+            
+              <li class="list-group-item">
+                <b>Phone</b> <a class="float-right text-sm">{{ parent.father_phone }}</a>
+              </li>
+            </ul>
+
+
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+
+        <!-- About Me Box -->
+        <div class="card card-primary">
+
+          <!-- /.card-header -->
+
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+      <!-- /.col -->
+      <div class="col-md-9">
+        <div class="card">
+          <div class="card-header p-2 ">
+            <ul class="nav nav-tabs nav-custom p-0">
+              <li class="nav-item"><a class="nav-link active" href="#profile" data-toggle="tab">Profile</a></li>
+              <li class="nav-item"><a class="nav-link" href="#children" data-toggle="tab">Children</a></li>
+             
+              <li class="nav-item"><a class="nav-link" href="#document" data-toggle="tab">Document</a></li>
+            </ul>
+          </div><!-- /.card-header -->
+          <div class="card-body">
+            <div class="tab-content">
+              <div class="active tab-pane" id="profile">
+
+                {% include "parents/views/profile.html" %}
+
+              </div>
+              <!-- /.tab-pane -->
+              <div class="tab-pane" id="children">
+
+                {% include "parents/views/children.html" %}
+              </div>
+
+            
+
+              <div class="tab-pane" id="document">
+                {% include "parents/views/documents/document_list.html" %}
+              </div>
+             
+            </div>
+            <!-- /.tab-content -->
+          </div><!-- /.card-body -->
+        </div>
+        <!-- /.nav-tabs-custom -->
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div><!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+</div>
+
+
+<style>
+  .nav-custom > li > a:hover{
+    color:black;
+  }
+  .nav-custom > li > a{
+    
+    font-weight: 600;
+    color:white;
+    padding: 8px 10px 8px 10px;
+    background-color:#094089;
+    
+
+  }
+</style>
+
+ 
+{% include "parents/views/documents/add_document.html" %}
+{% endblock main_content %}
+
+{% block custom_js %}
+
+
+<script>
+  $(document).ready(function(){
+ 
+
+   $("#document_submit").click(function(e){
+
+       e.preventDefault();
+       e.stopPropagation();
+       console.log("button is clicked");
+       output="";
+     
+       //var did=$("#documentid").val();// <input type="hidden" name="proid" id="proid" /> inside modal form in includes/add_edit_form.html 
+     //  var title=$("#id_title").val();
+      // var file=$("#id_file").val();//cant do in this way.so use formData
+
+ 
+      var formData = new FormData();//I use formData because i am also uploading file.if dont upload file then do with other simple method
+      formData.append('documentid', $('#documentid').val())//this is hidden id field
+      formData.append('title', $('#id_title').val())
+      formData.append('created_at', $('#id_created_at').val())
+      formData.append('file',  $('#id_file')[0].files[0])
+
+  // You can directly make object via using form id but it require all ajax operation inside $("form").submit(<!-- Ajax Here   -->)
+  //var formData = new FormData(formData[2]);
+      
+       if( $('#id_title').val()==""){
+           $("#ins_error").text("Please, Fill The Title For Document.")//ins_error is below the form(look id in includes/add_edit_form.html )
+           $("#ins_error").show()
+           return;
+       }
+       else if( $('#id_file').val()==""){
+        $("#ins_error").text("Please, Choose File.")//ins_error is below the form(look id in includes/add_edit_form.html )
+        $("#ins_error").show()
+        return;
+    }
+       else{
+        console.log("----ajax test---------");
+
+           $.ajax({
+
+               url : "{% url 'admin_app:add_parent_document' parent.id %}",
+               
+             //  enctype: 'multipart/form-data',
+               method:"POST",
+               dataType:'json',
+
+               data: formData,
+               cache: false,
+               processData: false,
+               contentType: false,
+               enctype: 'multipart/form-data',
+             
+        
+              error:function(e){
+                alert("something went wrong")
+
+              },
+                //for file data upload
+             
+              
+               success:function(data){//response bring all the data
+                   
+                           x=data.document_data//I accept data in list
+
+                           if(data.status=='True'){
+                               console.log(data.document_data)
+                              $("#addDocumentModal .close").click();
+                               $("#upt_error").hide();
+                                $("#upt_success").text(data.message);
+                                $("#upt_success").show();
+   
+   
+                               for(i=0;i<x.length;i++){
+                                output+=
+                                `
+                                <tr>
+                                    
+                                    <td> ${x[i].id}</td>
+                                    <td> ${x[i].title}</td>
+                                    <td> ${x[i].created_at}</td>
+
+                                    <td> 
+                                      
+                                      <a href="/media/${x[i].file}" class="btn btn-xs btn-info"><i class="fas fa-xs fa-eye"></i> view file</a>
+                                    
+                                    </td>
+                                    <td>
+                                        <button type='button' class='btn btn-xs btn-success btn-sm  btn-edit' data-target="#AddCustomer" data-toggle="modal"   data-cid=" ${x[i].id}" ><i class='fa fa-edit'></i></button>    <button type='button' class='btn btn-xs btn-danger  btn-sm  btn-del'  data-cid=" ${x[i].id}" ><i class='fa fa-trash-alt'></i></button> 
+                                    </td>
+                                 
+                                </tr>
+                                `
+                                $(".table tbody").html(output);
+                              
+                   }
+
+                   if(data.status==0){
+                       $("#msg").text("Unable to Save Data");
+                       $("#msg").show();
+                       $("#documentid").val('');
+                       $("form")[0].reset();
+                   }
+  
+               
+       }              
+               }
+           });
+           return false;
+
+          // setInterval('location.reload()', 10000);  
+       }
+   })
+
+   //for edit
+    //edit form
+    $("tbody").on("click",".btn-edit",function(){
+      console.log("Edit button is click")
+        
+      let id=$(this).attr("data-documentid");
+      mydata={documentid:id}
+      
+      $.ajax({
+          url:"{% url 'admin_app:edit_parent_document'  %}",
+          method:"POST",
+          data:mydata,
+          dataType:"json",
+
+          success:function(data){//means after get particular data it to edit it
+              console.log(data)
+              console.log("edited")
+              if(data.status == 1){
+
+                  $("#upt_error").hide();
+                  $("#upt_success").text(data.message);
+                 $("#upt_success").show();
+
+              }
+
+            //Logic to show the data to the form so as to edit it.I came here after i go to edit_view and retrieve dict data and put it in a form  
+          var formData = new FormData();//I use formData because i am also uploading file.if dont upload file then do with other simple method
+          formData.append('documentid', $('#documentid').val(data.id))//this is hidden id field
+          formData.append('title', $('#id_title').val(data.title))
+       //  formData.append('created_at', $('#id_created_at').val(data.created_at))
+       //  formData.set('file',  $('#id_file')[0].files[0])
+              
+
+             
+          }
+          
+      })
+  })
+
+ 
+
+  });
+</script>
+
+
+{% endblock custom_js %}

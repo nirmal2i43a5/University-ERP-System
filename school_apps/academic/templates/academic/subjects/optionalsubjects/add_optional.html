@@ -1,0 +1,48 @@
+{% extends 'admin_templates/base_admin.html' %}
+{% load crispy_forms_tags %}
+{% block main_content %}
+<!-- Main content -->
+
+<section class="content">
+  <div class="container-fluid">
+
+<div class="alert alert-default-warning">
+  Please Take TIme To Add Class and Teacher Before You Add New Subject!
+</div>
+    {% include "includes/messages.html" %}
+    <div class="row">
+      <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="card card-info">
+          <div class="card-header">
+            <h3 class="card-title">Add Subject</h3>
+          </div>
+          <!-- /.card-header -->
+          <!-- form start -->
+          <form role="form" method="post">
+            {% csrf_token %}
+
+<div class="card-body">
+  {{ form|crispy }}
+
+  <a href = "{% url 'admin_app:manage_subject' %}" class="btn btn-sm btn-danger">Back</a>
+  <button type="submit" class="btn btn-sm btn-success">Save</button>
+</div>
+
+
+
+            </div>
+            <!-- /.card-body -->
+
+          </form>
+        </div>
+        <!-- /.card -->
+
+
+
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+{% endblock main_content %}

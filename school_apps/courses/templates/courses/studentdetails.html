@@ -1,0 +1,60 @@
+{% extends 'student_base.html'%}
+
+{% block title %}
+Student Details
+{% endblock title %}
+
+
+{% block content %}
+{% include "includes/messages.html" %}
+<div style="margin-left: 25px; margin-right: 25px;">
+    <!-- <h4>Assign subjects to teacher</h4> -->
+    {% include 'override_table/header.html' with card_title='Check Student Details' %}
+</div><p></p>
+
+<div class="row" style="margin-left: 25px; margin-right: 25px;">  
+    <form action= "{% url 'courses:student_details' %}" method='POST'>
+        {% csrf_token %}
+        <label for = "student_id"> Enter Student ID: </label>
+        <input type="text" id="student_id" name="student_id">
+        <input type="submit" class="btn btn-primary" value="Confirm">
+    </form>
+
+</div>
+
+{% if courses %}
+    <hr>
+    <div style="margin-left: 25px; margin-right: 25px;">
+        <h5>Details for {{ student.student_user.full_name }} ({{ student.student_user.username }}) </h5>
+    </div><p></p>
+    <div  style="margin-left: 25px; margin-right: 25px;">  
+        <table class = "table table-hover">
+            <thead class = "thead">
+                <tr>
+                    <th>Course ID</th>
+                    <th>Subject</th>
+                    <th>Year</th>
+                    <th>Semester</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for item in courses %}
+                    <tr>
+                        <td>{{item.subject_id.subject_code}}</td>
+                        <td>{{item.subject_id.subject_name}}</td>
+                        <td>{{item.year}}</td>
+                        <td>{{item.semester}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+
+
+        </table>
+    </div>
+{% endif %}
+
+
+
+{% endblock %}
+

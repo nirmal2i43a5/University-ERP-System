@@ -1,0 +1,216 @@
+
+
+  /* -------------------------------------------- */
+  :root {
+    --color-primary: #2981a7;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html {
+    font-size: 62.5%;
+  }
+  
+  body {
+    font-size: 1.6rem;
+  
+    /* try removing it when adding to your page if any problem occured */
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .student__idCard {
+    background-color: white;
+    min-width: 30rem;
+    min-height: 50rem;
+    float:left;
+    margin-left: 35%;
+    position: relative;
+  }
+  
+  .card__top {
+    position: relative;
+  }
+  
+  .card__top img {
+    width: 155px;
+  
+    /* positioning */
+    position: absolute;
+    top: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .card__title {
+    background-color: var(--color-primary);
+    color: #fff;
+    text-align: center;
+    /* for applying z-index */
+    position: relative;
+    z-index: 2;
+  }
+  
+  svg {
+    height: 22rem;
+  }
+  
+  .card__top svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* z-index: 1; */
+    /* margin-top: -3rem; */
+  }
+  
+  .card__bottom {
+    position: absolute;
+    bottom: 0;
+  }
+  
+  .card__bottom svg {
+    position: absolute;
+    bottom: 3rem;
+    right: 0;
+    height: 30rem;
+  }
+  
+  .card__bottom-description {
+    padding: 0rem 1rem;
+    position: relative;
+    z-index: 2;
+    background-color: var(--color-primary);
+    color: #fff;
+    text-align: center;
+  }
+  
+  /* card body */
+  /* card body */
+  .card__body {
+    position: relative;
+    min-height: 30rem;
+  
+    top: 30px;
+  }
+  
+  .profile__img {
+    width: 10rem;
+    height: 10rem;
+    /* background-color: red; */
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    /* border-radius: 50%; */
+  }
+  
+  .profile__img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* remove when trying with images */
+    object-position: 0px 0px;
+  }
+  
+  .card__body-description {
+    text-align: center;
+    font-size: 1.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  
+    /* alignment */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    /* bottom: 8%; */
+    transform: translateX(-50%);
+  }
+  
+  .card__body-description h1 {
+    font-size: 1.6rem;
+  }
+  
+  .card__body-description h3,
+  .card__body-description li {
+    color: var(--color-primary);
+    font-weight: bold;
+    letter-spacing: 0.5px;
+  }
+  
+  .card__body-description li {
+    list-style: none;
+  }
+  
+  .card__body-description li:not(:last-child) {
+    margin-bottom: 0.8rem;
+  }
+  
+  /* card main details */
+  .card__main-details {
+    position: absolute;
+    bottom: 16%;
+    width: 100%;
+    height: 25%;
+    display: flex;
+  }
+  
+  .card__main-details-1 {
+    /* margin-left:1rem; */
+    /* margin-bottom: 3rem; */
+
+    width: 100%;
+    /* display: flex; */
+    justify-content: space-around;
+    align-items: flex-start;
+  }
+  
+  .card__main-details-1 p {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  
+  .principle__signature {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    align-items: center;
+  
+    /* alignment */
+    top: -16px;
+    right: -25px;
+  
+    gap: 0.1rem;
+  }
+  
+  .principle__signature img {
+    margin-right:4rem;
+    margin-top: 0.6rem;
+    width: 68px;
+    /* position: absolute; */
+    z-index: 3;
+  }
+  
+  .principle__signature span {
+    /* position: absolute; */
+    margin-right:4.5rem;
+    z-index: 3;
+    border-top: 3px solid #000;
+  }
+  
+  /* barcode */
+  .barcode {
+    position: absolute;
+    /* change when putting real image or real barcode */
+    height: 9rem;width:28rem;margin-top: 1rem;
+    top: 40px;
+    left: 1%;
+    z-index: 5;
+  }

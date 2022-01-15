@@ -1,0 +1,86 @@
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+{% load static  %}
+
+{% block title %} Procurement {% endblock %}
+{% block main_content %}
+
+<section class="content">
+  <div class="container-fluid">
+
+  {% include "includes/messages.html" %}
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card" >
+                <div class="card-header" style="background-color: #094089;color:white;" >
+                    <span>Repair</span>
+                </div>
+
+                <div class="card-body table-responsive">
+                    <table id="procurement_table" class="table table-sm  table-striped table-bordered table-hover text-nowrap dataTable no-footer">
+                    <thead>
+                        <tr>
+                        <th>#</th>
+                        <th>Department/Branch</th>
+                        <th>Personnel</th>
+                        <th>Item</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in repair %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{% if item.requester_dept %}
+                                    {{item.requester_dept}}
+                                    {% else %}
+                                    {{item.requester_branch}}
+                                    {% endif %}
+                                </td>
+                                <td>{{item.requester}}</td>
+                                <td>{{item.item}}</td>
+                                <td>{{ item.get_status_display }}</td>
+                                <td>
+                                    <button class="btn btn-info btn-sm modal_display" id="modal_display" data-id="{{item.pk}}" data-toggle="modal" data-target="#exampleModalCenter"
+                                        {% if item.status == "complete" %}
+                                        disabled
+                                        {% endif %}>
+                                        <strong>Status</strong>
+                                    </button>
+                                </td>
+                            </tr>    
+                        {% endfor %}
+                        {% include 'repair/repair_modal.html'%}
+                    </tbody>
+                    </table>
+                </div>
+            <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+  </div>
+
+  
+</section>
+<!-- /.content -->
+
+
+
+{% endblock main_content %}
+
+{% block javascript %}
+    <script>
+        $("#modal_display").click(function(){
+            var id=$(this).data('id');
+            $("#id_hidden").val(id);
+        })
+    </script>
+
+{% endblock %}
+
+
+

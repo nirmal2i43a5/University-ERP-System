@@ -1,0 +1,142 @@
+{% extends 'admin_templates/base_admin.html' %}
+{% load crispy_forms_tags %}
+{% block main_content %}
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+  <!-- /.card-header -->
+
+  {% include "includes/messages.html" %}
+  
+    <div class="row">
+      <div class="col-12">
+
+
+        <div class="card card-info">
+          
+          <div class="card-header">
+            <span>Manage Optional Subject</span>
+
+            <form class="float-right mb-2" role="search"  method="GET" style="height: 27px;margin:auto;position:relative;">
+              <div class="input-group">
+             
+          
+                {{ form|crispy }} 
+            
+                <div class="input-group-btn ">
+                  <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+    
+                </div>
+              </div>
+            </form>
+          </div>
+         
+          <!-- /.card-header -->
+          <div class="card-body table-responsive">
+            
+            <a href="{% url 'admin_app:add_subject' %}" class="btn btn-xs btn-info float-right "><i class = "fas fa-xs fa-plus"></i> Add subject</a>
+       
+            <table id="dataTable" class="table table-sm  table-striped table-bordered table-hover  text-nowrap  dataTable no-footer">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>ID</th>
+                  <th>Subject Name</th>
+                  <th>Class Name</th>
+                  <th>Facilitator</th>
+                  <th>Pass Mark</th>
+                  <th>Full Mark</th>
+                
+                  <!-- <th>Course Name</th> -->
+                
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for subject in subjects %}
+                <tr>
+                  <td></td>
+                  <td>{{ subject.id }}</td>
+                  <td>{{ subject.subject_name }}</td>
+                  <td>{{ subject.semester.name }}</td>
+                  <td>
+                    
+                      {{ subject.get_teachers }}<!--decorator call-->
+
+                  </td>
+                  <td>{{ subject.pass_mark }}</td>
+                  <td>{{ subject.full_mark }}</td>
+                
+                  <!-- <td>{{ subject.course }}</td> -->
+               
+                  <td>
+                    <a href="{% url 'admin_app:edit_subject' subject.id %}" class="btn btn-xs btn-success"><i class="fas fa-xs fa-edit"></i></a>
+                    <a href="{% url 'admin_app:delete_subject' subject.id %}" class="btn btn-xs btn-danger"><i class="fas fa-xs fa-trash-alt"></i></a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+
+{% endblock main_content %}
+
+{% block custom_js %}
+
+<script>
+  
+  $(document).ready(function () {
+
+    $('#subjectTable').DataTable({
+
+      dom: 'lBfrtip',//if i use buttons then entries goes away
+      pagingType: "full_numbers",
+      
+      buttons: [
+        {
+          'extend': 'copy',
+          'text': '<i class="fas  fa-copy" aria-hidden="true"></i> Copy',
+          
+          className: '<div class = "btn btn-info"></div>',//button css does not work
+
+        },
+        {
+          extend: 'excel',
+          text: '<i class="fas  fa-file-excel" aria-hidden="true"></i> Excel',
+
+
+        },
+        {
+          extend: 'csv',
+          text: '<i class="fas  fa-file-csv" aria-hidden="true"></i> Csv',
+
+
+        },
+        {
+          extend: 'pdf',
+          text: '<i class="fas  fa-file-pdf" aria-hidden="true"></i> Pdf',
+
+
+        },
+        {
+          extend: 'print',
+          text: '<i class="fas  fa-print" aria-hidden="true"></i> Print',
+
+
+        }
+
+      ],
+    });
+  });
+</script>
+
+{% endblock custom_js %}

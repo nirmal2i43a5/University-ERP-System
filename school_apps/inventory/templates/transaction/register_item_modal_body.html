@@ -1,0 +1,140 @@
+<div class= "container-fluid">
+  <div class="row">
+    <div class="col-12 text-center">
+      <table class='table table-hover'>
+        <thead class='thead'>
+          <tr>
+            <th>Item</th>
+            <th>ID</th>
+            <th>Department</th>
+            <th>Branch</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        
+        {% for item in transaction_item %}
+          <tr data-id={{item.pk}}>
+            <td id='id'>
+              {{item}}
+            </td>
+            <td>
+              <input type="text" name="item_id" class="id_input" id="{{item.pk}}"
+              {% if item.is_registered == True %}
+                  disabled value= {{item.item.id_no}}
+                {% endif %}>
+            </td>
+            <td>
+              <select name="department" class="department_select"
+                {% if item.is_registered == True %}
+                  disabled
+                {% endif %}
+              >
+                <option value='-----------------'>-----------------</option>
+                {% for d_item in department %}
+                  <option value={{d_item.pk}}>{{d_item}}</option>
+                {% endfor %}
+              </select>
+            </td>
+            <td>
+              <select name="branch" class="branch_select"
+              {% if item.is_registered == True %}
+                  disabled
+                {% endif %}>
+                <option value='-----------------'>-----------------</option>
+                {% for b_item in branch %}
+                  <option value={{b_item.pk}}>{{b_item}}</option>
+                {% endfor %}
+              </select>
+            </td>
+            <td>
+              <button class='btn btn-primary btn-sm register_confirm'
+              {% if item.is_registered == True %}
+                  disabled
+                {% endif %}>Confirm</button>
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+        
+    </div>
+  </div>
+</div>
+
+<script>
+  $(".department_select").on('change', function(event){
+    if($(this).val()!='-----------------'){
+      $(this).parent().parent().find('.branch_select').prop('disabled','disabled');
+    }else{
+      $(this).parent().parent().find('.branch_select').removeAttr('disabled');
+    }
+  })     
+
+  $(".branch_select").on('change', function(event){
+    if($(this).val()!='-----------------'){
+      $(this).parent().parent().find('.department_select').prop('disabled','disabled');
+    }else{
+      $(this).parent().parent().find('.department_select').removeAttr('disabled');
+    }
+  }) 
+  
+
+  $(".register_confirm").on("click", function(event){
+    var id = $(this).parent().parent().data('id')
+    var item_id = $(this).parent().parent().find('.id_input').val()
+    var dept_id = $(this).parent().parent().find('.department_select').val()
+    var branch_id = $(this).parent().parent().find('.branch_select').val()
+    var me = $(this)
+
+    var department_check = $(this).parent().parent().find('.department_select').val()!='-----------------'
+    var branch_check = $(this).parent().parent().find('.branch_select').val()!='-----------------'
+    var xor_check = !(department_check && branch_check)
+    var destination ='empty'
+
+    if (department_check) destination='department'
+    if (branch_check) destination='branch'
+
+    var id_check = ($(this).parent().parent().find('.id_input').length &&$(this).parent().parent().find('.id_input').val().length)
+
+    if(xor_check && id_check){
+      $.ajax({
+        url:" {% url 'inventory:transaction_register_item' %}",
+        data:{
+          'transaction_id':id,
+          'destination':destination,
+          'item_id':item_id,
+          'dept_id':dept_id,
+          'branch_id':branch_id
+        },
+        success:function(data){
+          if(data['success'] == 'True'){
+            me.parent().parent().find('.branch_select').prop('disabled','disabled');
+            me.parent().parent().find('.department_select').prop('disabled','disabled');
+            me.parent().parent().find('.id_input').prop('disabled','disabled');
+            me.prop('disabled','disabled');
+
+          }
+        },
+        error:function(data){
+          alert("Something went wrong.")
+        }
+      })
+    }
+    
+    
+  })
+
+  function checkValid(id){
+    
+    var department_check = $("#id_requester_dept").val()!=''
+    var branch_check = $("#id_requester_branch").val()!=''
+    var xor_check = department_check ^ branch_check
+    console.log(xor_check)
+
+    var category_check = $("#id_category").val()!=''
+    var item_check = $("#id_item").val()!='-----------------'
+    var amount_check=($('#id_amount').length && $('#id_amount').val().length && $('#id_amount').val()!=0)
+
+    return(xor_check && category_check && item_check && amount_check)
+}
+
+</script>

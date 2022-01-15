@@ -1,0 +1,136 @@
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+{% load static  %}
+
+{% block title %} Procurement Request {% endblock %}
+{% block main_content %}
+
+<section class="content">
+  <div class="container-fluid">
+
+  {% include "includes/messages.html" %}
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card" >
+                <div class="card-header" style="background-color: #094089;color:white;" >
+                    <span>Procurement Request</span>
+                </div>
+
+                <div class="card-body table-responsive">
+                    <form method="POST" id="form">
+                        {% csrf_token %}
+                        {{form|crispy}}
+                        <input type="submit" value="Confirm" id="Confirm" class="btn btn-primary">
+                    </form>
+                </div>
+            <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+  </div>
+
+  
+</section>
+<!-- /.content -->
+
+{% endblock main_content %}
+
+{% block custom_js %}
+<script>
+    $( document ).ready(function() {
+        $("#id_item").prop('disabled', true);
+
+    $("#Confirm").prop('disabled', true);       
+    });
+
+    $("#id_category").change(function(){
+        var category = $(this).val()
+        if (category!=''){
+            $.ajax({
+                url:"{% url 'inventory:get_items_ajax' %}",
+                data:{'category':category},
+                success:function(data){
+                    $("#id_item").html(data)
+                    $("#id_item").removeAttr('disabled');
+                    if(checkValid()){
+                        $("#Confirm").removeAttr('disabled');
+                    }else{
+                        $("#Confirm").prop('disabled', true);       
+                    }
+                },
+                error:function(){
+                    alert("Something went wrong.")
+                }
+            })
+        }else{
+            $("#id_item option[value='-----------------']").attr('selected', 'selected');
+            $("#id_item").prop('disabled', true);
+        }
+
+        if(checkValid()){
+            $("#Confirm").removeAttr('disabled');
+        }else{
+            $("#Confirm").prop('disabled', true);       
+        }
+    })
+    
+    /**$("#Confirm").click(function(event){
+        event.preventDefault();
+        
+        console.log(checkValid())
+        if(checkValid()){
+            $("#form").submit()
+        }
+    })**/
+
+    $("#id_item").change(function(){
+        if(checkValid()){
+            $("#Confirm").removeAttr('disabled');
+        }else{
+            $("#Confirm").prop('disabled', true);       
+        }
+    })
+
+    $("#id_amount").on("input", function(){
+        // Print entered value in a div box
+        if(checkValid()){
+            $("#Confirm").removeAttr('disabled');
+        }else{
+            $("#Confirm").prop('disabled', true);       
+        }
+    });
+
+    $("#id_requester_dept").change(function(){
+        if(checkValid()){
+            $("#Confirm").removeAttr('disabled');
+        }else{
+            $("#Confirm").prop('disabled', true);       
+        }
+    })
+
+    $("#id_requester_branch").change(function(){
+        if(checkValid()){
+            $("#Confirm").removeAttr('disabled');
+        }else{
+            $("#Confirm").prop('disabled', true);       
+        }
+    })
+
+    function checkValid(){
+        var department_check = $("#id_requester_dept").val()!=''
+        var branch_check = $("#id_requester_branch").val()!=''
+        var xor_check = department_check ^ branch_check
+        console.log(xor_check)
+
+        var category_check = $("#id_category").val()!=''
+        var item_check = $("#id_item").val()!='-----------------'
+        var amount_check=($('#id_amount').length && $('#id_amount').val().length && $('#id_amount').val()!=0)
+
+        return(xor_check && category_check && item_check && amount_check)
+    }
+</script>
+
+{% endblock custom_js %}

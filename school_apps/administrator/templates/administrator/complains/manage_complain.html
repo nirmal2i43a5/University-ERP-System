@@ -1,0 +1,96 @@
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+
+
+{% block main_content %}
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+
+  {% include "includes/messages.html" %}
+
+ 
+    <div class="row">
+    
+
+      <div class="col-md-12">
+        <div class="card card-info">
+          {% include 'override_table/header.html' with card_title='Manage Complain' %}
+          
+          <!-- /.card-header -->
+          <div class="card-body table-responsive ">
+
+            {% url 'admin_app:add_complain' as button_url %}
+
+            {% include 'override_table/header_button.html' with button_title='complain' button_url=button_url %}
+            <a href="{% url 'administrator:complain_log' %}" class="btn btn-xs float-right mr-2 text-white" style="background-color: #094089;"  >
+              <span><i class="fas fa-sm fa-history"></i> <strong>Log History</strong></span>
+          </a>
+            <table id="dataTable"
+              class="table table-sm table-striped table-bordered text-nowrap table-hover dataTable no-footer">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>#</th>
+                  <th>Title</th>
+                  <th>Complain By</th>
+                  <th>Role</th>
+                  <th>Description</th>
+                  <th>Attachment</th>
+                  
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+           
+                {% for complain in complains %}
+                <tr>
+                  <td></td>
+                  <td>{{ complain.id }}</td>
+                  <td>{{ complain.title }}</td>
+                  <td>{{ complain.user.full_name }} 
+
+                  </td>
+                  <td>
+                    <div class="badge badge-info"> 
+                     {{ complain.role }}
+                    </div>
+                  </td>
+
+                  <td>{{ complain.description|safe }}</td>
+                  <td>
+                    {% if complain.attachment %}
+                    <a href="{{ complain.attachment.url}}" class="btn btn-xs btn-info"><i class="fas fa-xs fa-eye"></i> view attachment</a>
+                    {% else %}
+                    null 
+                    {% endif %}
+                  </td>
+                  <td>
+                    <a href="{% url 'admin_app:edit_complain' complain.id %}" class="btn btn-success btn-xs" data-placement="top"
+                      data-toggle="tooltip" title="Edit"><i class="fas fa-sm fa-edit"></i></a>
+                    <a href="{% url 'admin_app:delete_complain' complain.id %}" class="btn btn-danger btn-xs"    
+                    data-placement='top' data-toggle='tooltip' title='Delete'><i class="fas fa-sm fa-trash-alt"></i></a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+
+
+    </div>
+</section>
+<!-- /.content -->
+
+
+
+{% endblock main_content %}
+
+{% block custom_js %}
+{% endblock custom_js %}

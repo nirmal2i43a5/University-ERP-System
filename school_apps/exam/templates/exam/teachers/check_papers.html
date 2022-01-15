@@ -1,0 +1,160 @@
+{% extends 'admin_templates/base_admin.html' %}
+{% block title %}{{title}} {% endblock %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block main_content %}
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <!-- /.card-header -->
+    {% include "includes/messages.html" %}
+
+
+
+    <div class="d-flex bd-highlight">
+
+      <div class=" flex-grow-1 bd-highlight">
+        <div class="card pt-3 pl-2 mb-2">
+          
+
+
+              <!-- -------------------------Subject filter form ------------------------------------------------ -->
+          <form  method="POST" enctype="multipart/form-data">
+            <div class="input-group">
+          {% csrf_token %}
+              <select name="term" id="term_select">
+                <option value="">------------------------Select Term---------------------------</option>
+                {% for item in terms%}
+                  <option value="{{item.pk}}">{{item}}</option>
+                {% endfor %}
+              </select>
+
+              <select name="exam" id="exam_select">
+                <option value="">------------------------Select Exam---------------------------</option>
+              </select>
+
+              <div class="input-group-btn ml-1 mt-1 mb-1">
+                <button type="submit" class="btn btn-sm " name="fetch_answer_paper" style="background-color: #094089;color:white">
+                  <strong>Fetch Student Answer</strong>
+                </button>
+              </div>
+            </div>
+          </form>
+
+
+    
+
+    </div>
+
+
+   {% if answersheets %}
+
+
+  
+    <div class="row">
+      <div class="col-12">
+
+
+        <div class="card">
+          <div class="card-header" style="background-color: #094089;color:white">
+            <span> {{title}}</span>
+           
+          </div>
+
+          <!-- /.card-header -->
+          <div class="card-body table-responsive">
+            
+            <!-- <a href="{% url 'academic:subject_log' %}" class="btn btn-xs float-right mr-2 text-white" style="background-color: #094089;"  >
+              <span><i class="fas fa-sm fa-history"></i> <strong>Log History</strong></span>
+          </a> -->
+                 
+            <table id="dataTable" class="table table-sm  table-striped table-bordered table-hover  text-nowrap  dataTable no-footer">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>ID</th>
+                  <th>Student</th>
+                  <th>Exam Term</th>
+                  <th>Semester</th>
+                  <th>Subject</th>
+                  <th>Answer</th>
+                
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for student_answer in answersheets %}
+                <tr>
+                  <td></td>
+                  <td>{{ forloop.counter }}</td>
+
+                  <td>{{ student_answer.student.student_user }}(<strong>{{ student_answer.student.stu_id }}</strong>)</td>
+                  <td>{{ student_answer.exam }}</td>
+                  <td>{{ student_answer.exam.semester }}</td>
+                  <td>{{ student_answer.exam.subject_id }}</td>
+                  <td>
+                    
+                    {% if student_answer.answer_upload %}
+
+                    <a href="{{ student_answer.answer_upload.url }}" style="cursor: pointer;" class="btn btn-xs btn-success">
+                     View Answer
+                   </a>
+                  
+               
+                 {% else %}
+                 Not Uploaded
+                 {% endif %}
+
+                  </td>
+               
+                  <td>
+                
+                  
+                    <a href="{% url 'exam:student-grade-add' student_answer.student.pk student_answer.pk %}" class="btn btn-xs btn-success"><strong>Check Answer</strong></a>
+                </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- /.content -->
+     
+   {% endif %}
+     
+
+{% endblock main_content %}
+
+
+
+
+
+
+{% block javascript %}
+  <script>
+    $("#term_select").change(function(){
+      
+      var term_id = $(this).val();
+      if (term_id != ""){
+        $.ajax({
+          url:"{% url 'exam:fill_exam_select_ajax' %}",
+          data:{'term':term_id},
+          success:function(data){
+            $("#exam_select").html(data['html'])
+          }
+        })
+      }
+    })
+  </script>
+
+
+{% endblock %}

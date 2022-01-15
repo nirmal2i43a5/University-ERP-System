@@ -1,0 +1,57 @@
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+ 
+  
+  {% block main_content %}
+  <!--for admin widget use-->
+<script src="{% url 'js-catlog' %}"></script>
+<script src="{% static '/admin/js/core.js' %}"></script>
+<link rel="stylesheet" href="{% static 'admin/css/base.css' %}">
+<link rel="stylesheet" href="{% static 'admin/css/widgets.css' %}">
+      <!-- Main content -->
+      <section class="content">
+        <div class="container-fluid">
+
+       {% include "includes/messages.html" %}
+          
+            <div class="row">
+                <div class="col-md-12">
+              <!-- general form elements -->
+              <div class="card card-info">
+                {% include 'override_table/header.html' with card_title='Edit Assignment' %}
+                <!-- /.card-header -->
+                <!-- form start -->
+               
+                {% include "admin_templates/form.html" with form=form button_text="Save Assignment" %}
+                
+              </div>
+              <!-- /.card -->
+  
+  
+  
+            </div>
+            </div>
+        </div>
+      </section>
+      <!-- /.content -->
+  {% endblock main_content %}
+  
+  {% block javascript %}
+<script>
+  $("#id_semester").change(function(){
+    var class_id = $(this).val();
+    
+    $.ajax({
+        url:" {% url 'courses:fill_section_select'%}",
+        data:{'class':class_id},
+        success:function(data){
+            $("#id_section").html(data);
+        }
+    })
+})
+</script>
+
+{% endblock javascript %}

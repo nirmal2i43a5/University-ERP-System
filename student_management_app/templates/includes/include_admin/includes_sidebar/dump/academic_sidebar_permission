@@ -1,0 +1,205 @@
+{% if perms.student_management_app.view_department or perms.student_management_app.view_coursecategory or perms.student_management_app.view_course or perms.student_management_app.view_semester or perms.student_management_app.view_section  %}
+<li class="nav-item has-treeview">
+  <a href="#" class="nav-link">
+    <i class="fas  fa-university mr-1"></i>
+    <p>
+      Academic
+      <i class="fas fa-angle-left right"></i>
+
+    </p>
+  </a>
+  <ul class="nav nav-treeview">
+
+    {% if perms.student_management_app.view_department  %}
+    <li class="nav-item ml-3">
+      <a href="{% url 'admin_app:add_department' %}" class="nav-link">
+        <i class="fas  fa-book-open"></i>
+        <p>
+          Department
+
+        </p>
+      </a>
+    </li>
+{% endif %}
+
+{% if perms.student_management_app.view_coursecategory or perms.student_management_app.view_course  %}
+
+    <li class="nav-item ml-3">
+      <a href="#" class="nav-link">
+        <i class="fas  fa-book"></i>
+        <p>
+          Courses
+          <i class="right fas fa-angle-left"></i>
+        </p>
+      </a>
+
+      <ul class="nav nav-treeview">
+        {% if perms.student_management_app.view_coursecategory %}
+        <li class="nav-item ml-3">
+          <a href="{% url 'academic:manage_coursecategory' %}" class="nav-link">
+            <i class="fas  fa-book-open"></i>
+            <p>
+              Course Category
+    
+            </p>
+          </a>
+        </li>
+        {% endif %}
+        {% if perms.student_management_app.view_coursecategory %}
+        <li class="nav-item ml-3">
+          <a href="{% url 'admin_app:add_manage_course' %}" class="nav-link">
+            <i class="fas  fa-book-open"></i>
+            <p>
+              Course
+    
+            </p>
+          </a>
+        </li>
+    
+        {% endif %}
+      </ul>
+      {% endif %}
+    </li>
+    {% if perms.student_management_app.view_semester %}
+    <li class="nav-item ml-3">
+      <a href="{% url 'admin_app:manage_class' %}" class="nav-link">
+        <i class="fas  fa-sitemap"></i>
+        <p>
+          Class
+
+        </p>
+      </a>
+    </li>
+    {% endif %}
+
+    {% if perms.student_management_app.view_section %}
+    <li class="nav-item ml-3">
+      <a href="{% url 'admin_app:manage_section' %}" class="nav-link">
+        <i class="fas  fa-star"></i>
+        <p>
+          Section
+
+        </p>
+      </a>
+    </li>
+    {% endif %}
+
+    {% if perms.student_management_app.view_subject %}
+    <li class="nav-item ml-3">
+      <a href="#" class="nav-link">
+        <i class="fas  fa-book"></i>
+        <p>
+          Subject
+          <i class="right fas fa-angle-left"></i>
+        </p>
+      </a>
+
+      <ul class="nav nav-treeview">
+        <li class="nav-item ml-2">
+          <a href="{% url 'admin_app:manage_subject' %}" class="nav-link">
+            <i class="fas  fa-sm fa-book"></i>
+            <p>Subjects</p>
+          </a>
+        </li>
+
+
+        <li class="nav-item ml-2">
+          <a href="{% url 'courses:assign_subject_to_teacher' %}" class="nav-link">
+            <i class="fas  fa-sm fa-book"></i>
+            <p>Assign subject to teacher</p>
+          </a>
+        </li>
+
+        <li class="nav-item ml-2">
+          <a href="{% url 'courses:showsubjectteacherlist' %}" class="nav-link">
+            <i class="fas  fa-sm fa-book"></i>
+            <p>Teacher Subject Manage</p>
+          </a>
+        </li>
+
+        <li class="nav-item ml-2">
+          <a href="{% url 'courses:subject_to_class' %}" class="nav-link">
+            <i class="fas  fa-sm fa-book"></i>
+            <p>Assign subject to class</p>
+          </a>
+        </li>
+        <!-- <li class="nav-item ml-2">
+          <a href="" class="nav-link">
+            <i class="fas  fa-sm fa-book"></i>
+            <p>Optional Subject</p>
+          </a>
+        </li> -->
+
+      </ul>
+    </li>
+    {% endif %}
+    {% if perms.academic.view_syllabus %}
+    <li class="nav-item ml-3">
+      <a href="{% url 'admin_app:manage_syllabus' %}" class="nav-link">
+        <i class="fas  fa-folder-open"></i>
+        <p>
+          Syllabus
+
+        </p>
+      </a>
+    </li>
+    {% endif %}
+    {% if perms.academic.view_assignment %}
+    <li class="nav-item ml-3">
+      <a href="{% url 'admin_app:manage_assignment' %}" class="nav-link">
+        <i class="fas  fa-file"></i>
+        <p>
+          Assignment
+
+        </p>
+      </a>
+    </li>
+    {% endif %}
+    {% if perms.academic.view_routine %}
+    <li class="nav-item ml-3">
+      <a href="{% url 'admin_app:manage_routine' %}" class="nav-link">
+        <i class="fas  fa-chart-pie"></i>
+        <p>
+          Routine
+
+        </p>
+      </a>
+    </li>
+{% endif %}
+    <li class="nav-item ml-3">
+      <a href="{% url 'courses:student_details' %}" class="nav-link">
+        <i class="fas  fa-book"></i>
+        <p>
+          Student Details
+
+        </p>
+      </a>
+    </li>
+
+    <li class="nav-item ml-3">
+      <a href="#" class="nav-link">
+        <i class="fas  fa-book"></i>
+        <p>
+          Student Subject Assignment
+          <i class="right fas fa-angle-left"></i>
+        </p>
+      </a>
+      <ul class="nav nav-treeview">
+        <li class="nav-item ml-2">
+          <a href="{% url 'courses:assign_subject_to_student' %}" class="nav-link">
+            <i class="fas  fa-sm fa-book"></i>
+            <p>Subject Assignment</p>
+          </a>
+        </li>
+
+        <li class="nav-item ml-2">
+          <a href="{% url 'courses:drop_subject' %}" class="nav-link">
+            <i class="fas  fa-sm fa-book"></i>
+            <p>Drop Subject</p>
+          </a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</li>
+{% endif %}

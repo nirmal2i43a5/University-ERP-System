@@ -1,0 +1,152 @@
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block title %} Manage User Attendance {% endblock %}
+{% block main_content %}
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <!-- /.card-header -->
+
+    {% include "includes/messages.html" %}
+
+
+
+
+    <div class="d-flex bd-highlight">
+
+      {% if not user_attendances %}
+      <div class="p-2 flex-grow-1 bd-highlight">
+        <div class="alert alert-default-warning">
+          Please, Filter To See Attendance Details.
+        </div>
+      </div>
+
+      {% endif %}
+
+    </div>
+  
+  </div>
+
+
+
+
+
+  <div class="row">
+
+    <div class="col-md-4">
+      <div class="card pl-2 pb-4 pr-1">
+        <form method="POST" class="mt-3">
+          <div class="input-group">
+            {% csrf_token %}
+
+            {{ attendance_details_form_search|crispy }}
+
+            <div class="input-group-btn ">
+              <button type="submit" class="btn  btn-info"><strong>Fetch User Attendance</strong></button>
+
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col-md-8">
+
+
+      <div class="card card-info">
+
+        <div class="card-header ">
+
+
+          <span> <strong>User Attendance List</strong></span>
+
+
+
+
+        </div>
+
+        <!-- /.card-header -->
+        <div class="card-body table-responsive">
+
+          <a href="{% url 'attendance_app:user_attendance' %}" class="btn btn-xs btn-info float-right ">
+            <strong> <i class="fas fa-xs fa-plus"></i> Add attendance</strong></a>
+
+
+
+
+          <table id="dataTable"
+            class="table table-sm  table-striped table-bordered table-hover text-nowrap dataTable no-footer">
+            <thead>
+              <tr>
+                <th></th>
+
+                <th> Name</th>
+                <th>Role</th>
+                <th>Attendance Status</th>
+            
+                <!-- <th>Teacher</th> -->
+
+
+                <th>Action</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for attendance in user_attendances %}
+              <tr>
+                <td></td>
+
+                <td>{{ attendance.extra_user.extra_user.full_name }}</td>
+                <td>{{ attendance.extra_user.role }}</td>
+            
+              
+                <td>
+
+                  {% if attendance.status == True %}
+
+                  <span class="badge badge-sm badge-success">Present</span>
+
+                  {% else %}
+
+                  <span class="badge badge-danger">Absent</span>
+
+                  {% endif %}
+
+                </td>
+               
+                <!-- <td></td> -->
+
+                <td>
+
+
+                  <a href="" class="btn btn-xs btn-info"><i class="fas fa-xs fa-eye"></i></a>
+
+                </td>
+
+              </tr>
+
+
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <!-- /.card-body -->
+      </div>
+      <!-- /.card -->
+    </div>
+  </div>
+  </div>
+</section>
+<!-- /.content -->
+
+{% endblock main_content %}
+
+{% block custom_js %}
+
+
+
+{% endblock custom_js %}

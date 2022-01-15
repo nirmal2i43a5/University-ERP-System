@@ -1,0 +1,37 @@
+
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load i18n %}
+
+
+{% block main_content %}
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+
+
+
+    <div class="row">
+      <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="card card-info">
+       
+          
+         <span class=" ml-2 mt-4">Are you sure  want to delete <strong>{{ event.title }}</strong>?"</span>
+          
+          <form action="" method="post" class = "ml-1 my-4">{% csrf_token %}
+            <a href="{% url 'manage_event'  %}" class = "btn btn-sm btn-danger"><strong>Cancel</strong></a>
+
+              <input type="submit" value="Confirm" class = "btn btn-sm btn-info text-bold">
+          </form>
+        </div>
+        <!-- /.card -->
+
+
+
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+{% endblock main_content %}

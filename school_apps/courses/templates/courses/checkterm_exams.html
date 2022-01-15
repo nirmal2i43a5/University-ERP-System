@@ -1,0 +1,47 @@
+{% extends 'student_base.html'%}
+
+{% block content %}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-info">
+                {% include 'override_table/header.html' with card_title='View Exams' %}
+                </div>
+
+                <div>
+                    <table class="table table-hover">
+                        <thead style="background-color: #094089;color:white;">
+                            <tr>
+                                <th>#</th>
+                                <th>Exam code</th>
+                                <th>Subject</th>
+                                <th>Date</th>
+                                <!-- <th>Venue</th> -->
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for item in exams %}
+                                <tr>
+                                    <td>{{forloop.counter}}</td>
+                                    <td>{{item.exam_id}}</td>
+                                    <td>{{item.subject_id}}</td>
+                                    <td>{{item.date}}</td>
+                                    <!-- <td>item.</td> -->
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+
+                    </table>
+                    
+                </div>
+                
+            </div>
+        </div>
+    </div>
+  </section>
+
+
+{% endblock %}

@@ -1,0 +1,21 @@
+https://stackoverflow.com/questions/44655073/how-to-override-model-defaults-method-of-3rd-party-installed-app-django
+https://stackoverflow.com/questions/47153776/how-to-store-third-party-apps-migrations-in-django
+
+
+main 
+----
+https://django-scheduler.readthedocs.io/en/latest/settings.html 
+https://stackoverflow.com/questions/59115923/how-to-override-the-migrations-of-a-third-party-django-package/62839442#62839442
+
+
+------
+main2 
+------
+https://stackoverflow.com/questions/6368068/how-do-i-change-field-or-model-attributes-of-a-third-party-django-app
+
+
+This work for me
+---------------------
+https://stackoverflow.com/questions/6377631/how-to-override-the-default-value-of-a-model-field-from-an-abstract-base-class/6379556#6379556
+
+https://stackoverflow.com/questions/47153776/how-to-store-third-party-apps-migrations-in-django

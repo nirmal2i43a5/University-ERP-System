@@ -1,0 +1,252 @@
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+{% load static  %}
+
+{% block title %} Assets Assignment {% endblock %}
+{% block main_content %}
+
+<section class="content">
+  <div class="container-fluid">
+
+  {% include "includes/messages.html" %}
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card" >
+                <div class="card-header" style="background-color: #094089;color:white;" >
+                    <span>Assets Assignment</span>
+                </div>
+
+                <div class="card-body table-responsive">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <table>
+                            <tr>
+                                <td>
+                                    <label for="category">Category: </label>
+                                </td>
+                                <td>
+                                    <select name="category" id="category" required>
+                                        <option>
+                                            -----------------
+                                        </option>
+                                        {% for item in category %}
+                                            <option value="{{ item.pk }}">
+                                                {{item.name}}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                            </tr>  
+                            <tr>
+                                <td>
+                                    <label for="item">Item Type:</label>
+                                </td>
+                                <td>
+                                    <select name="item_type" id="item_type" required>
+                                        <option>
+                                            -----------------
+                                        </option>
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <label for="item">Item:</label>
+                                </td>
+                                <td>
+                                    <select name="item" id="item" required>
+                                        <option>
+                                            -----------------
+                                        </option>
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <!-- <tr>
+                                <td>
+                                    <label for="amount">Amount:</label>
+                                </td>
+                                <td>
+                                    <input type="number" name="amount" id="amount" min=0 max=0>
+                                </td>
+                                <td style="padding-left: 20px;">      Total: <span id="total">0</span> <br>Total Assigned: <span id="assigned">0</span> <br>Remaining: <span id="remaining">0</span></td>
+                            </tr> -->
+
+                            <tr>
+                                <td style="padding-top: 15px;">
+                                    <label for="department">Department: </label>
+                                </td>
+                                <td>
+                                    <select name="department" id="department" required>
+                                        <option>
+                                            -----------------
+                                        </option>
+                                        {% for item in department %}
+                                            <option value="{{ item.pk }}">
+                                                {{item.name}}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                            </tr>  
+                            <tr>
+                                <td colspan="2" style="padding-top: 10px; text-align:center;" >
+                                    <input type="submit" value="Confirm" class="btn btn-md btn-primary">
+                                </td>
+                            </tr>
+                        </table>
+                        
+                    </form>
+                </div>
+            <!-- /.card-body -->
+            </div>
+
+            <div class="card" >
+                <div class="card-header" style="background-color: #094089;color:white;" >
+                    <span>Assets Return</span>
+                </div>
+
+                <div class="card-body table-responsive">
+                    <form method="POST" id="return_form" action="{% url 'inventory:assets_return'%}">
+                        {% csrf_token %}
+                        <table>
+
+                            <tr>
+                                <td style="padding-top: 15px;">
+                                    <label for="department">Department: </label>
+                                </td>
+                                <td>
+                                    <select name="department" id="return_department">
+                                        <option>
+                                            -----------------
+                                        </option>
+                                        {% for item in department %}
+                                            <option value="{{ item.pk }}">
+                                                {{item.name}}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                            </tr>  
+ 
+                            <tr>
+                                <td>
+                                    <label for="item">Item:</label>
+                                </td>
+                                <td>
+                                    <select name="item" id="return_item">
+                                        <option>
+                                            -----------------
+                                        </option>
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <!-- <tr>
+                                <td>
+                                    <label for="amount">Amount:</label>
+                                </td>
+                                <td>
+                                    <input type="number" name="amount" id="return_amount" min=0 max=0>
+                                </td>
+                                
+                            </tr> -->
+
+                            
+                            <tr>
+                                <td colspan="2" style="padding-top: 10px; text-align:center;" >
+                                    <input type="submit" value="Confirm" class="btn btn-md btn-primary">
+                                </td>
+                            </tr>
+                        </table>
+                        
+                    </form>
+                </div>
+            <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+  </div>
+
+  
+</section>
+<!-- /.content -->
+
+{% endblock main_content %}
+
+{% block custom_js %}
+<script>
+    $("#category").change(function(){
+        var category = $(this).val()
+        
+        if (category!="-----------------"){
+            $.ajax({
+                url:"{% url 'inventory:get_items_ajax' %}",
+                data:{'category':category},
+                success:function(data){
+                    $("#item_type").html(data);
+                },
+                error:function(){
+                    alert("Something went wrong.")
+                }
+
+            })
+        }
+    })
+
+    $("#item_type").change(function(){
+        var item=$(this).val()
+
+        if (item!="-----------------"){
+            $.ajax({
+                url:"{% url 'inventory:get_items_details_ajax' %}",
+                data:{'item':item},
+                success:function(data){
+                    /**$("#total").text(data['total'])
+                    $("#assigned").text(data['assigned'])
+                    $("#remaining").text(data['remaining'])
+                    $("#amount").attr('max',data['remaining'])
+                    **/
+                    $("#item").html(data);
+                    
+                },
+                error:function(data){
+                    alert("Something went wrong.")
+                }
+            })
+        }
+    })
+
+    $("#return_department").change(function(){
+        var department=$(this).val()
+
+        if (department!="-----------------"){
+            $.ajax({
+                url:"{% url 'inventory:get_dept_assets_ajax' %}",
+                data:{
+                    'department':department, 
+                },
+                success:function(data){
+                    $("#return_item").html(data);
+                },
+                error:function(){
+                    alert("Something went wrong.")
+                }
+            })
+        }
+    })
+
+    $("#return_item").change(function(){
+        
+        if ($(this).val()!="-----------------"){
+            var amount=$("option:selected", this).data('amount');
+            $("#return_amount").attr('max', amount)
+        }
+    })
+</script>
+
+{% endblock custom_js %}

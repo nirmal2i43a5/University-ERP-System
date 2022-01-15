@@ -1,0 +1,95 @@
+{% load static %}
+
+<div class="row">
+  <div class="col-md-0 my-3">
+    <span>
+
+
+      {% if assignment.file %}
+      <a href="{{ assignment.file.url }}">
+        <img src="{% static 'image/assignment.jpg' %}" alt="" style="width:50px;height:50px;" class="img-rectangle" />
+
+      </a>
+      {% else %}
+
+      <a href="">
+        <img src="{% static 'image/assignment.jpg' %}" alt="" style="width:50px;height:50px;" class="img-rectangle" />
+
+      </a>
+      {% endif %}
+
+
+    </span>
+
+  </div>
+  <div class="col-md-10">
+
+
+    <div class="card">
+
+      <div class="card-body ">
+
+
+        <div class="d-flex justify-content-between">
+
+          <div>
+            {% if assignment.file %}
+            <a href="{{ assignment.file.url }}" class="text-capitalize">
+              <strong> {{ assignment.title }}</strong>
+
+            </a>
+            {% else %}
+            <a href="" class="text-capitalize">
+              <strong> {{ assignment.title }}</strong>
+
+            </a>
+            {% endif %}
+          </div>
+
+
+          <div>
+            {{submitted_assignment_no}}/{{assignment.section.student}} turned in
+          </div>
+
+        </div>
+        <div class="d-flex justify-content-between">
+          <div>
+            <strong> {{ assignment.Subject }}</strong>, {{ assignment.section }} ,
+            <strong>Due : </strong>{{ assignment.deadline }}
+
+          </div>
+
+
+          <div>
+            {{total_reviewed}} reviewed
+          </div>
+
+        </div>
+
+
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="col-md-0 mt-4" >
+    <div class="btn-group" role="group">
+      <button id="btnGroupDrop1" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        Action
+      </button>
+      <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+        <a class="dropdown-item" href="{% url 'academic:student_assignment_grade' assignment.pk %}">Check Assignment</a>
+        <a class="dropdown-item" href="{% url 'admin_app:edit_assignment' assignment.id %}">Edit</a>
+        <button class="dropdown-item" data-target='#deleteAssignment-{{ assignment.id}}'
+          data-toggle="modal">Delete
+        </button>
+        <a class="dropdown-item" href="{% url 'academic:draft_publish_unpublish' assignment.id %}">Move to Draft</a>
+      </div>
+    </div>
+    <div class="d-flex flex-column mt-1">
+      
+
+    </div>
+  </div>

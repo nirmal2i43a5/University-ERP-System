@@ -1,0 +1,121 @@
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+
+{% block title %}{{title}}{% endblock title %}
+    
+  
+{% block main_content %}
+<link rel="stylesheet" href="{% static 'certificates/character_certificate/css/char_cer.css' %}" />
+
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+  
+      {% include "includes/messages.html" %}
+  
+      <div class="row">
+        <div class="col-md-12">
+  
+          <!-- this row will not appear when printing -->
+          <div class="row no-print">
+            <div class="col-12">
+              <button class="btn btn-info btn-lg" id="print_button"><i class="fas fa-lg fa-print"></i>
+                <strong>Print</strong></a></button>
+            </div>
+          </div>
+        
+          <!--------------- certificate start---------------- -->
+ <!-- Main content -->
+    <div class="certificate__background">
+      <div class="main-content">
+        <img src="{% static 'certificates/character_certificate/images/Certificate/background.png' %}" alt="" />
+        <section class="header">
+          <!-- certificate number -->
+          <div class="certificate__number">
+            <label for="cn">C.N</label>
+            <input type="text" value = "{{certificate.certificate_number}}/{{certificate.student.join_year}}-{{ certificate.student.join_year|add:'2'|slice:'0:1' }}" disabled/>
+          </div>
+          <!-- logo and college information -->
+          <div class="college__info">
+            <div class="logo">
+              <img src="{% static 'certificates/character_certificate/images/Certificate/gci-logo-removebg.png' %}" alt="" />
+            </div>
+            <div class="college__details">
+              <h5 class="college__name">Global College International</h5>
+              <span>P.O.Box: 1030</span>
+              <span>MidBaneshwor, Kathmandu, Nepal</span>
+              <h5>Tel:<span>977-1-4465186, 4488410</span></h5>
+              <h5>E-mail:<span>info@gci.edu.np</span></h5>
+              <h5>Web:<span>www.gci.edu.np</span></h5>
+            </div>
+          </div>
+          <div class="profile__photo">
+            <p>
+              
+              {% if student.image %}
+
+              <img src="{{ student.image.url }}" alt="" style="height: 9.7rem;margin-top:1.1rem;"/>
+
+              {% else %}
+              PP size <span>Photo</span>
+
+              {% endif %}
+                
+            </p>
+          </div>
+        </section>
+        <!-- body -->
+        <div class="certificate__body">
+          <div class="character__certificate-image">
+            <img src="{% static 'certificates/character_certificate/images/Certificate/characterCertificate.png' %}" alt="" />
+          </div>
+          <div class="certificate__descripiton">
+            <p>
+              This is to certify that <span><strong>{{certificate.salutations|upper}}. {{ certificate.student.student_user|upper }}</strong></span>, Son of
+               {{ certificate.student.guardian.father_name }} and Mrs. {{ certificate.student.guardian.mother_name }}, a resident of {{ certificate.student.permanent_address }}, Nepal, 
+               was a bonafide student of this college from {{certificate.student.join_year}} AD to {{certificate.student.join_year|add:'2'}} AD. He has successfully completed
+               GCE A-Level from Global College International affiliated to Cambridge Assessment International Education (CAIE). His date of birth according to the 
+               college registration is <strong>{{certificate.student.dob | date:'d F, Y'}}</strong>. During the period of his study at the college, his study at the college, his character was very good.
+             
+            </p>
+          </div>
+          <div class="certificate__footer">
+            <div class="d-flex justify-content-between">
+              <div class=" ml-4 mt-4">{{certificate.date_of_issue}}</div>
+              <div class="">
+                <!-- <img src="{% static 'image/gci-stamp.png' %}" style="width:100px;height:100px;" class="img-circle" alt="" /> -->
+              </div>
+              <div class=" mr-2 mt-2">
+                <img src="{% static 'image/gci-signature.png' %}" style = "width:50%;" alt="" />
+              </div>
+            </div>
+            <img src="{% static 'certificates/character_certificate/images/Certificate/footer.png' %}" alt="" />
+          </div>
+        </div>
+      </div>
+    </div>
+                 
+  <!---------------------------------id card end--------------------------------->
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock main_content %}
+{% block custom_js %}
+<script>
+  $("#print_button").click(function (event) {
+    //event.preventDefault();
+  //  $('.student__idCard').print();
+   print()
+  })
+
+</script>
+
+
+{% endblock %}

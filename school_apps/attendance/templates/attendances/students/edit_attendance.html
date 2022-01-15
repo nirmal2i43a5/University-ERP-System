@@ -1,0 +1,396 @@
+{% extends 'admin_templates/base_admin.html' %}
+{% block title %}Edit Student Attendance {% endblock %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block main_content %}
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <!-- /.card-header -->
+
+
+
+    <div class="d-flex bd-highlight">
+
+      <div class=" flex-grow-1 bd-highlight">
+        <div class="card pt-3 pl-2">
+          <div class="card-header mb-2 mr-1" style="background-color: #094089;color:white">
+            <strong> Edit Student Attendance</strong>
+          </div>
+
+
+              <!-- -------------------------Subject filter form ------------------------------------------------ -->
+          <form  method="POST">
+            <div class="input-group">
+          {% csrf_token %}
+              {{ form|crispy }} 
+
+              <div class="input-group-btn ml-1 mt-1 mb-1">
+                <button type="submit" class="btn btn-sm " id="take_attendance" style="background-color: #094089;color:white">
+                  <strong>Edit Student Attendance</strong>
+                </button>
+
+              </div>
+            </div>
+          </form>
+       <!-- -------------------------Subject filter form end------------------------------------------------ -->
+        </div>
+
+      </div>
+
+
+      {% if course_category.course_name == "A-Level" %}
+
+      <div class="d-flex flex-column bd-highlight " style="margin-right:10%;">
+        <div class="card px-4 py-3 ml-4 mt-0">
+          <div class="p-1 bd-highlight">
+            <strong>Course Category :</strong>: <span class="badge badge-info">{{course_category}}</span>
+          </div>
+          <div class="p-1 bd-highlight">
+            <strong>Semester</strong>: {{ semester.name }}
+          </div>
+          <div class="p-1 bd-highlight">
+            <strong>Faculty</strong>:  {{ faculty }}
+          </div>
+          <!-- <div class="p-1 bd-highlight">
+            <strong>Section</strong> : {{ section.section_name }}
+          </div>
+          <div class="p-1 bd-highlight">
+
+            <strong>Subject</strong> : {{ subject.subject_name }}
+          </div> -->
+        </div>
+      </div>
+
+      {% endif %}
+      {% if course_category.course_name == "Bachelor"  %}
+
+      <div class="d-flex flex-column bd-highlight " style="margin-right:10%;">
+        <div class="card px-4 py-3 ml-4 mt-0">
+          <div class="p-1 bd-highlight">
+            <strong>Course Category :</strong>: <span class="badge badge-info">{{course_category}}</span>
+          </div>
+          <div class="p-1 bd-highlight">
+            <strong>Semester</strong>: {{ semester.bachelor_semester }}
+          </div>
+          <div class="p-1 bd-highlight">
+            <strong>Section</strong>:  {{ section.section_name }}
+          </div>
+          <div class="p-1 bd-highlight">
+            <strong>Subject</strong>:  {{ subject.subject_name }}
+          </div>
+          <!-- <div class="p-1 bd-highlight">
+            <strong>Section</strong> : {{ section.section_name }}
+          </div>
+          <div class="p-1 bd-highlight">
+
+            <strong>Subject</strong> : {{ subject.subject_name }}
+          </div> -->
+        </div>
+      </div>
+
+      {% endif %}
+      {% if  course_category.course_name == 'Master' %}
+
+      <div class="d-flex flex-column bd-highlight " style="margin-right:10%;">
+        <div class="card px-4 py-3 ml-4 mt-0">
+          <div class="p-1 bd-highlight">
+            <strong>Course Category :</strong>: <span class="badge badge-info">{{course_category}}</span>
+          </div>
+          <div class="p-1 bd-highlight">
+            <strong>Semester</strong>: {{ semester.master_semster }}
+          </div>
+          <div class="p-1 bd-highlight">
+            <strong>Section</strong>:  {{ section.section_name }}
+          </div>
+          <div class="p-1 bd-highlight">
+            <strong>Subject</strong>:  {{ subject.subject_name }}
+          </div>
+          <!-- <div class="p-1 bd-highlight">
+            <strong>Section</strong> : {{ section.section_name }}
+          </div>
+          <div class="p-1 bd-highlight">
+
+            <strong>Subject</strong> : {{ subject.subject_name }}
+          </div> -->
+        </div>
+      </div>
+
+      {% endif %}
+
+    </div>
+
+       <!-- --------------------------------------------attendace save form ------------------------------------------------ -->
+    <form action="{% url 'attendance_app:save_student_attendance' %}" method="POST">
+
+      <!-- <input type="hidden" name = "semester_id" value = "{{ semester.id }}">
+        <input type="hidden" name = "section_id" value = "{{ section.id }}"> -->
+
+      {% csrf_token %}
+
+      <div class="card">
+        <!-- /.card-header -->
+        <div class="card-body ">
+
+          {% if students %}
+   
+         
+          <hr>
+          <div class="row">
+
+            {% for student in students %}
+
+            <div class="col-md-6">
+              <div class="card card-header">
+
+                <div class="row">
+
+                  <div class="col-md-6">
+
+                    <strong> {{forloop.counter}}</strong> . <a href="{% url 'admin_app:view_student' student.id %}">
+                      {{ student.student_user.full_name }}<strong>( {{ student.student_user.username }})</strong> </a>
+                  </div>
+
+
+                  <div class="col-md-4">
+
+     
+                      <!-- {% for attendancereport in attendance_instances  %}
+
+                     {% if attendancereport.student.student_user ==  student.student_user  %} 
+                     {{attendancereport.pk}} 
+                     {{attendancereport.status}} 
+                    <span>-------------------------------</span>
+
+                     {% endif %}
+                 
+
+                  {% endfor %}     -->
+                
+                    <select class="status" name="{{ student.student_user.id }}">
+                 
+                    <option value="Present" 
+                     {% for attendancereport in attendance_instances  %}
+                   
+                        {% if attendancereport.student.student_user ==  student.student_user %}  
+
+                          id  = "{{attendancereport.pk}}"
+
+                          {% if attendancereport.status == 'Present'   %}   selected  {% endif %}
+                          
+                        {% endif %}
+                    
+                     {% endfor %} >Present
+                    </option>
+      <!-- --- -->
+               <option value="Absent(Informed)" 
+                     {% for attendancereport in attendance_instances  %}
+                     
+                    {% if attendancereport.student.student_user ==  student.student_user %}  
+
+                    id  = "{{attendancereport.pk}}"
+
+                    {% if attendancereport.status == 'Absent(Informed)'   %}   selected  {% endif %}
+                      
+                    {% endif %} 
+                      {% endfor %} >Absent(Informed)
+                </option>
+
+<!--  -->
+                    <option value="Absent(Not Informed)" 
+                     {% for attendancereport in attendance_instances  %}
+                     
+                    {% if attendancereport.student.student_user ==  student.student_user %}  
+
+                    id  = "{{attendancereport.pk}}"
+
+                    {% if attendancereport.status == 'Absent(Not Informed)'   %}   selected  {% endif %}
+                      
+                    {% endif %} 
+                      {% endfor %} >Absent(Not Informed)
+                    </option>
+
+<!-- ----- -->
+                  <option value="Late" 
+                    {% for attendancereport in attendance_instances  %}
+                    
+                   {% if attendancereport.student.student_user ==  student.student_user %}  
+
+                   id  = "{{attendancereport.pk}}"
+
+                   {% if attendancereport.status == 'Late'   %}   selected  {% endif %}
+                     
+                   {% endif %} 
+                     {% endfor %} >Late
+                   </option>
+<!-- ----- -->
+                   <option value="Excused" 
+                   {% for attendancereport in attendance_instances  %}
+                   
+                  {% if attendancereport.student.student_user ==  student.student_user %}  
+
+                  id  = "{{attendancereport.pk}}"
+
+                  {% if attendancereport.status == 'Excused'   %}   selected  {% endif %}
+                    
+                  {% endif %} 
+                    {% endfor %} >Excused
+                  </option>
+                    </select>
+
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+
+            {% endfor %}
+
+          </div>
+
+        </div>
+      </div>
+      <a href="{% url 'attendance_app:manage_student_attendance' %}" 
+        class="btn btn-sm btn-info btn-danger mb-3"><strong>Back</strong></a>
+      <button type="button" id="save_edit_attendance" class="btn btn-sm btn-success mb-3"><strong>Save
+          Attendance</strong></button>
+      {% endif %}
+
+    </form>
+
+
+
+
+
+
+  </div>
+</section>
+<!-- /.content -->
+
+{% endblock main_content %}
+
+{% block custom_js %}
+
+<script>
+  $(document).ready(function () {
+
+    $(document).on("click", "#save_edit_attendance", function () {
+
+      var student_data = $("select[class='status']").map(function () {
+          status = $(this).children("option:selected").val();
+          console.log(status)
+          student_id = $(this).attr('name')
+          attendance_report_id = $(this).children("option:selected").attr('id');
+
+        if ($(this).find('option:selected')) {
+          return { "id": student_id, "status": status,'attendance_report_id':attendance_report_id };
+        }
+      }).get()
+
+
+      var attendance_date = $("#attendance_date").val();
+      var semester_id = $("#id_semester").val();
+      var group_id = $("#id_group").val();
+     var subject_id = $("#id_subject").val();
+      var section_id = $("#id_section").val();
+      student_data = JSON.stringify(student_data)
+
+      $.ajax({
+       url: "{% url 'attendance_app:edit_save_student_attendance' %}",
+        type: 'POST',
+        data: {
+          student_ids: student_data, attendance_date: attendance_date,
+            semester_id: semester_id,
+            group_id:group_id,
+           subject_id: subject_id,
+         section_id: section_id
+        },
+      })
+        .done(function (response) {
+          if (response == "True") {
+            alert("Attendance Succesfully Edited")
+            window.location.href = '/student_attendance_report/'
+          }
+          else {
+            alert("Error in Saving Data")
+          location.reload()
+
+          }
+        })
+        .fail(function () {
+          alert("Failed to get Response")
+        })
+    })
+    
+
+  
+
+    
+      //--------------------------------------------------For auto select form fill-------------------------------
+
+      $("#id_course_category").change(function(){
+        var course_category_id = $(this).val();
+        
+        $.ajax({
+            url:" {% url 'attendance_app:fill_semester_select' %}",
+            data:{'course_category':course_category_id},
+            success:function(data){
+                $("#id_semester").html(data);
+            }
+        })
+    })
+    
+    
+    $("#id_semester").change(function(){
+      var semester_id = $(this).val();
+      
+      
+      $.ajax({
+          url:" {% url 'attendance_app:fill_section_select' %}",
+          data:{'semester':semester_id},
+          success:function(data){
+              $("#id_section").html(data);
+          }
+      })
+    })
+    
+    
+    $("#id_semester").change(function(){
+      var semester_id = $(this).val();
+      var course_category_id = $('#id_course_category').val();
+      
+      
+      $.ajax({
+          url:" {% url 'attendance_app:fill_subject_select' %}",
+          data:{'semester':semester_id,'course_category':course_category_id},
+          success:function(data){
+              $("#id_subject").html(data);
+          }
+      })
+    })
+
+//get search form based on course category
+
+$('#id_course_category').change(function(){
+  var course_category = $('#id_course_category option:selected').text()
+  if(course_category ==  'A-Level'){
+   $('#id_semester').removeAttr("hidden");
+   $('#id_group').removeAttr("hidden");
+   $('#id_subject').attr("hidden",true);
+   $('#id_section').attr("hidden",true);
+  }
+  if(course_category ==  'Bachelor' || course_category ==  'Master'){
+   $('#id_semester').removeAttr("hidden");
+   $('#id_subject').removeAttr("hidden");
+   $('#id_section').removeAttr("hidden");
+   $('#id_group').attr("hidden",true);
+  }
+})
+  })
+
+</script>
+
+
+{% endblock custom_js %}

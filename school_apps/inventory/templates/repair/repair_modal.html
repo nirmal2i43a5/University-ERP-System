@@ -1,0 +1,34 @@
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Status</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="col-12 text-center">
+          <form id="status_form" action=" {% url 'inventory:change_repair_status' %} ">
+            <input type="text" name="id" id='id_hidden' readonly hidden>
+            <label for="status_select">Status:</label>
+            <select name="status" id="status_select">
+              <option value="fin_approved">Approved by finance</option>
+              <option value="fin_rejected">Rejected by finance</option>
+              <option value="fin_pending">Pending at finance</option>
+              <option value="under_maint">Under Repair</option>
+              <option value="complete">Complete</option>
+            </select>
+            <br>
+            <input type="submit" value="Confirm" class='btn btn-primary'>
+          </form>
+          
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

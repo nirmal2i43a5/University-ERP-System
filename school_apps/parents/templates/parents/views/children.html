@@ -1,0 +1,43 @@
+
+
+{% load static %}
+
+<table class="table table-sm  table-striped table-bordered table-hover  text-nowrap  ">
+   <thead>
+    <tr>
+        <th>#</th>
+        <th>Photo</th>
+        <th>Name</th>
+        <th>Roll</th>
+        <th>Class</th>
+        <th>Section</th>
+    </tr>
+   </thead>
+<tbody>
+
+    {% for children in childrens %}
+    <tr class="tbody">    
+        <td>{{ children.id  }}</td>
+   
+        <td>
+
+            {% if children.image %}
+
+            <img src="{{ children.image.url }}" alt="" style="width:35px;height:35px;" class="img-circle" />
+
+            {% else %}
+            <img src="{% static 'image/default_profile.png' %}" alt="" style="width:35px;height:35px;" class="img-circle" />
+            {% endif %}
+
+          </td>
+          <td>{{ children.student_user  }}</td>
+          <td>{{ children.roll_no  }}</td>
+          <td>{{ children.semester.name  }}</td>
+          <td>{{ children.section.section_name  }}</td>
+       
+    </tr>
+        {% endfor %}
+   
+</tbody>
+ 
+</table>

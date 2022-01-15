@@ -1,0 +1,98 @@
+https://pypi.org/project/django-adminlte3/
+
+https://docs.djangoproject.com/en/dev/topics/auth/#overview
+
+ 'django.contrib.contenttypes',  #Django content type system (allows permissions to be associated with models).
+https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Authentication
+main concept
+--------------
+https://medium.com/djangotube/django-roles-groups-and-permissions-introduction-a54d1070544
+https://www.botreetechnologies.com/blog/django-user-groups-and-permission/
+
+
+
+-----------------------
+Most crucial concept-
+-------------------------
+https://realpython.com/manage-users-in-django-admin/
+
+look this
+-------
+https://www.youtube.com/watch?v=ZU5yBZja8yE
+https://www.youtube.com/watch?v=z17MvbSAOxU
+
+https://stackoverflow.com/questions/61444271/django-what-is-the-best-approach-to-handle-multiple-user-types-and-route-the?fbclid=IwAR3PDnlXhOJQFGMkwIZekgUXeTLf6na75PkvPacaQ9WwGQ5b-a4bFFcXRGo
+
+authorization docs djangog
+https://docs.djangoproject.com/en/3.0/topics/auth/customizing/#authorization-methods
+
+
+dynamically create permission in django
+-----------------------------------------
+https://stackoverflow.com/questions/45831933/how-can-dynamically-create-permission-in-django
+
+
+restrict template based on groups
+--------------------------------
+https://stackoverflow.com/questions/44626256/adding-specific-permission-to-users-with-different-roles-in-django
+
+
+creating own custom permission and group manually
+=-===============================================
+https://www.geeksforgeeks.org/python-user-groups-custom-permissions-django/
+
+-----
+https://micropyramid.com/blog/custom-decorators-to-check-user-roles-and-permissions-in-django/
+
+
+group admin form to my html
+----------------------------
+https://stackoverflow.com/questions/55859820/how-to-create-the-same-form-in-group-and-permission-on-django-templates
+
+
+hide unnecessary permission
+https://stackoverflow.com/questions/6062655/remove-or-hide-default-permissions-from-django
+
+
+custom permission other then add edit delte view
+-----------------------------------------------------
+https://docs.djangoproject.com/en/dev/topics/auth/customizing/#custom-permissions
+https://stackoverflow.com/questions/13932774/how-can-i-use-django-permissions-without-defining-a-content-type-or-model
+
+
+permission ,checkbox and for particular user
+------------------------------------------------
+https://www.reddit.com/r/django/comments/ce8hwb/custom_user_and_group_models/
+
+
+restrict view funtion with group
+---------------------------------
+https://stackoverflow.com/questions/36177769/django-groups-and-permissions
+https://stackoverflow.com/questions/34571880/how-to-check-in-template-if-user-belongs-to-a-group
+
+
+check-if-user-belongs-group-django-templates
+-------------------------------------------
+https://www.abidibo.net/blog/2014/05/22/check-if-user-belongs-group-django-templates/
+https://stackoverflow.com/questions/34571880/how-to-check-in-template-if-user-belongs-to-a-group
+
+custom permission
+--------------------https://hashedin.com/blog/configure-role-based-access-control-in-django/
+  Class Meta:
+     permissions = (
+           ("view_blog", "Can view the blog"),
+           ("can_publish_blog", "Can publish a blog"),
+     )
+
+
+button restriction based on group
+----------------------------------------
+ {% if request.user|has_group:"Admin" %}
+
+
+
+button restriction based on particular permisson 
+---------------------------------------------
+
+{% if pers.app_name.delete_parent %}
+

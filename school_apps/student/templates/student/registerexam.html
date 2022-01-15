@@ -1,0 +1,19 @@
+{% extends 'student_base.html' %}
+{% block content%}
+    {% if exam %}
+    <h4>Choose exam to register:</h4>
+    <form action='' method='POST'>
+        {% csrf_token%}
+        <select name = 'exam'>
+            {% for exam in exam %}
+                <option name ='option' value='{{exam.exam_id}}'>{{exam.exam_title}}</option>
+            {%endfor%}
+        </select>
+        <input type="submit">
+    </form>
+    {% else %}
+        <h4> You have no exams to register.</h4>
+    {% endif %}
+{% endblock %}
+
+{% block title%}| Exam Registration{% endblock %}

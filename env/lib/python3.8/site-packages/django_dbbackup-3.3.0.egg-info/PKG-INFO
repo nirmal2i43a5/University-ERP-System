@@ -1,0 +1,32 @@
+Metadata-Version: 1.1
+Name: django-dbbackup
+Version: 3.3.0
+Summary: Management commands to help backup and restore a project database and media
+Home-page: https://github.com/django-dbbackup/django-dbbackup
+Author: Michael Shepanski
+Author-email: mjs7231@gmail.com
+License: BSD
+Description: UNKNOWN
+Keywords: django,database,media,backup,amazon,s3dropbox
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Web Environment
+Classifier: Environment :: Console
+Classifier: Framework :: Django
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: System Administrators
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Topic :: Database
+Classifier: Topic :: System :: Archiving
+Classifier: Topic :: System :: Archiving :: Backup
+Classifier: Topic :: System :: Archiving :: Compression

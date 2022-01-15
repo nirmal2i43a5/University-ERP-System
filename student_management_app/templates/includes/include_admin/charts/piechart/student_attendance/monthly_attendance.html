@@ -1,0 +1,71 @@
+
+<script type="text/javascript">
+
+
+    Highcharts.chart('student_monthly_attendance', {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+        },
+        title: {
+            text: 'Monthly Attendance of Students'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.y}</b>'
+        },
+        accessibility: {
+            point: {
+                valueSuffix: '%'
+            }
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: false
+                },
+                showInLegend: true
+            }
+        },
+        series: [{
+            name: 'Total',
+            colorByPoint: true,
+            data: [
+            {
+                name: 'Present',
+                y: {{total_present.count}},
+                color:'#094089',
+                sliced: true,
+                selected: true
+            }, 
+            {   
+                name: 'Absent(Informed)',
+                color:'#ff5c33',
+    
+                y: {{total_absent_informed.count}}
+            }, 
+            {   
+                name: 'Absent(Not Informed)',
+                color:'#cc0000',
+    
+                y: {{total_absent_not_informed.count}}
+            }, 
+            {   
+                name: 'Late',
+                color:'#ffd633',
+    
+                y: {{total_late.count}}
+            }, 
+            {   
+                name: 'Excused',
+                color:'#18B1EF',
+    
+                y: {{total_excused.count}}
+            }, 
+            ]
+        }]
+    });
+    </script>

@@ -1,0 +1,89 @@
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+
+
+{% block title %}
+  {{title}}
+{% endblock title %}
+  
+
+{% block main_content %}
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+
+    {% include "includes/messages.html" %}
+
+    <div class="row">
+      <div class="col-md-12 ">
+        <!-- general form elements -->
+        <div class="card card-info">
+
+          {% include 'override_table/header.html' with card_title=title %}
+         
+          <!-- /.card-header -->
+          <!-- form start -->
+          <form  method="POST" enctype="multipart/form-data" class="my-2 mx-2">
+            <div class="input-group">
+          {% csrf_token %}
+              <select name="term" id="term_select" required>
+                <option value="">------------------------Select Term---------------------------</option>
+                {% for item in terms%}
+                  <option value="{{item.pk}}">{{item}}</option>
+                {% endfor %}
+              </select>
+
+              <select name="exam" id="exam_select" required>
+                <option value="">------------------------Select Exam---------------------------</option>
+              </select>
+
+              <div class="input-group-btn ml-1 mt-1 mb-1">
+                <button type="submit" class="btn btn-sm " name="fetch_student" style="background-color: #094089;color:white">
+                  <strong>View Answersheet</strong>
+                </button>
+              </div>
+            </div>
+          </form>
+        {% if error_status %}
+        <p>{{ error_message }}</p>
+        {% endif %}
+        </div>
+        <!-- /.card -->
+{% if answer_sheet %}
+  <iframe src="/viewer/viewer.html?file={{answer_sheet.answer_upload.url}}#magazineMode=true" width="100%"
+height="700px" frameborder="0"></iframe>
+
+{% else %}
+
+{% endif %}
+  
+ 
+
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+{% endblock main_content %}
+
+{% block javascript %}
+  <script>
+    $("#term_select").change(function(){
+      
+      var term_id = $(this).val();
+      if (term_id != ""){
+        $.ajax({
+          url:"{% url 'exam:fill_exam_select_ajax' %}",
+          data:{'term':term_id},
+          success:function(data){
+            $("#exam_select").html(data['html'])
+          }
+        })
+      }
+    })
+  </script>
+
+
+{% endblock %}

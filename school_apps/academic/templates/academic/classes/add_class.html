@@ -1,0 +1,34 @@
+{% load crispy_forms_tags %}
+
+
+<div class="card">
+  <div class="card-header" style="background-color: #094089;color:white;">
+
+    {% if request.user.adminuser.course_category == a_level_course_category %}
+    <h3 class="card-title">Add Batch</h3>
+    {% else %}
+    <h3 class="card-title">Add Class</h3>
+
+    {% endif %}
+  </div>
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="card-body">
+
+      {{ form|crispy }}
+
+    </div>
+    <!-- /.card-body -->
+
+    <div class="card-footer">
+
+
+      <button type="submit" class="btn btn-success ">Save</button>
+
+
+    </div>
+  </form>
+
+</div>
+<!-- /.card -->

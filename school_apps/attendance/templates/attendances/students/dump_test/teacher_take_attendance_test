@@ -1,0 +1,150 @@
+{% extends 'admin_templates/base_admin.html' %}
+{% block title %}Manage Teacher Attendance {% endblock %}
+
+{% load static %}
+{% block main_content %}
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <!-- /.card-header -->
+
+
+    <form action="{% url 'attendance_app:save_teacher_attendance' %}" method="POST">
+
+      <!-- <input type="hidden" name = "semester_id" value = "{{ semester.id }}">
+        <input type="hidden" name = "section_id" value = "{{ section.id }}"> -->
+
+      {% csrf_token %}
+
+      <div class="card">
+        <!-- /.card-header -->
+        <div class="card-body ">
+
+          {% if teachers %}
+
+          <div class="d-flex bd-highlight">
+            <div class="p-2 flex-fill bd-highlight">
+              
+              <label class="mt-1" style=" text-align: right;clear: both;float:left; margin-right:10px;" for="">
+                Attendance Date:</label>
+              <input type="date" id="attendance_date" name="attendance_date" 
+                class="form-control col-md-6" required/>
+          
+              </div>
+            <div class="p-2 flex-fill bd-highlight" style = "margin-right:10%;">
+              <div class="alert alert-default-warning">
+                <input type="checkbox"  onclick="return false;" checked>  <strong>Present</strong>
+                <input type="checkbox"  onclick="return false;" >  <strong>Absent</strong>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            {% for teacher in teachers %}
+
+            <div class="col-md-3">
+              <div class="card card-header">
+                <div class="row">
+
+                  <div class="col-md-8">
+
+                    <strong> {{forloop.counter}}</strong> . <a href="{% url 'admin_app:view_teacher' teacher.staff_user.id %}">
+                    {{ teacher.staff_user.full_name }} </a>
+                  </div>
+
+
+                  <div class="col-md-2">
+
+                    <input type='checkbox' checked='checked' name='teacher_data[]'
+                      value='{{ teacher.staff_user.id }}'><label class='form-check-label'>
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+       
+         
+
+            {% endfor %}
+
+
+          </div>
+
+        </div>
+        <!-- /.card-body -->
+      </div>
+      <!-- /.card -->
+
+      <button type="button" id="save_attendance" class="btn btn-info btn-info">Save Attendance</button>
+      {% endif %}
+
+    </form>
+
+  
+  </div>
+</section>
+<!-- /.content -->
+
+{% endblock main_content %}
+
+{% block custom_js %}
+
+<script>
+  $(document).ready(function () {
+
+    $(document).on("click", "#save_attendance", function () {
+
+      //    $(this).attr("disabled","disabled")
+      //   $(this).text("Saving Attendance Data...")
+
+      var teacher_data = $("input[name='teacher_data[]']").map(function () {
+        //for radio button
+        //https://stackoverflow.com/questions/59632667/django-html-how-to-pass-radio-option-select-via-ajax-and-load-form
+       
+        if ($(this).is(":checked")) {
+          return { "id": $(this).val(), "status": 1 };
+        }
+        else {
+          return { "id": $(this).val(), "status": 0 };
+        }
+
+      }).get()
+
+
+      var attendance_date = $("#attendance_date").val();
+   
+      teacher_data = JSON.stringify(teacher_data)
+      console.log(teacher_data)
+      $.ajax({
+        url: "{% url 'attendance_app:save_teacher_attendance' %}",
+        type: 'POST',
+        data: {
+          teacher_ids: teacher_data, attendance_date: attendance_date, 
+        },
+      })
+        .done(function (response) {
+          console.log("I am done")
+
+          if (response == "OK") {
+            alert("Attendance Save")
+            window.location.href = '/manage_teacher_attendance/'
+          }
+          else {
+            alert("Error in Saving Data")
+          location.reload()
+
+          }
+        })
+        .fail(function () {
+          alert("Failed to get Response")
+        })
+    })
+
+  })
+</script>
+
+
+{% endblock custom_js %}

@@ -1,0 +1,49 @@
+
+
+
+<button type="button" class="btn btn-xs btn-info mb-2" data-toggle="modal" data-target="#addDocumentModal" style="background-color: #094089;color:white;">
+    Add Document
+   </button>
+
+<table class="table table-sm  table-striped table-bordered table-hover  text-nowrap  ">
+   <thead>
+    <tr>
+        <th>#</th>
+        <th>Title</th>
+        <th>Created Date</th>
+        <th>File</th>
+        <th>Action</th>
+    </tr>
+   </thead>
+<tbody>
+
+    {% for document in teacher_files %}
+    <tr class="tbody">    
+        <td>{{ document.id }}</td>
+        <td>{{ document.title}}</td>
+        <td>{{ document.created_at}}</td>
+        <td>
+          
+          {% if document.file %}
+          <a href="{{ document.file.url}}" class="btn btn-xs btn-info"><i class="fas fa-xs fa-eye"></i> view file</a>
+          {% else %}
+         null
+              
+          {% endif %}
+              
+        </td>
+        <td>
+                <button type="button" class="btn btn-xs btn-success btn-edit"  data-documentid="{{document.id}}" 
+                data-toggle="modal" data-target="#addDocumentModal">
+                    <i class="fas fa-xs fa-edit"></i>
+                </button>
+       
+            <a href="{% url 'admin_app:delete_teacher_document'  teacher.id document.id %}" class="btn btn-xs btn-danger"><i class="fas fa-xs fa-trash-alt"></i> </a>
+        </td>
+        <!-- <td></td> -->
+    </tr>
+        {% endfor %}
+   
+</tbody>
+ 
+</table>

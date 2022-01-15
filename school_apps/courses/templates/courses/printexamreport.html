@@ -1,0 +1,144 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css' %}">
+
+  <style>
+    @media print {
+        div.breakpage {
+            page-break-before: always;
+        }
+    }
+  </style>
+</head>
+<body>
+    <div class="invoice p-3 mb-3" id="application_form">
+        <!-- title row -->
+        <div class="row">
+            <div class="col-2">
+                <h4>
+                    <i class="fas fa-globe"></i> Logo
+            </div>
+    
+            <div class="col-8">
+                <h5 class="text-center">
+                    Global College International
+                </h5>
+
+                
+                <h6 class="text-center">
+                    Kathmandu, Nepal
+                </h6>
+    
+                <h4 class="text-center">
+                    Examination Report
+                </h4>
+    
+                
+            </div>
+    
+            <div class="col-2">
+                <h4 class="text-center">
+                    
+                </h4>
+            </div>
+              
+            </h4>
+          
+          <!-- /.col -->
+        </div>
+        <!-- info row -->
+    
+        <div class="row row1-info">
+            <div class="col-7 row1-col">
+              <strong>Examination Term:</strong>  {{exam.term}}
+            </div>
+    
+            <div class="col-5 row1-col">
+              <strong>Year:</strong> {{exam.term.year}}
+            </div> 
+        </div>
+    
+        <div class="row row2-info">
+            <div class="col-7 row2-col">
+              <strong>Exam:</strong> {{exam}}
+            </div>
+            
+            <div class="col-5 row2-col">
+              <strong>Subject: </strong>{{exam.subject_id}}
+              </div>
+        </div>
+    
+        <div class="row row3-info">
+          <div class="col-7 row3-col">
+            <strong>Total Students: </strong> {{results|length}}
+          </div>
+    
+          <!-- <div class="col-5 row3-col">
+            <strong>Exam Year: </strong>{{form.term.year}}
+            </div> -->
+        </div>
+    
+        <!-- <div class="row row4-info">
+            <div class="col-7 row4-col">
+              <strong>Semester: </strong>{{form.semester}}
+            </div>
+      
+            <div class="col-5 row4-col">
+              <strong>Exam Centre: </strong>{{form.term.exam_centre}}
+              </div>
+          </div> -->
+
+    <hr>
+        <div class="row">
+          <div class="col-12 table-responsive">
+            <table class="table table-hover " id="result_table">
+                <thead class="thead thead-dark" > 
+                  <tr style=" text-align: center">
+                    <th>Student ID</th>
+                    <th>Student Name</th>
+                    <th>Marks</th>
+                    <th>Subject Rank</th>
+                  </tr>
+                </thead>
+                  {% for result in results%}
+                  <tr>
+                    <td style="width: 25%; text-align: center">{{result.application_id.student.student_user.username}}</td>  
+                    <td style="width: 25%; text-align: center">{{result.application_id.student.student_user.full_name}}</td>
+                    <td style="width: 25%; text-align: center">{{result.marks}}</td>
+                    <td style="width: 25%; text-align: center">{{result.rank}}</td>
+      
+                  </tr>
+                  {% endfor%}
+                </table>
+              <div>Students with -1 marks are not graded yet.</div>
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+
+    <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <!-- AdminLTE App -->
+    <script src="{% static 'dist/js/adminlte.min.js' %}"></script>   
+    
+    <script>
+        window.onload = function () {
+            window.print();
+        }
+    </script>
+</body>
+</html>

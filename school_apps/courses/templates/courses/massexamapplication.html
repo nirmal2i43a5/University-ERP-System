@@ -1,0 +1,127 @@
+
+
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+{% load static  %}
+
+{% block title %} Manage Student Applications {% endblock %}
+{% block main_content %}
+
+<section class="content">
+  <div class="container-fluid">
+
+  {% include "includes/messages.html" %}
+
+    <div class="row">
+      <div class="col-12">
+
+
+        <div class="card" >
+          
+          <div class="card-header" style="background-color: #094089;color:white;" >
+            <span><strong> Exam Application </strong></span>
+            <form class="float-right mb-2" action=" {% url 'courses:massexamapplication' %}" id="term_form" method="post" style="height: 27px;margin:auto;position:relative;">
+                {% csrf_token %}
+              <div class="input-group">              
+                    <select name="term_id" id="term_select">
+                          {% for item in terms %}
+                            <option value="{{item.pk}}">
+                                {{item.term_name}}
+                            </option>
+                          {% endfor %}
+                    </select>
+
+                    <select name="section_id" id="select_select">
+                        {% for item in section %}
+                            <option value="{{item.pk}}">
+                                {{item}}
+                            </option>
+                        {% endfor %}
+                    </select>
+
+                    <select name="group" id="group_select">
+                        {% for item in faculty %}
+                            <option>
+                                {{item}}
+                            </option>
+                        {% endfor %}
+                    </select>
+            
+                <div class="input-group-btn ">
+                  <button type="submit" class="btn btn-primary">Search or Generate</button>
+    
+                </div>
+              </div>
+            </form>
+          
+
+          </div>
+
+          <!-- /.card-header -->
+          <div class="card-body table-responsive">
+            <table id="dataTable" class="table table-sm  table-striped table-bordered table-hover text-nowrap dataTable no-footer">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>#</th>
+                  <th>Application ID</th>
+                  <th>Student Id</th>
+                  <th>Student Name</th>
+                  <th>Student Roll no</th>
+                  <th>No. of exams</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in forms %}
+                <tr>
+                  <td></td>
+                  <td> {{forloop.counter}}</td>
+                  <td> {{item.application_id}}</td>
+                  <td> {{item.student.student_user.username}}</td>
+                  <td> {{item.student.student_user.full_name}}</td>
+                  <td> {{item.student.roll_no}}</td>
+                  <td> {{item.exam.count}}</td>
+                  <td> 
+                    {% if item.status%}
+                      Accepted
+                    {% else %}
+                      Declined
+                    {% endif %} 
+                  </td>
+                  <td><a href="{% url 'courses:toggle_application' item.pk %} " class="btn btn-primary btn-xs">Toggle</a></td>
+                  
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+
+{% endblock main_content %}
+
+{% block custom_js %}
+<!-- <script>
+  $("#id_semester").change(function(){
+    var class_id = $(this).val();
+    
+    $.ajax({
+        url:" {% url 'courses:fill_section_select'%}",
+        data:{'class':class_id},
+        success:function(data){
+            $("#id_section").html(data);
+        }
+    })
+})
+</script> -->
+
+{% endblock custom_js %}

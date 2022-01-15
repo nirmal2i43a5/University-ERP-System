@@ -1,0 +1,43 @@
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+{% block page_title %}
+Edit Staff | Username : {{ staff.staff_user.username }} | #ID : {{ staff.staff_user.id }}
+{% endblock page_title %}
+{% block main_content %}
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+
+    {% include "includes/messages.html" %}
+    <div class="row">
+      <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="card card-info">
+          {% include 'override_table/header.html' with card_title='Edit Teacher' %}
+          <!-- /.card-header -->
+          <!-- form start -->
+          <form role="form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="card-body">
+              {% crispy custom_form %}
+              {% crispy staff_form %}
+         
+            
+            <!-- /.card-body -->
+
+            <!-- <div class="card-footer">
+              <button type="submit" class="btn btn-info btn-block">Save Staff</button>
+            </div> -->
+          </form>
+        </div>
+        <!-- /.card -->
+
+
+
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+{% endblock main_content %}

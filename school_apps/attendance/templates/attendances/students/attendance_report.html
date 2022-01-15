@@ -1,0 +1,65 @@
+
+
+
+
+{% extends 'admin_templates/base_admin.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+  {{title}}
+{% endblock title %}
+  
+
+{% block main_content %}
+
+<section class="content">
+  <div class="container-fluid">
+
+  
+
+   {% include "includes/messages.html" %}
+
+    <div class="row">
+      <div class="col-md-12">
+   
+        <div class="card card-info">
+            {% include 'override_table/header.html' with card_title='Student attendance report' %}
+         
+          <!-- /.card-header -->
+
+       
+          <div class="d-flex justify-content-around">
+
+
+            <div class="p-5">
+                <a href="{% url 'attendance_app:student_daily_attendance' %}" class="btn btn-lg btn-primary rounded-pill"><strong>Fetch daily attendance data</strong></a>
+            </div>
+            <div class="p-5">
+                <a href="{% url 'attendance_app:student_monthly_attendance' %}" class="btn btn-lg btn-primary rounded-pill"><strong>Fetch monthly attendance data</strong></a>
+            </div>
+
+            
+            {% if request.user.is_superuser %}
+              
+            <div class="p-5">
+                <a href="{% url 'attendance_app:student_attendance_list' %}" class="btn btn-lg btn-primary rounded-pill"><strong>Fetch individual student attendance</strong></a>
+            </div>
+            {% endif %}
+
+            </div>
+
+
+        </div>
+
+      </div>
+    
+
+    </div>
+  </div>
+</section>
+
+{% endblock main_content %}
+
+{% block custom_js %}
+{% endblock custom_js %}

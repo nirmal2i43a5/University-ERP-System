@@ -1,0 +1,177 @@
+{% extends 'student_base.html'%}
+{% load crispy_forms_tags %}
+
+
+
+{% block content %}
+
+{% include "includes/messages.html" %}
+
+
+<section class="content">
+  <div class="container-fluid">
+
+
+    <div class="row">
+      <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="card card-info">
+          {% include 'override_table/header.html' with card_title='Add Exam' %}
+          <!-- /.card-header -->
+          <!-- form start -->
+          <form role="form" action="{% url 'courses:addexam' %}" method="post">
+            {% csrf_token %}
+
+            <div class="card-body">
+              {{ form|crispy }}
+
+              <button type="submit" class="btn btn-sm btn-success">Save</button>
+            </div>
+
+
+
+        </div>
+        <!-- /.card-body -->
+
+        </form>
+      </div>
+      <!-- /.card -->
+    </div>
+  </div>
+  </div>
+</section>
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- -------------- -->
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Error</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <span id="message_text"></span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block javascript %}
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+  var sub_text = "", term="";
+  
+  // term onchange
+  $("#id_term").change(function (event) {
+    term = $(this).val();
+    term_text = $(this).find("option:selected").text()
+
+    sub_id = $("#id_subject_id").val();
+    sub_text = $("#id_subject_id").find("option:selected").text()
+    res = sub_text.replace(" ", "");
+    class_id = $("#id_semester").find("option:selected").text()
+    class_text = $("#id_semester").find("option:selected").text()
+    //id_text = sub_id.concat(".").concat(term)
+    id_text = term.concat(".").concat(sub_id).concat(".").concat(class_id)
+    title_text = sub_text.concat(" ").concat(term_text).concat(".").concat(class_text)
+    $("#id_exam_id").val(id_text);
+    $("#id_exam_title").val(title_text);
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~full and pass marks~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    $.ajax({
+      url:'{% url "courses:addexam_marks_ajax" %}',
+      data:{'term':term},
+      success:function(data){
+        $('#id_full_marks').val(parseInt(data['f_marks']));
+        $('#id_pass_marks').val(parseInt(data['p_marks']));
+      }
+    })
+
+  })
+
+  $("#id_subject_id").change(function (event) {
+    sub_id = $(this).val();
+    sub_text = $(this).find("option:selected").text()
+    res = sub_text.replace(" ", "");
+
+    term = $("#id_term").val();
+    term_text = $("#id_term").find("option:selected").text()
+    class_id = $("#id_semester").find("option:selected").text()
+    class_text = $("#id_semester").find("option:selected").text()
+    var test = "";
+    var i;
+    for (i = 1; i < res.length; i++) {
+      test = test.concat(res[i]);
+      test = test.concat(" ");
+    }
+    //sub_text = test;
+    id_text = term.concat(".").concat(sub_id).concat(".").concat(class_id)
+    title_text = sub_text.concat(" ").concat(term_text).concat(".").concat(class_text)
+    $("#id_exam_id").val(id_text);
+    $("#id_exam_title").val(title_text);
+  })
+
+  //-
+  $("#id_semester").change(function (event) {
+    class_id = $("#id_semester").find("option:selected").text()
+    class_text = $(this).find("option:selected").text()
+
+    sub_id = $("#id_subject_id").val();
+    sub_text = $("#id_subject_id").find("option:selected").text()
+    res = sub_text.replace(" ", "");
+    term = $("#id_term").val();
+    term_text = $("#id_term").find("option:selected").text()
+    //id_text = sub_id.concat(".").concat(term)
+    id_text = term.concat(".").concat(sub_id).concat(".").concat(class_id)
+    title_text = sub_text.concat(" ").concat(term_text).concat(".").concat(class_text)
+    $("#id_exam_id").val(id_text);
+    $("#id_exam_title").val(title_text);
+
+  })
+
+  /** $('input:radio').change(function(){
+    exam_type = $(this).val();
+
+    if (exam_type == 'Unit'){
+      $('#id_full_marks').val(25);
+      $('#id_pass_marks').val(10);
+    }else{
+      $('#id_full_marks').val(100);
+      $('#id_pass_marks').val(40);
+    }
+  }) **/
+
+
+
+</script>
+{% endblock %}
+

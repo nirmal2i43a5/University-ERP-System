@@ -1,0 +1,79 @@
+
+{% load auth_extras %}
+
+   
+<table id="completedTable" class="table table-sm  table-striped table-bordered table-hover  text-nowrap  dataTable no-footer">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Semester</th>
+      <th>Subject</th>
+      <th>Exam</th>
+      <th>File</th>
+      <th>Answer</th>
+      <th>Points(/100)</th>
+      {% if  request.user|has_group:'Admin' or request.user.is_superuser or request.user|has_group:'Teacher'   %}
+      <th>Action</th>
+      {% endif %}
+    </tr>
+  </thead>
+<tbody>
+
+  {% for paper in student_completed_exams %}
+
+
+  <tr>
+    <td>{{ forloop.counter }}</td>
+    <td>{{ paper.exam.semester }}</td>
+    <td>{{ paper.exam.subject_id }}</td>
+    <td>{{ paper.exam }}</td>
+    
+    <td>
+     
+     {% if paper.exam.questionpaper_set.all %}
+
+     <a href="{{ paper.exam.questionpaper_set.file.url }}" style="cursor: pointer;" class="btn btn-xs btn-success">
+      View Assignment
+    </a>
+   
+
+  {% else %}
+  Not Uploaded
+  {% endif %}
+         
+    
+    </td>
+
+    <td>
+     
+      {% if paper.answer_upload %}
+ 
+      <a href="{{ paper.answer_upload.url }}" style="cursor: pointer;" class="btn btn-xs btn-success">
+       View Your Answer
+     </a>
+    
+ 
+   {% else %}
+   Not Uploaded
+   {% endif %}
+          
+     
+     </td>
+ 
+    {% if grade.grade %}
+   <td>{{grade.grade}}</td>
+      {% else %}
+      <td>Not Graded Yet</td>
+    {% endif %}
+      
+  </tr>
+   </div>
+
+
+  {% endfor %}
+
+
+
+</tbody>
+
+</table>

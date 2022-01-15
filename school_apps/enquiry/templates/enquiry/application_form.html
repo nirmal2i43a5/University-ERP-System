@@ -1,0 +1,51 @@
+{% extends 'student_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+{% if form_check %}
+  <div class="invoice p-3 mb-3" id="application_form" style="margin: 15px;">
+    <!-- title row -->
+    {% include "includes/messages.html" %}
+    <div class="row">
+        <div class="col-12">
+            <div class="text-center">
+                <img src="/static/image/global_college_logo.png" style="width:191px;height:65px;" class="img-rectangle ">
+            </div>
+            <h5 class="text-center">
+                Global College International
+            </h5>
+            
+            <h6 class="text-center">
+                Mid-Baneshwor, Kathmandu, Nepal
+            </h6>
+            <h4 class="text-center">
+                Admission Form
+            </h4>
+        </div>
+      <!-- /.col -->
+    </div>
+    <div>
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-sm btn-success">Submit</button>
+      </form>
+    </div>
+  </div>
+{% else %}
+  <div class="container">
+    <h5>Your application has already been submitted. Please wait patiently for further contact.</h5>
+    <h5>Thank You.</h5>
+  </div>
+{% endif %}
+
+{% endblock %}
+
+{% block javascript %}
+  <!-- <script>
+      $("#print_button").click(function(event){
+        //event.preventDefault();
+        print();
+      })
+  </script> -->
+{% endblock %}

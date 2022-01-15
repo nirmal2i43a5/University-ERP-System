@@ -1,0 +1,12 @@
+<thead class="thead thead-dark">
+    <tr>
+        <th>Course</th>
+        <th>Teacher</th>
+    </tr>
+</thead>
+{% for course in courses%}
+    <tr>
+        <td>{{course.subject_id.subject_name}}</td>
+        <td>{{course.subject_id.teacher_id.teacher_name}}</td>
+    </tr>
+{% endfor %}

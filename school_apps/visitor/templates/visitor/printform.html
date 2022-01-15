@@ -1,0 +1,138 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="{% static 'resultpage/style.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css' %}">
+    <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <!-- AdminLTE App -->
+    <script src="{% static 'dist/js/adminlte.min.js' %}"></script>   
+    <style>
+        @media print {
+            div.breakpage {
+                page-break-before: always;
+            }
+        }
+      </style>
+</head>
+<body>
+    <div class = "container"  style="padding-top: 3%;">
+        <div class="row">
+            <div class="col-12">
+                <div class="text-center">
+                    <img src="/static/image/global_college_logo.png" style="width:191px;height:65px;" class="img-rectangle ">
+                </div>
+                
+                
+                <h6 class="text-center">
+                    Mid-Baneshwor, Kathmandu, Nepal
+                </h6>
+                <h4 class="text-center">
+                    <strong> VISITOR FORM </strong>
+                </h4>
+            </div>
+          <!-- /.col -->
+        </div>
+
+        <div class='outer_div'>
+            <div class = "row showdata">
+                <div class = "col-2">
+                    <strong>Name:</strong>
+                </div>
+                <div class = "col-6">
+                    {{visitor.name}}
+                </div>
+            </div>
+
+            <div class = "row showdata">
+                <div class = "col-2">
+                    <strong>Address:</strong>
+                </div>
+                <div class = "col-6">
+                    {{visitor.address}}
+                </div>
+            </div>
+
+            <div class = "row showdata">
+                <div class = "col-2">
+                    <strong>Home Contact:</strong>
+                </div>
+                <div class = "col-6">
+                    {{visitor.home_contact}}
+                </div>
+                <div class = "col-2">
+                    <strong>Mobile No:</strong>
+                </div>
+                <div class = "col-2">
+                    {{visitor.mobile_no}}
+                </div>
+            </div>
+        </div>
+
+        <div class="outer_div">
+            <div class = "row showdata">
+                <div class = "col-2">
+                    <strong>Reason:</strong>
+                </div>
+                <div class = "col-6">
+                    {{visitor.get_category_display}}
+                </div>
+            </div>
+
+            <div class = "row showdata">
+                <div class = "col-2">
+                    <strong> </strong>
+                </div>
+                <div class = "col-6">
+                    {{visitor.details}}
+                </div>
+            </div>
+        </div>
+
+        <div class="outer_div">
+            <div class = "row showdata">
+                <div class = "col-2">
+                    <h5>Recipient</h5>
+                </div>
+            </div>
+            
+            <div class = "row showdata">
+                <div class = "col-2">
+                    <strong>Department: </strong>
+                </div>
+                <div class = "col-6">
+                    {{visitor.department}}
+                </div>
+            </div>
+
+            <div class = "row showdata">
+                <div class = "col-2">
+                    <strong>Recipient: </strong>
+                </div>
+                <div class = "col-6">
+                    {{visitor.recipient}}
+                </div>
+            </div>
+        </div>
+        <div class="breakpage"></div>
+    </div>
+
+    <script>
+        /* window.onload = function () {
+            window.print();
+        }*/
+    </script>
+</body>
+</html>

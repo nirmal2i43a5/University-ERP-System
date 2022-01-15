@@ -1,0 +1,83 @@
+<div class= "container-fluid">
+  <!-------------------------------------------------------if block------------------------------------ -->
+  {% if item.status == "INT_PASSED" %}
+      <div class="row">
+        <div class="col-6 text-center">
+            <form action = "{% url 'enquiry:send_app_confirmation_email' item.pk%}" method='post'>
+              {% csrf_token %}
+              <button type="submit" class="btn btn-s btn-info"><strong>Send confirmation email</strong></button>
+            </form>
+        </div>
+
+        <div class="col-6 text-center">
+          <a href="{% url 'enquiry:app_enroll' item.pk%}" class="btn btn-s btn-info"><strong>Enroll</strong></a>
+          <br>
+        </div>
+      </div>
+  <!-------------------------------------------------------else block------------------------------------ -->
+  {% else %}
+      <div class="row">
+        
+
+        <div class="col-4 text-center">
+          <form action = "{% url 'enquiry:send_app_entrance_info' item.pk%}" method='post'>
+            {% csrf_token %}
+            <label for="entrance_date">Entrance Exam Date:</label>
+            <input type="date" name="entrance_date" id="entrance_date">
+            <button type="submit" class="btn btn-s btn-info" 
+            {% if item.status == "APL" %}
+            {% else %}
+            disabled
+            {% endif %}><strong>Send Entrance Info</strong></button>
+          </form>
+          <span class="badge badge-xs badge-info">
+            {% if item.application_sent == True %}
+            Application already sent
+            {% else %}
+            Application not yet sent
+            {% endif %}
+          </span> 
+      </div>
+
+        <div class="col-4 text-center">
+            <form action="{% url 'enquiry:send_app_entrance_results' item.pk%}" method="post">
+              {% csrf_token %}
+              <label for="interview_date">Interview Date:</label>
+              <input type="date" name="interview_date" id="interview_date">
+                <button type="submit" class="btn btn-s btn-info" 
+                {% if item.status == "ENQ" or item.status == "APL_SENT" or item.status == "APL" or item.status == "DRP"%}
+                disabled
+                {% endif %}
+                ><strong>Send Entrance Results</strong></button>
+            </form>
+            <span class="badge badge-xs badge-info">
+              {% if item.entrance_result_sent == True %}
+              Results already sent
+              {% else %}
+              Results not yet sent
+              {% endif %}
+            </span>   
+        </div>
+
+        <div class="col-3 text-center">
+          <form action = "{% url 'enquiry:send_app_interview_results' item.pk%}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-s btn-info" 
+                {% if item.status == "ENQ" or item.status == "APL_SENT" or item.status == "APL" or item.status == "DRP" %}
+                disabled
+                {% endif %}
+              ><strong>Send Interview Results</strong></button>
+            
+            <span class="badge badge-xs badge-info badge-primary">
+              {% if item.interview_result_sent == True %}
+              Results already sent
+              {% else %}
+              Results not yet sent
+              {% endif %}
+            </span> 
+        </div>
+
+      </div>
+  {% endif %}
+  <!-------------------------------------------------------if block ends------------------------------------ -->
+</div>

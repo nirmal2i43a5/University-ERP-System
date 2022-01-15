@@ -1,0 +1,84 @@
+
+
+    <div class="panel-body profile-view-dis">
+        <div class="row">
+           
+                <div class="col-sm-9">
+                    <div class="profile-view-tab">
+                        <p><span>Name </span>: {{ visitor.name }} </p>
+                    </div>
+                </div>
+         
+                <div class="col-sm-9">
+                    <div class="profile-view-tab">
+                        <p><span>Address </span>: 
+                       {{ visitor.address }}</p>
+                    </div>
+                </div>
+                <div class="col-sm-9">
+                    <div class="profile-view-tab">
+                        <p><span>Home Phone </span>: 
+                       {{ visitor.home_contact }}</p>
+                    </div>
+                </div>
+               
+            
+                <div class="col-sm-9">
+                    <div class="profile-view-tab">
+                        <p><span>Mobile Phone </span>:  {{ visitor.mobile_no }}</p>
+                    </div>
+                </div>
+
+                <div class="col-sm-9">
+                    <div class="profile-view-tab">
+                        <p><span>Reason </span>:   {{visitor.get_category_display}}</p>
+                    </div>
+                </div>
+
+                <div class="col-sm-9">
+                    <div class="profile-view-tab">
+                        <p><span>Details </span>:  {{ visitor.details }}</p>
+                    </div>
+                </div>
+                
+
+                <div class="col-sm-9">
+                    <div class="profile-view-tab">
+                        <p><span>Enquiry</span>:  {{ visitor.enquiry }}</p>
+                    </div>
+                </div>
+           <!--sjsjs-->
+             <!------->
+            
+     
+        
+            <div class="col-sm-9">
+                <div class="profile-view-tab">
+                    <p><span>Remarks </span>: {{ visitor.remarks }}</p>
+                </div>
+            </div>
+
+            <div class="col-sm-9">
+                <div class="profile-view-tab">
+                    <p><span>Department: </span>: {{ visitor.department }}</p>
+                </div>
+            </div>
+
+            <div class="col-sm-9">
+                <div class="profile-view-tab">
+                    <p><span>Recipient </span>: {{ visitor.recipient }}</p>
+                </div>
+            </div>
+          
+
+       
+        </div>
+    </div>
+ <style>
+     p{
+         font-weight: 300;
+     }
+    span{
+        font-weight: 400;
+    }
+ </style>

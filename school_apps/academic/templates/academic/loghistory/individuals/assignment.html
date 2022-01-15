@@ -1,0 +1,77 @@
+{% extends 'admin_templates/base_admin.html' %}
+{% load auth_extras %}
+{% load crispy_forms_tags %}
+{% block title %}
+  {{title}}
+{% endblock title %}
+{% block main_content %}
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+  <!-- /.card-header -->
+  {% include "includes/messages.html" %}
+  
+    <div class="row">
+      <div class="col-12">
+
+
+        <div class="card">
+          
+          <div class="card-header" style="background-color: #094089;color:white">
+            <span> Assignment Log History</span>
+            
+            
+          </div>
+         
+          <!-- /.card-header -->
+          <div class="card-body table-responsive">
+       
+
+            <table id="syllabusTable" class="table table-sm  table-striped table-bordered table-hover  text-nowrap  dataTable no-footer">
+              <thead>
+                <tr>
+                  <tr>
+                    <th>Object</th>
+                    <th>Title</th>
+                    <th>History Date/Time</th>
+                    <th>History Action</th>
+                    <th>History User</th>
+                </tr>
+                </tr>
+              </thead>
+              <tbody>
+               
+                {% include "academic/loghistory/includes/assignment.html" %}
+              
+              </tbody>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+
+{% endblock main_content %}
+
+{% block custom_js %}
+
+<script>
+  
+  $(document).ready(function () {
+
+    $('#syllabusTable').DataTable({
+
+      dom: 'Bfrtip',//if i use buttons then entries goes away
+      pagingType: "full_numbers",
+      
+     
+    });
+  });
+</script>
+
+{% endblock custom_js %}

@@ -1,0 +1,76 @@
+{% extends 'admin_templates/base_admin.html' %}
+{% load auth_extras %}
+
+{% block main_content %}
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+  <!-- /.card-header -->
+  {% include "includes/messages.html" %}
+  
+    <div class="row">
+      <div class="col-12">
+
+
+        <div class="card card-info">
+          
+          <div class="card-header">
+            <span>Manage Holiday</span>
+          </div>
+         
+          <!-- /.card-header -->
+          <div class="card-body table-responsive">
+            
+            {% if request.user|has_group:'Admin' or request.user|has_group:'Teacher'  %}
+
+            <a href="{% url 'admin_app:add_holiday' %}" class="btn btn-sm btn-info float-right "><i class = "fas fa-xs fa-plus"></i> Add holiday</a>
+
+            {% endif %}
+              
+       
+            <table id="dataTable" class="table table-sm  table-striped table-bordered table-hover  text-nowrap  dataTable no-footer">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Title</th>
+                  <th>From Date</th>
+                  <th>To Date</th>
+                  <th>Details</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for holiday in holidays %}
+                <tr>
+                  <td>{{ holiday.id }}</td>
+                  <td>{{ holiday.title }}</td>
+                  <td>{{ holiday.from_date }}</td>
+                  <td>{{ holiday.to_date }}</td>
+                  <td>{{ holiday.details |safe }}</td>
+                
+                       
+                  
+                  <td>
+                    <a href="{% url 'admin_app:edit_holiday' holiday.id %}" class="btn btn-xs btn-success"><i class="fas fa-xs fa-edit"></i></a>
+                    <a href="{% url 'admin_app:delete_holiday' holiday.id %}" class="btn btn-xs btn-danger"><i class="fas fa-xs fa-trash-alt"></i></a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+
+{% endblock main_content %}
+
+{% block custom_js %}
+
+{% endblock custom_js %}

@@ -1,0 +1,40 @@
+<table class = "table table-striped">
+    <thead class="thead thead-dark">
+        <th>Saturday</th>
+        <th>Sunday</th>
+        <th>Monday</th>
+        <th>Tuesday</th>
+        <th>Wednesday</th>
+        <th>Thursday</th>
+        <th>Friday</th>
+    </thead>
+
+    <tbody class="tbody">
+        
+    </tbody>
+</table>    
+
+{% block javascript %}
+<script>
+    function renderRoutine(){
+        html = '';
+
+        for (i=1; i<9; i++){
+            html+="<tr>";
+                for (j=0; j<7; j++){
+                    html+="<td class=\"d"+j.toString()+"p"+i.toString()+"\"></td>"
+                }
+            html+="</tr>"
+        }
+        $(".tbody").html(html)
+
+        {% if routine%}
+            {% for item in routine %}
+                $(".d{{item.day}}p{{item.period}}").html("{{item.subject.subject_name}}");
+            {% endfor %}
+        {% endif %}
+    }
+
+    $(renderRoutine());
+</script>
+{% endblock %}

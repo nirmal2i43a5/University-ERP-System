@@ -1,0 +1,35 @@
+{% load crispy_forms_tags %}
+
+
+
+<!-- Main content -->
+
+
+<!-- general form elements -->
+<div class="card card-info">
+  <div class="card-header">
+    <h3 class="card-title">Add Group</h3>
+  </div>
+  <form role="form" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="card-body">
+
+      {{ form|crispy }}
+
+    </div>
+    <!-- /.card-body -->
+
+    <div class="card-footer">
+      <button type="submit" class="btn btn-block btn-info ">Add Group</button>
+    </div>
+  </form>
+
+  <!-- /.card-header -->
+  <!-- form start -->
+
+
+
+</div>
+
+<!-- /.content -->

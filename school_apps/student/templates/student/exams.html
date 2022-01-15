@@ -1,0 +1,19 @@
+<hr>
+<h5>Select semester to view details.</h5>
+    <hr>
+{% if exams %}
+    <table class = 'table table-hover'>
+        <thead style="background-color: #094089;color:white;"><tr>
+            <th> Exam </th>
+            <th> Time </th>
+            <th> Room </th>
+        </tr></thead>
+        {%for exam in exams%}
+            <tr><td>{{ exam.exam_id.exam_title}}</td>
+            <td>{{ exam.exam_id.date}} {{ exam.exam_id.time}}</td>
+            <td>{{ exam.exam_id.exam_centre}}</td></tr>
+        {% endfor %}
+    </table>
+{% else %}
+<h4>No exam details found.</h4>
+{% endif %}

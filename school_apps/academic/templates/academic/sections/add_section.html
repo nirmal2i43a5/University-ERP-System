@@ -1,0 +1,36 @@
+
+
+
+{% load crispy_forms_tags %}
+
+
+<div class="card">
+  <div class="card-header" style="background-color: #094089;color:white;">
+
+    <h3 class="card-title">Add Section</h3>
+
+  </div>
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="card-body">
+
+      {{ form|crispy }}
+
+    </div>
+    <!-- /.card-body -->
+
+    <div class="card-footer">
+
+
+    
+      <a class="btn btn-danger" href="{% url 'admin_app:manage_section' %}">Back</a>
+
+      <button class="btn btn-success ml-2" name = "student_submit" type="submit">Save</button>
+
+
+    </div>
+  </form>
+
+</div>
+<!-- /.card -->

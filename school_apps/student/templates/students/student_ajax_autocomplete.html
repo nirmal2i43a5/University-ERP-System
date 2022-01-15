@@ -1,0 +1,54 @@
+
+<table id="student_data" class="table  col-sm-4 bg-white">
+
+
+    <tbody>
+        <td>
+            {% for item in students %}
+
+ 
+            <a href="#" class = "student_item_id" id="{{item.student_user.username}}">{{item}}</a><br>
+    
+    
+ 
+{% endfor %}
+        </td>
+    </tbody>
+
+</table>
+
+
+
+<script>
+    $('.student_item_id').click(function(){
+        
+        var student_item = $(this).attr('id')
+       $("#student_id").val(student_item);
+       })
+
+
+
+    </script>
+
+    <!-- <style>
+       #student_data > table {
+            width: 716px; /* 140px * 5 column + 16px scrollbar width */
+            border-spacing: 0;
+        }
+        
+        tbody, thead tr { display: block; }
+        
+        tbody {
+            height: 200px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        
+ 
+        
+        thead th:last-child {
+            width: 100%; /* 140px + 16px scrollbar width */
+        }
+    </style> -->
+
+

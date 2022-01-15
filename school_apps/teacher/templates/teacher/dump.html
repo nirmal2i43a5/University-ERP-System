@@ -1,0 +1,31 @@
+{% extends 'teacher_base.html' %}
+{% block content %}
+    
+    Please enter the score for the respective students.<br>
+    <hr>
+    <h4>Exam = {{exam.exam_title}}</h4>
+    <hr>
+    <form action="{% url 'teacher:submitscore' %}" method="POST">
+        <input type="hidden" name="exam_id" value="{{exam.exam_id}}">
+        {%csrf_token%}
+    <table class="table table-hover">
+
+        {% for stu in students%}
+            <tr>
+                <td> {{stu.student_id.student_name}}</td>
+                <td> <input type="number" placeholder="Score" min="0" max="100" name="{{stu.student_id.student_id}}"></td>
+            </tr>
+        {%endfor%}
+
+        <tr><td colspan="2" align="center"><input type="submit">
+        </td></tr>
+        
+    </table>
+    </form>
+    <hr>
+    <!-- {% for objects in test%}
+    {{objects}}
+    {%endfor%} -->
+{% endblock %}
+
+{% block title%} | Enter grades {% endblock %}

@@ -1,0 +1,71 @@
+{% load crispy_forms_tags %}
+
+
+
+
+ <form role="form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="card-body">
+            
+              <span class="text-capitalize"><strong>  {{questionpaper.exam}}</strong></span>
+              <hr>
+              <input type="hidden" value="{{questionpaper.id}}" name="questionpaper_id">
+              <input type="hidden" value="{{questionpaper.exam.pk}}" name="exam_id">
+              {{ form|crispy }}
+
+              <a href="{% url 'exam:question-index' %}" class="btn btn-sm btn-danger">Back</a>
+              <button type="submit" class="btn btn-sm btn-success">Save</button>
+            </div>
+
+
+
+        </div>
+
+
+        </form>
+        <!-- <form action="" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+        
+          <div class="card-body">
+            <input type="hidden" value="{{questionpaper.id}}" name="questionpaper_id">
+            <input type="hidden" value="{{questionpaper.exam.pk}}" name="exam_id">
+        
+        
+            {% for item in questions %}
+        
+        
+            <div class="d-flex flex-nowrap mt-2">
+              <div class="order-3">
+                <strong> {{forloop.counter}}</strong>.
+        
+              </div>
+              <div class="order-3 ml-2">
+        
+                {{item.question_no}} 
+        
+              </div>
+              <div class="order-3  ml-2">
+                <input type="number" name="total_marks">
+        
+              </div>
+              <div class="order-3 ml-1">
+                <input type="file" name="file">
+        
+              </div>
+              
+              <div class="order-3">
+                <button type="submit" class="btn btn-xs" style="background-color: #094089;color:white;">Save</a>
+        
+        
+              </div>
+            </div>
+            {% endfor %}
+        
+          </div>
+        
+        
+          </div>
+        
+        
+        </form> -->

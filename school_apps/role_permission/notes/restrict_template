@@ -1,0 +1,11 @@
+
+button restriction based on group
+----------------------------------------
+ {% if request.user|has_group:"Admin" %}
+
+
+
+button restriction based on particular permisson 
+---------------------------------------------
+
+{% if pers.app_name.delete_parent %}

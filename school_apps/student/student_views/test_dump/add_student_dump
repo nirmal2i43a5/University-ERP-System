@@ -1,0 +1,89 @@
+ if request.method == 'POST':
+
+        custom_form = AddCustomUserForm(request.POST)
+        student_form = StudentForm(request.POST, request.FILES)
+        parent_form = ParentForm(request.POST, request.FILES)
+
+        if custom_form.is_valid() and student_form.is_valid() and parent_form.is_valid():
+
+            parent = parent_form.save()
+
+            # username = custom_form.cleaned_data["username"]
+            email = custom_form.cleaned_data["email"]
+            # password = custom_form.cleaned_data["password"]
+            full_name = custom_form.cleaned_data['full_name']
+            student_id = student_form.cleaned_data['stu_id']
+
+            date_of_birth = str(request.POST.get('dob'))
+            dob = datetime.datetime.strptime(
+                date_of_birth, "%Y-%m-%d").date()  # parsing html date to python
+
+            if request.FILES.get('image'):
+                image_url = request.FILES['image']
+            else:
+                image_url = None
+            
+            fname = full_name.split()[0]
+            student_username = fname.lower() + f'{student_id}'
+            role = Group.objects.get(name='Student')
+            user = CustomUser.objects.create_user(
+                username=student_username, password='password', email=email, user_type=role, full_name = full_name)
+                  
+                  
+            user.student.join_year =  student_form.cleaned_data["join_year"]
+            user.student.stu_id = student_form.cleaned_data['stu_id']
+            user.student.roll_no = student_form.cleaned_data['roll_no']
+            user.student.gender = student_form.cleaned_data['gender']
+            user.student.shift = student_form.cleaned_data["shift"]
+            user.student.semester = student_form.cleaned_data['semester']
+            user.student.section = student_form.cleaned_data['section']
+            user.student.course = student_form.cleaned_data['course']
+            user.student.faculty = student_form.cleaned_data['faculty']
+            user.student.program = student_form.cleaned_data['program']
+            user.student.status = student_form.cleaned_data['status']
+            user.student.contact = student_form.cleaned_data['contact']
+            user.student.permanent_address = student_form.cleaned_data['permanent_address']
+            user.student.temporary_address = student_form.cleaned_data['temporary_address']
+            user.student.dob = dob
+            user.student.blood_group = student_form.cleaned_data['blood_group']
+            user.student.optional_subject = student_form.cleaned_data['optional_subject']
+            user.student.see_gpa = student_form.cleaned_data['see_gpa']
+            user.student.previous_school_name = student_form.cleaned_data["previous_school_name"]
+            user.student.guardian = parent
+            if image_url != None:
+                user.student.image = image_url
+            user.save()
+            user.groups.add(role)
+
+            selectedcourses.objects.create(
+                student_id=user.student,
+                subject_id = student_form.cleaned_data['optional_subject'],
+                semester = student_form.cleaned_data['semester']
+            )
+
+            # user.student.state = student_form.cleaned_data['state']
+            # user.student.country = student_form.cleaned_data['country']
+            # # user.student.group = group
+            # # user.student.optional_subject = optional_subject
+            # # user.student.register_no = register_no
+            # # user.student.extra_activities = student_form.cleaned_data['extra_curricular_activities']
+            # # user.student.remarks = student_form.cleaned_data['remarks']
+            messages.success(request, "Successfully Added Student")
+            return redirect('admin_app:manage_student')
+
+            # except:
+            #     messages.error(request, "Failed to Add Student")
+            #     return redirect('admin_app:add_student')
+
+    else:
+        custom_form = AddCustomUserForm()
+        student_form = StudentForm()
+        parent_form = ParentForm()
+
+    context = {
+                 'title':'Add Student',
+                'custom_form': custom_form,
+               'student_form': student_form,
+               'parent_form': parent_form
+               }
+    return render(request, 'students/add_student.html', context)

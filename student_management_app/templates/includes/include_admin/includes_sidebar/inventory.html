@@ -1,0 +1,148 @@
+
+      {% if perms.inventory.view_assets or perms.inventory.view_vendor or perms.inventory.add_category or perms.inventory.add_assets or perms.inventory.add_vendor or perms.inventory.assets_assignment or perms.inventory.assets_transfer or perms.inventory.add_procurementrequest or perms.inventory.view_procurementrequest or perms.inventory.add_transaction or perms.inventory.view_transaction  %}
+<li class="nav-item has-treeview">
+    <a href="#" class="nav-link">
+      <i class="fas  fa-university mr-1"></i>
+      <p>
+        Inventory
+        <i class="fas fa-angle-left right"></i>
+  
+      </p>
+    </a>
+    <ul class="nav nav-treeview">
+      {% if perms.inventory.view_assets %}
+      <li class="nav-item ml-3">
+        <a href="{% url 'inventory:inventory_list' %}" class="nav-link">
+          <i class="fas  fa-sitemap"></i>
+          <p>
+           Inventory
+          </p>
+        </a>
+      </li>
+      {% endif %}
+      {% if perms.inventory.view_vendor %}
+      <li class="nav-item ml-3">
+        <a href="{% url 'inventory:vendor_list' %}" class="nav-link">
+          <i class="fas  fa-sitemap"></i>
+          <p>
+           Vendors
+          </p>
+        </a>
+      </li>
+      {% endif %}
+
+      {% if perms.inventory.add_category %}
+      <li class="nav-item ml-3">
+        <a href="{% url 'inventory:create_category' %}" class="nav-link">
+          <i class="fas  fa-sitemap"></i>
+          <p>
+           Add Category
+          </p>
+        </a>
+      </li>
+      {% endif %}
+
+      {% if perms.inventory.add_assets %}
+      <li class="nav-item ml-3">
+        <a href="{% url 'inventory:create_asset' %}" class="nav-link">
+          <i class="fas  fa-sitemap"></i>
+          <p>
+           Add Assets
+          </p>
+        </a>
+      </li>
+      {% endif %}
+
+      {% if perms.inventory.add_assets %}
+      <li class="nav-item ml-3">
+        <a href="{% url 'inventory:create_item' %}" class="nav-link">
+          <i class="fas  fa-sitemap"></i>
+          <p>
+           Add Item
+          </p>
+        </a>
+      </li>
+      {% endif %}
+
+      {% if perms.inventory.add_vendor %}
+      <li class="nav-item ml-3">
+        <a href="{% url 'inventory:create_vendor' %}" class="nav-link">
+          <i class="fas  fa-sitemap"></i>
+          <p>
+           Add Vendor
+          </p>
+        </a>
+      </li>
+      {% endif %}
+
+      {% if perms.inventory.assets_assignment %}
+      <li class="nav-item ml-3">
+        <a href="{% url 'inventory:assets_department_assignment' %}" class="nav-link">
+          <i class="fas  fa-sitemap"></i>
+          <p>
+           Assets Management
+          </p>
+        </a>
+      </li>
+      {% endif %}
+
+      {% if perms.inventory.assets_transfer %}
+      <li class="nav-item ml-3">
+        <a href="{% url 'inventory:assets_transfer' %}" class="nav-link">
+          <i class="fas  fa-sitemap"></i>
+          <p>
+           Assets Transfer
+          </p>
+        </a>
+      </li>
+      {% endif %}
+
+      {% if perms.inventory.add_procurementrequest %}
+      <li class="nav-item ml-3">
+        <a href="{% url 'inventory:create_procurement_request' %}" class="nav-link">
+          <i class="fas  fa-sitemap"></i>
+          <p>
+           Create Procurement Request
+          </p>
+        </a>
+      </li>
+      {% endif %}
+     
+      {% if perms.inventory.view_procurementrequest %}
+      <li class="nav-item ml-3">
+        <a href="{% url 'inventory:procurement_list' %}" class="nav-link">
+          <i class="fas  fa-sitemap"></i>
+          <p>
+           Procurement Requests
+          </p>
+        </a>
+      </li>
+      {% endif %}
+
+      {% if perms.inventory.add_transaction %}
+      <li class="nav-item ml-3">
+        <a href="{% url 'inventory:create_transaction' %}" class="nav-link">
+          <i class="fas  fa-sitemap"></i>
+          <p>
+           Add Transaction Record
+          </p>
+        </a>
+      </li>
+{% endif %}
+
+{% if perms.inventory.view_transaction %}
+      <li class="nav-item ml-3">
+        <a href="{% url 'inventory:transaction_list' %}" class="nav-link">
+          <i class="fas  fa-sitemap"></i>
+          <p>
+           Transactions
+          </p>
+        </a>
+      </li>
+
+      
+    </ul>
+  </li>
+  {% endif %}
+
+  {% endif %}

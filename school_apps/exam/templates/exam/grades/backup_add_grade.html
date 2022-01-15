@@ -1,0 +1,215 @@
+{% extends 'admin_templates/base_admin.html' %}
+{% load crispy_forms_tags %}
+{% load mathfilters %}
+{% load widget_tweaks %}
+{% block title %}
+{{title}}
+{% endblock title %}
+
+<script>
+    // Adjust iframe height according to the contents
+    parent.jQuery.fancybox.getInstance().update();
+
+    // Close current fancyBox instance
+    parent.jQuery.fancybox.getInstance().close();
+</script>
+{% block main_content %}
+
+<!-- Main content -->
+
+<section class="content">
+    <div class="container-fluid">
+
+
+        {% include "includes/messages.html" %}
+
+        <div class="row">
+
+            <div class="col-md-3">
+
+                <div class="card card-info card-outline">
+                    <div class="card-body">
+                        <ul class="list-group">
+
+
+                            <div class="table-title" style="background-color:#094089;color:white;">
+                                <p class="ml-2 mt-2 text-bold">Each Question Marks</p>
+                            </div>
+
+                            
+
+                            {% for mark in question_marks %}
+
+                            <li class="list-group-item">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        {{ mark.question.question_no }} - <strong><span class="obtained">{{ mark.marks }}
+                                                </span></strong>/{{mark.question.total_marks}} marks
+
+                                    </div>
+                                    <!-- <div>
+                                        <button
+                                         type="button" 
+                                         class="btn btn-xs btn-success" 
+                                         data-container="body" 
+                                         data-toggle="popover" 
+                                         data-placement="right" 
+                                         data-content = "dsajkddsadskj">  
+                                            <i class= "fas fa-comment-dots"></i>
+                                        </button>
+                                    </div> -->
+                                </div>
+                            </li>
+                            {% empty %}
+                            <span class="my-2 ml-2">No Marks Added</span>
+                            {% endfor %}
+                            {% if question_marks %}
+                            <strong>Total : <span id="total"></span></strong>
+
+                            {% endif %}
+
+
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <iframe src="/viewer/viewer.html?file={{answer_sheet.answer_upload.url}}#magazineMode=true" width="100%"
+                    height="700px" frameborder="0"></iframe>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-info">
+                    {% include 'override_table/header.html' with card_title='Add Grade' %}
+
+
+                    <form role="form" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="card-body">
+                            <div>
+                                <span class="text-capitalize"><strong> {{answer_sheet.exam}}</strong></span><br>
+                                <span class="text-capitalize"><strong>
+                                        {{answer_sheet.student.student_user}}</strong></span><br>
+                                <span class="text-capitalize"><strong> Stu Id :
+                                        {{answer_sheet.student.stu_id}}</strong></span>
+                            </div>
+                            <hr>
+                            <form action="">
+
+                                <input type="hidden" name="examid" value={{answer_sheet.exam.pk}}>
+                                <input type="hidden" name="studentid" value={{answer_sheet.student.pk}}>
+
+                                {% for item in question %}
+                                   
+                                    <strong> {{forloop.counter}}</strong>.   
+
+                                    {{item.question_no}}
+
+                                    <select name="{{item.pk}}" class="questionmark float-right">
+                                        <option value="0">0</option>
+
+                                        {% with ''|center:item.total_marks|mul:2 as range %}
+
+                                        {% for _ in range %}
+
+                                        {% with numerator=forloop.counter denominator=2 %}
+
+                                        <option value="{{ numerator|div:denominator }}">
+                                            {{ numerator|div:denominator }}
+
+                                        </option>
+
+                                        {% endwith %}
+
+
+                                        {% endfor %}
+                                        {% endwith %}
+
+                                    </select>
+                                    
+
+
+<br>                                {% endfor %}
+                            </form>
+                            <!-- {{ grade_form|crispy }} -->
+
+                            <a href="{% url 'exam:teacher-view-answer' exam_instance.pk %}"
+                                class="btn btn-sm btn-danger mt-4">Back</a>
+                            <button type="submit" class="btn btn-sm btn-success mt-4">Save</button>
+                        </div>
+
+
+
+                </div>
+                <!-- /.card-body -->
+
+                </form>
+
+
+            </div>
+        </div>
+
+
+
+
+    </div>
+    </div>
+</section>
+
+<style>
+    #magazineContainer,
+    #magazine {
+        background-color: #094089;
+    }
+</style>
+<!-- /.content -->
+
+{% endblock main_content %}
+
+
+
+{% block custom_js %}
+<script>
+    $(document).ready(function () {
+        var total = 0;
+        $('.obtained').each(function () {
+            total += parseFloat(this.innerHTML)
+        });
+        $('#total').text(total);
+//-----------------------------------------------
+      
+    })
+    //
+/*
+    $("select[class = ['question_id']").click(function(){
+         var question_id = $(this).val();
+         alert('dasjkdasjk')
+     })*/
+
+        $(".questionmark").on("change", function() {
+          var questionmark = $(this).val();
+          alert(questionmark)
+          $.ajax({
+
+            url : "",
+            data: {'questionpaper_id':questionmark},
+            dataType: 'json',
+            success: function(response){
+                alert("success")
+
+            },
+            error: function(){
+              alert("Something Went Wrong!")
+            },
+      
+      
+          });
+         
+        });
+      
+
+</script>
+{% endblock %}

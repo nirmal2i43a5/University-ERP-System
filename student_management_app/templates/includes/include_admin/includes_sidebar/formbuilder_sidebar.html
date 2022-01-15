@@ -1,0 +1,42 @@
+
+
+  <li class="nav-item has-treeview">
+    <a href="#" class="nav-link">
+      <i class="fas  fa-university mr-1"></i>
+      <p>
+        Formbuilder
+        <i class="fas fa-angle-left right"></i>
+  
+      </p>
+    </a>
+    <ul class="nav nav-treeview">
+      
+      <li class="nav-item has-treeview">
+        
+      </li>
+
+      <li class="nav-item ml-3">
+        <a href="{% url 'formapi:form_builder_select'%}" class="nav-link">
+          <p>
+            <i class="fas  fa-th"></i> Build a Form
+          </p>
+        </a>
+      </li>
+
+      <li class="nav-item ml-3">
+        <a href="{% url 'formapi:form_edit_select'%}" class="nav-link">
+          <p>
+            <i class="fas  fa-th"></i> Edit a Form
+          </p>
+        </a>
+      </li>
+
+      <li class="nav-item ml-3">
+        <a href="{% url 'formapi:admissionform_select'%}" class="nav-link">
+          <p>
+            <i class="fas  fa-th"></i> Admission Form
+          </p>
+        </a>
+      </li>
+    </ul>
+  </li>

@@ -1,0 +1,120 @@
+
+
+    <div class="panel-body profile-view-dis">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="profile-view-tab">
+                    <p><span>Requester: </span> {{ object.requester.full_name }} </p>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="profile-view-tab">
+                    <p><span>Department: </span> 
+                        {% if object.requester_dept %}
+                        {{object.requester_dept}}
+                        {% else %}
+                        {{object.requester_branch}}
+                        {% endif %} </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="profile-view-tab">
+                    <p><span>Category: </span> {{ object.category }} </p>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="profile-view-tab">
+                    <p><span>Item: </span> {{ object.item }} </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="profile-view-tab">
+                    <p><span>Amount: </span> {{ object.amount }} </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="profile-view-tab">
+                    <p><span>Request Date: </span> {{ object.request_date }} </p>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="profile-view-tab">
+                    <p><span>Requester Remarks: </span> {{ object.requester_comment }} </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="profile-view-tab">
+                    <p><span>Status: </span> {{ object.status }} </p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="profile-view-tab">
+                    <p><span>Procurement Department Handler: </span> {{ object.procurement_personnel }} </p>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="profile-view-tab">
+                    <p><span>Date: </span> {{ object.procurement_date }} </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="profile-view-tab">
+                    <p><span>Remarks from Procurement Department: </span> {{ object.procurement_comment }} </p>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="profile-view-tab">
+                    <p><span>Finance Department Handler: </span> {{ object.finance_personnel }} </p>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="profile-view-tab">
+                    <p><span>Date: </span> {{ object.finance_date }} </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="profile-view-tab">
+                    <p><span>Remarks from Finance Department: </span> {{ object.finance_comment }} </p>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+ <style>
+     p{
+         font-weight: 300;
+     }
+    span{
+        font-weight: 400;
+    }
+ </style>

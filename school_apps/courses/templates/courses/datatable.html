@@ -1,0 +1,59 @@
+{% extends 'student_base.html' %}
+
+{% block content %}
+    <table id="test_table" class="table table-hover">
+        <thead class="thead thead-dark">
+            <th>Col1</th>
+            <th>Col2</th>
+            <th>Col3</th>
+            <th>Col4</th>
+        </thead>
+        <tbody>
+            <tr data-name="tr1">
+                <td>Td</td>
+                <td>Td</td>
+                <td>Td</td>
+                <td>Td</td>
+            </tr>
+            <tr data-name="tr2">
+                <td>Td</td>
+                <td>Td</td>
+                <td>Td</td>
+                <td>Td</td>
+            </tr>
+            <tr data-name="tr3">
+                <td>Td</td>
+                <td>Td</td>
+                <td>Td</td>
+                <td>Td</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <button id="action_btn">Click me</button>
+{% endblock %}
+
+{% block javascript %}
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-html5-1.7.0/b-print-1.7.0/sl-1.3.3/datatables.min.css"/>
+    
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-html5-1.7.0/b-print-1.7.0/sl-1.3.3/datatables.min.js"></script>
+
+    <script>
+        $(document).ready( function () {
+            $('#test_table').DataTable();
+            $('#test_table tbody').on( 'click', 'tr', function () {
+                $(this).toggleClass('selected');
+            } );
+        } );
+
+        $("#action_btn").click(function(){
+            var data = ""
+            $("tr.selected").each(function(){
+                data+=$(this).data('name');
+            })
+            alert(data)
+        })
+    </script>
+{% endblock %}

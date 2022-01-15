@@ -1,0 +1,33 @@
+<div class= "container-fluid">
+      <div class="row">
+        <div class="col-12 text-center">
+            <form id="status_form" action=" {% url 'inventory:change_status' %} ">
+              <input type="text" name="id" readonly hidden value="{{obj.pk}}">
+              <label for="status_select">Status:</label>
+              <select name="status" id="status_select">
+                {% if not exempt %}
+                  {% for item in status %}
+                    {% if item.current_branch == obj.status.goto_branch%}
+                      <option value={{item.value}}>
+                        {{item}}
+                      </option>
+                    {% endif %}
+                  {% endfor %}
+                {% else %}
+                  {% for item in status %}
+                      <option value={{item.value}}>
+                        {{item}}
+                      </option>
+                  {% endfor %}
+                {% endif %}
+              </select>
+            </form>
+            <div class="col-12 text-center">
+              <label for="comment">Comments:</label>
+              <textarea name="comment" form="status_form" id="comment">Enter text here...</textarea>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+</div>

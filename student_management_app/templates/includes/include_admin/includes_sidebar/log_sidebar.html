@@ -1,0 +1,233 @@
+<li class="nav-item menu-close">
+  <a href="#" class="nav-link">
+    <i class="fas  fa-history mr-1"></i>
+    <p>
+      Log History
+
+    </p>
+    <i class="right fas fa-angle-left"></i>
+  </a>
+  <ul class="nav nav-treeview">
+
+    <li class="nav-item menu-close">
+      <a href="#" class="nav-link ml-2">
+        <i class="fas  fa-users"></i>
+        <p>
+          Users
+
+        </p>
+        <i class="right fas fa-angle-left"></i>
+      </a>
+      <ul class="nav nav-treeview">
+
+
+
+        <li class="nav-item">
+          <a href="{% url 'student:student_log' %}" class="nav-link ml-2">
+            <i class="far fa-xs fa-circle"></i>
+            <p>
+              Student Log
+            </p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="{% url 'teacher:teacher_log' %}" class="nav-link ml-2">
+            <i class="far fa-xs fa-circle"></i>
+            <p>
+              Teacher Log
+            </p>
+          </a>
+        </li>
+
+        <!-- <li class="nav-item">
+          <a href="{% url 'extrauser:user_log' %}" class="nav-link ml-2">
+            <i class="far fa-xs fa-circle"></i>
+            <p>
+              ExtraUser Log
+            </p>
+          </a>
+        </li> -->
+
+
+
+      </ul>
+    </li>
+  </ul>
+  <!-- ---- -->
+  <ul class="nav nav-treeview">
+
+    <li class="nav-item menu-close">
+      <a href="#" class="nav-link ml-2">
+        <i class="fas  fa-bullhorn"></i>
+        <p>
+          Announcement
+
+        </p>
+        <i class="right fas fa-angle-left"></i>
+      </a>
+      <ul class="nav nav-treeview">
+
+        <li class="nav-item">
+          <a href="{% url 'announcement:all_announcement_log' %}" class="nav-link ml-2">
+            <i class="far fa-xs fa-circle"></i>
+            <p>
+              All Announcement Log
+            </p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="{% url 'announcement:event_log' %}" class="nav-link ml-2">
+            <i class="far fa-xs fa-circle"></i>
+            <p>
+              Event Log
+            </p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="{% url 'announcement:notice_log' %}" class="nav-link ml-2">
+            <i class="far fa-xs fa-circle"></i>
+            <p>
+              Notice Log
+            </p>
+          </a>
+        </li>
+
+
+
+
+
+      </ul>
+    </li>
+  </ul>
+
+<!-- --- -->
+  <ul class="nav nav-treeview">
+
+    <li class="nav-item menu-close">
+      <a href="#" class="nav-link ml-2">
+        <i class="fas  fa-book"></i>
+        <p>
+          Academic
+
+        </p>
+        <i class="right fas fa-angle-left"></i>
+      </a>
+      <ul class="nav nav-treeview">
+        <li class="nav-item">
+          <a href="{% url 'academic:academic_log' %}" class="nav-link ml-2">
+            <i class="far fa-xs fa-circle"></i>
+            <p>
+              All Academic Logs
+            </p>
+          </a>
+        </li>
+
+
+        <li class="nav-item">
+          <a href="{% url 'academic:assignment_log' %}" class="nav-link ml-2">
+            <i class="far fa-xs fa-circle"></i>
+            <p>
+              Assignment Log
+            </p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="{% url 'academic:routine_log' %}" class="nav-link ml-2">
+            <i class="far fa-xs fa-circle"></i>
+            <p>
+              Routine Log
+            </p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="{% url 'academic:syllabus_log' %}" class="nav-link ml-2">
+            <i class="far fa-xs fa-circle"></i>
+            <p>
+              Syllabus Log
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'academic:semester_log' %}" class="nav-link ml-2">
+            <i class="far fa-xs fa-circle"></i>
+            <p>
+              Class Log
+            </p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="{% url 'academic:section_log' %}" class="nav-link ml-2">
+            <i class="far fa-xs fa-circle"></i>
+            <p>
+              Section Log
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'academic:subject_log' %}" class="nav-link ml-2">
+            <i class="far fa-xs fa-circle"></i>
+            <p>
+              Subject Log
+            </p>
+          </a>
+        </li>
+
+      </ul>
+
+  </ul>
+  <!-- -- -->
+  <ul class="nav nav-treeview">
+
+    <li class="nav-item menu-close">
+      <a href="#" class="nav-link ml-2">
+        <i class="fas  fa-user-cog"></i>
+        <p>
+          Administrator
+
+        </p>
+        <i class="right fas fa-angle-left"></i>
+      </a>
+      <ul class="nav nav-treeview">
+
+        <li class="nav-item">
+          <a href="{% url 'administrator:all_administrator_log' %}" class="nav-link ml-2">
+            <i class="far fa-xs fa-circle"></i>
+            <p>
+              All Administrator Log
+            </p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="{% url 'administrator:complain_log' %}" class="nav-link ml-2">
+            <i class="far fa-xs fa-circle"></i>
+            <p>
+              Complain Log
+            </p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="{% url 'administrator:certificate_log' %}" class="nav-link ml-2">
+            <i class="far fa-xs fa-circle"></i>
+            <p>
+              Certificate Log
+            </p>
+          </a>
+        </li>
+
+
+
+
+
+      </ul>
+    </li>
+  </ul>
+
+</li>

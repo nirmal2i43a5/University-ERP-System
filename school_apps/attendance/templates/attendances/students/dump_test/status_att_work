@@ -1,0 +1,217 @@
+
+{% extends 'admin_templates/base_admin.html' %}
+{% block title %}Manage Student Attendance {% endblock %}
+
+{% load static %}
+{% block main_content %}
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <!-- /.card-header -->
+
+
+
+    <div class="d-flex bd-highlight">
+
+      <div class=" flex-grow-1 bd-highlight">
+        <div class="card  card-info pt-3 pl-2">
+          <div class="card-header mb-2 mr-1">
+         <strong>   Student Attendance</strong>
+          </div>
+          {% include "attendances/students/includes/student_filter_form.html" %}
+        </div>
+
+      </div>
+
+  
+  {% if semester %}
+
+  <div class="d-flex flex-column bd-highlight " style="margin-right:10%;">
+    <div class="card px-4 py-3 ml-4 mt-0">
+      <div class="p-1 bd-highlight">
+        <strong>Semester</strong>: {{ semester.name }}
+      </div>
+      <div class="p-1 bd-highlight">
+        <strong>Section</strong> : {{ section.section_name }}
+      </div>
+      <div class="p-1 bd-highlight">
+
+        <strong>Subject</strong> : {{ subject.subject_name }}
+      </div>
+    </div>
+  </div>
+    
+  {% endif %}
+  
+    </div>
+    <form action="{% url 'attendance_app:save_student_attendance' %}" method="POST">
+
+      <!-- <input type="hidden" name = "semester_id" value = "{{ semester.id }}">
+        <input type="hidden" name = "section_id" value = "{{ section.id }}"> -->
+
+      {% csrf_token %}
+
+      <div class="card">
+        <!-- /.card-header -->
+        <div class="card-body ">
+
+          {% if students %}
+
+          <div class="d-flex bd-highlight">
+            <div class="p-2 flex-fill bd-highlight">
+              
+              <label class="mt-1" style=" text-align: right;clear: both;float:left; margin-right:10px;" for="">
+                Attendance Date:</label>
+              <input type="date" id="attendance_date" name="attendance_date" 
+                class="form-control col-md-6" required/>
+          
+              </div>
+            <div class="p-2 flex-fill bd-highlight" style = "margin-right:10%;">
+              <div class="alert alert-default-warning">
+                <input type="checkbox"  onclick="return false;" checked>  <strong>Present</strong>
+                <input type="checkbox"  onclick="return false;" >  <strong>Absent</strong>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            {% for student in students %}
+
+            <div class="col-md-6">
+              <div class="card card-header">
+                
+                <div class="row">
+
+                  <div class="col-md-4">
+
+                    <strong> {{forloop.counter}}</strong> . <a href="{% url 'admin_app:view_student' student.id %}">
+                    {{ student.student_user.full_name }} </a>
+                  </div>
+
+
+                  <div class="col-md-4">
+                    <!-- <input type='checkbox' checked='checked' name='student_data[]'
+                      value='{{ student.student_user.id }}'><label class='form-check-label'> -->
+                      
+                      <select class = "status" name="{{ student.student_user.id }}">
+                        
+                        <option value=""  selected>Choose Status</option>
+
+                        <option value="Present">Present</option>
+
+                        <option value="Absent(Informed)">Absent(Informed)</option>
+
+                        <option value="Absent(Not Informed)">Absent(Not Informed)</option>
+
+                        <option  value="Late">Late</option>
+
+                        <option  value="Excused">Excused</option>
+                      </select> 
+                  </div>
+
+                  <!-- <div class="col-md-4">
+                    <input type="text" id="id_remark"  name="{{ student.student_user.id }}" placeholder="Enter Remark" class="form-control">
+
+                  </div>  -->
+                </div>
+
+              </div>
+            </div>
+
+            {% endfor %}
+
+
+          </div>
+
+        </div>
+        <!-- /.card-body -->
+      </div>
+      <!-- /.card -->
+      <a href="{% url 'attendance_app:manage_student_attendance' %}" id="save_attendance" class="btn btn-sm btn-info btn-danger"><strong>Back</strong></a>
+      <button type="button" id="save_attendance" class="btn btn-sm btn-success"><strong>Save Attendance</strong></button>
+      {% endif %}
+
+    </form>
+
+      {% if subject and not students %}
+        <div class="alert alert-default-warning">No Student Found. Please, Add Student To Particular Class.
+        </div>
+
+        {% elif not students %}
+        <div class="alert alert-default-warning">Please, Search Appropriate Class, Section, and Subject For Taking Attendance.
+        </div>
+
+  
+      {% endif %}
+        
+  </div>
+</section>
+<!-- /.content -->
+
+{% endblock main_content %}
+
+{% block custom_js %}
+
+<script>
+  $(document).ready(function () {
+
+    $(document).on("click", "#save_attendance", function () {
+
+
+
+      var student_data = $("select[class='status']").map(function () {
+        
+      //  alert($(this).attr('name'))
+        status= $(this).children("option:selected").val();
+        student_id = $(this).attr('name') 
+       // remark = $('#id_remark').val()
+       
+        if ($(this).find('option:selected')) {
+         console.log($(this).attr('name'))
+          console.log($(this).attr('name'),)
+         // console.log({ "id": $(this).attr('name') , "status": text,'remark':remark })
+
+          return { "id":student_id , "status": status,};
+        }
+      }).get()
+    
+
+      var attendance_date = $("#attendance_date").val();
+      var semester_id = $("#id_semester").val();
+      var subject_id = $("#id_subject").val();
+      var section_id = $("#id_section").val();
+      
+      student_data = JSON.stringify(student_data)
+      console.log(student_data,"ii am json")
+      
+      $.ajax({
+        url: "{% url 'attendance_app:save_student_attendance' %}",
+        type: 'POST',
+        data: {
+          student_ids: student_data, attendance_date: attendance_date, subject_id: subject_id, semester_id: semester_id,
+          section_id: section_id
+        },
+      })
+        .done(function (response) {
+          console.log(response)
+        
+
+          if (response == "True") {
+            alert("Attendance Succesfully Saved")
+          }
+          else {
+            alert("Error in Saving Data")
+          }
+          location.reload()
+        })
+        .fail(function () {
+          alert("Failed to get Response")
+        })
+    })
+
+  })
+</script>
+
+
+{% endblock custom_js %}

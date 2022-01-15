@@ -1,0 +1,6 @@
+<option value='-----------------'>
+    -----------------
+</option>
+{% for item in items%}
+    <option value="{{item.pk}}" data-amount={{item.amount}}>{{item}}</option>
+{% endfor %}

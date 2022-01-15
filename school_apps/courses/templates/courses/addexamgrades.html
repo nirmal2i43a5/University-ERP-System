@@ -1,0 +1,74 @@
+{% extends 'student_base.html' %}
+
+{% block headextra %}
+<style>
+.greyba {
+    background-color:rgba(178,178,178,1.00);
+
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div style="margin-left: 25px; margin-right: 25px;">
+    <!-- <h4>Assign subjects to teacher</h4> -->
+    {% include 'override_table/header.html' with card_title='Add Exam Grades' %}
+    <div style="margin-left: 10px; margin-right: 10px; margin-top: 15px;">
+        <form id="exam_form"> 
+            <label for="term_select">Select term: </label>
+            <select name="term_select" id="term_select">
+                <option value="">Select Term</option>
+                {% for item in terms %}
+                    <option value="{{item.pk}}">{{ item }}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <label for="exam_select">Select exam: </label>
+            <select name="exam_select" id="exam_select">
+                <option value="">Select Examination</option>
+            </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="submit" class="btn btn-primary">Confirm</button>
+        </form>
+        <hr>
+        <div id="entryfield">
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        $(function() {
+            $('#exam_select').prop('disabled', 'disabled');
+        });
+        $('#term_select').change(function(){
+            var term_id = $(this).val();
+            if(term_id!=""){
+                $.ajax({
+                    url: " {% url 'courses:fill_exam_select'%}",
+                    data: {'term':term_id},
+                    success: function(data){
+                        $('#exam_select').html(data);
+                        $('#exam_select').prop('disabled', false);
+                    }
+                })
+            }else{
+                $('#exam_select').prop('disabled', 'disabled');
+                $('#exam_select option:eq(0)').prop('selected', true)
+            }
+        })
+
+        $('#exam_form').submit(function(e){
+            e.preventDefault();
+            exam_id = $("#exam_select").val();
+            $.ajax({
+                url: "{% url 'courses:examsAjax'%}",
+                data: {'exam_id':exam_id},
+                success: function (data) {
+                    $("#entryfield").html(data);
+                }
+            })
+        })
+    </script>
+{% endblock %}

@@ -1,0 +1,330 @@
+<!-- Add icons to the links using the .nav-icon class
+         with font-awesome or any other icon font library -->
+<li class="nav-item menu-close">
+  <a href="#" class="nav-link">
+    <i class="fas fa-xs fa-book-open"></i>
+    <p>
+      Exams
+      <i class="right fas fa-angle-left"></i>
+    </p>
+  </a>
+  <ul class="nav nav-treeview">
+
+    <!-- <li class="nav-item">
+              <a href=" {% url 'teacher:studentlist'%}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Marks Entry by student</p>
+              </a>
+            </li> -->
+
+    <li class="nav-item">
+      <a href=" {% url 'teacher:addscore' %}" class="nav-link ml-2">
+        <i class="far fa-xs fa-circle"></i>
+        <p>Marks entry by Subject</p>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a href=" {% url 'teacher:checkscore' %}" class="nav-link ml-2">
+        <i class="far fa-xs fa-circle"></i>
+        <p>Check Scores</p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href=" {% url 'exam:student-answer-upload' %}" class="nav-link ml-2">
+        <i class="far fa-xs fa-circle"></i>
+        <p>Upload Exam Answer</p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href=" {% url 'exam:check_exam_paper' %}" class="nav-link ml-2">
+        <i class="far fa-xs fa-circle"></i>
+        <p>Check Exam Paper</p>
+      </a>
+    </li> 
+    <li class="nav-item menu-close">
+      <a href="#" class="nav-link ml-2">
+        <i class="fas fa-xs fa-question-circle"></i>
+        <p>
+          Question
+          <i class="right fas fa-angle-left"></i>
+        </p>
+      </a>
+      <ul class="nav nav-treeview">
+    
+         
+    <li class="nav-item">
+      <a href=" {% url 'exam:question-add' %}" class="nav-link ml-2">
+        <i class="far fa-xs fa-circle"></i>
+        <p>Upload Question Paper</p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href=" {% url 'exam:question-index' %}" class="nav-link ml-2">
+        <i class="far fa-xs fa-circle"></i>
+        <p>Question List</p>
+      </a>
+    </li> 
+   
+  
+      </ul>
+    </li>
+    
+  
+  </ul>
+</li>
+<!-- ------------------ -->
+<!-- <li class="nav-item has-treeview">
+  <a href="{% url 'admin_app:manage_student' %}" class="nav-link">
+    <i class="fas fa-xs fa-user-graduate"></i>
+    <p>
+      Student
+
+
+    </p>
+  </a>
+
+</li> -->
+<!-- ----------------- -->
+<li class="nav-item has-treeview">
+  <a href="#" class="nav-link">
+    <i class="fas fa-xs fa-clipboard"></i>
+    <p>
+      Attendence
+
+      <i class="fas fa-angle-left right"></i>
+
+
+    </p>
+  </a>
+
+  <ul class="nav nav-treeview">
+    <li class="nav-item ml-3">
+      <a href="#" class="nav-link">
+        <i class="fas fa-xs fa-user-graduate"></i>
+        <p>
+          Student Attendence
+          <i class="fas fa-angle-left right"></i>
+
+        </p>
+      </a>
+      <ul class="nav nav-treeview">
+        <li class="nav-item ml-3">
+          <a href="{% url 'attendance_app:student_attendance' %}" class="nav-link">
+            <i class="far fa-xs fa-circle"></i>
+            <p>
+              Take Attendence
+
+            </p>
+          </a>
+        </li>
+        <li class="nav-item ml-3">
+          <a href="{% url 'attendance_app:student_attendance_report' %}" class="nav-link">
+            <i class="far fa-xs fa-circle "></i>
+            <p>
+               Attendence report
+
+            </p>
+          </a>
+        </li>
+        <li class="nav-item ml-3">
+          <a href="{% url 'attendance_app:edit_student_attendance' %}" class="nav-link">
+            <i class="far fa-xs fa-circle"></i>
+            <p>
+              Edit Attendence
+
+            </p>
+          </a>
+        </li>
+      
+        <li class="nav-item ml-3">
+          <a href="{% url 'teacher:student_view_by_teacher' %}" class="nav-link">
+            <i class="far fa-xs fa-circle "></i>
+            <p>
+              Student List
+
+            </p>
+          </a>
+        </li>
+        <!-- <li class="nav-item ml-3">
+          <a href="{% url 'teacher:student_view_by_teacher' %}" class="nav-link">
+            <i class="far fa-xs fa-circle"></i>
+            <p>
+              View Student
+
+            </p>
+          </a>
+        </li> -->
+
+      </ul>
+    </li>
+
+  </ul>
+
+</li>
+<!-- ------------------------------------------------academic------------------------------ -->
+<li class="nav-item has-treeview">
+  <a href="#" class="nav-link">
+    <i class="fas  fa-university"></i>
+    <p>
+      Academic
+      <i class="fas fa-angle-left right"></i>
+
+    </p>
+  </a>
+  <ul class="nav nav-treeview">
+
+
+    <li class="nav-item ml-3">
+      <a href="{% url 'admin_app:manage_assignment' %}" class="nav-link">
+         <i class="fas fa-xs fa-circle"></i>
+        <p>
+          Assignment
+
+        </p>
+      </a>
+    </li>
+ 
+
+
+    <li class="nav-item ml-3">
+      <a href="{% url 'teacher:checksubjects' %}" class="nav-link">
+        <i class="fas  fa-file"></i>
+        <p>
+          Check subjects
+
+        </p>
+      </a>
+    </li>
+
+    <li class="nav-item ml-3">
+      <a href="{% url 'teacher:checkstudents' %}" class="nav-link">
+        <i class="fas  fa-file"></i>
+        <p>
+          Check student list
+
+        </p>
+      </a>
+    </li>
+    <li class="nav-item ml-3">
+      <a href="{% url 'admin_app:manage_routine' %}" class="nav-link">
+        <i class="fas  fa-file"></i>
+        <p>
+          Routine
+
+        </p>
+      </a>
+    </li>
+    <li class="nav-item ml-3">
+      <a href="{% url 'admin_app:manage_syllabus' %}" class="nav-link">
+        <i class="fas  fa-file"></i>
+        <p>
+          Syllabus
+
+        </p>
+      </a>
+    </li>
+
+  </ul>
+</li>
+<!-- --------------------------------------announcement-------------------- -->
+<li class="nav-item has-treeview">
+
+  <a href="#" class="nav-link">
+    <i class="fas fa-xs fa-bullhorn"></i>
+    <p>
+      Announcement
+
+      <i class="fas fa-angle-left right"></i>
+
+
+    </p>
+  </a>
+
+
+  <ul class="nav nav-treeview">
+
+    <li class="nav-item has-treeview">
+      <a href="#" class="nav-link ml-3">
+        <i class="fas fa-xs fa-calendar"></i>
+        <p>
+          Event
+
+          <i class="fas fa-angle-left right"></i>
+
+
+        </p>
+      </a>
+
+
+
+      <ul class="nav nav-treeview">
+
+        <li class="nav-item ml-3">
+          <a href="{% url 'manage_event' %}" class="nav-link">
+            <i class="far fa-xs fa-circle"></i>
+            <p>
+              English Calendar
+
+            </p>
+          </a>
+        </li>
+        <!-- <li class="nav-item ml-3">
+      <a href="{% url 'admin_app:manage_holiday' %}" class="nav-link">
+        <i class="far fa-xs fa-circle"></i>
+        <p>
+          Nepali Calendar
+
+        </p>
+      </a>
+    </li> -->
+
+
+      </ul>
+
+    </li>
+
+    <!-- <li class="nav-item ml-3">
+        <a href="{% url 'admin_app:manage_notice' %}" class="nav-link">
+          <i class="fas fa-calendar-alt"></i>
+          <p>
+            Notice
+
+          </p>
+        </a>
+      </li>
+
+      <li class="nav-item ml-3">
+        <a href="{% url 'admin_app:manage_holiday' %}" class="nav-link">
+          <i class="fas fa-snowman"></i>
+          <p>
+            Holiday
+
+          </p>
+        </a>
+      </li> -->
+  </ul>
+
+</li>
+
+<li class="nav-item">
+  <a href="https://library.gci.edu.np/" class="nav-link">
+    <i class="fas  fa-book-open mr-1"></i>
+    <p>
+      Library
+
+    </p>
+  </a>
+</li>
+
+<li class="nav-item">
+  <a href="https://accounts.google.com/signin/v2/identifier?service=mail&passive=true&rm=false&continue=https%3A%2F%2Fmail.google.com%2Fmail%2F&ss=1&scc=1&ltmpl=default&ltmplcache=2&emr=1&osid=1&flowName=GlifWebSignIn&flowEntry=ServiceLogin" class="nav-link">
+    <i class="fas fa-envelope-open"></i>
+    <p>
+      E-mail
+
+    </p>
+  </a>
+</li>
+
+

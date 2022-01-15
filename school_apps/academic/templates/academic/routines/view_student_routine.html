@@ -1,0 +1,80 @@
+
+
+{% extends 'admin_templates/base_admin.html' %}
+{% load auth_extras %}
+{% load crispy_forms_tags %}
+{% load static  %}
+
+{% block title %} Manage Routine {% endblock %}
+{% block main_content %}
+
+<section class="content">
+  <div class="container-fluid">
+
+
+    <div class="row">
+      <div class="col-12">
+
+
+        <div class="card" >
+          
+          <div class="card-header" style="background-color: #094089;color:white;">
+            
+
+            <span><strong>View Routine</strong></span>
+
+
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body table-responsive">
+
+            
+
+
+                  <div class="col-md-3">
+  
+                    <div class="card">
+                      <div class="card-body">
+                  {% if routine.routine_file %}
+
+                        <a href="{{routine.routine_file.url}}">
+                  
+                        <img src="{% static 'image/document_static.png' %}" style=" width:100%" alt="">
+                       </a>
+                       {% else %}
+                       {% endif %}
+                        <hr>
+                        <div class="d-flex flex-column bd-highlight">
+                          <div class="p-2 bd-highlight"><strong> Class : </strong>
+                         {{routine.section}}
+                          </div>
+                          <div class="p-2 bd-highlight"><strong> Course : </strong>
+                            <div class="badge badge-info">{{routine.course_category}}</div>
+                          </div>
+                  
+                          
+                        
+                            
+                         
+                        </div>
+                  
+                  
+                  
+                      </div>
+                    </div>
+                  
+                  </div>
+              
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+
+{% endblock main_content %}
+
+

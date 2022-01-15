@@ -1,0 +1,131 @@
+:root {
+    --color-primary: #2981a7;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html {
+    font-size: 60.5%;
+  }
+  
+  body {
+    font-size: 1.6rem;
+  
+    /* try removing it when adding to your page if any problem occured */
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .student__idCard {
+    /* background-color: aquamarine; */
+    min-width: 30rem;
+    min-height: 50rem;
+    float:left;
+    margin-left: 35%;
+    position: relative;
+  }
+  
+  .card__top {
+    position: relative;
+  }
+  
+  .card__title {
+    background-color: var(--color-primary);
+    color: #fff;
+    text-align: center;
+    /* for applying z-index */
+    position: relative;
+    z-index: 2;
+  }
+  
+  svg {
+    height: 22rem;
+  }
+  
+  .card__top svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* z-index: 1; */
+    /* margin-top: -3rem; */
+  }
+  
+  .card__bottom {
+    position: absolute;
+    bottom: 0;
+  }
+  
+  .card__bottom svg {
+    position: absolute;
+    bottom: 1rem;
+    right: 0;
+    height: 30rem;
+  }
+  
+  .card__bottom-description {
+    padding: 0rem 1rem;
+    position: relative;
+    z-index: 2;
+    background-color: var(--color-primary);
+    color: #fff;
+    text-align: center;
+  }
+  
+  /* card body */
+  /* card body */
+  .card__body {
+    position: relative;
+    min-height: 30rem;
+  }
+  
+  .profile__img {
+    width: 10rem;
+    height: 10rem;
+    /* background-color: red; */
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    
+      
+    transform: translateX(-50%);
+    /* border-radius: 50%; */
+  }
+  
+  .profile__img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* remove when trying with images */
+    object-position: 0px 0px;
+  }
+  
+  .card__body-description {
+    text-align: center;
+    font-size: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.3rem;
+  
+    /* alignment */
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    bottom: 6%;
+    transform: translateX(-50%);
+  }
+  
+  .card__body-description li {
+    list-style: none;
+  }
+  
+  .card__body-description li:not(:last-child) {
+    margin-bottom: 0.8rem;
+    
+  }
+

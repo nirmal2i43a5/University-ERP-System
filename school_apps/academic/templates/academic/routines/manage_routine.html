@@ -1,0 +1,185 @@
+
+
+{% extends 'admin_templates/base_admin.html' %}
+{% load auth_extras %}
+{% load crispy_forms_tags %}
+{% load static  %}
+
+{% block title %} Manage Routine {% endblock %}
+{% block main_content %}
+
+<section class="content">
+  <div class="container-fluid">
+    {% if request.user|has_group:'Student' %}
+    <div class="card" >
+          
+      <div class="card-header" style="background-color: #094089;color:white;">
+        
+
+        <span><strong>View Routine</strong></span>
+
+       
+               {% if routine.routine_file %}
+
+                  <img src="{{ routine.routine_file.url }}" alt="" style="width:100%;"/>
+
+                  {% else %}
+                  {% endif %}
+
+      </div>
+    {% endif %}
+    {% if request.user.is_superuser or request.user|has_group:'Teacher' %}
+
+{% if not routines %}
+<div class="col-md-12">
+  <div class="alert alert-default-warning">
+    You should filter first to see routine.
+  </div>
+</div>
+{% endif %}
+  
+  {% include "includes/messages.html" %}
+
+    <div class="row">
+      <div class="col-12">
+
+
+        <div class="card" >
+          
+          <div class="card-header" style="background-color: #094089;color:white;">
+            
+
+            <span><strong>Manage Routine</strong></span>
+
+            <form class="float-right mb-2" role="search"  method="GET" style="height: 27px;margin:auto;position:relative;">
+              <div class="input-group">
+             
+          
+                {{ form|crispy }} 
+            
+                <div class="input-group-btn ">
+                  <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+    
+                </div>
+              </div>
+            </form>
+          
+
+          </div>
+
+          {% endif %}
+
+
+
+
+          <!-- /.card-header -->
+          <div class="card-body table-responsive">
+            {% if request.user.is_superuser %}
+
+
+        
+
+              {% url 'admin_app:add_routine' as button_url %}
+
+              {% include 'override_table/header_button.html' with button_title='routine' button_url=button_url %}
+  
+
+              <a href="{% url 'academic:routine_log' %}" class="btn btn-xs float-right mr-2 text-white" style="background-color: #094089;"  >
+                <span><i class="fas fa-sm fa-history"></i> <strong>Log History</strong></span>
+            </a>
+           {% endif %}
+
+<table id="dataTable" class="table table-sm  table-striped table-bordered table-hover  text-nowrap  dataTable no-footer">
+  <thead>
+    <tr>
+      <th></th>
+      <th>ID</th>
+      <th>Course</th>
+      <th>Section</th>
+
+      <th>File</th>
+      <th>Description</th>
+
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for routine in routines %}{% include 'academic/routines/delete.html' %}
+    <tr>
+      <td></td>
+      <td>{{ routine.id }}</td>
+      <td>
+        <div class="badge badge-info">{{ routine.course_category }}</div>
+      </td>
+      <td>{{ routine.semester }}</td>
+
+      <td>
+        <a href="{{ routine.routine_file.url }}" style="cursor: pointer;" class="btn btn-xs btn-info">
+           <i class="fas fa-xs fa-eye"></i> View routine
+        </a>
+      
+      </td>
+      <td>{{ routine.description }}</td>
+
+      <td>
+        <a href="{% url 'admin_app:edit_routine' routine.id %}" class="btn btn-xs btn-success"><i class="fas fa-xs fa-edit"></i></a>
+       
+           
+        <button  class="btn btn-danger btn-xs"  data-target='#deleteroutine-{{ routine.id }}' data-toggle="modal"><i
+          class="fas fa-sm fa-trash-alt"></i></button>
+      </td>
+
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+
+{% endblock main_content %}
+
+{% block custom_js %}
+<script>
+$(document).ready(function () {
+
+  $("#id_course_category").change(function(){
+    var course_category_id = $(this).val();
+    
+    $.ajax({
+        url:" {% url 'attendance_app:fill_semester_select' %}",
+        data:{'course_category':course_category_id},
+        success:function(data){
+            $("#id_semester").html(data);
+        }
+    })
+})
+
+
+$("#id_semester").change(function(){
+  var semester_id = $(this).val();
+  
+  
+  $.ajax({
+      url:" {% url 'attendance_app:fill_section_select' %}",
+      data:{'semester':semester_id},
+      success:function(data){
+          $("#id_section").html(data);
+      }
+  })
+})
+
+
+
+
+});
+</script>
+
+
+{% endblock custom_js %}

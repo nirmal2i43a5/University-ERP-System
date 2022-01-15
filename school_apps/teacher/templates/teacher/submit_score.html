@@ -1,0 +1,61 @@
+{% if students%}
+    <hr>
+    Please enter the score for the respective students.<br>
+        <hr>
+        <h4>Exam = {{exam.exam_title}}</h4>
+        <hr>
+        <form action="{% url 'teacher:submitscore' %}">
+            <input type="hidden" name="exam_id" value="{{exam.exam_id}}">
+            <table class="table table-hover">
+
+            {% for stu in students%}
+                <tr>
+                    <td> {{stu.application_id.student.student_user.full_name}}</td>
+                    <td> <input type="number" min="0" max="100" name="{{stu.application_id.student.student_user.full_name}}" value="{{stu.marks}}"style="width: 150px; text-align: right; " 
+                        {% if stu.marks == -1 %}
+                            placeholder="Absent"
+                        {% else %} 
+                            placeholder="{{stu.marks}}"
+                        {% endif %}
+                        ></td>
+                </tr>
+            {%endfor%}
+
+            <tr><td colspan="2" align="center" ><button class="btn btn-primary" type="submit"> Submit</button></td>
+            </form>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"> 
+                    <a href="{% url 'teacher:exportcsv' exam.exam_id %}"><button type="button" class="btn btn-primary" id="export_csv">Upload by csv instead</button></a>
+                </td>
+                </tr>
+                <tr>
+                <td colspan="2" align="center" id="uploadcsv"> 
+                    <form method="POST" action="{% url 'teacher:uploadcsv' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="file" name="file">
+                        <button class="btn btn-primary">Upload csv</button>
+                    </form>
+                </td>
+                
+            </tr>
+            
+        </table>
+        
+        <hr>
+{% else %}
+<hr>
+    There are no students that have appeared in this exam yet.
+{% endif %}
+
+{% block javascript %}
+    <script>
+        $(document).ready(function() {
+            $("#uploadcsv").hide();
+        });
+
+        $("#export_csv").click(function(event){
+            $("#uploadcsv").show();
+        })
+    </script>
+{% endblock %}

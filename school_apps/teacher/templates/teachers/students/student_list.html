@@ -1,0 +1,128 @@
+
+
+
+ {% extends 'admin_templates/base_admin.html' %}
+ {% load static %}
+ {% load auth_extras %}
+ {% load crispy_forms_tags %}
+ {% block title %}{{title}}{% endblock title %}
+
+ {% block main_content %}
+ <!-- Main content -->
+ <section class="content">
+   <div class="container-fluid">
+ 
+     {% include "includes/messages.html" %}
+     <div class="row">
+       <div class="col-md-12">
+         <!-- general form elements -->
+         <div class="card pl-2">
+          <div class="card-header mb-3" style="background-color: #094089;color:white;" >
+            
+
+            <span>Student Details</span>
+
+
+            
+            {% if request.user|has_group:'Teacher'   %}
+                          
+            <form class="float-right mb-2" role="search"  method="GET" style="height: 27px;margin:auto;position:relative;">
+              <div class="input-group">
+             
+          
+                {{ form|crispy }} 
+            
+                <div class="input-group-btn ">
+                  <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+    
+                </div>
+              </div>
+            </form>
+            {% endif %}
+  
+          
+
+          </div>
+ 
+           <table id="dataTable" class="table table-sm  table-striped table-bordered table-hover  text-nowrap  ">
+               <thead>
+                <tr>
+                  <th></th>
+                    <th>#</th>
+                    <th>Photo</th>
+                    <th>Name</th>
+                    <th>Student Id</th>
+                    <th>Roll</th>
+                    <th>Class</th>
+                    <th>Section</th>
+                    <th>Action</th>
+                </tr>
+               </thead>
+            <tbody>
+            
+                {% for student in students %}
+                <tr class="tbody">    
+                  <td></td>
+                    <td>{{ forloop.counter  }}</td>
+                    <td>
+                        {% if student.image %}
+            
+                        <img src="{{ student.image.url }}" alt="" style="width:35px;height:35px;" class="img-circle" />
+            
+                        {% else %}
+                        <img src="{% static 'image/default_profile.png' %}" alt="" style="width:35px;height:35px;" class="img-circle" />
+                        {% endif %}
+            
+                      </td>
+                      <td>{{ student.student_user  }}</td>
+                      <td>{{ student.stu_id  }}</td>
+                      <td>{{ student.roll_no  }}</td>
+                      <td>{{ student.semester.name  }}</td>
+                      <td>{{ student.section.section_name  }}</td>
+                      <td>
+                       <a href="{% url 'student:student_attendance_view' student.id %}" class="btn btn-xs"
+                        style="background-color: #094089;color:white;">
+                       <i class="fas fa-xs fa-eye"></i>  <strong>View Attendance</strong>
+                       </a>
+                      </td>
+                   
+                </tr>
+                    {% endfor %}
+               
+            </tbody>
+             
+            </table>
+           
+           
+           
+         </div>
+         <!-- /.card -->
+ 
+ 
+ 
+       </div>
+     </div>
+   </div>
+ </section>
+ <!-- /.content -->
+ {% endblock main_content %}
+
+
+ 
+ {% block custom_js %}
+
+
+<script>
+  $("#id_semester").change(function(){
+    var class_id = $(this).val();
+    
+    $.ajax({
+        url:" {% url 'courses:fill_section_select'%}",
+        data:{'class':class_id},
+        success:function(data){
+            $("#id_section").html(data);
+        }
+    })
+})
+</script>
+{% endblock custom_js %}

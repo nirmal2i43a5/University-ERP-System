@@ -1,0 +1,37 @@
+
+        <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="fas fa-xs fa-bus-alt"></i>
+              <p class="text-sm">
+                Transport
+  
+                <i class="fas fa-angle-left right"></i>
+  
+  
+              </p>
+            </a>
+  
+            <ul class="nav nav-treeview">
+              <li class="nav-item ml-3">
+                <a href="{% url 'admin_app:manage_transport' %}" class="nav-link">
+                  <i class="fas fa-xs fa-bus"></i>
+                  <p class="text-sm">
+                    Transport
+  
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item ml-3">
+                <a href="{% url 'admin_app:transport_member' %}" class="nav-link">
+                  <i class="fas fa-xs fa-chalkboard-teacher"></i>
+                  <p class="text-sm">
+                    Member
+  
+                  </p>
+                </a>
+              </li>
+             
+            </ul>
+  
+          </li>
+  

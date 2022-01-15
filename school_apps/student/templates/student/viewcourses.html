@@ -1,0 +1,64 @@
+{% extends 'student_base.html'%}
+{% block content %}
+
+
+<section class="content">
+    <div class="container-fluid">
+  
+  
+      <div class="row">
+        <div class="col-md-12">
+          <!-- general form elements -->
+          <div class="card card-info">
+            {% include 'override_table/header.html' with card_title='Select Semester' %}
+            <!-- /.card-header -->
+            <!-- form start -->
+           
+      <form id = "semester-form" class="ml-4 mt-4">
+          <div class="row" class="mb-3">
+              {% csrf_token %}
+              <label for "select_sem">Select semester:</label>
+              <select id="select_sem" class="form-select form-select-lg mb-3" >
+                <option value="">-----------</option>
+              {% for semester in semesters%}
+                  <option value ='{{semester}}'> {{semester}} </option>
+              {% endfor %}
+          </select>
+          
+          </div>
+      </form>
+
+        </div>
+        <!-- /.card -->
+  
+  
+        <div id="routine">
+            <h4>Select semester to view routine.</h4>
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+  
+{% endblock %}
+
+{% block name%}
+{{ student.student_name}}
+{% endblock %}
+
+{% block javascript %}
+<script> 
+    $("#select_sem").change(function(){
+        semester = $(this).val();
+
+        $.ajax({
+            url: "{% url 'student:show_routine'%}",
+            data: {'semester':semester},
+            success: function (data) {
+                $("#routine").html(data);
+            }
+        })
+    })
+    
+</script>
+{% endblock %}

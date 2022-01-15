@@ -1,0 +1,22 @@
+{% for assignment in assignments_logs %}
+<tr>
+  
+  <td><strong>Assignment</strong></td>
+  <td>{{assignment.title}}, {{assignment.section}}</td>
+  <td>{{assignment.history_date}}</td>
+
+  
+  {% if assignment.get_history_type_display == 'Changed'  %}
+  <td><span class="badge badge-sm badge-info">Edited</span></td>
+  {% elif assignment.get_history_type_display == 'Deleted'  %}
+  <td><span class="badge badge-sm badge-danger">Deleted</span></td>
+  {% elif assignment.get_history_type_display == 'Created'  %}
+  <td><span class="badge badge-sm badge-info">Created</span></td>
+  {% endif %}
+    
+
+  <td>{{assignment.history_user}}</td>
+
+
+</tr>
+{% endfor %}

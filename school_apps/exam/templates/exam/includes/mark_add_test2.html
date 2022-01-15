@@ -1,0 +1,83 @@
+{% load static %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+
+<div class="card-body">
+    <form  action="" method="POST" enctype="multipart/form-data">
+
+        {% csrf_token %}
+
+        {{form|crispy}}
+
+
+        <table class="table form-table table-sm" id = "sub_question_table" hidden>
+            <thead class="text-center">
+                <tr>
+                    <th>Question No.</th>
+                    <th>Total Mark</th>
+                    <th>Description</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+
+                   
+                 
+                </tr>
+                <br>
+                {% for form_data in formset %}
+                <tr class="item" >
+                    <td>
+                        {{ form_data.question_no }}
+                    </td>
+
+                    <td>
+
+                        <span class="sub_question_mark">
+                        {{ form_data.total_marks }}
+
+                        </span>
+                        
+                    </td>
+                    
+                    <td>
+                        {{ form_data.question_description }}
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger btn-sm remove-form-row" id="{{ formset.prefix }}">
+
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+
+                {{ formset.management_form }}
+                <tr>
+                    <td colspan="8"
+                        style="border-left: none!important; border-right: none !important; border-bottom: none!important;">
+                        <button type="button" class="btn btn-sm btn-success add-form-row" id="{{ formset.prefix }}">
+                            Add
+                        </button>
+
+                    </td>
+                    <td>
+      <!-- <button id = "calculate" class = "btn btn-xs btn-success mr-3" hidden>Calculate</button> -->
+
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+ 
+
+
+
+        <button type="submit" id = "calculate" class="btn btn-sm btn-success float-right  mt-2">Submit</button>
+    </form>
+
+    </div>
+  
+
+    

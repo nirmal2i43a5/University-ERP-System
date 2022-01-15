@@ -1,0 +1,95 @@
+<table class="table table-hover">
+    <form>
+        <thead class="thead" style="background-color: #094089;color:white;">
+            <tr>
+                <td></td>
+                <td>Form id</td>
+                <td>Student</td>
+                <td>Term</td>
+                <td>Subject</td>
+                <td>Date</td>
+                <td>Status</td>
+            </tr>
+        </thead>
+        <tbody>
+            
+            <tr id="form-data"></tr>
+                <td><input type="radio" name=application_radio value={{item.application_id}}>
+                </td>
+                <td>{{item.application_id}}</td>
+                <td>{{item.student.student_name}}</td>
+                <td>
+                    <table>
+                        {%for exam in item.exam%}
+                        <tr><td>{{exam}}</td></tr>
+                    {% endfor %}
+                    </table>
+                </td>
+                <td><table>
+                    {%for exam in item.exam%}
+                    <tr><td>{{exam.subject_id}}</td></tr>
+                    {% endfor %}
+                </table></td>
+                <td><table>
+                    {%for exam in item.exam%}
+                    <tr><td>{{exam.date}}</td></tr>
+                    {% endfor %}
+                </table></td>
+                <td>{% if item.status == False %}
+                    Pending
+                    {% else %}
+                    Registered
+                    {% endif %}
+                </td>
+            </tr>
+            
+            <td colspan="7" align="right"><button type="button" class="btn btn-primary" id="open-ApplyDialog" data-toggle="modal" data-target = "#confirm-modal">
+                Confirm
+              </button></td>
+
+        </tbody>
+
+        <div class="modal fade" id="confirm-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Exam Application</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div id="Application">
+                    Confirm application for {{item.application_id}}
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" id="firstmodal_close_button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                  <input type="submit" class="btn btn-primary" value="Confirm">
+                </div>
+              </div>
+            </div>
+          </div>
+    </form>
+</table>
+
+
+{% block javascript %}
+<script>
+    $("#confirm-button").click(function(event){
+        //var form_id = $("#form-data").data('id')
+        var form_id = $('input[name="application_radio"]:checked').val()
+        alert(form_id)
+
+        /* $.ajax({
+            url: "{% url 'courses:confirmapplicationAjax' %}",
+            data: {'form_id':form_id},
+            success: function(data){
+            },
+            error: function(){
+                alert("Error")
+            }
+        }) */
+    })
+</script>
+{% endblock %}

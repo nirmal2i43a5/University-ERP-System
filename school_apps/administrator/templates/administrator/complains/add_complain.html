@@ -1,0 +1,45 @@
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block custom_js %}
+<script type="text/javascript" src="{% static 'administrator/user_role.js' %}"></script>
+{% endblock custom_js %}
+
+
+{% block title %}
+  {{title}}
+{% endblock title %}
+  
+  
+{% block main_content %}
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+
+    {% include "includes/messages.html" %}
+
+    <div class="row">
+      <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="card card-info">
+          {% include 'override_table/header.html' with card_title='Add Complain' %}
+          <!-- /.card-header -->
+          
+          <!-- form start -->
+          {% include 'admin_templates/form.html' with messages=messages form=form  button_text="Add Complaint" %}
+
+        <!-- /.card -->
+
+
+
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+{% endblock main_content %}
+
+

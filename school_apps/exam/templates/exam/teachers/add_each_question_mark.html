@@ -1,0 +1,210 @@
+{% extends 'admin_templates/base_admin.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% block title %}
+{{title}}
+{% endblock title %}
+<!-- 
+<script>
+    // Adjust iframe height according to the contents
+    parent.jQuery.fancybox.getInstance().update();
+
+    // Close current fancyBox instance
+    parent.jQuery.fancybox.getInstance().close();
+</script> -->
+{% block main_content %}
+<!-- Main content -->
+
+<section class="content">
+    <div class="container-fluid">
+
+
+        {% include "includes/messages.html" %}
+
+        <div class="row">
+
+            <!-- <div class="col-md-8">
+
+                <iframe src="/viewer/viewer.html?file={{questionpaper.file.url}}#magazineMode=true" width="100%"
+                    height="700px" frameborder="0"></iframe>
+            </div> -->
+            <div class="col-md-12">
+                <div class="card card-info">
+
+                    {% if paper_instance %}
+                    {% include 'override_table/header.html' with card_title='Edit Mark' %}
+                    {% else %}
+                    {% include 'override_table/header.html' with card_title='Add Mark' %}
+
+
+                    {% endif %}
+
+
+                    {% include "exam/includes/mark_add_test2.html" %}
+
+                </div>
+            </div>
+            <iframe src="/viewer/viewer.html?file={{questionpaper.file.url}}#magazineMode=true" width="100%"
+                height="700px" frameborder="0"></iframe>
+
+
+
+
+        </div>
+    </div>
+</section>
+<!-- /.content -->
+{% endblock main_content %}
+
+
+
+{% block custom_js %}
+<script type="text/javascript">
+
+
+    function updateElementIndex(el, prefix, ndx) {
+        var id_regex = new RegExp('(' + prefix + '-\\d+-)');
+        var replacement = prefix + '-' + ndx + '-';
+        if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex,
+            replacement));
+        if (el.id) el.id = el.id.replace(id_regex, replacement);
+        if (el.name) el.name = el.name.replace(id_regex, replacement);
+    }
+
+    function addForm(btn, prefix) {
+        var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+        if (formCount < 1000) {
+            // Clone a form (without event handlers) from the first form
+            var row = $(".item:last").clone(false).get(0);
+
+            // Insert it after the last form
+            $(row).removeAttr('id').hide().insertAfter(".item:last").slideDown(300);
+
+            // Remove the bits we don't want in the new row/form
+            // e.g. error messages
+            $(".errorlist", row).remove();
+            $(row).children().removeClass("error");
+
+            // Relabel or rename all the relevant bits
+            $(row).find('.formset-field').each(function () {
+                updateElementIndex(this, prefix, formCount);
+                $(this).val('');
+                $(this).removeAttr('value');
+                $(this).prop('checked', false);
+            });
+
+            // Add an event handler for the delete item/form link
+            $(row).find(".delete").click(function () {
+                return deleteForm(this, prefix);
+            });
+            // Update the total form count
+            $("#id_" + prefix + "-TOTAL_FORMS").val(formCount + 1);
+
+        } // End if
+
+        return false;
+    }
+
+
+    function deleteForm(btn, prefix) {
+        var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+        if (formCount > 1) {
+            // Delete the item/form
+            var goto_id = $(btn).find('input').val();
+            if (goto_id) {
+                $.ajax({
+                    url: "/" + window.location.pathname.split("/")[1] + "/formset-data-delete/" + goto_id + "/?next=" + window.location.pathname,
+                    error: function () {
+                        console.log("error");
+                    },
+                    success: function (data) {
+                        $(btn).parents('.item').remove();
+                    },
+                    type: 'GET'
+                });
+            } else {
+                $(btn).parents('.item').remove();
+            }
+
+            var forms = $('.item'); // Get all the forms
+            // Update the total number of forms (1 less than before)
+            $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
+            var i = 0;
+            // Go through the forms and set their indices, names and IDs
+            for (formCount = forms.length; i < formCount; i++) {
+                $(forms.get(i)).find('.formset-field').each(function () {
+                    updateElementIndex(this, prefix, i);
+                });
+            }
+        } // End if
+
+        return false;
+    }
+
+    $("body").on('click', '.remove-form-row', function () {
+        deleteForm($(this), String($('.add-form-row').attr('id')));
+    });
+
+    $("body").on('click', '.add-form-row', function () {
+        return addForm($(this), String($(this).attr('id')));
+    });
+
+
+    //-------------------------For sub form ------------------------
+    $('#id_has_sub_question').change(function () {
+        if (this.checked) {
+            $('#id_total_marks').prop('readonly',true)
+
+          //  $("#calculate").removeAttr("hidden", false);
+            $("#sub_question_table").removeAttr("hidden");
+        } else {
+         //   $("#calculate").prop("hidden", true);
+             $('#id_total_marks').removeAttr('readonly')
+            $("#sub_question_table").prop("hidden", true);
+        }
+    })
+    
+    /*
+        $("#id_sub_questions-0-total_marks").keyup(function() {
+            sub_question_marks = $(this).val()
+             $('#id_total_marks').val(sub_question_marks)
+          });*/
+
+
+    function sumOfIncome() {
+        var sum = 0;
+        $('.sub_question_mark').each(function () {
+            var val = $(this).val();
+
+            if ($.isNumeric(val)) {
+                sum += parseInt(val);
+            }
+        }
+        );
+        console.log(sum)
+         $('#id_total_marks').val(sum);
+    }
+
+        $('#calculate').click(function () {
+            if($('#id_has_sub_question').checked){
+                sumOfIncome();
+
+            }
+
+      
+
+    })
+
+    /*
+        $('.item').on("input", function() {
+            alert("dsajkdsjkds")
+      let sum = 0
+      $amount2.each(function() {
+        sum += Number(this.value);
+      });
+      $('#id_total_marks').val(sum)
+    });*/
+
+</script>
+{% endblock %}

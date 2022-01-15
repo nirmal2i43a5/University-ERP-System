@@ -1,0 +1,67 @@
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+{{title}}
+{% endblock title %}
+
+{% block main_content %}
+<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+
+    {% include "includes/messages.html" %}
+
+    <div class="row">
+      <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="card card-info">
+          {% include 'override_table/header.html' with card_title=title %}
+          <!-- /.card-header -->
+          <!-- form start -->
+          <form  method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+          <div class="card-body">
+            <a name="contact"></a>
+           
+            <strong>
+                <label for="email">To Email :</label></strong>
+            <input required class="form-control" id="email" type="text" name="email" placeholder="Enter Email"><br>
+              <strong>
+                <label for="sub">Subject</label></strong>
+            <input required class="form-control" id="sub" type="text" name="subject" placeholder="Enter Subject For Your Email"><br>
+
+            <!-- <strong><label for="eml">Email</label></strong>
+            <input required class="form-control" id="eml" type="text" name="email"><br> -->
+
+              <strong>   <label for="msg">Message</label></strong>
+            <textarea required id="msg" class="form-control form-control-lg" name="message"></textarea><br>
+            
+            <script type="text/javascript">
+              CKEDITOR.replace( 'message' ,
+              
+              
+              );
+           </script>
+            <strong>
+              <label for="file">Attachment</label></strong>
+          <input  class="form-control" id="file" type="file" name="file" multiple="multiple"><br>
+
+
+            <input id="submit-btn" class="btn btn-sm btn-success mt-2" type="submit" value="SEND MESSAGE">
+          </div>
+        </form>
+        </div>
+        <!-- /.card -->
+
+
+
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+
+{% endblock main_content %}

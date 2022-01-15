@@ -1,0 +1,25 @@
+
+you can create different html pages for different teams like office team have their own html page and factory team have different html page .
+
+def user_login(request):
+    if request.method == 'POST':
+        username=request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username,password=password)
+        if user:
+            if user.is_active:
+                if user.is_admin:
+                    login(request,user)
+                    return HttpResponseRedirect(reverse('adminpage'))
+                    #return render(request,'admin.html')
+                else:
+                    login(request,user)
+                    return HttpResponseRedirect(reverse('userpage'))
+                    #return render(request,'user.html')
+            else:
+                return HttpResponseRedirect('Account not active')
+        else:
+            #message={"info":"someone tried to login and failed! ","details":"username :{} and password: {}".format(username,password)}
+            return HttpResponse("someone tried to login and failed ! <br />details: <br />username: {} <br /> password:{} ".format(username,password))
+    else:
+        return render(request,'login.html')

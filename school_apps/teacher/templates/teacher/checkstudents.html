@@ -1,0 +1,44 @@
+{% extends 'student_base.html'%}
+
+{% block content%}
+<div class="container" >
+    {% include 'override_table/header.html' with card_title='Check Student List' %}
+    <div class="container" style="margin-top: 15px;">
+        <div id="form">
+            <form action=" {% url 'teacher:checkstudents' %}" method="POST">
+                {% csrf_token %}
+                <label for="class_id">Choose Subject</label>
+                <select name="class_id">
+                    {% for item in subjects %}
+                    <option value ="{{item.pk}}" selected> {{item.subject}} {{item.section}}</option>
+                    {% endfor %}
+                </select>
+                <input type="submit">
+            </form>
+        </div>
+
+        {% if students %}
+        <hr>
+        <table class="table table-hover">
+            <thead class="thead" style="background-color: #094089;color:white;">
+                <tr>
+                    <th>Student ID</th>
+                    <th>Username</th>
+                    <th>Student Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in students %}
+                 <tr>
+                     <td> {{ item.student_id.stu_id}}</td>
+                     <td> {{ item.student_id.student_user.username}}</td>
+                     <td> {{ item.student_id.student_user.full_name}}</td>
+                 </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}

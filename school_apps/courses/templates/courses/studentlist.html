@@ -1,0 +1,21 @@
+{% if students %}
+<table class = "table table-hover">
+    <thead class= "thead-dark">
+        <tr>
+            <td>Student id</td>
+            <td>Student name</td>
+            <td>Action</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for student in students %}
+            <tr>
+                <td>{{student.student_user.username}}</td>
+                <td>{{student.student_user.full_name}}</td>
+                <td><a class="btn btn-primary" href="{% url 'courses:studentmarksentry' student.student_user.username%}" role="button">Confirm</a></td>
+            </tr>        
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+

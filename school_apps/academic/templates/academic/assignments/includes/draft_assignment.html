@@ -1,0 +1,93 @@
+{% load static %}
+
+<div class="row">
+    <div class="col-md-0 my-3">
+     <span>
+
+      
+      {% if assignment.file %}
+      <a href="{{ assignment.file.url }}">
+        <img src="{% static 'image/assignment.jpg' %}" alt="" style="width:50px;height:50px;" class="img-rectangle" />
+ 
+        </a>
+      {% else %} 
+               
+       <a href="">
+        <img src="{% static 'image/assignment.jpg' %}" alt="" style="width:50px;height:50px;" class="img-rectangle" />
+ 
+        </a>
+      {% endif %}
+ 
+
+        </span>
+
+    </div>
+    <div class="col-md-10">
+
+ 
+     <div class="card">
+ 
+       <div class="card-body ">
+      
+           
+         <div class="d-flex justify-content-between" >
+           
+           <div>
+            {% if assignment.file %}
+             <a href="{{ assignment.file.url }}" class="text-capitalize">
+             <strong> {{ assignment.title }}</strong>
+
+             </a>
+            {% else %}
+            <a href="" class="text-capitalize">
+              <strong> {{ assignment.title }}</strong>
+ 
+              </a>
+            {% endif %}
+           </div>
+        
+          
+           <div>
+             0/25 turned in 
+           </div>
+           
+         </div>
+         <div class="d-flex justify-content-between">
+           <div>
+             <strong> {{ assignment.Subject }}</strong>, {{ assignment.section }} ,
+             <strong>Due : </strong>{{ assignment.deadline }}
+
+           </div>
+          
+         
+           <div>
+             {{total_reviewed}} reviewed
+           </div>
+           
+         </div>
+       
+       
+       </div>
+     </div>
+
+    </div>
+    <div class="col-md-0">
+      <div class="d-flex flex-column mt-1">
+        <div>
+     <a href="{% url 'academic:draft_publish_unpublish' assignment.id %}" class="btn btn-xs btn-info"><strong>Publish</strong></a>
+
+        </div>
+        <div>
+     <a href="{% url 'admin_app:edit_assignment' assignment.id %}" class="btn btn-xs btn-success mt-1"><strong>Edit</strong></a>
+
+        </div>
+        <div>
+         <button  class="btn btn-danger btn-xs"  data-target='#deleteAssignment-{{ assignment.id}}' data-toggle="modal"><strong>Delete</strong>
+           </button>
+        </div>
+        
+      </div>
+    </div>
+    
+
+

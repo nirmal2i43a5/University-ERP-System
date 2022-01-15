@@ -1,0 +1,399 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- <link rel="stylesheet" href="{% static 'resultpage/style.css' %}"> -->
+
+    <style>
+        html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+div.outer_div{
+    border-style: solid;
+    padding: 1%;
+    margin-top: 2%;
+}
+
+div.table_container{
+    margin-top: 2%;
+}
+
+
+
+table, th, td {
+    border:2px solid black;
+    border-collapse: collapse;
+}
+td, th{
+    border:1px solid black;
+    border-top: none;
+    border-bottom: none;
+    font-size: 20px;
+}
+
+tr:last-child{
+    border:1px solid black;
+    border-top: none;
+}
+
+tr:first-child{
+    border:2px solid black;
+    border-bottom: none;
+}
+
+th.sn{
+    width: 10%;
+;
+}
+
+th.subject{
+    width: 30%;
+
+}
+
+div.showdata{
+    font-size: 20px;
+}
+
+th.grade{
+    width: 10%;
+
+}
+
+th.marks{
+    width: 10%;
+
+}
+
+th.subjectrank{
+    width: 8%;
+
+}
+
+td{
+
+    padding-top: .25%;
+    padding-bottom: .25%;
+}
+
+div.block{
+    min-height: 150px;
+    
+
+}
+
+div.signature{
+    text-align: center;
+}
+    </style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css' %}">
+    <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <!-- AdminLTE App -->
+    <script src="{% static 'dist/js/adminlte.min.js' %}"></script>   
+    <style>
+        @media print {
+            div.breakpage {
+                page-break-before: always;
+            }
+        }
+      </style>
+</head>
+<body>
+    {% for form in applications %}
+    <div class = "container"  style="padding-top: 3%;">
+        <div class="row">
+            <div class="col-12">
+                <div class="text-center">
+                    <!-- <img src="/static/image/global_college_logo.png" style="width:191px;height:65px;" class="img-rectangle "> -->
+                </div>
+                
+                
+                <!-- <h6 class="text-center">
+                    Mid-Baneshwor, Kathmandu, Nepal
+                </h6>
+                <h4 class="text-center">
+                    <strong> MARK-SHEET</strong>
+                </h4> -->
+            </div>
+          <!-- /.col -->
+        </div>
+
+        <div class="outer_div">
+            <div class = "row showdata">
+                <div class = "col-2">
+                    <strong>Name:</strong>
+                </div>
+                <div class = "col-6">
+                    {{form.student.student_user.full_name}}
+                </div>
+                <div class = "col-2">
+                    <strong>Roll No:</strong>
+                </div>
+                <div class = "col-2">
+                    {{form.student.roll_no}}
+                </div>
+            </div>
+
+            <div class = "row showdata">
+                <div class = "col-2">
+                    <strong>Course:</strong>
+                </div>
+                <div class = "col-6">
+                    A-Level
+                </div>
+                <div class = "col-2">
+                    <strong>Shift:</strong>
+                </div>
+                <div class = "col-2">
+                    Day
+                </div>
+            </div>
+
+            <div class = "row showdata">
+                <div class = "col-2">
+                    <strong>Level:</strong>
+                </div>
+                <div class = "col-6">
+                    {{form.student.semester.level}}
+                </div>
+                <div class = "col-2">
+                    <strong>Section:</strong>
+                </div>
+                <div class = "col-2">
+                    {{form.student.section}}
+                </div>
+            </div>
+
+            <div class = "row showdata">
+                <div class = "col-2">
+                    <strong>Examination:</strong>
+                </div>
+                <div class = "col-6">
+                    {{form.term.term_name}}
+                </div>
+                <div class = "col-2">
+                    <strong>Academic Year:</strong>
+                </div>
+                <div class = "col-2">
+                    {{form.term.year}}
+                </div>
+            </div>
+        </div>
+        <div class = "table_container">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="sn text-center">Subject Code</th>
+                        <th class="subject text-center">Subject</th>
+                        <th class="grade text-center">Marks</th>
+                        {% if form.term.type == 'Term' %}
+                        <th class="marks text-center">Grade</th>
+                        {% endif %}
+                        <th class="subjectrank text-center">Highest Obtained</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for exam in form.exam.all %}
+                      <tr>
+                        <td class="text-center">
+                          {{exam.subject_id.subject_code}}
+                        </td>
+                        
+                        <td>
+                          <strong>{{exam.subject_id.subject_name}} 
+                            (
+                                {% if exam.subject_id.subject_code == "9608" %}
+                                9618
+                                {% else %}
+                                {{exam.subject_id.subject_code}}
+                                {% endif %}
+                            )</strong>
+                        </td>
+                        <td class="text-center">
+                          {% for grade in gradeinfo %}
+                          {% if grade.application_id == form %}
+                            {% if grade.exam_id == exam%}
+                              {% if grade.is_absent == True %}
+                              Absent
+                              {% else %}
+                              {{grade.marks}}
+                              {% endif %}
+                            {% endif %}
+                          {% endif %}
+                          {% endfor%}
+                        </td>
+                        {% if form.term.type == 'Term' %}
+                            <td class="text-center">
+                            {% for grade in gradeinfo %}
+                            {% if grade.application_id == form %}
+                                {% if grade.exam_id == exam%}
+                                {% if grade.is_absent == True %}
+                                Absent
+                                {% else %}
+                                {{grade.grade}}
+                                {% endif %}
+                                {% endif %}
+                            {% endif %}
+                            {% endfor%}
+                            </td>
+                        {% endif %}
+                        
+                        <td class="text-center">
+                          <!-- {% for grade in gradeinfo %}
+                          {% if grade.application_id == form %}
+                            {% if grade.exam_id == exam%}
+                              {{grade.rank}}
+                            {% endif %}
+                          {% endif %}
+                          {% endfor%} -->
+
+                          {% for att_key, att_values in highest_obtained.items %}
+                                {% if att_key == exam %} 
+                                    {{att_values}}
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+    
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+            </table>
+        </div>
+
+        <div class="outer_div">
+            
+
+            <div class = "row showdata">
+                <div class = "col-2">
+                    <strong>Rank:</strong>
+                </div>
+                <div class = "col-6">
+
+                    {% for att_key, att_values in final_result.items %}
+                            {% if att_key == form.student %} 
+                                {% if att_values == 'Passed' %}
+                                    {% for t_item in total_rank %}
+                                        {% if t_item.student == form.student %}
+                                            {{t_item.rank}}
+                                        {% endif %}
+                                    {% endfor %}
+                                {% else %}
+                                Unranked
+                                {% endif %}
+                            {% endif %}
+                    {% endfor %}
+                
+                </div>
+                <!-- <div class = "col-2">
+                    <strong>Total Present Days:</strong>
+                </div>
+                <div class = "col-2">
+                    {% for att_key, att_values in attendance_list.items %}
+                        {% if att_key == form.student %} 
+                            {{att_values}}
+                        {% endif %}
+                    {% endfor %}
+                </div> -->
+            </div>
+
+            <div class = "row showdata">
+                    {% if form.term.type == 'Term' %}
+                        <div class = "col-2">
+                            <strong>Best Grades:</strong>
+                        </div>
+                        <div class = "col-6">
+                            {% for att_key, att_values in best_grades.items %}
+                                {% if att_key == form.student %} 
+                                    {{att_values}}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                    <div class = "col-8"></div>
+                    {% endif %}
+                    <!-- <div class = "col-2">
+                        <strong>Total Working Days:</strong>
+                    </div>
+                    <div class = "col-2">
+                        {{total_days}}
+                    </div> -->
+                </div>
+
+            <div class = "row showdata">
+                <div class = "col-2">
+                    <strong>Result:</strong>
+                </div>
+                <div class = "col-6">
+                    <i>
+                        {% for att_key, att_values in final_result.items %}
+                            {% if att_key == form.student %} 
+                                {{att_values}}
+                            {% endif %}
+                        {% endfor %}
+                    </i>
+                </div>
+            </div>
+
+            <div class="row showdata">
+                <div class = "col-2">
+                    <strong>Remarks:</strong>
+                </div>
+                <div class = "col-6">
+                    {{form.remarks}}
+                </div>
+                
+            </div>
+            <div class="row showdata">
+                <div class="block">
+
+                </div>
+            </div>
+
+            <div class ="row showdata" >
+                <div class="col-4" >
+                    <br>
+                    <br><br> 
+                    Issue Date: Nov. 20, 2021
+                </div>
+
+                <div class="col-4 signature">
+                    <img src="{% static 'image/gci_signature_1.png'%}" width="180" height="80"><br>
+                    <strong>_____________________</strong><br>
+                    <strong> Program Co-ordinator</strong>
+                </div>
+
+                <div class="col-4 signature">
+                    <!-- <img src="{% static 'parent_images/django.jpeg'%}"><br> -->
+                    <img src = "/static/image/gci-signature.png"><br>
+                    <strong>_______________________</strong><br>
+                    <strong> Principal</strong>
+                </div>
+            </div>
+            
+        </div>
+        <div class="breakpage"></div>
+    </div>
+    {% endfor %}
+
+    <script>
+        /* window.onload = function () {
+            window.print();
+        }*/
+    </script>
+</body>
+</html>

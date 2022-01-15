@@ -1,0 +1,23 @@
+{% load crispy_forms_tags %}
+
+
+
+<div class="col-md-6">
+
+    <form role="form" action="{{ action_path }}" class = "select-search" method="post" enctype="multipart/form-data"  >
+        {% csrf_token %}
+    
+      <div class="card-body">
+        {{ form.media }}<!--This is for richtexteditor-->
+      {{ form|crispy }}
+
+      <a href = "{{back_url}}" class="btn btn-sm btn-danger ">Back</a>
+      <button type="submit" class="btn btn-sm btn-success ">{{ button_text }}</button>
+    
+      </div>
+      <!-- /.card-body -->
+    
+    
+    </form>
+    
+</div>

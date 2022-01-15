@@ -1,0 +1,66 @@
+
+
+    <div class="panel-body profile-view-dis">
+        <div class="row">
+           
+                <div class="col-sm-6">
+                    <div class="profile-view-tab">
+                        <p><span>Joining Date </span>: {{ teacher.join_date }} </p>
+                    </div>
+                </div>
+               
+                <div class="col-sm-6">
+                    <div class="profile-view-tab">
+                        <p><span>Email </span>: 
+                       {{ teacher.staff_user.email }}</p>
+                    </div>
+                </div>
+                
+                <div class="col-sm-6">
+                    <div class="profile-view-tab">
+                        <p><span>Address </span>: 
+                            {{ teacher.address }}</p>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="profile-view-tab">
+                        <p><span>Username </span>: 
+                            {{ teacher.staff_user.username }}</p>
+                    </div>
+                </div>
+             
+            
+                <div class="col-sm-6">
+                    <div class="profile-view-tab">
+                        <p><span>Subject </span>: 
+
+                            {% for subject in subjects %}
+                            {{ subject.subject_name }},
+                              
+                            {% endfor %}</p>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="profile-view-tab">
+                        <p><span>Religion </span>: {{ teacher.religion }}</p>
+                    </div>
+                </div>
+         
+                <div class="col-sm-6">
+                    <div class="profile-view-tab">
+                        <p><span>Last Login </span>: {{ teacher.staff_user.last_login }}</p>
+                    </div>
+                </div>
+       
+       <!--sjsjs-->
+       
+        </div>
+    </div>
+ <style>
+     p{
+         font-weight: 300;
+     }
+    span{
+        font-weight: 400;
+    }
+ </style>

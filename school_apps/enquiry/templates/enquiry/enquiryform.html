@@ -1,0 +1,34 @@
+{% extends 'admin_templates/base_admin.html' %}
+{% block title %}Enquiry Form| GCI {% endblock %}
+{% load crispy_forms_tags %}
+{% block main_content %}
+
+{% include "includes/messages.html" %}
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- general form elements -->
+                    <div class="card card-info">
+                        {% include 'override_table/header.html' with card_title='Enquiry Form' %}
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        <form role="form" action="{% url 'enquiry:enquiryform' %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="card-body">
+                            {{ form|crispy }}
+                            <button type="submit" class="btn btn-sm btn-success">Save</button>
+                        </div>
+                    
+                        <!-- /.card-body -->
+                        </form>
+                    </div>
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+        <!-- </div> -->
+    </section>
+
+{% endblock main_content %}

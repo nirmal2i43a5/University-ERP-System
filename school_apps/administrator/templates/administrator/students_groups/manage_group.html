@@ -1,0 +1,60 @@
+{% extends 'admin_templates/base_admin.html' %}
+
+{% block main_content %}
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+
+  {% include "includes/messages.html" %}
+ 
+    <hr>
+    <div class="row">
+      <div class="col-md-4  ">
+        {% include "admin_templates/administrator/students_groups/add_group.html" %}
+      </div>
+
+      <div class="col-md-8">
+        <div class="card card-info">
+            <div class="card-header">
+              <h3 class="card-title">Manage Group</h3>
+            </div>
+          
+          <!-- /.card-header -->
+          <div class="card-body table-responsive ">
+            <table id="dataTable"
+              class="table table-sm table-striped table-bordered table-hover dataTable no-footer">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Group</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for group in groups %}
+                <tr>
+                  <td>{{ group.id }}</td>
+                  <td>{{ group.name }}</td>
+                  <td>
+                    <a href="{% url 'admin_app:edit_group' group.id %}" class="btn btn-success btn-xs" data-placement="top"
+                      data-toggle="tooltip" title="Edit"><i class="fas fa-sm fa-edit"></i></a>
+                    <a href="{% url 'admin_app:delete_group' group.id %}" class="btn btn-danger btn-xs"    
+                    data-placement='top' data-toggle='tooltip' title='Delete'><i class="fas fa-sm fa-trash-alt"></i></a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+
+
+    </div>
+</section>
+<!-- /.content -->
+
+{% endblock main_content %}

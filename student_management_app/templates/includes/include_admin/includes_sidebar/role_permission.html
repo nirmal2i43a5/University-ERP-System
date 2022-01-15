@@ -1,0 +1,86 @@
+
+
+<li class="nav-item has-treeview">
+  <a href="#" class="nav-link">
+    <i class="fas  fa-unlock-alt mr-1"></i>
+    <p>
+      Authentication
+
+      <i class="fas fa-angle-left right"></i>
+
+
+    </p>
+  </a>
+  <ul class="nav nav-treeview">
+    <li class="nav-item ml-3">
+      <a href="#" class="nav-link">
+        <i class="fas  fa-user-lock"></i>
+        <p>
+          Role
+          <i class="fas fa-angle-left right"></i>
+
+        </p>
+      </a>
+      <ul class="nav nav-treeview">
+        <li class="nav-item ml-3">
+          <a href="{% url 'role_app:add_role' %}" class="nav-link">
+            <i class="far  fa-circle"></i>
+            <p>
+              Add Role
+
+            </p>
+          </a>
+        </li>
+        <li class="nav-item ml-3">
+          <a href="{% url 'role_app:manage_role' %}" class="nav-link">
+            <i class="far  fa-circle "></i>
+            <p>
+              Manage Role
+
+            </p>
+          </a>
+        </li>
+
+      </ul>
+    </li>
+
+  </ul>
+
+
+  <!-- <ul class="nav nav-treeview">
+    <li class="nav-item ml-3">
+      <a href="#" class="nav-link">
+        <i class="fas  fa-user-check"></i>
+        <p>
+          Permission
+          <i class="fas fa-angle-left right"></i>
+
+        </p>
+      </a>
+      <ul class="nav nav-treeview">
+        <li class="nav-item ml-3">
+          <a href="{% url 'role_app:add_permission' %}" class="nav-link">
+            <i class="far  fa-circle"></i>
+            <p>
+              Add Permission
+
+            </p>
+          </a>
+        </li>
+        <li class="nav-item ml-3">
+          <a href="{% url 'role_app:manage_permission' %}" class="nav-link">
+            <i class="far  fa-circle "></i>
+            <p>
+              Manage Permission
+
+            </p>
+          </a>
+        </li>
+
+      </ul>
+    </li>
+
+  </ul> -->
+
+
+</li>

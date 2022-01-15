@@ -1,0 +1,21 @@
+{% extends 'login_base.html' %}
+{% block login%}
+<form action="{% url 'teacher:index' %}" method="post">
+    {% csrf_token %}
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" placeholder="UserID" name="teacherID">
+      <div class="input-group-append">
+        <div class="input-group-text">
+          <span class="fas fa-envelope"></span>
+        </div>
+      </div>
+    </div>
+    <div class="input-group mb-3">
+      <input type="password" class="form-control" placeholder="Password" name="Password">
+      <div class="input-group-append">
+        <div class="input-group-text">
+          <span class="fas fa-lock"></span>
+        </div>
+      </div>
+    </div>
+{% endblock %}

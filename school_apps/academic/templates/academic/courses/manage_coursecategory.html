@@ -1,0 +1,76 @@
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+
+
+{% block title %}
+{{title}}
+  
+{% endblock title %}
+  
+{% block main_content %}
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+
+  {% include "includes/messages.html" %}
+
+ 
+    <div class="row">
+      <div class="col-md-4">
+        {% include "academic/courses/add_coursecategory.html" %}
+      </div>
+
+      <div class="col-md-8">
+        <div class="card">
+            <div class="card-header"  style="background-color: #094089;color:white;">
+              <h3 class="card-title">{{title}}</h3>
+            </div>
+          
+          <!-- /.card-header -->
+          <div class="card-body table-responsive ">
+            <table id="dataTable"
+              class="table table-sm table-striped table-bordered table-hover dataTable no-footer">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>ID</th>
+                  <th>Course Name</th>
+                  
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for course in courses %}
+                <tr>
+                  <td></td>
+                  <td>{{ course.id }}</td>
+                  <td>{{ course.course_name }}</td>
+                  <td>
+                    <a href="" class="btn btn-success btn-xs" data-placement="top"
+                      data-toggle="tooltip" title="Edit"><i class="fas fa-sm fa-edit"></i></a>
+                    <a href="" class="btn btn-danger btn-xs"    
+                    data-placement='top' data-toggle='tooltip' title='Delete'><i class="fas fa-sm fa-trash-alt"></i></a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+
+
+    </div>
+</section>
+<!-- /.content -->
+
+
+
+{% endblock main_content %}
+
+{% block custom_js %}
+{% endblock custom_js %}

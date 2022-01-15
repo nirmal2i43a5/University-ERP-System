@@ -1,0 +1,99 @@
+<form action=" {% url 'courses:confirmapplication' %} ">
+    <table class="table table-hover" id="application_table">
+            <thead class="thead" style="background-color: #094089;color:white;">
+                <tr>
+                    <td></td>
+                    <td>Form id</td>
+                    <td>Student</td>
+                    <td>Term</td>
+                    <td>Subject</td>
+                    <td>Date</td>
+                    <td>Status</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in form%}
+                <tr id="form-data" data-id="{{item.form_id}}">
+                    <td><input type="radio" name="application_radio" value="{{item.application_id}}">
+                    </td>
+                    <td>{{item.application_id}}</td>
+                    <td id="student_name_td">{{item.student.student_user.full_name}}</td>
+                    <td>
+                        <table style="margin: 0;">
+                            {%for exam in item.exam.all%}
+                            <tr><td>{{exam}}</td></tr>
+                        {% endfor %}
+                        </table>
+                    </td>
+                    <td><table>
+                        {%for exam in item.exam.all%}
+                        <tr><td>{{exam.subject_id}}</td></tr>
+                        {% endfor %}
+                    </table></td>
+                    <td><table>
+                        {%for exam in item.exam.all%}
+                        <tr><td>{{exam.date}}</td></tr>
+                        {% endfor %}
+                    </table></td>
+                    <td>{% if item.status == False %}
+                        Pending
+                        {% else %}
+                        Registered
+                        {% endif %}
+                    </td>
+                    <td id="term_td" hidden readonly>{{item.term}}</td>
+                </tr>
+                {% endfor %}
+                <td colspan="7" align="right"><button type="button" class="btn btn-primary" id="open-ApplyDialog" data-toggle="modal" data-target = "#confirm-modal">
+                    Confirm
+                </button></td>
+
+            </tbody>
+
+            <div class="modal fade" id="confirm-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Exam Application</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                    <div id="Application">
+                        Confirm <span id="student_span"></span>'s application for <span id="term_span"></span>?
+                    </div>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" id="firstmodal_close_button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <input type="submit" class="btn btn-primary" id="confirm-button" value="Confirm">
+                    </div>
+                </div>
+                </div>
+            </div>
+    </table>
+</form>
+
+{% block javascript %}
+<script>
+    $(function() {
+        $("#open-ApplyDialog").attr('disabled',true);
+    });
+
+    $(':radio').click(function(){
+        $("#open-ApplyDialog").attr('disabled',false);
+    }) 
+
+    $('#application_table tr').click(function() {
+        $(this).find('input:radio').prop('checked', true);
+        $("#open-ApplyDialog").attr('disabled',false);
+    });
+
+    $("#open-ApplyDialog").click(function(event){
+        var student = $('input[name="application_radio"]:checked').parent().parent().children("td#student_name_td").text();
+        var term = $('input[name="application_radio"]:checked').parent().parent().children("td#term_td").text();
+        $("#student_span").text(student)
+        $("#term_span").text(term)
+    })
+</script>
+{% endblock %}

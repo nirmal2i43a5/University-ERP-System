@@ -1,0 +1,101 @@
+
+{% load static %}
+<div class="col-md-12">
+
+
+    <div class="card card-info">
+
+    
+      {% include 'override_table/header.html' with card_title='Attendance List' %}
+      <!-- /.card-header -->
+      <div class="card-body table-responsive">
+
+   
+
+          {% url 'attendance_app:student_attendance' as button_url %}
+
+          {% include 'override_table/header_button.html' with button_title='attendance' button_url=button_url %}
+
+        <table id="dataTable" class="table table-sm  table-striped table-bordered table-hover text-nowrap dataTable no-footer">
+         
+        
+          <thead>
+           
+            <tr>
+              <th></th>
+              <th>#</th>
+              <!-- <th hidden>Attendance Id</th> -->
+              <th>Student Name</th>
+              <th>Group</th>
+              <th>Class</th>
+
+              <th>Section</th>
+              <th>Subject</th>
+              
+              <th>Student Id</th>
+              <th>Attendance Status</th>
+              <th>Attendance Date</th>
+          
+              <!-- <th>Teacher</th> -->
+
+
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for attendance in student_monthly_attendances %}
+            <tr>
+              <td></td>
+              <td>{{forloop.counter}}</td>
+              <!-- <td hidden>{{ attendance.attendance.id }}</td> -->
+              <td>{{ attendance.student.student_user.full_name }}</td>
+              <td>{{ attendance.student.faculty }}</td>
+              <td>{{ attendance.student.semester }}</td>
+              <td>{{ attendance.student.section }}</td>
+              <td>{{ attendance.attendance.subject }}</td>
+              <td>{{ attendance.student.stu_id }}</td>
+              <td>
+
+                {% if attendance.status == 'Present' %}
+
+                <span class="badge badge-sm badge-success">Present</span>
+
+                {% elif attendance.status ==	'Late' %}
+
+                <span class="badge badge-warning">{{attendance.status}}</span>
+                
+                {% elif attendance.status ==	'Absent(Not Informed)' %}
+
+                <span class="badge badge-danger">{{attendance.status}}</span>
+                {% elif attendance.status ==	'Absent(Informed)' %}
+
+                <span class="badge badge-danger">{{attendance.status}}</span>
+                {% elif attendance.status ==	'Excused' %}
+
+                <span class="badge badge-primary">{{attendance.status}}</span>
+          
+                {% endif %}
+
+              </td>
+             
+              <!-- <td></td> -->
+              <td>{{ attendance.attendance.attendance_date|date:"M,d,Y" }}</td>
+              <td>
+
+
+                <a href="{% url 'student:student_attendance_view' attendance.student_id %}" class="btn btn-xs btn-info"><strong>View attendance </strong></a>
+
+              </td>
+
+            </tr>
+
+
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+  </div>

@@ -1,0 +1,100 @@
+<div id="courses">
+{% if courses %}
+<table class = "table table-hover">
+    <thead class= "thead-dark">
+        <tr>
+            <td>Course code</td>
+            <td>Course name</td>
+            <td>Teacher</td>
+            <td>Action</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for course in courses%}
+            <tr id="{{ course.subject_code }}">
+                <td>{{course.subject_code}}</td>
+                <td>{{course.subject_name}}</td>
+                <td>{{course.teacher_id.teacher_name}}</td>
+                <!-- <td><button type="submit" class="btn btn-primary" id="select_button"> Confirm </button></td> -->
+                <td><button type="button" id="add_button" class="btn btn-primary open-AddBookDialog" data-toggle="modal" data-target="#add-modal" data-id="{{ course.subject_code }}" data-course= "{{ course.subject_name}}">
+                    Add Course
+                  </button></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+
+
+
+<div class="modal fade" id="add-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            Confirm course addition <span name="coursename" name="bookId" id="bookId"></span>?
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="modal_close_button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="select_button">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="confirm-Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Message</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <span id="message_text"> Course add successful.</span>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+    $(document).on("click", ".open-AddBookDialog", function (e) {
+        e.preventDefault();  
+        var _self = $(this);
+        course_id = _self.data('id');
+        course_name = _self.data('course');
+
+        $("#bookId").text( "\"" + course_id + " " +course_name + "\"");
+    
+    });
+
+    $("#select_button").click(function(event){
+        /* event.preventDefault(); */
+        id = $("#add_button").data('id')
+        //alert(id)
+        
+        $.ajax({
+            url: "{% url 'student:confirmAjax'%}",
+            data: {'course_id':id},
+            success: function (data) {
+              $("#modal_close_button").click();
+              $("#confirm-Modal").modal('show');
+              $("#courses").load(location.href+" #myDiv>*","");
+            }
+        })
+    })
+  
+    
+</script>
+{% else %}
+<h4>There are no available courses.</h4>
+{% endif %}

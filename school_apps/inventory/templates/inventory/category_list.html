@@ -1,0 +1,69 @@
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+{% load static  %}
+
+{% block title %} Categories {% endblock %}
+{% block main_content %}
+
+<section class="content">
+  <div class="container-fluid">
+
+  {% include "includes/messages.html" %}
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card" >
+                <div class="card-header" style="background-color: #094089;color:white;" >
+                    <span>Categories</span>
+                </div>
+
+                <div class="card-body table-responsive">
+            
+                    <table class="table table-sm  table-striped table-bordered table-hover text-nowrap dataTable no-footer">
+                    <thead>
+                        <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in category %}
+                            <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{item.name}}</td>
+                            </tr>
+                            
+                        {% endfor %}
+                    </tbody>
+                    </table>
+                </div>
+            <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+  </div>
+
+  
+</section>
+<!-- /.content -->
+
+{% endblock main_content %}
+
+{% block custom_js %}
+<script>
+    $(".modal_display").click(function(e){
+        var id = $(this).data('id')
+        
+        $.ajax({
+            url:" {% url 'enquiry:show_modal' %}",
+            data: {'id':id},
+            success: function(data){
+                $("#modal_body").html(data);
+            }
+        })
+    })
+</script>
+
+{% endblock custom_js %}

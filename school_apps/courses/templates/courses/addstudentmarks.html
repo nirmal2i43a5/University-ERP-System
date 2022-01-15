@@ -1,0 +1,58 @@
+{% extends 'student_base.html' %}
+{% block title%}Student Mark{% endblock %}
+
+
+{% block content %}
+
+
+
+
+<section class="content">
+    <div class="container-fluid">
+  
+     
+      {% include "includes/messages.html" %}
+      <div class="row">
+        <div class="col-md-12">
+          <!-- general form elements -->
+          <div class="card card-info">
+            {% include 'override_table/header.html' with card_title='Select Student To Mark' %}
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form id="student-form" class="my-3 mx-2">
+                <label for="student_id">Enter Student id:</label>
+                <input type="text" id="student_id">
+                <input type="submit" value="Confirm" class="btn btn-sm btn-success">
+            </form>
+            <div id="entryfield">
+
+            </div>
+        </div>
+        <!-- /.card -->
+  
+  
+  
+      </div>
+    </div>
+    </div>
+  </section>
+{% endblock %}    
+    
+
+{% block javascript %}
+<script>
+    $("#student-form").submit(function(event){
+        event.preventDefault();
+        student_id = $("#student_id").val();
+
+        $.ajax({
+            url: "{% url 'courses:studentlist' %}",
+            data: {'student_id':student_id},
+            success: function (data) {
+                $("#entryfield").html(data);
+            }
+        })
+    })
+    
+</script>
+{% endblock %}

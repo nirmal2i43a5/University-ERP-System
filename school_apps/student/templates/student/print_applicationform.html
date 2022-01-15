@@ -1,0 +1,162 @@
+{% extends 'student_base.html' %}
+{% block content %}
+  {% if form %}
+    <div class="invoice p-3 mb-3" id="application_form">
+        <!-- title row -->
+        <div class="row">
+            <div class="col-2">
+                <h4>
+                    <i class="fas fa-globe"></i> Logo
+            </div>
+
+            <div class="col-8">
+                <h5 class="text-center">
+                    Mid-Western University
+                </h5>
+
+                <h4 class="text-center">
+                    Examinations Management Office
+                </h4>
+
+                <h6 class="text-center">
+                    Surkhet, Nepal
+                </h6>
+
+                <h5 class="text-center">
+                    Examination Application Form
+                </h5>
+                
+            </div>
+
+            <div class="col-2">
+                <h4 class="text-center">
+                    <i class="fas fa-globe"></i> Photo
+                </h4>
+            </div>
+              
+            </h4>
+          
+          <!-- /.col -->
+        </div>
+        <!-- info row -->
+        <div class="row student-info">
+          <div class="col-12 student-col">
+            <strong>Faculty: </strong>
+          </div>
+        </div>
+
+        <div class="row college-info">
+          <div class="col-12 college-col">
+            <strong>Name of campus: </strong>
+          </div>
+        </div>
+
+        <div class="row level-info">
+            <div class="col-4 level-col">
+                <strong>Level: </strong>{{form.semester.name}}
+            </div>
+
+            <div class="col-4 level-col">
+                <strong>Semester: </strong>{{form.semester}}
+            </div>
+
+            <div class="col-4 level-col">
+                <strong>Exam Centre: </strong>{{form.term.exam_centre}
+            </div>
+        </div>
+
+        <div class="row row4-info">
+            <div class="col-4 row4-col">
+                <strong>Form Serial No: </strong>{{form.id}}
+            </div>
+
+            <div class="col-4 row4-col">
+                <strong>Sex: </strong>{{form.student.gender}}
+            </div>
+        </div>
+        
+        <div class="row row5-info">
+            <div class="col-12 row5-col">
+              <strong>Student id: </strong>{{form.student.student_user.username}}
+            </div>
+        </div>
+
+        <div class="row row6-info">
+            <div class="col-12 row6-col">
+              <strong>Full Name: </strong>{{form.student.student_user.full_name}}
+            </div>
+        </div>
+
+        
+        <!-- /.row -->
+
+        <!-- Table row -->
+        <div class="row">
+          <div class="col-12 table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                    <th>S.N.</th>
+                    <th>Exam Code</th>
+                    <th>Subject</th>
+                    <th>Regular/Chance</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for exam in form.exam.all %}
+                  <tr>
+                    <td>
+                      {{forloop.counter}}
+                    </td>
+                    <td>
+                      {{exam.exam_id}}
+                    </td>
+                    <td>
+                      {{exam.subject_id.subject_name}}
+                    </td>
+                    <td>
+                      {% for grade in grades %}
+                        {% if grade.exam_id == exam%}
+                          {% if grade.exam_type == True %}
+                            Regular
+                          {% else %}
+                            Chance
+                          {% endif %}
+                        {% endif %}
+                      {% endfor%}
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+
+        
+
+        <!-- this row will not appear when printing -->
+        <div class="row no-print">
+          <div class="col-12">
+            <button class="btn btn-default" id="print_button"><i class="fas fa-print"></i> Print</a></button>
+          </div>
+        </div>
+    </div>
+  {% else %}
+    <h4>There is no form available.</h4>
+  {% endif %}
+
+{% endblock %}
+
+{% block javascript %}
+  <script>
+      $("#print_button").click(function(event){
+        //event.preventDefault();
+        $(".to-hide").toggle();
+        print();
+        $(".to-hide").toggle();
+      })
+
+  </script>
+{% endblock %}

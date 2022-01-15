@@ -1,0 +1,164 @@
+{% extends 'admin_templates/base_admin.html' %}
+{% block title %}Upload Student Answers {% endblock %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block main_content %}
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <!-- /.card-header -->
+    {% include "includes/messages.html" %}
+
+
+
+    <div class="d-flex bd-highlight">
+
+      <div class=" flex-grow-1 bd-highlight">
+        <div class="card pt-3 pl-2">
+          <div class="card-header mb-2 mr-1" style="background-color: #094089;color:white">
+            <strong> Upload Student Answers</strong>
+          </div>
+
+
+              <!-- -------------------------Subject filter form ------------------------------------------------ -->
+          <form  method="POST" enctype="multipart/form-data">
+            <div class="input-group">
+          {% csrf_token %}
+              <select name="term" id="term_select">
+                <option value="">------------------------Select Term---------------------------</option>
+                {% for item in terms%}
+                  <option value="{{item.pk}}">{{item}}</option>
+                {% endfor %}
+              </select>
+
+              <select name="exam" id="exam_select">
+                <option value="">------------------------Select Exam---------------------------</option>
+              </select>
+
+              <div class="input-group-btn ml-1 mt-1 mb-1">
+                <button type="submit" class="btn btn-sm " name="fetch_student" style="background-color: #094089;color:white">
+                  <strong>Fetch Students</strong>
+                </button>
+              </div>
+            </div>
+          </form>
+
+        
+        </div>
+
+      </div>
+
+
+    
+
+    </div>
+
+       <!-- -------------------------attendace save form ------------------------------------------------ -->
+    <form  method="POST" enctype="multipart/form-data">
+      <input type="text" name="exam" id="exam" hidden value={{exam.pk}}>
+
+      <!-- <input type="hidden" name = "semester_id" value = "{{ semester.id }}">
+        <input type="hidden" name = "section_id" value = "{{ section.id }}"> -->
+
+      {% csrf_token %}
+
+      <div class="card">
+        <!-- /.card-header -->
+        <div class="card-body ">
+
+          {% if students %}
+
+          <div class="d-flex bd-highlight">
+            <!-- <div class="p-2 flex-fill bd-highlight">
+
+              <select name="exam" class="form-select form-select-lg mb-3 form-control col-md-4" required>
+                <option value="">------------------------Select Exam---------------------------</option>
+              {% for exam in exams %}
+                  <option value ='{{exam.pk}}'> {{exam}} </option>
+              {% endfor %}
+          </select>
+            </div> -->
+
+          </div>
+          <hr>
+          <div class="row">
+            {% for student in students %}
+
+            <div class="col-md-6">
+              <div class="card card-header">
+
+                <div class="row">
+
+                  <div class="col-md-4">
+
+                    <strong> {{forloop.counter}}</strong> . 
+                    <input type="hidden" value = "{{student.student_user.id}}" name = "students" >
+                  
+                      {{ student.student_user.full_name }}
+                  </div>
+
+
+                  <div class="col-md-4">
+                   <input type="file" name="answer_upload" >
+                    </select>
+                  </div>
+
+                  <!-- <div class="col-md-4">
+                    <input type="text" id="id_remark"  name="{{ student.student_user.id }}" placeholder="Enter Remark" class="form-control">
+
+                  </div>  -->
+                </div>
+
+              </div>
+            </div>
+
+            {% endfor %}
+
+
+          </div>
+
+        </div>
+        <!-- /.card-body -->
+      </div>
+      <!-- /.card -->
+      <!-- <a href="{% url 'attendance_app:manage_student_attendance' %}" id="save_attendance"
+        class="btn btn-sm btn-info btn-danger mb-3"><strong>Back</strong></a> -->
+      <button type="submit" name="upload_answer_button" class="btn btn-sm btn-success mb-3"><strong>Upload
+          Answer</strong></button>
+      {% endif %}
+
+    </form>
+
+  
+
+  </div>
+</section>
+<!-- /.content -->
+
+{% endblock main_content %}
+
+
+
+
+
+
+{% block javascript %}
+  <script>
+    $("#term_select").change(function(){
+      
+      var term_id = $(this).val();
+      if (term_id != ""){
+        $.ajax({
+          url:"{% url 'exam:fill_exam_select_ajax' %}",
+          data:{'term':term_id},
+          success:function(data){
+            $("#exam_select").html(data['html'])
+          }
+        })
+      }
+    })
+  </script>
+
+
+{% endblock %}

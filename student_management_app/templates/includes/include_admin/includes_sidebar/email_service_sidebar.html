@@ -1,0 +1,48 @@
+<li class="nav-item has-treeview">
+    <a href="#" class="nav-link">
+      <i class="fas  fa-envelope mr-1"></i>
+      <p>
+        Email Services
+
+        <i class="fas fa-angle-left right"></i>
+
+
+      </p>
+    </a>
+
+    <ul class="nav nav-treeview">
+      <li class="nav-item ml-3">
+        <a href="{% url 'student_send_bulk_email' %}" class="nav-link">
+          <i class="far  fa-circle"></i>
+          <p>
+            Students Bulk
+
+          </p>
+        </a>
+      </li>
+    </ul>
+    <ul class="nav nav-treeview">
+      <li class="nav-item ml-3">
+        <a href="{% url 'teacher_send_bulk_email' %}" class="nav-link">
+          <i class="far  fa-circle"></i>
+          <p>
+            Teachers Bulk
+
+          </p>
+        </a>
+      </li>
+    </ul>
+    <ul class="nav nav-treeview">
+      <li class="nav-item ml-3">
+        <a href="{% url 'user_send_bulk_email' %}" class="nav-link">
+          <i class="far  fa-circle"></i>
+          <p>
+            Extra User
+
+          </p>
+        </a>
+      </li>
+    </ul>
+
+  </li>
+

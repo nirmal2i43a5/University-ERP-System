@@ -1,0 +1,76 @@
+{% extends 'student_base.html' %}
+{% block content %}
+
+
+<!-- 
+ -->
+
+
+
+ <section class="content">
+    <div class="container-fluid">
+  
+  
+      <div class="row">
+        <div class="col-md-12">
+          <!-- general form elements -->
+          <div class="card card-info">
+            {% include 'override_table/header.html' with card_title='Check Exam Details' %}
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form id = "term-form" class="mt-3 ml-4">
+
+                <div class="d-flex flex-nowrap">
+                    <div class="row" class="mb-3">
+                        {% csrf_token %}
+                        <select id="select_sem" class="form-select form-select-lg mb-3 form-control" >
+                          <option value ='--'> Select Term</option>
+                          {% for item in terms%}
+                            <option value ='{{item.pk}}'> {{item.term_name}} </option>
+                          {% endfor %}
+                        </select>
+
+                        <input type="submit" class="btn btn-primary" id="term_submit" value="Confirm">
+                    
+                    </div>
+                  
+                </div>
+               
+              
+            </form>
+        
+            <div class="container" id="exams">
+                <hr>
+               <h5>Select semester to view details.</h5>
+               <hr>
+            </div>
+           
+        </div>
+        <!-- /.card -->
+  
+  
+  
+      </div>
+    </div>
+    </div>
+  </section>
+ {% endblock %}
+
+ {% block javascript %}
+<script>
+    $("#term_submit").click(function(event){
+        event.preventDefault();
+        semester = $("#select_sem").val();
+
+        $.ajax({
+            url: "{% url 'student:postExams'%}",
+            data: {'term':semester},
+            success: function (data) {
+                $("#exams").html(data);
+            }
+            
+        })
+    })
+    
+</script>
+{% endblock %}

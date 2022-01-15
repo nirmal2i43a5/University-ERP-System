@@ -1,0 +1,154 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css' %}">
+
+  <style>
+    @media print {
+        div.breakpage {
+            page-break-before: always;
+        }
+    }
+  </style>
+</head>
+<body>
+    {% for form in applications %}
+    <div class="invoice p-3 mb-3" id="application_form">
+        <!-- title row -->
+        <div class="row">
+            <div class="col-2">
+                <h4>
+                    <i class="fas fa-globe"></i> Logo
+            </div>
+    
+            <div class="col-8">
+                <h5 class="text-center">
+                    Mid-Western University
+                </h5>
+    
+                <h4 class="text-center">
+                    Examinations Management Office
+                </h4>
+    
+                <h6 class="text-center">
+                    Surkhet, Nepal
+                </h6>
+    
+                <h5 class="text-center">
+                    Examination Admission Card
+                </h5>
+                
+            </div>
+    
+            <div class="col-2">
+                <h4 class="text-center">
+                    <i class="fas fa-globe"></i> Photo
+                </h4>
+            </div>
+              
+            </h4>
+          
+          <!-- /.col -->
+        </div>
+        <!-- info row -->
+    
+        <div class="row row1-info">
+            <div class="col-7 row1-col">
+              <strong>Name:</strong>  {{form.student.student_user.full_name}}
+            </div>
+    
+            <div class="col-5 row1-col">
+              <strong>Symbol no.:</strong> {{form.student.student_user.username}}
+            </div>
+        </div>
+    
+        <div class="row row2-info">
+            <div class="col-7 row2-col">
+              <strong>Form Serial No.:</strong> {{form.application_id}}
+            </div>
+            
+            <div class="col-5 row2-col">
+              <strong>Campus/School: </strong>
+              </div>
+        </div>
+    
+        <div class="row row3-info">
+          <div class="col-7 row3-col">
+            <strong>Faculty: </strong>
+          </div>
+    
+          <div class="col-5 row3-col">
+            <strong>Exam Year: </strong>{{form.term.year}}
+            </div>
+        </div>
+    
+        <div class="row row4-info">
+            <div class="col-7 row4-col">
+              <strong>Semester: </strong>{{form.semester}}
+            </div>
+      
+            <div class="col-5 row4-col">
+              <strong>Exam Centre: </strong>{{form.term.exam_centre}}
+              </div>
+          </div>
+
+    
+        <div class="row">
+          <div class="col-12 table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                    <th>S.N.</th>
+                    <th>Exam Code</th>
+                    <th>Subject</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for exam in form.exam.all %}
+                  <tr>
+                    <td>
+                      {{forloop.counter}}
+                    </td>
+                    <td>
+                      {{exam.exam_id}}
+                    </td>
+                    <td>
+                      {{exam.subject_id.subject_name}}
+                    </td>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+        <div class="breakpage"></div>
+    {% endfor %}
+
+    <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <!-- AdminLTE App -->
+    <script src="{% static 'dist/js/adminlte.min.js' %}"></script>   
+    
+    <script>
+        /* window.onload = function () {
+            window.print();
+        }*/
+    </script>
+</body>
+</html>

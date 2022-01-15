@@ -1,0 +1,67 @@
+    <div class="panel-body profile-view-dis">
+        <div class="row">
+           
+                <div class="col-sm-6">
+                    <div class="profile-view-tab">
+                        <p><span>Father's Name </span>: {{ parent.father_name }} </p>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="profile-view-tab">
+                        <p><span>Father's Phone </span>: {{ parent.father_phone}}</p>
+                    </div>
+                </div>
+         
+                <div class="col-sm-6">
+                    <div class="profile-view-tab">
+                        <p><span>Mother's Name </span>: 
+                       {{ parent.mother_name }}</p>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="profile-view-tab">
+                        <p><span>Mother's Phone </span>: 
+                            {{ parent.mother_phone }}</p>
+                    </div>
+                </div>
+
+                <!-- <div class="col-sm-6">
+                    <div class="profile-view-tab">
+                        <p><span>Email </span>: 
+                       {{ parent.parent_user.email }}</p>
+                    </div>
+                </div> -->
+              
+                <!-- <div class="col-sm-6">
+                    <div class="profile-view-tab">
+                        <p><span>Username </span>: 
+                            {{ parent.parent_user.username }}</p>
+                    </div>
+                </div> -->
+
+                <hr>
+                <div class="col-sm-6">
+                    <div class="profile-view-tab">
+                        <p><span>Local Guardian Name </span>: 
+                       {{ parent.local_guardian_name }}</p>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="profile-view-tab">
+                        <p><span>Local Guardian Contact </span>: 
+                            {{ parent.local_guardian_phone }}</p>
+                    </div>
+                </div>
+          
+               
+        </div>
+      
+    </div>
+ <style>
+     p{
+         font-weight: 300;
+     }
+    span{
+        font-weight: 400;
+    }
+ </style>

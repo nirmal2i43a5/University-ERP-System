@@ -1,0 +1,48 @@
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+{{title}}
+{% endblock title %}
+
+{% block main_content %}
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+
+    {% include "includes/messages.html" %}
+
+    <div class="row">
+      <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="card">
+          {% include 'override_table/header.html' with card_title='Add Teacher' %}
+          <!-- /.card-header -->
+          <!-- form start -->
+          <form id="staff-modelform" role="form" method="post" enctype="multipart/form-data">
+            <!--using this id = "staff-modelform"  for solving form conflict in formhelper in crispy form -->
+            {% csrf_token %}
+            <div class="card-body">
+              {% crispy custom_form %}
+              {% crispy staff_form %}
+           
+
+            
+             
+            
+            <!-- /.card-body -->
+
+        
+          </form>
+        </div>
+        <!-- /.card -->
+
+
+
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+{% endblock main_content %}

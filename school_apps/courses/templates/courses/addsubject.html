@@ -1,0 +1,54 @@
+{% extends 'student_base.html'%}
+{% load crispy_forms_tags %}
+
+{% block headextra %}
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>  
+    {% if messages %}
+        {% for message in messages %}
+            $(window).on('load', function() {
+                $('#exampleModal').modal('show');
+                $('#message_text').text('{{message.message}}')
+            }); 
+        {% endfor %}   
+    {% endif %}
+</script>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Error</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <span id="message_text"></span>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+
+{% block content %}
+  <div class="container">
+    <h4>Enter course information</h4>
+    
+    <table border="2">
+    <form action="{% url 'courses:addcourse' %}" method="POST">
+        {% csrf_token %}
+        <table> 
+            {{ form|crispy }}
+        </table>
+        <tr><td><input type="submit"></td></tr>
+    </form>
+    </table>
+  </div>
+{% endblock %}

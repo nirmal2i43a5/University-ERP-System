@@ -1,0 +1,68 @@
+{% extends 'student_base.html' %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Welcome Text</h5>
+
+      <p class="card-text">
+        Welcome Text.
+      </p>
+
+      <!-- <a href="#" class="card-link">Card link</a>
+      <a href="#" class="card-link">Another link</a> -->
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+      <h5 class="card-title">User Activity this session</h5>
+      
+          <p class="card-text">
+            Card Text.
+          </p>
+        
+    </div>
+</div>
+{% endblock %}
+
+
+{% block javascript %}
+<script>  
+    {% if messages %}
+        {% for message in messages %}
+            $(window).on('load', function() {
+              $('#messageModal').modal('show');
+              {% if 'safe' in message.tags %}
+              $('#message_text').html('{{message|safe}}');
+              {% else %}
+              $('#message_text').html("{{message}}");
+              {% endif %}
+
+              
+            }); 
+        {% endfor %}   
+    {% endif %}
+</script>
+
+<!-- Modal -->
+<div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Message</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <span id="message_text"></span>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

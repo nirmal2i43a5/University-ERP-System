@@ -1,0 +1,35 @@
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+
+
+
+{% block main_content %}
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+
+    {% include "includes/messages.html" %}
+
+    
+
+    <div class="row">
+      <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="card card-info">
+          {% include 'override_table/header.html' with card_title='Edit Routine' %}
+          <!-- /.card-header -->
+          {% url 'admin_app:manage_routine' as routine_url %}
+          <!-- form start -->
+          {% include 'admin_templates/form.html' with messages=messages form=form back_url=routine_url button_text="Save Routine" %}
+
+        <!-- /.card -->
+
+
+
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+{% endblock main_content %}

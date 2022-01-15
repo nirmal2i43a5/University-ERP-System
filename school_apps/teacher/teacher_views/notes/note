@@ -1,0 +1,2 @@
+1)I am showing student in particular teacher login page based on subject and semester(one semester many subject) assuming that i have only one degree later
+ when need to use this system for multiple use case then should change select student from subject to course(one course many subject) linkage

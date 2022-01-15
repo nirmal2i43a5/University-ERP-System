@@ -1,0 +1,139 @@
+<li class="nav-item has-treeview">
+  <a href="#" class="nav-link">
+    <i class="fas  fa-clipboard mr-1"></i>
+    <p>
+      Attendence
+      <i class="fas fa-angle-left right"></i>
+
+    </p>
+
+  </a>
+
+  <ul class="nav nav-treeview">
+    <li class="nav-item ml-3">
+      <a href="#" class="nav-link">
+        <i class="fas  fa-user-graduate"></i>
+        <p>
+          Student Attendence
+          <i class="fas fa-angle-left right"></i>
+
+        </p>
+      </a>
+      <ul class="nav nav-treeview">
+        <li class="nav-item ml-3">
+          <a href="{% url 'attendance_app:student_attendance' %}" class="nav-link">
+            <i class="far  fa-circle"></i>
+            <p>
+              Add Attendence
+
+            </p>
+          </a>
+        </li>
+        <li class="nav-item ml-3">
+          <a href="{% url 'attendance_app:edit_student_attendance' %}" class="nav-link">
+            <i class="far  fa-circle"></i>
+            <p>
+              Edit Attendence
+
+            </p>
+          </a>
+        </li>
+        <li class="nav-item ml-3">
+          <a href="{% url 'attendance_app:student_attendance_report' %}" class="nav-link">
+            <i class="far fa-xs fa-circle "></i>
+            <p>
+               Attendence report
+
+            </p>
+          </a>
+        </li>
+        <!-- <li class="nav-item ml-3">
+          <a href="{% url 'attendance_app:manage_student_attendance' %}" class="nav-link">
+            <i class="far  fa-circle "></i>
+            <p>
+              Manage Attendence
+
+            </p>
+          </a>
+        </li> -->
+        <!-- <li class="nav-item ml-3">
+          <a href="{% url 'attendance_app:student_attendance_list' %}" class="nav-link">
+            <i class="far  fa-circle "></i>
+            <p>
+               Each Student Attendence
+
+            </p>
+          </a>
+        </li> -->
+
+      </ul>
+    </li>
+    
+  </ul>
+
+  <ul class="nav nav-treeview">
+    <li class="nav-item ml-3">
+      <a href="#" class="nav-link">
+        <i class="fas  fa-chalkboard-teacher"></i>
+        <p>
+          Teacher Attendence
+          <i class="fas fa-angle-left right"></i>
+
+        </p>
+      </a>
+      <ul class="nav nav-treeview">
+        <li class="nav-item ml-3">
+          <a href="{% url 'attendance_app:teacher_attendance' %}" class="nav-link">
+            <i class="far  fa-circle"></i>
+            <p>
+              Add Attendence
+
+            </p>
+          </a>
+        </li>
+        <li class="nav-item ml-3">
+          <a href="{% url 'attendance_app:manage_teacher_attendance' %}" class="nav-link">
+            <i class="far  fa-circle "></i>
+            <p>
+              Manage Attendence
+
+            </p>
+          </a>
+        </li>
+
+      </ul>
+    </li>
+
+  </ul>
+
+  <!-- <ul class="nav nav-treeview">
+    <li class="nav-item ml-3">
+      <a href="#" class="nav-link">
+        <i class="fas  fa-users"></i>
+        <p>
+          User Attendence
+          <i class="fas fa-angle-left right"></i>
+
+        </p>
+      </a>
+      <ul class="nav nav-treeview">
+
+        <li class="nav-item ml-3">
+          <a href="{% url 'attendance_app:user_attendance' %}" class="nav-link">
+            <i class="far  fa-circle"></i>
+            <p>
+              Add Attendence
+
+            </p>
+          </a>
+        </li>
+
+   
+
+      </ul>
+    </li>
+
+  </ul> -->
+
+
+</li>

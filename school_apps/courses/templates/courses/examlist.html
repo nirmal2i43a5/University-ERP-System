@@ -1,0 +1,4 @@
+<option value="">Select Examination</option>
+{% for item in exams %}
+    <option value="{{item.pk}}">{{item.exam_title}}</option>
+{% endfor %}

@@ -1,0 +1,174 @@
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+
+
+{% block title %}
+  Student
+{% endblock title %}
+  
+
+{% block main_content %}
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <!-- <div class="alert alert-default-warning">
+      Please Take TIme To Add Class, Section, Section Before You Add New Student!
+    </div> -->
+    {% include "includes/messages.html" %}
+
+    <div class="row">
+      <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="card">
+
+          {% include 'override_table/header.html' with card_title='Add Student' %}
+
+          <!-- /.card-header -->
+          <!-- form start -->
+          <form method="post" id="student_parent-modelform" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="card-body">
+
+              {% crispy custom_form %}
+              {% crispy student_form %}
+              {% crispy parent_form %}
+
+              <!-- <button type="submit" class="btn btn-sm btn-success ">Submit</button> -->
+            </div>
+            <hr>
+            <!-- /.card-body -->
+  
+             
+          </form>
+        </div>
+        <!-- /.card -->
+
+
+
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+{% endblock main_content %}
+
+{% block custom_js %}
+
+
+<script>
+  $("#id_semester").change(function(){
+    var class_id = $(this).val();
+    
+    $.ajax({
+        url:" {% url 'courses:fill_section_select'%}",
+        data:{'class':class_id},
+        success:function(data){
+            $("#id_section").html(data);
+        }
+    })
+})
+/*For email validation*/
+  $("#id_email").keyup(function(){
+      var email=$(this).val();
+
+     if(email!=""){
+          $.ajax({
+              url:"{% url 'student:check_email_exist' %}",
+              type:'POST',
+              data:{email:email},
+              success: function(response){
+                console.log(response)
+                var filter = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+                  if(response=="True"){
+                      $(".email_error").remove();
+                      $("<span class='email_error' style='padding: 5px;color: red;font-weight: bold;'>This email is already exists</span>").insertAfter("#id_email");
+                  }
+                  else if(filter.test(email)){//for email 
+                      $(".email_error").remove();
+                      $("<span class='email_error' style='padding: 5px;color: green;font-weight: bold;'>This email is available</span>").insertAfter("#id_email");
+                  }
+                  else{
+                    $(".email_error").remove();//form email @ check
+                    $("<span class='email_error' style='padding: 5px;color: red;font-weight: bold;'>Enter a valid email address.</span>").insertAfter("#id_email");
+
+                  }
+              }
+              ,
+              error: function(){
+                console.log("failed")
+              }
+           
+          })
+         
+      }
+      else{
+        $(".email_error").remove();
+      }
+
+  });
+</script>
+
+{% endblock custom_js %}
+
+<!-- 
+  <script>
+  $(document).ready(function(){
+
+    $("#id_contact, #id_father_phone, #id_mother_phone").on("blur", function(){
+      var mobile_number = $(this).val();
+      var filter = /^\d*(?:\.\d{1,2})?$/;
+
+        if (filter.test(mobile_number)) {
+          if(mobile_number.length==10){
+            $(".contact_number_error").remove();
+            $("<span class='contact_number_error' style='padding: 5px;color: green;font-weight: bold;'>Number is Validate</span>").insertAfter("#id_contact, #id_father_phone, #id_mother_phone");
+           
+           } else if(mobile_number.length!==10) {
+            $(".contact_number_error").remove();
+            $("<span class='contact_number_error' style='padding: 5px;color: red;font-weight: bold;'>Please,Enter Number with 10 digits..</span>").insertAfter("#id_contact, #id_father_phone, #id_mother_phone");
+
+            }
+          }
+        })
+        //-------
+        $(" #id_father_phone").on("blur", function(){
+          var mobile_number = $(this).val();
+          var filter = /^\d*(?:\.\d{1,2})?$/;
+    
+            if (filter.test(mobile_number)) {
+              if(mobile_number.length==10){
+                $(".contact_number_error").remove();
+                $("<span class='contact_number_error' style='padding: 5px;color: green;font-weight: bold;'>Number is Validate</span>").insertAfter(" #id_father_phone");
+               
+               } else if(mobile_number.length!==10) {
+                $(".contact_number_error").remove();
+                $("<span class='contact_number_error' style='padding: 5px;color: red;font-weight: bold;'>Please,Enter Number with 10 digits..</span>").insertAfter(" #id_father_phone");
+    
+                }
+              }
+            })
+            //----------
+            $(" #id_mother_phone").on("blur", function(){
+              var mobile_number = $(this).val();
+              var filter = /^\d*(?:\.\d{1,2})?$/;
+        
+                if (filter.test(mobile_number)) {
+                  if(mobile_number.length==10){
+                    $(".contact_number_error").remove();
+                    $("<span class='contact_number_error' style='padding: 5px;color: green;font-weight: bold;'>Number is Validate</span>").insertAfter(" #id_mother_phone");
+                   
+                   } else if(mobile_number.length!==10) {
+                    $(".contact_number_error").remove();
+                    $("<span class='contact_number_error' style='padding: 5px;color: red;font-weight: bold;'>Please,Enter Number with 10 digits..</span>").insertAfter(" #id_mother_phone");
+        
+                    }
+                  }
+                })
+                //---
+  })
+  
+  
+ -->
+

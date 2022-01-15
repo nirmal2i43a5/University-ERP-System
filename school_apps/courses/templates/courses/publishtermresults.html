@@ -1,0 +1,49 @@
+{% extends 'admin_templates/base_admin.html' %}
+
+{% block main_content %}
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="d-flex bd-highlight">
+                <div class=" flex-grow-1 bd-highlight">
+                    <div class="card pt-3 pl-2">
+                        <div class="card-header mb-2 mr-1" style="background-color: #094089;color:white">
+                            <strong> Publish Results </strong>
+                        </div>
+                    </div>
+
+                    <div class="card pt-3 pl-2">
+                        <table class='table table-md table-hover'>
+                            <thead class='thead text-center'>
+                                <tr>
+                                    <th>Term</th>
+                                    <th>Date</th>
+                                    <th>Published</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class='text-center'>
+                                {% for item in terms%}
+                                    <tr>
+                                        <td>{{item}}</td>
+                                        <td>{{item.start_date}} - {{item.end_date}}</td>
+                                        <td>{% if item.is_published %}
+                                            Yes
+                                            {% else %}
+                                            No
+                                            {% endif %}
+                                        </td>
+                                        <td><a href="{% url 'courses:toggle_results' item.pk %} " class="btn btn-primary btn-xs">Publish</a></td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+   
+{% endblock %}

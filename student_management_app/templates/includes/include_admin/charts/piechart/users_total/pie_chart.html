@@ -1,0 +1,61 @@
+
+
+<script type="text/javascript">
+
+
+Highcharts.chart('users_total-container', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    title: {
+        text: 'Total number of student and teachers'
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.y}</b>'
+    },
+    accessibility: {
+        point: {
+            valueSuffix: '%'
+        }
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: false
+            },
+            showInLegend: true
+        }
+    },
+    series: [{
+        name: 'Total',
+        colorByPoint: true,
+        data: [
+        {
+            name: 'Active Students',
+            y: {{students_count}},
+            color:'#094089',
+            sliced: true,
+            selected: true
+        }, 
+        {
+            name: 'InActive Students',
+            y: {{inactive_students_count}},
+            color:'red',
+            sliced: true,
+            selected: true
+        }, 
+        {
+            name: 'Teachers',
+            color:'#31A2B8',
+
+            y: {{teachers_count}}
+        }, 
+        ]
+    }]
+});
+</script>

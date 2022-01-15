@@ -1,0 +1,21 @@
+{% extends 'student_base.html'%}
+{% block content %}
+    {% if results %}
+    <h4>Here are the results for {{exam.exam_title}}</h4>
+    <hr>
+    <table class="table table-hover">
+        <thead class="thead-dark">
+        <tr style=" text-align: center"><th>Student Name</th>
+        <th>Marks</th></tr></thead>
+        {% for result in results%}
+            <tr><td style="width: 50%; text-align: center">{{result.application_id.student.student_user.full_name}}</td>
+            <td style="width: 50%; text-align: center">{{result.marks}}</td>
+            </tr>
+        {% endfor%}
+    </table>
+    <div>Students with -1 marks are not graded yet.</div>
+    {% else %}
+    <h4> There are no results for {{exam.exam_title}}</h4>
+    {% endif %}
+    <hr>
+{% endblock %}

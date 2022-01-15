@@ -1,0 +1,108 @@
+
+
+
+
+
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+
+
+{% block main_content %}
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+
+  {% include "includes/messages.html" %}
+
+ 
+    <div class="row">
+      <div class="col-md-4">
+    
+
+        <div class="card card-info">
+          
+          {% if instance %}
+          {% include 'override_table/header.html' with card_title='Edit Department' %}
+{% else %}
+{% include 'override_table/header.html' with card_title='Add Department' %}
+
+            
+          {% endif %}
+            
+
+          <form role="form" id="section-modalform" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="card-body">
+             {{form|crispy}}
+            </div>
+            <div class="card-footer">
+        
+        
+              <button type="submit" class="btn btn-success ">Save</button>
+      
+                
+            </div>
+
+          </form>
+
+        </div>
+
+
+      </div>
+
+      <div class="col-md-8">
+        <div class="card">
+            <div class="card-header" style="background-color: #094089;color:white;">
+              <h3 class="card-title">Manage Department</h3>
+            </div>
+          
+          <!-- /.card-header -->
+          <div class="card-body table-responsive ">
+            <table id="dataTable"
+              class="table table-sm table-striped table-bordered table-hover dataTable no-footer">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Department Name</th>
+                  <th>Description</th>
+                  
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for department in departments %}
+                <tr>
+                  <td></td>
+                  <td>{{ department.name }}</td>
+                  <td>{{ department.description }}</td>
+               
+                  <td>
+                    <a href="{% url 'admin_app:edit_department' department.pk %}" class="btn btn-success btn-xs" data-placement="top"
+                      data-toggle="tooltip" title="Edit"><i class="fas fa-sm fa-edit"></i></a>
+                    <a href="{% url 'admin_app:delete_department' department.pk %}" class="btn btn-danger btn-xs"    
+                    data-placement='top' data-toggle='tooltip' title='Delete'><i class="fas fa-sm fa-trash-alt"></i></a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+
+
+    </div>
+</section>
+<!-- /.content -->
+
+
+
+{% endblock main_content %}
+
+{% block custom_js %}
+{% endblock custom_js %}

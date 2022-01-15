@@ -1,0 +1,47 @@
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+
+
+{% block title %}
+  {{title}}
+{% endblock title %}
+  
+
+{% block main_content %}
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+
+    {% include "includes/messages.html" %}
+
+    <div class="row">
+      <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="card card-info">
+
+          {% include 'override_table/header.html' with card_title='Bulk File Upload' %}
+         
+          <!-- /.card-header -->
+          <!-- form start -->
+          <form method="post" enctype="multipart/form-data" class="mt-4">
+            {% csrf_token %}
+            <input type="file" class = "ml-2 form-control col-md-6" name="studentfile" required>
+            <a href = "{% url 'admin_app:manage_student' %}" class="btn btn-sm btn-danger ml-2 mt-2 mb-2">Back</a>
+            <button type="submit" class="btn btn-sm btn-success ml-2 mt-2 mb-2">Upload</button>
+        </form>
+        {% if error_status %}
+        <p>{{ error_message }}</p>
+        {% endif %}
+        </div>
+        <!-- /.card -->
+
+
+
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+{% endblock main_content %}

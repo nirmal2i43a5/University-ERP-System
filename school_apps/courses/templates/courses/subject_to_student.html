@@ -1,0 +1,189 @@
+{% extends 'student_base.html'%}
+{% load crispy_forms_tags %}
+{% block title %}
+{{title}}
+{% endblock title %}
+    
+{% block content %}
+
+<div class="card-header mb-4" style="background-color: #094089;color:white;" >
+            
+
+    <span>Assign Subject To Student</span>
+
+    <form class="float-right mb-2" role="search"  method="GET" style="height: 27px;margin:auto;position:relative;">
+      <div class="input-group">
+
+        {{ form|crispy }}     
+        <div class="input-group-btn ">
+          <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+
+        </div>
+      </div>
+    </form>
+  
+
+  </div>
+
+
+
+<div class="row" style="margin-left: 25px; margin-right: 25px;">  
+    <div class="col-6">
+        <table class="table table-hover " id="students_table">
+            <thead class="thead" style="background-color: #094089;color:white;"> 
+                <tr>
+                    <th></th>
+                    <th>Student ID</th>   
+                    <th>Student Name</th>
+                </tr>
+            </thead>
+    
+            <tbody>
+    
+                {% for item in student%}
+                    <tr>
+                        <td></td>
+                        <td id="student_id">{{item.student_user.username}}</td>
+                        <td class="teacher_name">{{item.student_user.full_name}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-6">
+        <table class="table table-hover" id="subjects_table">
+            <thead class="thead" style="background-color: #094089;color:white;"> 
+                <tr>
+                    <th></th>
+                    <th>Subject code</th>   
+                    <th>Subject</th>
+                </tr>
+            </thead>
+    
+            <tbody>
+                {% for item in subjects%}
+                    <tr>
+                        <td style="width: max-content;"></td>
+                        <td data-id="{{item.subject_code}}">{{item.subject_code}}</td>
+                        <td>{{item.subject_name}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="info_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Subject Assignment</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <strong>Student: </strong> <span id="student_span"></span><br>
+          <strong>Subjects assigned: </strong><span id ="assigned_span"></span><br>
+          <strong>Subjects already chosen: </strong><span id="exists_span"></span><br>
+          <strong>Total subjects chosen by student: </strong><span id="count_span"></span><br>
+          Student assigned to <strong><span id="group_span"></span></strong> group.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button type="button" class="btn btn-primary" id="show_modal" data-toggle="modal" data-target="#info_modal" hidden>
+    Launch demo modal
+  </button>
+{% endblock %}
+
+{% block javascript %}
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-html5-1.7.0/b-print-1.7.0/sl-1.3.3/datatables.min.css"/>
+        
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-html5-1.7.0/b-print-1.7.0/sl-1.3.3/datatables.min.js"></script>
+    
+    <script>
+        var teacher, subject;
+        var student_datatable = $('#students_table').DataTable({
+            dom: 'Bfrtip',
+            columnDefs: [ {
+                orderable: false,
+                className: 'select-checkbox',
+                targets:   0
+            } ],
+            select: {
+                style: 'single'
+            },
+            buttons:[
+            {
+                text: "Add",
+                attr:{
+                    id:"add_teacher_btn",
+                    class:"btn btn-primary"
+                },
+                action: function(){
+                    
+                    var subjects;
+                    if ( student_datatable.rows( '.selected' ).any() ){student = student_datatable.rows( { selected: true } ).data()[0][1];} else {alert("Please select a student")}
+                    subject_count = subject_datatable.rows('.selected').data().length
+                    if (subject_count==0){
+                        alert("Please select a subject")
+                    }else{
+                        subjects = subject_datatable.rows( { selected: true } ).data().pluck(1).toArray();
+                    }
+
+                    
+                    if (student && subject_count>0 ){
+                        $.ajax({
+                            url: "{% url 'courses:subject_to_student_ajax' %}",
+                            data: {'student': student,
+                                    'subjects[]':subjects,
+                                    },
+                            statusCode:{
+                                201:function(data){
+                                    $('#show_modal').click();
+                                    $('#student_span').text(data['student'])
+                                    $('#assigned_span').text(data['assigned'])
+                                    $('#exists_span').text(data['exists'])
+                                    $('#count_span').text(data['count'])
+                                    $('#group_span').text(data['group'])
+                                },
+                                500:function(data){
+                                    alert('Error. Please try again.')
+                                }
+                            }
+
+                        })
+                        student_datatable.rows( { selected: true } ).deselect();
+                        subject_datatable.rows( { selected: true } ).deselect();
+                    }
+                    else{
+                        
+                    }
+                }
+                
+            }]
+        })
+
+        var subject_datatable = $('#subjects_table').DataTable({
+            columnDefs: [ {  
+                className: 'select-checkbox',
+                targets:0,     
+            } ],
+            select: {
+                style: 'multi'
+            },
+        })
+        
+
+    </script>
+
+{% endblock%}

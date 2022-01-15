@@ -1,0 +1,71 @@
+
+<li class="nav-item has-treeview">
+  <a href="#" class="nav-link">
+    <i class="fas fa-users mr-1"></i>
+    <p>
+      Users
+      <i class="fas fa-angle-left right"></i>
+
+    </p>
+  </a>
+
+  <ul class="nav nav-treeview">
+    <li class="nav-item has-treeview ml-3">
+      <a href="{% url 'admin_app:manage_student' %}" class="nav-link">
+        <i class="fas fa-user-graduate"></i>
+        <p>
+          Student
+
+
+        </p>
+      </a>
+
+    </li>
+    <!-- <li class="nav-item has-treeview">
+      <a href="{% url 'admin_app:manage_parent' %}" class="nav-link">
+        <i class="fas fa-user"></i>
+        <p>
+          Parent
+
+        </p>
+      </a>
+
+    </li>
+-->
+
+<li class="nav-item has-treeview ml-3">
+  <a href="{% url 'admin_app:manage_staff' %}" class="nav-link">
+    <i class="fas fa-chalkboard-teacher"></i>
+    <p>
+      Teacher
+
+
+    </p>
+  </a>
+</li>
+
+    <!-- <li class="nav-item has-treeview ml-3">
+      <a href="{% url 'admin_app:manage_system_admin' %}" class="nav-link">
+        <i class="fas fa-user-secret"></i>
+        <p>
+          System Admin
+
+
+        </p>
+      </a>
+
+    </li> -->
+    <li class="nav-item has-treeview ml-3">
+      <a href="{% url 'admin_app:manage_user' %}" class="nav-link">
+        <i class="fas fa-users"></i>
+        <p>
+          User
+
+
+        </p>
+      </a>
+
+    </li>
+
+  </ul>
+</li>

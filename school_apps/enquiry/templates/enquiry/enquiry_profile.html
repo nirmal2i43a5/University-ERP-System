@@ -1,0 +1,91 @@
+
+
+    <div class="panel-body profile-view-dis">
+        <div class="row">
+           
+                <div class="col-sm-9">
+                    <div class="profile-view-tab">
+                        <p><span>Name </span>: {{ enquiry.name }} </p>
+                    </div>
+                </div>
+                <!-- <div class="col-sm-9">
+                    <div class="profile-view-tab">
+                        <p><span>Optional Subject </span>: {{ student.optional_subject.subject_name }}</p>
+                    </div>
+                </div> -->
+         
+                <div class="col-sm-9">
+                    <div class="profile-view-tab">
+                        <p><span>Address </span>: 
+                       {{ object.address }}</p>
+                    </div>
+                </div>
+                <div class="col-sm-9">
+                    <div class="profile-view-tab">
+                        <p><span>Home Phone </span>: 
+                       {{ object.home_contact }}</p>
+                    </div>
+                </div>
+               
+            
+                <div class="col-sm-9">
+                    <div class="profile-view-tab">
+                        <p><span>Mobile Phone </span>:  {{ object.mobile_no }}</p>
+                    </div>
+                </div>
+                
+                <div class="col-sm-9">
+                    <div class="profile-view-tab">
+                        <p><span>Email </span>:  {{ object.email }}</p>
+                    </div>
+                </div>
+<!--                 
+                <div class="col-sm-9">
+                    <div class="profile-view-tab">
+                        <p><span>Discovery Method </span>:  {{ student.previous_school_name }}</p>
+                    </div>
+                </div> -->
+                <div class="col-sm-9">
+                    <div class="profile-view-tab">
+                        <p><span>Called </span>:{% if object.called %}
+                                                Yes
+                                                {% else %}
+                                                No
+                                                {% endif %}</p>
+                    </div>
+                </div>
+                <div class="col-sm-9">
+                    <div class="profile-view-tab">
+                        <p><span>Status </span>:  {{ object.get_status_display }}</p>
+                    </div>
+                </div>
+
+
+                <div class="col-sm-9">
+                    <div class="profile-view-tab">
+                        <p><span>Enquiry</span>:  {{ object.enquiry }}</p>
+                    </div>
+                </div>
+           <!--sjsjs-->
+             <!------->
+            
+     
+        
+            <div class="col-sm-9">
+                <div class="profile-view-tab">
+                    <p><span>Remarks </span>: {{ object.remarks }}</p>
+                </div>
+            </div>
+          
+
+       
+        </div>
+    </div>
+ <style>
+     p{
+         font-weight: 300;
+     }
+    span{
+        font-weight: 400;
+    }
+ </style>

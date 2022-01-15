@@ -1,0 +1,83 @@
+<!-- <li class="nav-item menu-close">
+  <a href="#" class="nav-link">
+    <i class="fas fa-xs fa-th"></i>
+    <p>
+   Courses
+      <i class="right fas fa-angle-left"></i>
+    </p>
+  </a>
+  <ul class="nav nav-treeview">
+
+    <li class="nav-item">
+      <a href="{% url 'student:viewcourses' %}" class="nav-link">
+        <i class="far fa-circle nav-icon"></i>
+        <p>View Courses</p>
+      </a>
+    </li>
+
+   
+  </ul>
+</li> -->
+
+<li class="nav-item menu-close">
+  <a href="#" class="nav-link">
+    <i class="fas fa-xs fa-th"></i>
+    <p>
+   Exams
+   <i class="right fas fa-angle-left"></i>
+
+    </p>
+    
+    
+  </a>
+  <ul class="nav nav-treeview">
+
+    <li class="nav-item">
+      <a href="{% url 'student:checkscore' %}" class="nav-link">
+        <i class="far fa-circle nav-icon"></i>
+        <p>View Grades</p>
+      </a>
+    </li>
+
+
+
+    <li class="nav-item">
+      <a href="{% url 'student:examapplication' %}" class="nav-link">
+        <i class="far fa-circle nav-icon"></i>
+        <p>Exam Application</p>
+      </a>
+    </li>
+
+    <!-- <li class="nav-item">
+      <a href="{% url 'student:printapplicationform' %}" class="nav-link">
+        <i class="far fa-circle nav-icon"></i>
+        <p>Print Application Form</p>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a href="{% url 'student:printadmitcard' %}" class="nav-link">
+        <i class="far fa-circle nav-icon"></i>
+        <p>Print Admit Card</p>
+      </a>
+    </li> -->
+
+    <li class="nav-item">
+      <a href="{% url 'student:examdetails' %}" class="nav-link">
+        <i class="far fa-circle nav-icon"></i>
+        <p>Exam Details</p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="{% url 'exam:view_answer_sheet' %}" class="nav-link">
+        <i class="far fa-circle nav-icon"></i>
+        <p>AnswerSheet</p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="{% url 'exam:student-questionpaper-view' %}" class="nav-link">
+        <i class="far fa-circle nav-icon"></i>
+        <p>Question Paper</p>
+      </a>
+    </li>
+</ul>

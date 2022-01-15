@@ -1,0 +1,156 @@
+{% extends 'admin_templates/base_admin.html' %}
+{% block title %}Upload Student Answers {% endblock %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block main_content %}
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <!-- /.card-header -->
+    {% include "includes/messages.html" %}
+
+
+
+    <div class="d-flex bd-highlight">
+
+      <div class=" flex-grow-1 bd-highlight">
+        <div class="card pt-3 pl-2">
+          <div class="card-header mb-2 mr-1" style="background-color: #094089;color:white">
+            <strong> Upload Student Answers</strong>
+          </div>
+
+
+              <!-- -------------------------Subject filter form ------------------------------------------------ -->
+          <form  method="POST" enctype="multipart/form-data">
+            <div class="input-group">
+          {% csrf_token %}
+              {{ form|crispy }} 
+
+              <div class="input-group-btn ml-1 mt-1 mb-1">
+                <button type="submit" class="btn btn-sm " name="fetch_student" style="background-color: #094089;color:white">
+                  <strong>Fetch Students</strong>
+                </button>
+
+              </div>
+            </div>
+          </form>
+       <!-- -------------------------Subject filter form end------------------------------------------------ -->
+        </div>
+
+      </div>
+
+
+      {% if semester %}
+
+      <div class="d-flex flex-column bd-highlight " style="margin-right:10%;">
+        <div class="card px-4 py-3 ml-4 mt-0">
+          <div class="p-1 bd-highlight">
+            <strong>Semester</strong>: {{ semester.name }}
+          </div>
+          <div class="p-1 bd-highlight">
+            <strong>Section</strong> : {{ section.section_name }}
+          </div>
+          <div class="p-1 bd-highlight">
+
+            <strong>Subject</strong> : {{ subject.subject_name }}
+          </div>
+        </div>
+      </div>
+
+      {% endif %}
+
+    </div>
+
+       <!-- -------------------------attendace save form ------------------------------------------------ -->
+    <form  method="POST" enctype="multipart/form-data">
+
+      <!-- <input type="hidden" name = "semester_id" value = "{{ semester.id }}">
+        <input type="hidden" name = "section_id" value = "{{ section.id }}"> -->
+
+      {% csrf_token %}
+
+      <div class="card">
+        <!-- /.card-header -->
+        <div class="card-body ">
+
+          {% if students %}
+
+          <div class="d-flex bd-highlight">
+            <div class="p-2 flex-fill bd-highlight">
+
+              <select name="exam" class="form-select form-select-lg mb-3 form-control col-md-4" required>
+                <option value="">------------------------Select Exam---------------------------</option>
+              {% for exam in exams %}
+                  <option value ='{{exam.pk}}'> {{exam}} </option>
+              {% endfor %}
+          </select>
+            </div>
+
+          </div>
+          <hr>
+          <div class="row">
+            {% for student in students %}
+
+            <div class="col-md-6">
+              <div class="card card-header">
+
+                <div class="row">
+
+                  <div class="col-md-4">
+
+                    <strong> {{forloop.counter}}</strong> . 
+                    <input type="hidden" value = "{{student.student_user.id}}" name = "students" >
+                  
+                      {{ student.student_user.full_name }}
+                  </div>
+
+
+                  <div class="col-md-4">
+                   <input type="file" name="answer_upload" >
+                    </select>
+                  </div>
+
+                  <!-- <div class="col-md-4">
+                    <input type="text" id="id_remark"  name="{{ student.student_user.id }}" placeholder="Enter Remark" class="form-control">
+
+                  </div>  -->
+                </div>
+
+              </div>
+            </div>
+
+            {% endfor %}
+
+
+          </div>
+
+        </div>
+        <!-- /.card-body -->
+      </div>
+      <!-- /.card -->
+      <!-- <a href="{% url 'attendance_app:manage_student_attendance' %}" id="save_attendance"
+        class="btn btn-sm btn-info btn-danger mb-3"><strong>Back</strong></a> -->
+      <button type="submit" name="upload_answer_button" class="btn btn-sm btn-success mb-3"><strong>Upload
+          Answer</strong></button>
+      {% endif %}
+
+    </form>
+
+    {% if subject and not students %}
+    <div class="alert alert-default-warning">No Student Found. Please, Add Student To Particular Class.
+    </div>
+
+    {% elif not students %}
+    <div class="alert alert-default-warning">Please, Search Appropriate Class, Section, and Subject For Uploading
+      Students Answer.
+    </div>
+
+
+    {% endif %}
+
+  </div>
+</section>
+<!-- /.content -->
+
+{% endblock main_content %}

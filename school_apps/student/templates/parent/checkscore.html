@@ -1,0 +1,110 @@
+{% extends 'student_base.html'%}
+    {% block content%}
+    
+     <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                <!-- general form elements -->
+                    <div class="card card-info">
+                        {% include 'override_table/header.html' with card_title='Check Grades' %}
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        <form id = "children-form" class="ml-3 mt-3" action= " {% url 'student:parent_checkscore' %}" method="POST">
+                            {% csrf_token %}
+                            <div class="d-flex flex-nowrap">
+                                <div class=" p-2">
+                                    <div class="row" class="mb-3">
+                                        <label for="student_select">Select Student:</label>
+                                        <select id="student_select" name="student">
+                                            {% for item in student%}
+                                                <option value="{{ item.student_user.username }}" selected> {{item.student_user.full_name}}</option>
+                                            {% endfor%}
+                                        </select>
+                                    </div>
+
+                                    <div class="row" class="mb-3">
+                                        <label for ="select_term">Select term:</label>
+                                        <select id="select_term" class="form-select form-select-lg form-control" name="term">
+                                        
+                                        </select>
+                                        <input type="submit" class="btn btn-primary">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="container">
+                            {% if records%}
+                                <h4>Obtained grades:</h4>
+                                    <table class="table table-hover">
+                                        {% for records in records%}
+                                        <tr>
+                                            <td>{{ records.exam_id.exam_title}}</td>
+                                            <td>{{ records.marks}}</td>
+                                        </tr>
+                                        {% endfor %}    
+                                        {% if not remaining %}
+                                            <tr>
+                                                <td colspan="2" align="right">
+                                                    <a href="{% url 'student:printresults' records.last.application_id.application_id  %}"><button class="btn btn-primary">Print</button></a>
+                                                </td>
+                                            </tr>
+                                        {% endif %}
+                                    </table>
+                                {% else %}
+                                    <h4>There are no exam records yet.</h4>
+                                {% endif %}
+                                <hr>
+                                {% if remaining %}
+                                    <h4>Following exams are yet to be graded:</h4>
+                                    <table class="table table-hover">
+                                        {% for remaining in remaining%}
+                                            <tr><td>{{ remaining.exam_id.exam_title }}</td></tr>
+                                        {% endfor %}
+                                    </table>
+                                {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                
+            </div>
+
+            
+        </div>
+      </section>
+{% endblock %}
+
+{% block javascript %}
+
+<script>
+    $("#student_select").change(function(){
+        student = $(this).val();
+        
+        $.ajax({
+            url: "{% url 'student:returnExamslist'%}",
+            data : {'student':student},
+            success: function(data){
+                $("#select_term").html(data);
+            }
+        })
+    })
+
+    $(function() {
+        student = $("#student_select").find(":selected").val()
+        $.ajax({
+            url: "{% url 'student:returnExamslist'%}",
+            data : {'student':student},
+            success: function(data){
+                $("#select_term").html(data);
+            }
+        })
+        
+    });
+    
+</script>
+{% endblock %}
+
+{% block title%}| Check Score{% endblock %}
+

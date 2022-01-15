@@ -1,0 +1,77 @@
+{% extends 'admin_templates/base_admin.html' %}
+{% load static %}
+{% load auth_extras %}
+{% load crispy_forms_tags %}
+
+{% block title %}Event Detail{% endblock %}
+{% block main_content %}
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+
+    {% include "includes/messages.html" %}
+
+    <div class="row">
+
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header" style="background-color: #094089;color:white;">
+
+            <div class="card-title">Event Detail</div>
+            {% if request.user|has_group:'Admin' or request.user.is_superuser or request.user|has_group:'Teacher' %}
+              <a href="{% url 'fullcalendar' event_detail.calendar.slug %}" class=" btn btn-xs float-right" style="background-color: white;">
+                <i class = "fas fa-sm fa-eye text-dark"></i> <strong> View Calendar</strong> 
+              </a>
+              {% endif %}
+          </div>
+
+          <!-- /.card-header -->
+          <div class="card-body table-responsive ">
+            <span class=" ml-2"> <strong>Event : </strong> {{ event_detail.title }}</span>
+            <div class="d-flex flex-row">
+              <div class="p-2">
+                <strong>Date</strong> : {{ event_detail.start| date:"l, d F, g:i a" }} <strong> TO </strong> 
+                {{event_detail.end| date:"l, d F, g:i a" }}
+              </div>
+             
+            </div>
+            <div class = "d-flex flex-row">
+              <div class="p-2">
+                <strong>Creator </strong> : {{ event_detail.creator }}
+              </div>
+            </div>
+
+            <div class = "d-flex flex-row">
+              <div class="p-2">
+                <strong>Description  </strong> : <div class="px-2 py-1  text-bold">
+                </div>
+                {{ event_detail.description|safe }}
+
+              </div>
+            </div>
+
+            {% if request.user|has_group:'Admin' or request.user.is_superuser or request.user|has_group:'Teacher' %}
+  
+            {% if  request.user|has_group:'Admin' or request.user.is_superuser   %}
+          <a href="{% url 'edit_event' event_detail.calendar.slug event_detail.id %}" class = "btn btn-default mt-3  bg-white px-3" >Update</a>
+          {% endif %}
+          {% endif %}
+        
+        </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+
+
+    </div>
+</section>
+<!-- /.content -->
+
+
+
+{% endblock main_content %}
+
+{% block custom_js %}
+{% endblock custom_js %}

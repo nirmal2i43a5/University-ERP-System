@@ -1,0 +1,22 @@
+<table class="table">
+    <thead>
+        <tr>
+            <td>Exam code</td>
+            <td>Exam title</td>
+            <td>Date</td>
+            <td>Type</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for exam in exams %}
+            <tr>
+                <td>{{ exam.exam_id }}</td>
+                <td>{{ exam.exam_title }}</td>
+                <td>{{ exam.date }}</td>
+                <td>{{ exam.type }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<hr>
+

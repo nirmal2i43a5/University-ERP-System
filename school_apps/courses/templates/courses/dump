@@ -1,0 +1,17 @@
+
+        var count =0;
+        var student_id={};
+
+function printAdmitCards(){
+            count =0;
+            student_id={};
+
+            $("tr.selected").each(function(){
+                student_id[count]=$(this).data('id');
+                count++;
+            })
+
+            $.ajax({
+                url:" {% url 'courses:printadmitcards '%}"
+            })
+        }

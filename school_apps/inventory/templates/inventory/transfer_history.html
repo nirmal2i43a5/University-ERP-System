@@ -1,0 +1,73 @@
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+{% load static  %}
+
+{% block title %} Transfer History {% endblock %}
+{% block main_content %}
+
+<section class="content">
+  <div class="container-fluid">
+
+  {% include "includes/messages.html" %}
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card" >
+                <div class="card-header" style="background-color: #094089;color:white;" >
+                    <span>Transfer History</span>
+                </div>
+
+                <div class="card-body table-responsive">
+            
+                    <table id="dataTable" class="table table-sm  table-striped table-bordered table-hover text-nowrap dataTable no-footer">
+                    <thead>
+                        <tr>
+                        <th></th>
+                        <th>#</th>
+                        <th>From</th>
+                        <th>Item</th>
+                        <th>To</th>
+                        <th>Date</th>
+                        <th>Overseer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in assets_transfer %}
+                            <tr>
+                                    <td></td>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{% if item.from_dept %}
+                                        {{item.from_dept}}
+                                        {% else %}
+                                        {{item.from_branch}}
+                                        {% endif %}
+                                    </td>
+                                    <td>{{item.item}}</td>
+                                    <td>{% if item.to_dept %}
+                                        {{item.to_dept}}
+                                        {% else %}
+                                        {{item.to_branch}}
+                                        {% endif %}</td>
+                                    <td>{{item.transfer_date}}</td>
+                                    <td>{{item.overseer}}</td>
+                            </tr>
+                            
+                        {% endfor %}
+                        {% include 'enquiry/mail_modal.html'%}
+                    </tbody>
+                    </table>
+                </div>
+            <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+  </div>
+
+  
+</section>
+<!-- /.content -->
+
+{% endblock main_content %}
+

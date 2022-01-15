@@ -1,0 +1,107 @@
+{% extends 'student_base.html' %}
+{% block content %}
+
+
+<section class="content">
+    <div class="container-fluid">
+  
+  
+      <div class="row">
+        <div class="col-md-12">
+          <!-- general form elements -->
+          <div class="card card-info">
+        
+            {% include 'override_table/header.html' with card_title='Select examination term:' %}
+            <!-- /.card-header -->
+            <!-- form start -->
+          
+
+<form id="term_form" class="mt-4 ml-2">
+
+    <div class="d-flex flex-nowrap">
+        <div class=" p-2">
+            <select name="term" id="term_select" class="form-control">
+                {% for term in terms%}
+                    <option name="term_option" value="{{term.pk}}">{{term}}</option>
+                {% endfor%}
+            </select>
+        </div>
+        <div class="p-2">
+            <input type="submit" value="Confirm" class="btn btn-sm mt-1 btn-success">
+
+
+        </div>
+    </div>
+  
+</form>
+<hr>
+<div id="exams_select_div" hidden>
+    <h3 class="ml-2">Select exam to mark:</h3>
+    &nbsp;&nbsp;&nbsp;Please note that exams appear on or after the day of the exam. 
+    <form id="exam_form" class="mt-4 ml-2">
+
+
+     
+
+        <div class="d-flex flex-nowrap">
+            <div class=" p-2">
+                <select name = 'exam' id="exam_select" class="form-control">
+    
+                </select>
+            </div>
+            <div class="p-2">
+                <input type="submit" value="Confirm" class="btn btn-sm mt-1 btn-success">
+    
+    
+            </div>
+        </div>
+    </form>
+    <div id="entryfield">
+    </div>
+</div>
+        </div>
+        <!-- /.card -->
+  
+  
+  
+      </div>
+    </div>
+    </div>
+  </section>
+  
+{% endblock %}    
+    
+{% block title%} | Select course{% endblock %}
+
+{% block javascript %}
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    $("#exam_form").submit(function(event){
+        event.preventDefault();
+        exam_id = $("#exam_select").val();
+
+        $.ajax({
+            url: "{% url 'teacher:examsAjax'%}",
+            data: {'exam_id':exam_id},
+            success: function (data) {
+                $("#entryfield").html(data);
+            }
+        })
+    })
+    
+    $("#term_form").submit(function(event){
+        event.preventDefault();
+        term_id=$("#term_select").val();
+        
+        $.ajax({
+            url: "{% url 'teacher:loadExamsAjax' %}",
+            data: {'term_id':term_id},
+            success: function(data){
+                $("#exams_select_div").removeAttr('hidden')
+                $("#exam_select").html(data)
+            }
+        })
+        
+    })
+</script>
+{% endblock %}

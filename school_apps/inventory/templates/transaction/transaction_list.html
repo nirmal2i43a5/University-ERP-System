@@ -1,0 +1,118 @@
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+{% load static  %}
+
+{% block title %} Transactions {% endblock %}
+{% block main_content %}
+
+<section class="content">
+  <div class="container-fluid">
+
+  {% include "includes/messages.html" %}
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card" >
+                <div class="card-header" style="background-color: #094089;color:white;" >
+                    <span>Transactions</span>
+                </div>
+
+                <div class="card-body table-responsive">
+            
+                    <!-- <table id="dataTable" class="table table-sm  table-striped table-bordered table-hover text-nowrap dataTable no-footer"> -->
+                <table class="table table-sm  table-striped table-bordered table-hover text-nowrap dataTable no-footer">
+                    <thead>
+                        <tr>
+                        <th>#</th>
+                        <th>Vendor</th>
+                        <th>Procurement Order</th>
+                        <th>Item</th>
+                        <th>Amount</th>
+                        <th>Request Date</th>
+                        <th>Completion Date</th>
+                        <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in transaction %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{item.vendor}}</td>
+                                <td>{% if item.procurement_order %}
+                                        <a href="{% url 'inventory:procurement_details' item.procurement_order.pk %}"></a>
+                                        {{item.procurement_order.is_complete}}                                    
+                                        {{item.procurement_order}}
+                                        ({% if item.procurement_order.is_complete %}
+                                            Complete
+                                            {% else %}
+                                            Incomplete
+                                            {% endif %})
+                                    {% else %}
+                                    None
+                                    {% endif %}
+                                    </a>      
+                                <td>{{item.item}}</td>
+                                <td>{{item.amount}}</td>
+                                <td>{{item.request_date}}</td>
+                                <td>{{item.completion_date}}</td>
+                                <td>
+                                    {% if item.is_complete%}
+                                        <button id="register_button" data-id="{{item.pk}}" data-toggle="modal" data-target="#register_modal" 
+                                                data-procurement = "{{item.procurement_order.pk}}" class='btn btn-primary btn-sm register_button'>Register</button>
+                                    {% else %}
+                                        <!-- <a href=""class='btn btn-sm btn-primary'>Complete</> -->
+                                        <form method="post">
+                                            {% csrf_token %}
+                                            <input type="text" name="transaction" value={{item.pk}} hidden readonly>
+                                            <input type="submit" class='btn btn-primary btn-sm' value="Complete">
+                                        </form>
+                                    {% endif %}
+                                    
+                                </td>
+                            </tr>
+                            
+                        {% endfor %}
+                        {% include 'transaction/register_item_modal.html'%}
+                    </tbody>
+                    </table>
+                </div>
+            <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+  </div>
+
+  
+</section>
+<!-- /.content -->
+
+{% endblock main_content %}
+
+{% block custom_js %}
+    <script>
+ 
+        $( window ).on( "load", function() { 
+            $(".register_button").click(function(){
+                var id = $(this).data('id');
+                var procurement_id = $(this).data('procurement');
+    
+                $.ajax({
+                    url:" {% url 'inventory:register_new_inventory_ajax' %}",
+                    data:{
+                        'id':id,
+                        'procurement_id':procurement_id
+                    },
+                    success: function(data){
+                        $("#register_modal_body").html(data);
+                    },
+                    error: function(){
+                        alert("Something went wrong.")
+                    }
+                })
+            })
+           
+         })
+    </script>
+{% endblock %}

@@ -1,0 +1,165 @@
+{% extends 'admin_templates/base_admin.html' %}
+{% block title %}Manage Teacher Attendance {% endblock %}
+
+{% load static %}
+{% block main_content %}
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <!-- /.card-header -->
+
+
+    <form action="{% url 'attendance_app:save_teacher_attendance' %}" method="POST">
+
+      <!-- <input type="hidden" name = "semester_id" value = "{{ semester.id }}">
+        <input type="hidden" name = "section_id" value = "{{ section.id }}"> -->
+
+      {% csrf_token %}
+
+      <div class="card">
+        <!-- /.card-header -->
+        <div class="card-body ">
+
+          {% if teachers %}
+
+          <div class="d-flex bd-highlight">
+            <div class="p-2 flex-fill bd-highlight">
+
+              <label class="mt-1" style=" text-align: right;clear: both;float:left; margin-right:10px;" for="">
+                Attendance Date:</label>
+              <input type="date" id="attendance_date" name="attendance_date" class="form-control col-md-6" required />
+
+            </div>
+
+          </div>
+          <hr>
+          <div class="row">
+            {% for teacher in teachers %}
+
+            <div class="col-md-6">
+              <div class="card card-header">
+
+
+                <div class="row">
+
+                  <div class="col-md-4">
+
+                    <strong> {{forloop.counter}}</strong> . <a
+                      href="{% url 'admin_app:view_teacher' teacher.staff_user.id %}">
+                      {{ teacher.staff_user.full_name }} </a>
+                  </div>
+
+
+                  <div class="col-md-4">
+
+
+                    <select class="status" name="{{ teacher.staff_user.id }}">
+
+
+                      <option value="Present">Present</option>
+
+                      <option value="Absent(Informed)">Absent(Informed)</option>
+
+                      <option value="Absent(Not Informed)">Absent(Not Informed)</option>
+
+                      <option value="Late">Late</option>
+
+                      <option value="Excused">Excused</option>
+                    </select>
+                  </div>
+
+                  <!-- <div class="col-md-4">
+    <input type="text" id="id_remark"  name="{{ teacher.staff_user.id }}" placeholder="Enter Remark" class="form-control">
+
+  </div>  -->
+                </div>
+
+              </div>
+            </div>
+
+
+
+
+            {% endfor %}
+
+
+          </div>
+
+        </div>
+        <!-- /.card-body -->
+      </div>
+      <!-- /.card -->
+
+      <button type="button" id="save_attendance" class="btn btn-success">Save Attendance</button>
+      {% endif %}
+
+    </form>
+
+
+  </div>
+</section>
+<!-- /.content -->
+
+{% endblock main_content %}
+
+{% block custom_js %}
+
+<script>
+  $(document).ready(function () {
+
+    $(document).on("click", "#save_attendance", function () {
+
+      //    $(this).attr("disabled","disabled")
+      //   $(this).text("Saving Attendance Data...")
+
+      var teacher_data = $("select[class='status']").map(function () {
+
+        //  alert($(this).attr('name'))
+        status = $(this).children("option:selected").val();
+        teacher_id = $(this).attr('name')
+        // remark = $('#id_remark').val()
+
+        if ($(this).find('option:selected')) {
+          console.log($(this).attr('name'))
+          console.log($(this).attr('name'),)
+          // console.log({ "id": $(this).attr('name') , "status": text,'remark':remark })
+
+          return { "id": teacher_id, "status": status, };
+        }
+      }).get()
+
+      var attendance_date = $("#attendance_date").val();
+
+      teacher_data = JSON.stringify(teacher_data)
+      console.log(teacher_data)
+      $.ajax({
+        url: "{% url 'attendance_app:save_teacher_attendance' %}",
+        type: 'POST',
+        data: {
+          teacher_ids: teacher_data, attendance_date: attendance_date,
+        },
+      })
+        .done(function (response) {
+          console.log("I am done")
+
+          if (response == "OK") {
+            alert("Attendance Save")
+            window.location.href = '/manage_teacher_attendance/'
+          }
+          else {
+            alert("Error in Saving Data")
+          location.reload()
+
+          }
+        })
+        .fail(function () {
+          alert("Failed to get Response")
+        })
+    })
+
+  })
+</script>
+
+
+{% endblock custom_js %}

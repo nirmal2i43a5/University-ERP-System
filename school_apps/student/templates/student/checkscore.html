@@ -1,0 +1,74 @@
+{% extends 'student_base.html'%}
+    {% block content%}
+    
+     <section class="content">
+        <div class="container-fluid">
+      
+      
+          <div class="row">
+            <div class="col-md-12">
+              <!-- general form elements -->
+              <div class="card card-info">
+                {% include 'override_table/header.html' with card_title='Check Grades' %}
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form id = "semester-form" class="ml-3 mt-3">
+
+                    <div class="d-flex flex-nowrap">
+                        <div class=" p-2">
+                            <div class="row" class="mb-3">
+                                {% csrf_token %}
+                                <!-- <label for "select_sem">Select semester:</label> -->
+                                <select id="select_term" class="form-select form-select-lg form-control" >
+                                    <option value ='--'> Select Term </option>
+                                {% for item in terms%}
+                                    <option value ='{{item.pk}}'> {{item.term_name}} </option>
+                                {% endfor %}
+                            </select>
+
+                            <input type="submit" class="btn btn-primary" id="term_submit" value="Confirm">
+                            
+                            </div>
+                        </div>
+                     
+                    </div>
+                   
+                </form>
+            
+                 <div class="container" id="results"> 
+                    <hr>
+                    <h5>Select term to view grades.</h5>
+                    <hr>
+            
+                 </div>
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+        </div>
+      </section>
+{% endblock %}
+
+{% block javascript %}
+
+<script>
+    $("#term_submit").click(function(event){
+        event.preventDefault();
+        semester = $("#select_term").val();
+
+        if (semester!='--'){
+            $.ajax({
+                url: "{% url 'student:postGrades'%}",
+                data: {'term':semester},
+                success: function (data) {
+                    $("#results").html(data);
+                }
+            })
+        }
+    })
+    
+</script>
+{% endblock %}
+
+{% block title%}| Check Score{% endblock %}
+

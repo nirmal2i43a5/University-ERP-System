@@ -1,0 +1,317 @@
+{% extends 'admin_templates/base_admin.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load mathfilters %}
+{% load widget_tweaks %}
+{% block title %}
+{{title}}
+{% endblock title %}
+
+<script>
+    // Adjust iframe height according to the contents
+    parent.jQuery.fancybox.getInstance().update();
+
+    // Close current fancyBox instance
+    parent.jQuery.fancybox.getInstance().close();
+</script>
+
+
+{% block main_content %}
+
+<!-- Main content -->
+
+<section class="content">
+    
+    
+    <div class="container-fluid">
+
+        {% include "includes/messages.html" %}
+
+        <div class="row">
+
+            <div class="col-md-2">
+
+                <div class="card card-info card-outline">
+                    <div class="card-body">
+
+
+                            <div class="table-title" style="background-color:#094089;color:white;">
+                                <p class="ml-2 mt-2 text-bold">Each Question Marks</p>
+                            </div>
+                            
+                            <!-- {% for item in question %}
+                            {% if item.has_sub_question%}
+                                {% for sub in sub_question %}
+                                    {% if sub.question == item %}
+                                        display question no and text input
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                display question no and text input
+                            {% endif %}
+                        {% endfor%}
+                          -->
+                          <div id="marks_table">
+                            <table class="table table-hover" id="marks_table">
+                                {% for item in question_grade %}
+                                    <tr>
+                                        <td> {{item.question.question_no}}</td>
+                                        <td><strong> {{item.marks}}</strong></td>
+                                        {% if item.question.has_sub_question %}
+                                        <td>
+                                                {% for sub in sub_question_grade %}
+                                                    {% if sub.sub_question.question == item.question %}
+                                                        <tr >
+                                                            <td class="ml-1"> {{sub.sub_question.question_no}}</td>
+                                                            <td> {{sub.marks}}</td>
+                                                        </tr>
+                                                    {% endif %}
+                                                {% endfor %}
+                                        </td>
+                                            
+                                        {% endif %}
+                                    </tr>
+                                {% endfor %}
+                                <tr>
+                                    <td><strong>Total</strong></td>
+                                    <td><strong>{{total}}</strong></td>
+                                </tr>
+                              </table>
+    
+                          </div>
+                          
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-8">
+
+             <!-- <a href="{{answer_sheet.answer_upload.url}}">{{answer_sheet.student.student_user.username}}</a> -->
+
+                <!-- <iframe src="/viewer/viewer.html?file={{answer_sheet.answer_upload.url}}#magazineMode=true" width="100%"
+                    height="700px" frameborder="0"></iframe> -->
+                <!-- <iframe id = "pdf-annotate" src="/viewer/pdf_annotation/index.html?documentId={{answer_sheet.answer_upload.url}}" width="100%"
+                height="700px" frameborder="0"></iframe> -->
+                <iframe id = "pdf-annotate2" src="/viewer/pdf_annotation2/index.html?documentId={{answer_sheet.answer_upload.url}}&studentId={{answer_sheet.student.student_user.username}}&examId={{answer_sheet.exam.exam_id}}" width="100%"
+                height="700px" frameborder="0"></iframe>
+                
+
+            </div>
+            <div class="col-md-2">
+                <div class="card card-info">
+                    {% include 'override_table/header.html' with card_title='Add Grade' %}
+
+
+                    <form role="form" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="card-body">
+                            <div>
+                                <span class="text-capitalize"><strong> {{answer_sheet.exam}}</strong></span><br>
+                                <span class="text-capitalize"><strong>
+                                        {{answer_sheet.student.student_user}}</strong></span><br>
+                                <span class="text-capitalize"><strong> Stu Id :
+                                        {{answer_sheet.student.stu_id}}</strong></span>
+                            </div>
+                            <hr>
+                            <form action="">
+
+                                <input type="hidden" id="examid" name="examid" value={{answer_sheet.exam.pk}}>
+                                <input type="hidden" id = "studentid" name="studentid" value={{answer_sheet.student.pk}}>
+                                {% for item in question %} 
+                                {{item.question_no}}
+                                {% if item.has_sub_question %} 
+                                <br>
+
+                                    {% for sub in sub_question %} 
+
+                                    
+                                        {% if sub.question == item %} 
+
+
+                                          {{sub.question_no}}
+
+                                          <select name="{{sub.pk}}" id="{{sub.pk}}" data-question = "{{item.pk}}" class="{{item.pk}} subquestion float-right">
+                                            <option value="0">0</option>
+    
+                                            {% with ''|center:sub.total_marks|mul:2 as range %}
+    
+                                            {% for _ in range %}
+    
+                                            {% with numerator=forloop.counter denominator=2 %}
+    
+                                            <option  value="{{ numerator|div:denominator }}">
+                                                {{ numerator|div:denominator }}
+    
+                                            </option>
+    
+                                            {% endwith %}
+    
+    
+                                            {% endfor %}
+                                            {% endwith %}
+                                            
+    
+                                        </select>
+                                        <br>
+                                        {% endif %} 
+                                    {% endfor %} 
+
+                                    {% else %}
+                                    <!-- for question selct -->
+                                    <select name="{{item.pk}}" class="{{item.pk}} questionmark float-right">
+                                        <option value="0">0</option>
+
+                                        {% with ''|center:item.total_marks|mul:2 as range %}
+
+                                        {% for _ in range %}
+
+                                        {% with numerator=forloop.counter denominator=2 %}
+
+                                        <option  value="{{ numerator|div:denominator }}">
+                                            {{ numerator|div:denominator }}
+
+                                        </option>
+
+                                        {% endwith %}
+
+                                        {% endfor %}
+                                        {% endwith %}
+                                        
+
+                                    </select>
+                                 
+                                {% endif %} 
+                                <hr>
+                            {% endfor %} 
+
+                            </form>
+                            <!-- {{ grade_form|crispy }} -->
+
+                            <a href="{% url 'exam:teacher-view-answer' exam_instance.pk %}"
+                                class="btn btn-sm btn-danger mt-4">Back</a>
+                            <!-- <button type="submit" class="btn btn-sm btn-success mt-4">Save</button> -->
+                        </div>
+                </div>
+                <!-- /.card-body -->
+
+                </form>
+
+
+            </div>
+        </div>
+
+     
+
+
+    </div>
+    </div>
+</section>
+
+<style>
+    #magazineContainer,
+    #magazine {
+        background-color: #094089;
+    }
+</style>
+
+
+
+{% endblock main_content %}
+
+
+
+{% block custom_js %}
+
+<script>
+    $(document).ready(function () {
+        var total = 0;
+        $('.mark_obtained').each(function () {
+            total += parseFloat(this.innerHTML)
+        });
+        $('#total').text(total);
+//-----------------------------------------------
+      
+    })
+    //
+/*
+    $("select[class = ['question_id']").click(function(){
+         var question_id = $(this).val();
+         alert('dasjkdasjk')
+     })*/
+
+        $(".questionmark").on("change", function() {
+        var student_id = $('input#studentid').val()
+        var exam_id = $('input#examid').val()
+
+        var questionmark_value = $(this).val();
+        var questionmark_id = $(this).attr('name')
+         
+          $.ajax({
+
+            url : "{% url 'exam:student-ajax-grade-add-question' %}",
+            data: {'questionmark_id':questionmark_id, 'questionmark_value':questionmark_value,'student_id':student_id,'exam_id':exam_id},
+            dataType: 'json',
+            method:'POST',
+            success: function(data){
+                $("#marks_table").html(data['html']);
+                //alert(data['html'])
+                //var data = data
+
+                
+                /*for  (var i in data){
+                  //  alert( `${data[i].marks}`)
+                    var marks;
+                    marks +=
+                    `
+                    <tr>
+                        <td> ${data[i].question__question_no}</td>
+                        <td> ${data[i].marks}</td>
+                    </tr>
+                    `
+                   //location.reload();
+
+                    $(".table tbody").html(marks);
+
+                  } */
+
+
+            },
+            error: function(){
+              alert("Something Went Wrong!")
+            },
+          });
+        });
+
+        $('.subquestion').change(function(){
+            var parent_question = $(this).data('question')
+            subquestion_id = $(this).attr("id");
+            marks = $(this).val();
+            var student_id = $('input#studentid').val()
+            var exam_id = $('input#examid').val()
+            
+            $.ajax({
+                //url:"{% url 'exam:subquestion_grade' %}",
+                url: "/exam/grade/sub/",
+                data:{'parent_question':parent_question,
+                    'subquestion_id':subquestion_id,
+                    'marks':marks,
+                    'student_id':student_id,
+                    'exam_id':exam_id},
+                dataType: 'json',
+                method:'POST',
+                success:function(data){
+                    $("#marks_table").html(data['html']);
+
+                }
+            })
+        })
+      
+
+</script>
+{% endblock %}
+
+{% block javascript %}
+
+{% endblock %}

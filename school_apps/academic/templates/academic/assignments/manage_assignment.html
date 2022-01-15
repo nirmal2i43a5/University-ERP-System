@@ -1,0 +1,210 @@
+{% extends 'admin_templates/base_admin.html' %}
+{% load static %}
+{% load auth_extras %}
+{% load crispy_forms_tags %}
+{% block title %}
+  {{title}}
+{% endblock title %}
+{% block main_content %}
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+  <!-- /.card-header -->
+  {% include "includes/messages.html" %}
+  
+    <div class="row">
+      <div class="col-12">
+
+
+        <div class="card " style="background-color: rgb(247, 245, 245);">
+          
+          <div class="card-header">
+
+            <ul class="nav nav-tabs nav-custom p-0">
+              <li class="nav-item"><a class="nav-link active" href="#assigned" data-toggle="tab">Assigned</a></li>
+              <li class="nav-item"><a class="nav-link" href="#draft" data-toggle="tab">Draft</a></li>
+
+              
+                <li>
+                  <form class="float-right mb-2" style="margin-left: 15rem;" role="search"  method="GET" >
+                    <div class="input-group">
+                   
+                
+                      {{ form|crispy }} 
+                  
+                      <div class="input-group-btn ">
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+          
+                      </div>
+                    </div>
+                  </form>
+                </li>
+            <li>
+
+
+              {% if request.user.is_superuser or request.user|has_group:'Teacher'   %}
+              <div class="d-flex justify-content-end mb-4">
+
+                <div class="text-link">
+
+                  <a href="{% url 'admin_app:add_assignment' %}" class="add-link btn btn-xs ml-1 mt-2" style="background-color: #094089;color:white;">
+                    <i class="fas fa-xs fa-plus"></i> <strong>Add assignment</strong></a>
+                  
+                </div>
+
+                <div>
+                  {% if  request.user|has_group:'Admin' or request.user.is_superuser   %}
+                  <a href="{% url 'academic:assignment_log' %}" class="btn btn-xs  text-white mt-2 ml-1" style="background-color: #094089;"  >
+                    <span><i class="fas fa-sm fa-history"></i> <strong>Log History</strong></span>
+                </a>
+                {% endif %}
+                </div>
+                
+             
+            </div>
+            {% endif %}
+            </li>
+              
+            </ul>
+        
+          </div>
+         
+          <!-- /.card-header -->
+          <div class="card-body table-responsive">
+            <div class="tab-content">
+
+              <div class="active tab-pane" id="assigned">
+                
+                {% for assignment in teacher_assignments %}
+
+                {% include "academic/assignments/delete.html" %}
+    
+                 {% include "academic/assignments/includes/assignment_list.html" %}
+                   </div>
+                   {% empty %}
+                  
+                   <h3> No Assignments Found!</h3>
+                {% endfor %}
+    
+    
+                </div>
+
+              <div class="tab-pane" id="draft">
+                {% for assignment in draft_assignments %}
+
+                {% include "academic/assignments/delete.html" %}
+    
+                 {% include "academic/assignments/includes/draft_assignment.html" %}
+                   </div>
+                   {% empty %}
+                  
+                   <h3> No Assignments Found!</h3>
+                {% endfor %}
+                  
+               </div>
+            </div>
+
+
+           
+          
+          
+            </div>
+           
+          
+            
+           
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+    </div>
+  </div>
+  
+</section>
+<!-- /.content -->
+
+<style>
+  .nav-custom > li > a:hover{
+    color:black;
+  }
+  .nav-custom > li > a{
+    
+    font-weight: 600;
+    color:white;
+    padding: 8px 10px 8px 10px;
+    background-color:#094089;
+    
+
+  }
+</style>
+{% endblock main_content %}
+
+{% block custom_js %}
+
+<script>
+  
+  $(document).ready(function () {
+
+    $("#id_course_category").change(function(){
+      var course_category_id = $(this).val();
+      
+      $.ajax({
+          url:" {% url 'attendance_app:fill_semester_select' %}",
+          data:{'course_category':course_category_id},
+          success:function(data){
+              $("#id_semester").html(data);
+          }
+      })
+  })
+  
+  
+  $("#id_semester").change(function(){
+    var semester_id = $(this).val();
+    
+    
+    $.ajax({
+        url:" {% url 'attendance_app:fill_section_select' %}",
+        data:{'semester':semester_id},
+        success:function(data){
+            $("#id_section").html(data);
+        }
+    })
+  })
+  
+  
+  $("#id_semester").change(function(){
+    var semester_id = $(this).val();
+    var course_category_id = $('#id_course_category').val();
+    
+    
+    $.ajax({
+        url:" {% url 'attendance_app:fill_subject_select' %}",
+        data:{'semester':semester_id,'course_category':course_category_id},
+        success:function(data){
+            $("#id_subject").html(data);
+        }
+    })
+  })
+ 
+  });
+</script>
+
+{% endblock custom_js %}
+
+<!-- 
+{% if request.user.is_superuser or request.user|has_group:'Admin' %}
+
+{% for assignment in assignments %}
+
+{% include "academic/assignments/delete.html" %}
+
+  {% include "academic/assignments/includes/assignment_list.html" %}
+    </div>
+    {% empty %}
+  
+    <h3> No Assignment Found!</h3>
+{% endfor %}
+
+{% endif %} -->

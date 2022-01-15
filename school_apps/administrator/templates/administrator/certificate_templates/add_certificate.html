@@ -1,0 +1,44 @@
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+
+  
+{% block main_content %}
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+
+    {% include "includes/messages.html" %}
+
+    <div class="row">
+      <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="card card-info">
+
+          {% include 'override_table/header.html' with card_title='Add Certificate Template' %}
+         
+          <form  method="post" enctype="multipart/form-data"  >
+            {% csrf_token %}
+        
+          <div class="card-body">
+            <!-- {{ form.media }}This is for richtexteditor -->
+           {% crispy form %}
+        
+          </div>
+          <!-- /.card-body -->
+       
+        </form>
+
+
+
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+{% endblock main_content %}
+
+

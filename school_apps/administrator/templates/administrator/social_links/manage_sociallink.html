@@ -1,0 +1,126 @@
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block main_content %}
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+
+  {% include "includes/messages.html" %}
+
+ 
+    <div class="row">
+    
+
+      <div class="col-md-12">
+        <div class="card card-info">
+            <div class="card-header">
+              <h3 class="card-title">Manage SocialLink</h3>
+            </div>
+          
+          <!-- /.card-header -->
+          <div class="card-body table-responsive ">
+            <a href="{% url 'admin_app:add_sociallink' %}" class="btn btn-xs btn-info float-right "><i class = "fas fa-xs fa-plus"></i> Add sociallink</a>
+            <table id="dataTable"
+              class="table table-sm table-striped table-bordered table-hover dataTable no-footer">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>#</th>
+                  <th>Photo</th>
+                  <th>Role</th>
+                  <th>User</th>
+                  <th>Facebook</th>
+                  <th>Twitter</th>
+                  <th>Linkedin</th>
+                  <th>Google Plus</th>
+                  
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+           
+                {% for sociallink in sociallinks %}
+                <tr>
+                  <td></td>
+                  <td>{{ sociallink.id }}</td>
+                  <td>
+                    {% if sociallink.image %}
+
+                    <img src="{{ sociallink.image.url }}" alt="" style="width:35px;height:35px;" class="img-circle" />
+  
+                    {% else %}
+                    <img src="{% static 'image/default_profile.png' %}" alt="" style="width:35px;height:35px;" class="img-circle" />
+                    {% endif %}
+                  </td>
+
+    
+                  <td>
+                    <div class="badge badge-info"> 
+                      {% if sociallink.role == '1'  %}<span class="badge-info">Admin</span> 
+                      {% elif sociallink.role == '2' %}<span class="badge-info">Teacher</span>
+                      {% elif sociallink.role == '3' %}<span class="badge-info">Student</span>
+                      {% elif sociallink.role == '4' %}<span class="badge-info">Parent</span>
+                      {% elif sociallink.role == '5' %}<span class="badge-info">Driver</span>
+                      {% elif sociallink.role == '6' %}<span class="badge-info">Moderator</span>
+                      {% elif sociallink.role == '7' %}<span class="badge-info">Accountant</span>
+                      {% elif sociallink.role == '8' %}<span class="badge-info">Librarian</span>
+                      {% elif sociallink.role == '9' %}<span class="badge-info">Receptionist</span>
+                      {% endif %}
+                     
+                    </div>
+                  </td>
+                  <td>{{ sociallink.user.full_name }}</td>
+                 
+            <td>
+              {% if sociallink.facebook %}
+              <a href="{{ sociallink.facebook}}" class="badge badge-info"><i class="fas fa-xs fa-eye"></i>  visit link</a>
+              {% else %}null{% endif %}
+            </td>
+            <td>
+              {% if sociallink.twitter %}
+              <a href="{{ sociallink.twitter}}" class="badge badge-info"><i class="fas fa-xs fa-eye"></i>  visit link</a>
+              {% else %}null{% endif %}
+            </td>
+
+            <td>
+              {% if sociallink.linkedin %}
+              <a href="{{ sociallink.linkedin}}" class="badge badge-info"><i class="fas fa-xs fa-eye"></i>  visit link</a>
+              {% else %}null{% endif %}
+            </td>
+
+            <td>
+              {% if sociallink.google_plus %}
+              <a href="{{ sociallink.google_plus}}" class="badge badge-info"><i class="fas fa-xs fa-eye"></i>  visit link</a>
+              {% else %}null{% endif %}
+            </td>
+                  <td>
+                    <a href="{% url 'admin_app:edit_sociallink' sociallink.id %}" class="btn btn-success btn-xs" data-placement="top"
+                      data-toggle="tooltip" title="Edit"><i class="fas fa-sm fa-edit"></i></a>
+                    <a href="{% url 'admin_app:delete_sociallink' sociallink.id %}" class="btn btn-danger btn-xs"    
+                    data-placement='top' data-toggle='tooltip' title='Delete'><i class="fas fa-sm fa-trash-alt"></i></a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+
+
+    </div>
+</section>
+<!-- /.content -->
+
+
+
+{% endblock main_content %}
+
+{% block custom_js %}
+{% endblock custom_js %}

@@ -1,0 +1,75 @@
+{% extends 'student_base.html' %}
+
+
+{% block title %}
+  Confirm Exam Application
+{% endblock title %}
+{% block content %}
+
+
+
+<section class="content">
+    <div class="container-fluid">
+  
+      
+      {% include "includes/messages.html" %}
+      <div class="row">
+        <div class="col-md-12">
+          <!-- general form elements -->
+          <div class="card card-info">
+            <form class="form-inline my-2 mx-2">
+                <div class="form-group mb-2">
+                    <label for="application_id">Enter form number:&nbsp&nbsp </label>
+                    <input type="text" id="application_id" class="form-control"> &nbsp&nbsp
+                    <button type="button" class="btn btn-primary" id="form-confirm-button">Confirm</button>
+                </div>
+            
+                
+            </form>
+            <div id="application-list">
+                <table class="table table-hover">
+                    <thead class="thead" style="background-color: #094089;color:white;">
+                        <tr>
+                            <td></td>
+                            <td>Form id</td>
+                            <td>Student</td>
+                            <td>Term</td>
+                            <td>Subject</td>
+                            <td>Date</td>
+                            <td>Status</td>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            
+        </div>
+        <!-- /.card -->
+  
+  
+  
+      </div>
+    </div>
+    </div>
+  </section>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        $("#form-confirm-button").click(function(event){
+            var form_id = $("#application_id").val()
+
+            if(form_id==""){
+                alert("Please enter form id.")
+            }else{
+                $.ajax({
+                    url: " {% url 'courses:confirmAjax' %}",
+                    data: {'form_id':form_id},
+                    success: function(data){
+                        $("#application-list").html(data)
+                    }
+                })
+            }
+
+        })
+    </script>
+{% endblock %}

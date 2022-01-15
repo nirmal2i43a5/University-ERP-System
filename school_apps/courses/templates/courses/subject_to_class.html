@@ -1,0 +1,146 @@
+{% extends 'student_base.html'%}
+
+{% block title %}
+{{title}}
+{% endblock title %}
+    
+{% block content %}
+<div style="margin-left: 25px; margin-right: 25px;">
+    <!-- <h4>Assign subjects to teacher</h4> -->
+    {% include 'override_table/header.html' with card_title='Assign Subject to Class' %}
+    <hr>
+</div>
+
+
+<div class="row" style="margin-left: 25px; margin-right: 25px;">  
+    <div class="col-6">
+        <table class="table table-hover " id="class_table">
+            <thead class="thead" style="background-color: #094089;color:white;"> 
+                <tr>
+                    <th></th>
+                    <th hidden>Class ID</th>   
+                    <th>Class</th>
+                    <th>Section</th>
+                </tr>
+            </thead>
+    
+            <tbody>
+    
+                {% for item in section%}
+                    <tr>
+                        <td></td>
+                        <td id="teacher_id" hidden>{{item.pk}}</td>
+                        <td>{{item.semester}}</td>
+                        <td>{{item.section_name}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-6">
+        <table class="table table-hover" id="subjects_table">
+            <thead class="thead" style="background-color: #094089;color:white;"> 
+                <tr>
+                    <th></th>
+                    <th hidden></th>
+                    <th>Subject code</th>   
+                    <th>Subject</th>
+                    <th>Teacher</th>
+                </tr>
+            </thead>
+    
+            <tbody>
+                {% for item in subjects%}
+                    <tr>
+                        <td style="width: max-content;"></td>
+                        <td hidden>{{item.pk}}</td>
+                        <td>{{item.subject.subject_code}}</td>
+                        <td>{{item.subject.subject_name}}</td>
+                        <td>{{item.teacher}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-html5-1.7.0/b-print-1.7.0/sl-1.3.3/datatables.min.css"/>
+        
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-html5-1.7.0/b-print-1.7.0/sl-1.3.3/datatables.min.js"></script>
+    
+    <script>
+        var section, subject;
+        
+        var class_datatable = $('#class_table').DataTable({
+            dom: 'Bfrtip',
+            columnDefs: [ {
+                orderable: false,
+                className: 'select-checkbox',
+                targets:   0
+            } ],
+            select: {
+                style: 'single'
+            },
+            buttons:[
+            {
+                text: "Add",
+                attr:{
+                    id:"add_teacher_btn",
+                    class:"btn btn-primary"
+                },
+                action: function(){
+
+                    if ( class_datatable.rows( '.selected' ).any() ){section = class_datatable.rows( { selected: true } ).data()[0][1];} else {alert("Please select a class")}
+                    if ( subject_datatable.rows( '.selected' ).any() ){subject = subject_datatable.rows( { selected: true } ).data()[0][1];} else {alert("Please select a subject")}
+                    
+                    if (section && subject){
+                        $.ajax({
+                            url: "{% url 'courses:subject_to_class_ajax' %}",
+                            data: {'section': section,
+                                    'subject':subject,
+                                    },
+                            statusCode:{
+                                201:function(data){
+                                    alert(data['message'])
+                                },
+                                500:function(data){
+                                    alert('Server error.')
+                                },
+                                404 : function(data){
+                                    alert('Server error.')
+                                }
+
+                            }
+
+                        })
+                        class_datatable.rows( { selected: true } ).deselect();
+                        subject_datatable.rows( { selected: true } ).deselect();
+                    }
+                    else{
+                        
+                    }
+                }
+                
+            }]
+        })
+
+        var subject_datatable = $('#subjects_table').DataTable({
+            columnDefs: [ {
+                orderable: false,
+                className: 'select-checkbox',
+                targets:   0
+            } ],
+            select: {
+                style: 'single'
+            },
+        })
+        
+
+    </script>
+
+{% endblock%}

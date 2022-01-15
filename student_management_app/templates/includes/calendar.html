@@ -1,0 +1,77 @@
+{% load auth_extras %}
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+<div class="row">
+    <div class="col-md-6">
+
+        {% if request.user|has_group:'Student' %}
+        <div id="student_monthly_attendance"></div>
+        {% include "includes/include_admin/charts/piechart/student_attendance/monthly_attendance.html" %}
+
+       {% endif %}
+
+        <ul class="list-group">
+
+          
+            {% if request.user|has_group:'Admin' or request.user.is_superuser or request.user|has_group:'Teacher' or request.user|has_group:'Parent' %}
+
+            <li class="list-group-item active" style="background-color:#094089;"><strong>All Notices</strong>
+                {% if request.user|has_group:'Admin' or request.user.is_superuser or request.user|has_group:'Teacher' %}
+                <a href="{% url 'admin_app:manage_notice' %}" class="btn btn-sm  text-bold float-right"
+                    style="background-color: white;">
+                    Manage Notice</a>
+                    {% endif %}
+                    {% for notice in notices %}
+                    <a href="">
+                        <li class="list-group-item">{{ notice.title }} <span class="float-right">
+        
+                                <a href="{{notice.file.url}}" style="cursor: pointer;background-color:#094089;color:white"
+                                    class="btn btn-xs float-right">
+                                    <strong>View</strong>
+                                </a>
+                            </span>
+                        </li>
+                    </a>
+                    {% endfor %}
+            </li>
+
+            {% endif %}
+          
+            {% if request.user|has_group:'Admin' or request.user.is_superuser or request.user|has_group:'Teacher' %}
+            <li>
+                <a href="{% url 'admin_app:manage_notice' %}" class=" list-group-item  dropdown-item dropdown-footer">
+                    <strong> See All Notices</strong>
+                </a>
+
+            </li>
+            {% endif %}
+
+
+
+
+
+
+
+        </ul>
+    </div>
+    <div class="col-md-6">
+        {% include "schedule/event_list.html" %}
+
+    </div>
+
+</div>
+<hr>
+<div class="row">
+    <div class="col-md-12 mr-2">
+        <div id='calendar' class="ml-3 mr-3"></div>
+        <!--calendar id is from full_scripts.html-->
+    </div>
+
+</div>
+
+
+{% include "fullcalendar_modal.html" %}

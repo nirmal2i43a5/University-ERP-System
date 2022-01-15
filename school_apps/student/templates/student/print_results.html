@@ -1,0 +1,174 @@
+{% extends 'student_base.html' %}
+
+{% block content %}
+<div class="invoice p-3 mb-3" id="application_form">
+    <!-- title row -->
+    <div class="row">
+      <div class="col-12">
+          <div class="text-center">
+              <img src="/static/image/global_college_logo.png" style="width:191px;height:65px;" class="img-rectangle ">
+          </div>
+          
+          
+          <h6 class="text-center">
+              Mid-Baneshwor, Kathmandu, Nepal
+          </h6>
+          <h4 class="text-center">
+              <strong> MARK-SHEET</strong>
+          </h4>
+      </div>
+    <!-- /.col -->
+  </div>
+
+  <div class="outer_div">
+    <div class = "row showdata">
+        <div class = "col-2">
+            <strong>Name:</strong>
+        </div>
+        <div class = "col-6">
+            {{form.student.student_user.full_name}}
+        </div>
+        <div class = "col-2">
+            <strong>Roll No:</strong>
+        </div>
+        <div class = "col-2">
+            {{form.student.roll_no}}
+        </div>
+    </div>
+
+    <div class = "row showdata">
+        <div class = "col-2">
+            <strong>Course:</strong>
+        </div>
+        <div class = "col-6">
+            A-Level
+        </div>
+        <div class = "col-2">
+            <strong>Shift:</strong>
+        </div>
+        <div class = "col-2">
+            {{form.student.shift}}
+        </div>
+    </div>
+
+    <div class = "row showdata">
+        <div class = "col-2">
+            <strong>Level:</strong>
+        </div>
+        <div class = "col-6">
+            {{form.student.semester.level}}
+        </div>
+        <div class = "col-2">
+            <strong>Section:</strong>
+        </div>
+        <div class = "col-2">
+            {{form.student.section}}
+        </div>
+    </div>
+
+    <div class = "row showdata">
+        <div class = "col-2">
+            <strong>Examination:</strong>
+        </div>
+        <div class = "col-6">
+            {{form.term.term_name}}
+        </div>
+        <div class = "col-2">
+            <strong>Academic Year:</strong>
+        </div>
+        <div class = "col-2">
+            {{form.term.year}}
+        </div>
+    </div>
+</div>
+
+  <br>
+    <div class="row">
+      <div class="col-12 table-responsive">
+        <table class="table table-striped">
+          <thead class="thead thead-dark">
+            <tr>
+              <th class="sn text-center">S.N.</th>
+              <th class="subject text-center">Subject</th>
+              <th class="grade text-center">Marks</th>
+              {% if form.term.type == 'Term' %}
+              <th class="marks text-center">Grade</th>
+              {% endif %}
+              <th class="subjectrank text-center">Subject Rank</th>
+          </tr>
+          </thead>
+          <tbody>
+            {% for exam in form.exam.all %}
+              <tr>
+                <td class="text-center">
+                  {{forloop.counter}}
+                </td>
+                
+                <td class="text-center">
+                  {{exam.subject_id.subject_name}}
+                </td>
+                <td class="text-center" >
+                  {% for grade in grades %}
+                    {% if grade.exam_id == exam%}
+                      {% if grade.marks == -1 %}
+                      Absent
+                      {% else %}
+                      {{grade.marks}}
+                      {% endif %}
+                    {% endif %}
+                  {% endfor%}
+                </td>
+                {% if form.term.type == 'Term' %}
+                            <td class="text-center">
+                            {% for grade in grades %}
+                            {% if grade.application_id == form %}
+                                {% if grade.exam_id == exam%}
+                                {% if grade.marks == -1 %}
+                                Absent
+                                {% else %}
+                                {{grade.grade}}
+                                {% endif %}
+                                {% endif %}
+                            {% endif %}
+                            {% endfor%}
+                            </td>
+                        {% endif %}
+              <td class="text-center">
+                {% for grade in grades %}
+                {% if grade.application_id == form %}
+                  {% if grade.exam_id == exam%}
+                    {{grade.rank}}
+                  {% endif %}
+                {% endif %}
+                {% endfor%}
+              </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+
+    
+
+    <!-- this row will not appear when printing -->
+    <div class="row no-print">
+      <div class="col-12">
+        <button class="btn btn-default" id="print_button"><i class="fas fa-print"></i> Print</a></button>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block javascript %}
+  <script>
+      $("#print_button").click(function(event){
+        //event.preventDefault();
+        print();
+      })
+
+  </script>
+{% endblock %}

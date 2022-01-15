@@ -1,0 +1,80 @@
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+
+
+{% block main_content %}
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+
+  {% include "includes/messages.html" %}
+
+ 
+    <div class="row">
+    
+
+      <div class="col-md-12">
+        <div class="card card-info">
+            <div class="card-header">
+              <h3 class="card-title">Manage Certificate Template</h3>
+            </div>
+          
+          <!-- /.card-header -->
+          <div class="card-body table-responsive ">
+            <a href="{% url 'admin_app:add_certificate_template' %}" class="btn btn-xs btn-info float-right "><i class = "fas fa-xs fa-plus"></i> Add certificate Template</a>
+            <table id="dataTable"
+              class="table table-sm table-striped table-bordered table-hover no-footer">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>#</th>
+                  <th>Student Name</th>
+                  <th>Student Id</th>
+                  <th> Certificate No.</th>
+                  <th>Character Certificate</th>
+                  
+                 
+                
+                  
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+           
+                {% for history in histories %}
+                <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td>{{ certificate.student.student_user }}</td>
+                  <td>{{ certificate.student.stu_id }}</td>
+                  <td>{{ certificate.certificate_number }}</td>
+                  </td>
+                 
+              
+              
+                  <td>
+                 
+                   
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+
+
+    </div>
+</section>
+<!-- /.content -->
+
+
+
+{% endblock main_content %}
+
+{% block custom_js %}
+{% endblock custom_js %}

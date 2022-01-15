@@ -1,0 +1,37 @@
+<script>
+    // Create the chart
+/*
+*/ 
+
+
+
+    Highcharts.chart('year_subjects-container', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Science and Non-science students'
+        },
+        yAxis: {
+            title: {
+                text: 'Total Students'
+            }
+    
+        },
+        xAxis: {
+            categories: [
+            'Science students','Non-science studets'
+           // {% for subject in dataset %}'{{ subject.subject }}'{% if not forloop.last %}, {% endif %}{% endfor %}
+            ]
+
+        },
+        series: [{
+            name: 'Students',
+            color:'#094089',
+            data: [
+            {{science_faculty_count}},  {{nonscience_faculty_count}}
+           // {% for subject in dataset %}{{ subject.student_count }}{% if not forloop.last %}, {% endif %}{% endfor %}
+            ]
+        }, ]
+    });
+</script>

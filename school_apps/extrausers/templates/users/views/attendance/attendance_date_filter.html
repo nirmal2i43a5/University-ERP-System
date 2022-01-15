@@ -1,0 +1,22 @@
+
+<!-- Filter Attendance Form by Month -->
+
+{% load crispy_forms_tags %}
+
+
+
+<form  method="POST"   >
+  <div class="input-group">
+ {% csrf_token %}
+
+ <input type="hidden" name = "user" value="{{ student.id }}">
+ 
+    {{ attendance_form|crispy }}
+
+    <div class="input-group-btn mt-3 ">
+      <button type="submit" class="btn  btn-info  mt-3 ml-2" name = "attendance_submit" id="take_attendance"><strong>Filter Attendance</strong></button>
+
+    </div>
+  </div>
+</form>
+

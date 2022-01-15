@@ -1,0 +1,61 @@
+
+{% load auth_extras %}
+
+   
+<table id="completedTable" class="table table-sm  table-striped table-bordered table-hover  text-nowrap  dataTable no-footer">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Exam</th>
+      <th>Total Marks</th>
+      <th>Subject</th>
+      <th>Question</th>
+      {% if  request.user|has_group:'Admin' or request.user.is_superuser or request.user|has_group:'Teacher'   %}
+      <th>Action</th>
+      {% endif %}
+    </tr>
+  </thead>
+<tbody>
+
+  {% for paper in exam_papers %}
+
+
+  <tr>
+    <td>{{ forloop.counter }}</td>
+    <td>{{ paper.exam }}</td>
+    <td>{{ paper.exam.full_marks }}</td>
+    <td>{{ paper.exam.subject_id }}</td>
+   
+      
+    <td>
+     
+     {% if paper.file %}
+
+     <a href="{{ paper.file.url }}" style="cursor: pointer;" class="btn btn-xs btn-success">
+     <strong> View Question</strong>
+    </a>
+    <a href="{% url 'exam:student-upload-answer' paper.exam.pk %}" style="cursor: pointer;" class="btn btn-xs btn-success">
+      <strong>Upload Answer</strong>
+    </a>
+
+  {% else %}
+  Not Uploaded
+  {% endif %}
+         
+    
+    </td>
+
+   
+ 
+  
+  </tr>
+   </div>
+
+
+  {% endfor %}
+
+
+
+</tbody>
+
+</table>
