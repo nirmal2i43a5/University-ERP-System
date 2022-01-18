@@ -32,9 +32,9 @@ def add_student(request):
 
         custom_form = AddCustomUserForm(request.POST)
         student_form = StudentForm(request.POST, request.FILES,user = request.user)
-        print(student_form)
+        print(student_form.is_valid())
         parent_form = ParentForm(request.POST, request.FILES)
-
+        print(custom_form.is_valid(),student_form.is_valid(),parent_form.is_valid())
         if custom_form.is_valid() and student_form.is_valid() and parent_form.is_valid():
 
             # parent = parent_form.save()

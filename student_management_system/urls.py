@@ -38,6 +38,7 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     # path('api/', include(router.urls)) ,
     path('api/', include('school_apps.formapi.urls')),
+      path('api/', include('student_management_system.api', namespace='api')),
     path('admin/', admin.site.urls),
     path('', index),
     # path('logs/', HistoryLogs.as_view(), name ="history_log"),

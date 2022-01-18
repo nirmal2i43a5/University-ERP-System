@@ -65,97 +65,34 @@
           
               <input type="submit" id="printadmitcard_form_submit" hidden>
           </form>
-         
-            <table  id="show_id_card" class="table table-sm  table-striped table-bordered table-hover text-nowrap  no-footer">
+          <div class="table-responsive">
+            <table
+               id ="student-table"
+              class="table  table-sm  table-striped table-bordered  text-nowrap  no-footer"
+              style="width: 100%"
+              data-server-side="true"
+              data-ajax="/api/students/?format=datatables"
+            >
               <thead>
                 <tr>
-                  <th></th>
-                  <th hidden></th>
-                  <th>#</th>
-                  <th>Image</th>
-                  <th>Student Id</th>
-                  <th>Full Name</th>
-                  {% if request.user.adminuser.course_category.course_name == 'A-Level' %}
-                    <th>Group</th>
-                  {% endif %}
-                  <th>Class</th>
-                  <th>Section</th>
-                  <th>Parent Contact</th>
-                  <th>Student Contact</th>
-                  <th>User Name</th>
-                  <th>Action</th>
-
-                  <th>Id Card</th>
+                  <th data-data="select"><input id="checkBox" type="checkbox" /></th>
+                  <th data-data="id">id</th>
+                  <th data-data="id">#</th>
+                  <th data-data="image">Image</th>
+                  <th data-data="stu_id">Student Id</th>
+                  <th data-data="full_name">Full Name</th>
+                  <th data-data="faculty">Group</th>
+                  <th data-data="semester">Class</th>
+                  <th data-data="section">Section</th>
+                  <th data-data="father_phone">Parent Contact</th>
+                  <th data-data="contact">Contact</th>
+                  <th data-data="username">Username</th>
+                  <th data-data="Action">Action</th>
                 </tr>
               </thead>
-              <tbody>
-                {% for student in students %}{% include 'students/delete.html' %}
-                <tr>
-                  <td></td>
-                  <td id="student_id" hidden>{{student.pk}}</td>
-                  <td>{{ forloop.counter }}</td>
-                  <td>
-
-                    {% if student.image %}
-
-                 <a href="{{ student.image.url }}">   <img src="{{ student.image.url }}" alt="" style="width:35px;height:35px;" class="img-circle" /></a>
-
-                    {% else %}
-                    <img src="{% static 'image/default_profile.png' %}" alt="" style="width:35px;height:35px;" class="img-circle" />
-                    {% endif %}
-
-                  </td>
-                    <td>{{ student.stu_id }} </td>
-                   <td>
-                      <a href="{% url 'admin_app:view_student' student.id %}">  {{ student.student_user.full_name }} </a>
-                      </td>
-                      {% if request.user.adminuser.course_category.course_name == 'A-Level' %}
-                        <td>{{ student.faculty }}</td>
-                      {% endif %}
-                    <td>{{ student.semester }}</td>
-                    <td>{{ student.section }}</td>
-               <td>
-                <a href="{% url 'admin_app:view_parent' student.guardian_id %}" style="cursor: pointer;">
-                  {{ student.guardian.father_phone }}
-                  <!-- {% if   student.guardian.father_phone == "('',)" %}
-
-                  {% else %}
-                  {{ student.guardian.father_phone }}
-
-                    
-                  {% endif %} -->
-                </a>
-                </td>
-                  <td>{{ student.contact }}</td>
-
-                  <td>{{ student.student_user.username }}</td>
-                 
-                  <td>
-
-                    <!-- Example single danger button -->
-<div class="btn-group">
-  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    <strong>Action</strong>
-  </button>
-  <div class="dropdown-menu">
-    <a class="dropdown-item" href="{% url 'admin_app:view_student' student.id %}">View Student Details</a>
-    <a class="dropdown-item" href="{% url 'admin_app:edit_student' student.student_user.id %}">Edit</a>
-    <a class="dropdown-item" data-target='#deleteStudent-{{ student.student_user.pk }}' data-toggle="modal">Delete</a>
-    <a class="dropdown-item" href="{% url 'student:make_student_inactive' student.student_user.id %}">Make Inactive</a>
-  </div>
-</div>
-                  
-                  </td>
-                  <td>     <a href="{% url 'admin_app:student_id_card' student.id %}" class="btn btn-xs btn-success"><i class = "fas fa-print"></i> Print</a></td>
-
-               
-                </tr>
-               
-         
-
-                {% endfor %}
-              </tbody>
             </table>
+          </div>
+        
           </div>
           <!-- /.card-body -->
         </div>
@@ -165,18 +102,15 @@
   </div>
 </section>
 <!-- /.content -->
+<!-- Button trigger modal -->
+
 
 {% endblock main_content %}
 
 {% block custom_js %}
 
 
-
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-html5-1.7.0/b-print-1.7.0/sl-1.3.3/datatables.min.css"/>
         
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-html5-1.7.0/b-print-1.7.0/sl-1.3.3/datatables.min.js"></script>
     <script>
       $("#id_semester").change(function(){
         var class_id = $(this).val();
@@ -191,64 +125,223 @@
     })
     
         $(document).ready(function(){
-            var table = $('#show_id_card').DataTable({
-                search: true,
-              //  "pageLength": {{students|length}},
-                dom: 'lBfrtip',
-                columnDefs: [ {
-                    orderable: false,
-                    className: 'select-checkbox',
-                    targets:   0
-                } ],
-                select: {
-                    style: 'multi'
-                },
-                buttons: [
-                'selectAll',
-                'selectNone',
-                'excel','csv','print',
-                {
-                    text: 'Bulk Print Id Card',
-                    action: function ( e, dt, node, config ) {
-                        admitcardsubmit();
-                    },
-                    attr:  {
-                        id: 'printadmitcard_submit'
-                    },
-                },
-                ],
-            });
-        })
+         
 
 
-        function admitcardsubmit(){
-            var count=0;
-            var tr_count=0;
-            count = $("#show_id_card tbody tr.selected").length;
+       
 
-            $("#printadmitcard_form_div").html("");
-            $("#show_id_card tbody tr.selected").each(function(){
-                tr_count+=1;
-                var app_id = $(this).find("td#student_id").text();
-                var to_add = "<input type=\"text\" name="+ tr_count +" value="+app_id +" readonly hidden>";
-                $("#printadmitcard_form_div").append(to_add);
-            })
+        /*
 
-            if(count>0){
-              if($("#from_date").val() == "" || $("#to_date").val() == ""){
-                  alert("Please select date for attendance count.")
-              }else{
-                  $("#application_count").val(tr_count);
-                  $("#printadmitcard_form_submit").click();
-              }
-          }else{
-              $("#application_count").val(0);
-              alert("Please select a student or Select All")
-          }
-        }     
+        For ajax datatables with django rest api
+
+        */
+        $(function () {
+          table = $("#student-table").DataTable(getDataTableConfig({//cann getDataTableConfig to base_admin.py
+           
+            table_id: '#student-table',
+            delete_id_key: 'id',
+            message_title: 'Student',
+            Model: 'Student',
+            action_index: $("#student-table th").length - 1,
+           edit_url: '{% url "admin_app:edit_student" 4 %}',
+           delete_url: '{% url "admin_app:delete_student" 4 %}',
+            additionalColumn: [{
+              targets: 3,
+              render: function (data, type, row, meta) {
+                if (row.image) {
+                  return ` <img src="${row.image}" alt="" style="width:35px;height:35px;" class="img-circle" />`;
+                } else {
+                  return ` <img src="{% static 'image/default_profile.png' %}" alt="" style="width:35px;height:35px;" class="img-circle" />`;
+                }
+      
+              },
+            },
+            {
+              targets: 8,
+              "visible": false,
+            },
+            ]
+          }));
+          table
+            .buttons()
+            .container()
+            .appendTo($(".col-sm-6:eq(0)", table.table().container()));
+      
         
+          })
+      
+      
+        });
        
     </script>
 
 
 {% endblock custom_js %}
+
+
+
+<!-- Modal -->
+<div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <section class="content">
+          <div class="container-fluid">
+        
+        
+        <!--populate message after ajax submit is successful-->
+        <div class="row">
+          <div class="col-lg-12" >
+                <div class="alert alert-default-success" id="upt_success" style="display:none">
+                </div>
+                 <div class="alert alert-default-danger" id="upt_error" style="display:none">
+        
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+        
+                </div>
+          </div>
+        </div>
+        
+            <div class="row">
+              <div class="col-md-3">
+        
+                <!-- Profile Image -->
+                <div class="card  card-outline">
+                  <div class="card-body box-profile">
+                    <div class="text-center">
+        
+                      {% if student.image %}
+                      <img class="profile-user-img img-responsive  img-circle" src="{{ student.image.url }}">
+                      {% else %}
+        
+                      <img src="{% static 'image/default_profile.png' %}" alt="" class="profile-user-img   img-circle" />
+        
+                      {% endif %}
+        
+                    </div>
+        
+                    <h5 class="profile-username text-center">{{ student.student_user.full_name }}</h5>
+        
+                    <p class="text-muted text-center">Student</p>
+        
+                    <ul class="list-group list-group-unbordered mb-3">
+                      <li class="list-group-item">
+                        <b>Student Id</b> <a class="float-right text-sm">{{ student.stu_id }}</a>
+                      </li>
+                      <li class="list-group-item">
+                        <b>Roll </b> <a class="float-right text-sm">{{ student.roll_no }}</a>
+                      </li>
+                      <li class="list-group-item">
+                        <b>Class</b> <a class="float-right text-sm">{{ student.semester.name }}</a>
+                      </li>
+                      <li class="list-group-item">
+                        <b>Section</b> <a class="float-right text-sm">{{ student.section.section_name }}</a>
+                      </li>
+                      <li class="list-group-item">
+                        <b>Group</b> <a class="float-right text-sm">{{ student.faculty }}</a>
+                      </li>
+                    </ul>
+        
+        
+                  </div>
+                  <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+        
+                <!-- About Me Box -->
+                <div class="card card-primary">
+        
+                  <!-- /.card-header -->
+        
+                  <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+              </div>
+              <!-- /.col -->
+              <div class="col-md-9">
+                <div class="card">
+                  <div class="card-header p-2 ">
+                    <ul class="nav nav-tabs nav-custom p-0">
+                      <li class="nav-item"><a class="nav-link active" href="#profile" data-toggle="tab">Profile</a></li>
+                      <!-- <li class="nav-item"><a class="nav-link" href="#routine" data-toggle="tab">Routine</a></li> -->
+                      <li class="nav-item"><a class="nav-link" href="#attendance" data-toggle="tab">Attendence</a></li>
+                      <li class="nav-item"><a class="nav-link" href="#document" data-toggle="tab">Document</a></li>
+                      <li class="nav-item"><a class="nav-link" href="#subject" data-toggle="tab">Subject</a></li>
+                      
+                      <!-- <li class="nav-item"><a class="nav-link " href="#mark" data-toggle="tab">Mark</a></li> -->
+                      <!-- <li class="nav-item"><a class="nav-link" href="#invoice" data-toggle="tab">Invoice</a></li> -->
+                      <!-- <li class="nav-item"><a class="nav-link" href="#payment" data-toggle="tab">Payment</a></li> -->
+                    </ul>
+                  </div><!-- /.card-header -->
+                  <div class="card-body">
+                    <div class="tab-content">
+                      <div class="active tab-pane" id="profile">
+        
+                        {% include "students/views/profile.html" %}
+        
+                      </div>
+                      <!-- /.tab-pane -->
+                      <div class="tab-pane" id="routine">
+        
+                        {% include "students/views/routine.html" %}
+                      </div>
+        
+                      <div class="tab-pane" id="attendance">
+        
+                        {% include "students/views/attendance/attendance_date_filter.html" %}<br>
+                        {% include "students/views/attendance/attendance_details.html" %}
+        
+                      </div>
+        
+                      <div class="tab-pane" id="mark">
+        
+                        {% include "students/views/mark.html" %}
+        
+                      </div>
+        
+                      <div class="tab-pane" id="invoice">
+        
+                        {% include "students/views/invoice.html" %}
+        
+                      </div>
+        
+                      <div class="tab-pane" id="payment">
+        
+                        {% include "students/views/payment.html" %}
+        
+                      </div>
+        
+                      <div class="tab-pane" id="document">
+                        {% include "students/views/documents/document_list.html" %}
+                      </div>
+                      <div class="tab-pane" id="subject">
+                        {% include "students/views/courses.html" %}
+                      </div>
+                     
+                    </div>
+                    <!-- /.tab-content -->
+                  </div><!-- /.card-body -->
+                </div>
+                <!-- /.nav-tabs-custom -->
+              </div>
+              <!-- /.col -->
+            </div>
+            <!-- /.row -->
+          </div><!-- /.container-fluid -->
+        </section>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

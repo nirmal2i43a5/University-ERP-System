@@ -15,8 +15,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   {% include "includes/adminlte_css.html" %}
-
-
+  {% include "includes/datatables_css.html" %}
+  <link
+  rel="stylesheet"
+  href="{% static 'plugins/select2-bootstrap4-theme/select2-bootstrap4.css' %}"
+/>
+<link
+  rel="stylesheet"
+  href="{% static 'plugins/select2/css/select2.css' %}"
+/>
   <title> {% block title %} {% endblock %}</title>
   <!-- <link rel="icon" type="images/jpg" href="{% static 'image/pathshala-logo.png' %}">  -->
   <!-- <link rel="icon" type="images/jpg" href="{% static 'image/gci.jpg' %}">  -->
@@ -107,7 +114,6 @@
   <!----------For AdminLTE bootstrap js link--------------->
   {% include "includes/adminlte_jquery.html" %}
   <!--------------for datatables---------------------->
-  {% include "includes/datatables_design_link.html" %}
   <!--for datatables csv pdf -- code --------------->
   {% include "includes/datatables_js.html" %}
 
@@ -132,6 +138,10 @@ src="{% static 'flipbook/pdfjs-flipbook/js/jquery.fancybox.min.js' %}"
 <link rel="stylesheet" href="{% static 'plugins/select2/css/select2.css' %}">
 <!-- <script src="{% static 'plugins/jquery-ui/jquery-ui.min.js' %}"></script> -->
 
+<script src="{% static 'plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js' %}"></script>
+<script src="{% static 'plugins/jquery-mousewheel/jquery.mousewheel.js' %}"></script>
+<script src="{% static 'plugins/raphael/raphael.min.js' %}"></script>
+<script src="{% static 'plugins/jquery-mapael/jquery.mapael.min.js' %}"></script>
 <script>
   
   
@@ -164,6 +174,156 @@ src="{% static 'flipbook/pdfjs-flipbook/js/jquery.fancybox.min.js' %}"
 
   
 
+</script>
+
+<script>
+  function getDataTableConfig({
+    table_id,
+    delete_id_key,
+    message_title,
+    Model,
+    action_index,
+    edit_url,
+    delete_url,
+    app_name = "",
+    replace_app_name = "",
+    default_order_index = 2,
+    append_action = "",
+    additionalColumn = [],
+    action = 'delete',
+    additionalConfig = {},
+    permissionConfig = [],
+    csvGenerateUrl = '',
+    showRestoreSelected = false,
+    exportName = '',
+  }={}) {
+
+    let delteSelected = {};
+    if(!showRestoreSelected){
+      delteSelected = {
+          text: "Delete Selected",
+          action: function (e, dt, node, config) {
+            deleteSelected({table:$(table_id).DataTable(), id:delete_id_key, message_title:message_title,model: Model,app_name:app_name,replace_app_name:replace_app_name,action:action});
+          },
+        }
+    }else{
+      delteSelected = {
+          text: "Restore Selected",
+          action: function (e, dt, node, config) {
+            deleteSelected({table:$(table_id).DataTable(), id:delete_id_key, message_title:message_title,model: Model,app_name:app_name,replace_app_name:replace_app_name,action:'restore'});
+          },
+        }
+    }
+
+    return {
+      dom: "B<'m-2 row d-flex justify-content-between extra-container'l<'extra'>f>rtip",
+      buttons: [
+        "csv",
+        "excel",
+        "colvis",
+        delteSelected,
+        {
+          text: "Export All",
+          action: function (e, dt, node, config) {
+
+            exportSelected({model: Model,app_name:app_name,replace_app_name:replace_app_name, csvGenerateUrl: csvGenerateUrl,exportName:exportName});
+          },
+        },
+      ],
+      pageLength: 50,
+      "processing": true,
+      "language": {
+        processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw text-success"><i>'
+        },
+      columnDefs: [
+        {
+          targets: 0,
+          width: 20,
+          orderable: false,
+          className: "select-checkbox",
+          searchable: false,
+          render: function (data, type, row, meta) {
+            return "";
+          },
+        },
+        {
+          targets: action_index,
+          searchable: false,
+          orderable: false,
+          render: function (data, type, row, meta) {
+            return getAppendData(
+              row,edit_url,delete_url,delete_id_key,
+              append_action,permissionConfig
+            );
+          },
+        },
+        {
+          targets: 1,
+          visible: false,
+          searchable: false,
+        },
+        {
+          targets: 2,
+          searchable: false,
+          render: function (data, type, row, meta) {
+            return meta.row+1;
+          },
+        },
+
+
+      ].concat(additionalColumn),
+      select: {
+        style: "multi",
+        selector: "td:first-child",
+      },
+      order: [[default_order_index, "desc"]],
+      serverSide: true,
+      fixedHeader: true,
+      ...additionalConfig,
+    };
+  }
+  function getAppendData(row, edit_url, delete_url, id,append_action = "",permissionConfig) {
+    let edit_href = edit_url.replace("pk_val", row[id]);
+    let delete_href = delete_url.replace("pk_val", row[id]);
+
+    let appendData = '';
+    
+      appendData+=`
+      <div class="btn-group">
+        <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <strong>Action</strong>
+        </button>
+        <div class="dropdown-menu">
+          <a  href="" data-toggle="modal" data-target="#exampleModal">
+            Launch demo modal
+          </a>
+          
+          <a class="dropdown-item" href="">View Student Details</a>
+          <a class="dropdown-item" href="${edit_href}">Edit</a>
+          <a class="dropdown-item" data-target='' data-toggle="modal">Delete</a>
+          <a class="dropdown-item" href="">Make Inactive</a>
+        </div>
+      </div>
+      `
+ 
+     // appendData+= `<a class="btn btn-success btn-xs btn-edit text-white" href="${edit_href}"><span><i class="fas fa-edit"></i></span></a>`;
+  
+    //  appendData+= `<form action="${delete_href}" method="POST" class="delete-form">{% csrf_token %}<button class="btn btn-danger btn-xs btn-delete text-white" type="submit"><span><i class="fas fa-trash"></i></span></button></form>`;
+    
+    return (appendData
+       +
+      append_action.replace(/pk_val/g,row[id])
+    );
+  }
+ $("#checkBox").on("click", function () {
+          table_id = $(this).parents('table').attr('id');
+          table = $('#'+table_id).DataTable();
+            if ($("#checkBox").is(":checked")) {
+              table.rows().select();
+            } else {
+              table.rows().deselect();
+            }
+          });
 </script>
 
 </html>

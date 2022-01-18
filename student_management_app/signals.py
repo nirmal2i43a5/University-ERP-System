@@ -47,8 +47,7 @@ def create_user_profile(sender, instance, created, **kwargs):
         elif instance.user_type == group[3]:
             Staff.objects.create(staff_user=instance)
         elif instance.user_type == group[4]:
-            
-            a=Student.objects.create(student_user=instance)
+            Student.objects.create(student_user=instance)
         elif instance.user_type == group[5]:
             Parent.objects.create(parent_user=instance)
         else:

@@ -83,6 +83,7 @@ INSTALLED_APPS = [
     'mathfilters',
     'webcam',
     'rest_framework',
+    'rest_framework_datatables',
     'corsheaders',
     'rest_framework.authtoken',
 ]
@@ -248,13 +249,26 @@ STATICFILES_FINDERS = [
 ]
 
 BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'static/calendar_static')
-
-
 BOWER_INSTALLED_APPS = (
     'jquery',
     'jquery-ui',
     'bootstrap'
 )
+
+
+# for ajax datatables with django rest framework 
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+        'rest_framework_datatables.renderers.DatatablesRenderer',
+    ),
+    'DEFAULT_FILTER_BACKENDS': (
+        'rest_framework_datatables.filters.DatatablesFilterBackend',
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework_datatables.pagination.DatatablesPageNumberPagination',
+    'PAGE_SIZE': 50,
+}
 
 AUTH_USER_MODEL = "student_management_app.CustomUser"
 

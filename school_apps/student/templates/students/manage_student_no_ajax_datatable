@@ -1,0 +1,94 @@
+    <table  id="show_id_card" class="table table-sm  table-striped table-bordered table-hover text-nowrap  no-footer">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th hidden></th>
+                  <th>#</th>
+                  <th>Image</th>
+                  <th>Student Id</th>
+                  <th>Full Name</th>
+                  {% if request.user.adminuser.course_category.course_name == 'A-Level' %}
+                    <th>Group</th>
+                  {% endif %}
+                  <th>Class</th>
+                  <th>Section</th>
+                  <th>Parent Contact</th>
+                  <th>Student Contact</th>
+                  <th>User Name</th>
+                  <th>Action</th>
+
+                  <th>Id Card</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for student in students %}{% include 'students/delete.html' %}
+                <tr>
+                  <td></td>
+                  <td id="student_id" hidden>{{student.pk}}</td>
+                  <td>{{ forloop.counter }}</td>
+                  <td>
+
+                    {% if student.image %}
+
+                 <a href="{{ student.image.url }}">   <img src="{{ student.image.url }}" alt="" style="width:35px;height:35px;" class="img-circle" /></a>
+
+                    {% else %}
+                    <img src="{% static 'image/default_profile.png' %}" alt="" style="width:35px;height:35px;" class="img-circle" />
+                    {% endif %}
+
+                  </td>
+                    <td>{{ student.stu_id }} </td>
+                   <td>
+                      <a href="{% url 'admin_app:view_student' student.id %}">  {{ student.student_user.full_name }} </a>
+                      </td>
+                      {% if request.user.adminuser.course_category.course_name == 'A-Level' %}
+                        <td>{{ student.faculty }}</td>
+                      {% endif %}
+                    <td>{{ student.semester }}</td>
+                    <td>{{ student.section }}</td>
+               <td>
+                <a href="{% url 'admin_app:view_parent' student.guardian_id %}" style="cursor: pointer;">
+                  {{ student.guardian.father_phone }}
+                  <!-- {% if   student.guardian.father_phone == "('',)" %}
+
+                  {% else %}
+                  {{ student.guardian.father_phone }}
+
+                    
+                  {% endif %} -->
+                </a>
+                </td>
+                  <td>{{ student.contact }}</td>
+
+                  <td>{{ student.student_user.username }}</td>
+                 
+                  <td>
+
+                    <!-- Example single danger button -->
+<div class="btn-group">
+  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <strong>Action</strong>
+  </button>
+  <div class="dropdown-menu">
+    <a  href="" data-toggle="modal" data-target="#exampleModal">
+      Launch demo modal
+    </a>
+    
+    <a class="dropdown-item" href="{% url 'admin_app:view_student' student.id %}">View Student Details</a>
+    <a class="dropdown-item" href="{% url 'admin_app:edit_student' student.student_user.id %}">Edit</a>
+    <a class="dropdown-item" data-target='#deleteStudent-{{ student.student_user.pk }}' data-toggle="modal">Delete</a>
+    <a class="dropdown-item" href="{% url 'student:make_student_inactive' student.student_user.id %}">Make Inactive</a>
+  </div>
+</div>
+                  
+                  </td>
+                  <td>     <a href="{% url 'admin_app:student_id_card' student.id %}" class="btn btn-xs btn-success"><i class = "fas fa-print"></i> Print</a></td>
+
+               
+                </tr>
+               
+         
+
+                {% endfor %}
+              </tbody>
+            </table>

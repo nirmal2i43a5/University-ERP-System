@@ -529,7 +529,8 @@ class Student(models.Model):
     group = models.ForeignKey( StudentGroup, on_delete=models.CASCADE, null=True, blank=True)#for college group union
     session_year = models.ForeignKey( SessionYear, on_delete=models.CASCADE, null=True, blank=True)
     state = models.CharField(max_length=255,null=True, blank=True)
-    country = CountryField(blank_label='(select country)',null=True, blank=True)
+    # country = CountryField(blank_label='(select country)',null=True, blank=True)
+    country = models.CharField(max_length = 50, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     history = HistoricalRecords()
