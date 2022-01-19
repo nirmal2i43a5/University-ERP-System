@@ -604,8 +604,8 @@ def delete_student_document(request, student_id, document_id):
 @permission_required('student_management_app.change_student', raise_exception=True)
 def edit_student(request, student_id):
 
-    student_form_instance = get_object_or_404(Student, student_user=student_id)
-    custom_form_instance = get_object_or_404(CustomUser, pk=student_id)
+    student_form_instance = get_object_or_404(Student, pk=student_id)
+    custom_form_instance = get_object_or_404(CustomUser, pk=student_form_instance.student_user.pk)
     parent_form_instance = student_form_instance.guardian
 
     if request.method == 'POST':

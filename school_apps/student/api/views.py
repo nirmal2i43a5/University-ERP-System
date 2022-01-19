@@ -4,7 +4,6 @@ from .serializers import StudentSerializer
 from rest_framework import viewsets
 from student_management_app.models import Student
 
-
     
 
 class StudentApiView(viewsets.ModelViewSet):
