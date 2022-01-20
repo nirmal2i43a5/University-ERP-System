@@ -17,6 +17,9 @@ from django.utils.decorators import method_decorator
 from schedule.models import Calendar, Event
 from school_apps.attendance.models import AttendanceReport
 from django.contrib.auth.models import Group
+from django.http import HttpResponseRedirect,JsonResponse
+from django.contrib.contenttypes.models import ContentType
+from django.utils import timezone
 
 
 @login_required
@@ -244,3 +247,48 @@ def get_user_by_role_ajax(request):
         'users': users
     }
     return render(request, 'customusers/get_user_by_role.html', context)
+
+
+
+
+def mass_delete(request,app,model):
+    if request.method == 'POST':
+        print("app:::", app, ''.join(app))
+        print("model:::", model)
+        try:
+            content_type = ContentType.objects.get(app_label__iexact=''.join(app), model=model.lower())
+        except:
+            try:
+                content_type = ContentType.objects.get(app_label__iexact=''.join(app[:-1]), model=model.lower())
+            except:
+                try:
+                    content_type = ContentType.objects.get(app_label__iexact=app.capitalize(), model=model.lower())
+                except:
+                    content_type = ContentType.objects.get(app_label__iexact=''.join(app.capitalize()[:-1]), model=model.lower())
+
+        print(content_type)
+        ids = request.POST.getlist('ids[]')
+        print(ids)
+        for id in ids:
+            try:
+                obj = content_type.get_object_for_this_type(pk=id)
+            except:
+                obj = None
+            print(request.POST.get('action'))
+            if  request.POST.get('action') == 'delete':
+                obj.delete()
+            elif request.POST.get('action') == 'restore':
+                obj.is_deleted = 0
+                obj.Is_Active = 1
+                obj.is_active = 1
+                obj.active = 1
+                obj.save()
+            elif request.POST.get('action') == 'temp_delete':
+                obj.Is_Active = 0
+                obj.active = 0
+                obj.is_active = 0
+                obj.is_deleted = 1
+                obj.deleted_by = request.user
+                obj.deleted_date = datetime.datetime.now(tz=timezone.utc)
+                obj.save()
+        return JsonResponse({"message": "success"}, status=200)

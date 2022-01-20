@@ -101,9 +101,9 @@
     </div>
   </div>
 </section>
+
 <!-- /.content -->
 <!-- Button trigger modal -->
-
 
 {% endblock main_content %}
 
@@ -132,17 +132,19 @@
 
         */
         $(function () {
-          table = $("#student-table").DataTable(getDataTableConfig({//cann getDataTableConfig to base_admin.py
+          table = $("#student-table").DataTable(getDataTableConfig({//call getDataTableConfig located in  base_admin.py
            
             table_id: '#student-table',
             delete_id_key: 'id',
             message_title: 'Student',
             Model: 'Student',
+            replace_app_name: 'students',
             action_index: $("#student-table th").length - 1,
            edit_url: '{% url "admin_app:edit_student"  "pk_val" %}',
            delete_url: '{% url "admin_app:delete_student"  "pk_val" %}',
+           view_url:'{% url "admin_app:view_student"  "pk_val" %}',
            action : 'temp_delete',
-           
+        
             additionalColumn: [{
               targets: 3,
               render: function (data, type, row, meta) {
@@ -154,6 +156,7 @@
       
               },
             },
+            
             {
               targets: 8,
               "visible": false,

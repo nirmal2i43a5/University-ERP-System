@@ -32,9 +32,7 @@ def add_student(request):
 
         custom_form = AddCustomUserForm(request.POST)
         student_form = StudentForm(request.POST, request.FILES,user = request.user)
-        print(student_form.is_valid())
         parent_form = ParentForm(request.POST, request.FILES)
-        print(custom_form.is_valid(),student_form.is_valid(),parent_form.is_valid())
         if custom_form.is_valid() and student_form.is_valid() and parent_form.is_valid():
 
             # parent = parent_form.save()
@@ -642,8 +640,9 @@ def edit_student(request, student_id):
 @permission_required('student_management_app.delete_student', raise_exception=True)
 def delete_student(request, pk):
     # try:
-    student_object = get_object_or_404(Student, student_user=pk)
-    student_object.delete()
+    student_object = get_object_or_404(Student, pk=pk)
+    custom_form_instance = get_object_or_404(CustomUser, pk=student_object.student_user.pk)
+    custom_form_instance.delete()
     messages.success(
         request, f'{student_object.student_user.username} is Deleted Successfully')
     return redirect('admin_app:manage_student')

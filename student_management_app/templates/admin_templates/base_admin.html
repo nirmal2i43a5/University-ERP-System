@@ -122,7 +122,28 @@
   {% block custom_css %}{% endblock custom_css %}
   {% block custom_js %}{% endblock custom_js %}
   {% block javascript %}{% endblock %}
-
+  <div id="confirm-modal" class="modal fade">
+    <div class="modal-dialog modal-confirm">
+      <div class="modal-content">
+        <div class="modal-header flex-column">
+          <div class="icon-box"></div>
+          <h4 class="modal-title text-center w-100">Are you sure?</h4>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-hidden="true"
+          >
+            &times;
+          </button>
+        </div>
+        <div class="modal-body text-center">
+          <p class="confirm-message"></p>
+        </div>
+        <div class="modal-footer justify-content-center"></div>
+      </div>
+    </div>
+  </div>
 </body>
 <script
 type="text/javascript"
@@ -177,6 +198,64 @@ src="{% static 'flipbook/pdfjs-flipbook/js/jquery.fancybox.min.js' %}"
 </script>
 
 <script>
+  function Confirmation(message='',callback,confirm_action='delete'){
+    $('#confirm-modal').modal('toggle');
+    $('#confirm-modal').find('.confirm-message').html(message);
+    if(confirm_action =='delete' || confirm_action =='temp_delete'){
+      $('#confirm-modal').find('.modal-footer').html(`<button id="confirm-yes" class="btn btn-danger">Delete</button>
+      <button type="button" id="confirm-no" class="btn btn-secondary" data-dismiss="modal">
+          Cancel
+        </button>`);
+      $('#confirm-modal').find('.icon-box').html('<i class="fas fa-times"></i>');
+    }else{
+      $('#confirm-modal').find('.modal-footer').html(`<button id="confirm-yes" class="btn btn-success">Yes</button>
+      <button type="button" id="confirm-no" class="btn btn-secondary" data-dismiss="modal">
+          No
+        </button>`);
+        $('#confirm-modal').find('.icon-box').html('<i class="fas fa-check"></i>');
+    }
+    let confirm_btn = document.getElementById('confirm-yes');
+    confirm_btn.onclick = function(){callback(true);$('#confirm-modal').modal('toggle');}
+
+}
+
+function deleteSelected({table,id,message_title, model,app_name,replace_app_name,action='delete'}={}) {
+  alert(replace_app_name)
+    let ids = $.map(table.rows(".selected").data(), function (item) {
+      return item[id];
+    });
+    if (action == 'delete'){
+      message = "Do you really want to delete these record? This process cannot be undone.";
+    }else{
+      message = "Do you really want to restore these record? This process cannot be undone.";
+    }
+    if (ids.length > 0) {
+      Confirmation(
+        message,
+        function (response) {
+          if (response) {
+            $.ajax({
+              type: "POST",
+              headers: { "X-CSRFToken": "{{csrf_token}}" },
+              url: "{% url 'mass_delete' app=app_name model='Model' %}".replace( "Model",model).replace(app_name,replace_app_name),
+              data: {
+                ids: ids,
+                action:action
+              },
+              success: function () {
+                table.ajax.reload();
+                toastr.success(
+                  `${message_title} data were sucessfully deleted`
+                );
+              },
+            });
+          }
+        },action
+      );
+    } else {
+      toastr.error("No row selected", "Error");
+    }
+  }
   function getDataTableConfig({
     table_id,
     delete_id_key,
@@ -185,6 +264,7 @@ src="{% static 'flipbook/pdfjs-flipbook/js/jquery.fancybox.min.js' %}"
     action_index,
     edit_url,
     delete_url,
+    view_url,
     app_name = "",
     replace_app_name = "",
     default_order_index = 2,
@@ -252,7 +332,7 @@ src="{% static 'flipbook/pdfjs-flipbook/js/jquery.fancybox.min.js' %}"
           orderable: false,
           render: function (data, type, row, meta) {
             return getAppendData(
-              row,edit_url,delete_url,delete_id_key,
+              row,edit_url,delete_url,view_url,delete_id_key,
               append_action,permissionConfig
             );
           },
@@ -282,9 +362,10 @@ src="{% static 'flipbook/pdfjs-flipbook/js/jquery.fancybox.min.js' %}"
       ...additionalConfig,
     };
   }
-  function getAppendData(row, edit_url, delete_url, id,append_action = "",permissionConfig) {
+  function getAppendData(row, edit_url, delete_url,view_url, id,append_action = "",permissionConfig) {
     let edit_href = edit_url.replace("pk_val", row[id]);
     let delete_href = delete_url.replace("pk_val", row[id]);
+    let view_href = view_url.replace("pk_val", row[id]);
 
     let appendData = '';
     
@@ -294,21 +375,19 @@ src="{% static 'flipbook/pdfjs-flipbook/js/jquery.fancybox.min.js' %}"
           <strong>Action</strong>
         </button>
         <div class="dropdown-menu">
-          <a  href="" data-toggle="modal" data-target="#exampleModal">
-            Launch demo modal
-          </a>
+      
           
-          <a class="dropdown-item" href="">View Student Details</a>
+          <a class="dropdown-item" href="${view_href}">View Student Details</a>
           <a class="dropdown-item" href="${edit_href}">Edit</a>
-          <a class="dropdown-item" data-target='' data-toggle="modal">Delete</a>
-          <a class="dropdown-item" href="">Make Inactive</a>
+          <a class="dropdown-item" data-target = "#confirm-modal" data-toggle = "modal" >Delete model test</a>
+          <form action="${delete_href}" method="POST" class="delete-form">{% csrf_token %}
+            <button type="submit">Delete</button>
+          </form>
         </div>
       </div>
       `
  
-     // appendData+= `<a class="btn btn-success btn-xs btn-edit text-white" href="${edit_href}"><span><i class="fas fa-edit"></i></span></a>`;
   
-    //  appendData+= `<form action="${delete_href}" method="POST" class="delete-form">{% csrf_token %}<button class="btn btn-danger btn-xs btn-delete text-white" type="submit"><span><i class="fas fa-trash"></i></span></button></form>`;
     
     return (appendData
        +
