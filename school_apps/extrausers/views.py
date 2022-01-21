@@ -238,7 +238,6 @@ def extrauser_log(request):
     return render(request,'users/loghistory/history.html',context)
 
 def delete_log(request):
-    print("delete-----")
     ExtraUser.history.all().delete()
     messages.success(request,"User logs are deleted successfully.")
     return redirect('extrauser:user_log')

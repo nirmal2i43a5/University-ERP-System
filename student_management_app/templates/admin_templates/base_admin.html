@@ -237,7 +237,7 @@ function deleteSelected({table,id,message_title, model,app_name,replace_app_name
             $.ajax({
               type: "POST",
               headers: { "X-CSRFToken": "{{csrf_token}}" },
-              url: "{% url 'mass_delete' app=app_name model='Model' %}".replace( "Model",model).replace(app_name,replace_app_name),
+              url: "{% url 'mass_delete' app='app_name' model='Model' %}".replace( "Model",model).replace(app_name,replace_app_name),
               data: {
                 ids: ids,
                 action:action
