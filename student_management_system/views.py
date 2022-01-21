@@ -289,6 +289,6 @@ def mass_delete(request,app,model):
                 obj.is_active = 0
                 obj.is_deleted = 1
                 obj.deleted_by = request.user
-                obj.deleted_date = datetime.datetime.now(tz=timezone.utc)
+                obj.deleted_date = datetime.now(tz=timezone.utc)
                 obj.save()
         return JsonResponse({"message": "success"}, status=200)

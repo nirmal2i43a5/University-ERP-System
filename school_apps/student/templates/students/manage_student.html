@@ -138,12 +138,13 @@
             delete_id_key: 'id',
             message_title: 'Student',
             Model: 'Student',
-            replace_app_name: 'students',
+            app_name : 'student_management_app',
+            replace_app_name: 'student_management_app',
             action_index: $("#student-table th").length - 1,
            edit_url: '{% url "admin_app:edit_student"  "pk_val" %}',
-           delete_url: '{% url "admin_app:delete_student"  "pk_val" %}',
+           delete_url: '{% url "admin_app:delete_student"  "pk_val" %}', 
            view_url:'{% url "admin_app:view_student"  "pk_val" %}',
-           action : 'temp_delete',
+           action : 'delete',
         
             additionalColumn: [{
               targets: 3,

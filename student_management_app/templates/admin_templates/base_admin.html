@@ -220,11 +220,11 @@ src="{% static 'flipbook/pdfjs-flipbook/js/jquery.fancybox.min.js' %}"
 }
 
 function deleteSelected({table,id,message_title, model,app_name,replace_app_name,action='delete'}={}) {
-  alert(replace_app_name)
     let ids = $.map(table.rows(".selected").data(), function (item) {
       return item[id];
     });
     if (action == 'delete'){
+
       message = "Do you really want to delete these record? This process cannot be undone.";
     }else{
       message = "Do you really want to restore these record? This process cannot be undone.";
@@ -237,7 +237,7 @@ function deleteSelected({table,id,message_title, model,app_name,replace_app_name
             $.ajax({
               type: "POST",
               headers: { "X-CSRFToken": "{{csrf_token}}" },
-              url: "{% url 'mass_delete' app='app_name' model='Model' %}".replace( "Model",model).replace(app_name,replace_app_name),
+              url: "{% url 'mass_delete' app='app_name' model='Model' %}".replace( "Model",model).replace('app_name',replace_app_name),
               data: {
                 ids: ids,
                 action:action
@@ -379,9 +379,8 @@ function deleteSelected({table,id,message_title, model,app_name,replace_app_name
           
           <a class="dropdown-item" href="${view_href}">View Student Details</a>
           <a class="dropdown-item" href="${edit_href}">Edit</a>
-          <a class="dropdown-item" data-target = "#confirm-modal" data-toggle = "modal" >Delete model test</a>
           <form action="${delete_href}" method="POST" class="delete-form">{% csrf_token %}
-            <button type="submit">Delete</button>
+            <a type="submit" class = "ml-3 btn-delete">Delete</a>
           </form>
         </div>
       </div>
@@ -403,6 +402,61 @@ function deleteSelected({table,id,message_title, model,app_name,replace_app_name
               table.rows().deselect();
             }
           });
+
+    $(function(){
+
+
+
+        $(document).on('click','.btn-delete',function(event){
+            let url = $(this).attr('href');
+            let form = $(this).parents('form');
+            event.preventDefault();
+            Confirmation(
+              "Do you really want to delete these record? This process cannot be undone.",
+              function (response) {
+                if (response) {
+                  form.trigger('submit');
+                }
+              });
+        });
+
+        $(document).on('click','.btn-trash',function(event){
+
+            let url = $(this).attr('href');
+            event.preventDefault();
+            Confirmation(
+              "Do you really want to delete these record? This process cannot be undone.",
+              function (response) {
+                if (response) {
+                  window.location.replace(url);
+                }
+              });
+        });
+
+        $(document).on('click','.btn-restore',function(event){
+            let url = $(this).attr('href');
+            let form = $(this).parents('form');
+            event.preventDefault();
+            Confirmation(
+              "Do you really want to restore these record?",
+              function (response) {
+                if (response) {
+                  form.trigger('submit');
+                }
+              },'restore');
+        });
+
+        $('form').submit(function(e){
+            $(this).find(':submit').prop('disabled',true);
+        });
+
+        // $('.dataTable').dataTable();
+
+
+       
+
+      });
+      
 </script>
 
 </html>
