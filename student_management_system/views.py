@@ -23,8 +23,8 @@ from django.utils import timezone
 
 
 @login_required
-def index(request):
-    return HttpResponse("<h1>Not Found</h1><a href = '/accounts/login'>Click here to Login</a>")
+def admin_home(request):
+    return render(request,'admin_templates/admin_home.html')
 
 
 class TeacherHome(View):
@@ -48,7 +48,7 @@ class HistoryLogs(View):
 
 
 def superuser_home(request):
-    return render(request, 'main_home.html')
+    return render(request, 'superadmin_home.html')
 
 class home(FullCalendarView, View):
 

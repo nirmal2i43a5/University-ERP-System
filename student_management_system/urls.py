@@ -23,7 +23,7 @@ from django.views.generic.base import RedirectView
 import debug_toolbar
 from django.views.generic.base import RedirectView
 from django.views.i18n import JavaScriptCatalog
-from student_management_system.views import index,get_user_by_role_ajax
+from student_management_system.views import admin_home,get_user_by_role_ajax
 from student_management_system.views import home as main_home
 from student_management_system.views import a_level_home,bachelor_home,master_home,mass_delete
 from student_management_system.views import superuser_home
@@ -40,14 +40,14 @@ urlpatterns = [
     path('api/', include('school_apps.formapi.urls')),
       path('api/', include('student_management_system.api', namespace='api')),
     path('admin/', admin.site.urls),
-    path('', index),
+    path('home/', admin_home,name = 'admin-home'),
     # path('logs/', HistoryLogs.as_view(), name ="history_log"),
     path('common/mass/delete/<app>/<model>/', mass_delete, name ="mass_delete"),
-       path('home/', main_home.as_view(), name ="home"),
+       path('dashboard/', main_home.as_view(), name ="home"),
         path('a_level_home/',a_level_home,name = "a_level_home"),
        path('bachelor_home/',bachelor_home,name = "bachelor_home"),
          path('master_home/',master_home,name = "master_home"),
-    path('superadmin_portal/',superuser_home, name ="main_home"),
+    path('',superuser_home, name ="main_home"),
     path('get_user_by_role/', get_user_by_role_ajax, name ="get_user_by_role"),
     path('',include('student_management_app.urls',namespace='admin_app')),
     path('',include('school_apps.teacher.urls',namespace='teacher')),
