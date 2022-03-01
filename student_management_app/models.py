@@ -481,7 +481,7 @@ class Student(models.Model):
         ('Non-Science','Non-Science')
     )
     category_choices = (
-        ('A-Level','A-Level'),('Bachelor','Bachelor'),('Master','Master')
+        ('A-Level','A-Level'),('z','Bachelor'),('Master','Master')
     )
         
 

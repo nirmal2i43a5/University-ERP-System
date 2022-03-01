@@ -35,10 +35,10 @@
                     {% csrf_token %}
 
                     {% crispy custom_form %}
+                    {% crispy admin_form %}
 
 
-
-                    <button type="submit" name="admin_submit" class="btn btn-success">Update</button>
+                    {% comment %} <button type="submit" name="admin_submit" class="btn btn-success">Update</button> {% endcomment %}
 
                 </form>
             </div>

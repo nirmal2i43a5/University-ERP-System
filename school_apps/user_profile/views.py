@@ -211,28 +211,33 @@ def UpdateTeacherProfile(request):
 
 @permission_required('student_management_app.change_adminuser', raise_exception=True)
 def UpdateAdminProfile(request):
-
-	if request.user.is_superuser:#this is not adminuser
+	course_category = request.user.adminuser.course_category
+	if request.user.is_superuser:
 		custom_form = EditCustomUserForm(instance=request.user)
-		# admin_form = SystemAdminForm(instance=request.user)
+		admin_form = SystemAdminForm(instance=request.user.adminuser)
 		PassForm = PasswordChangeForm(request.user)
 
-		if request.method == 'POST' and 'admin_submit' in request.POST:
+		if request.method == 'POST':# and 'admin_submit' in request.POST:
 			custom_form = EditCustomUserForm(request.POST, instance=request.user)
-			# error with request.user.adminuser
-			# admin_form = SystemAdminForm(request.POST, request.FILES, instance=request.use)
-			if custom_form.is_valid():# and admin_form.is_valid():
+			admin_form = SystemAdminForm(request.POST, request.FILES, instance=request.user.adminuser)
+			if custom_form.is_valid() and admin_form.is_valid():
 				custom_form.save()  # call save to forms.py
-				# admin_form.save()
+				admin_instance = admin_form.save(commit = False)
+    
+				'''While updating admin course_cagegory is flush.So,I again assign course category after profile update'''
+				admin_instance.course_category = course_category
+				admin_instance.save()
+    
 				messages.success(request, "Your record is successfully updated")
 				return redirect('admin_profile_update')
 
 
+		'''For password change view check above override views'''
 		password_change_form(request)
 
 		context = {
 			'custom_form': custom_form,
-			# 'admin_form': admin_form,
+			'admin_form': admin_form,
 			'PassForm': PassForm
 		}
 
