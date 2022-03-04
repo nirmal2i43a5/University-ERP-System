@@ -294,3 +294,9 @@ def mass_delete(request,app,model):
                 obj.deleted_date = datetime.now(tz=timezone.utc)
                 obj.save()
         return JsonResponse({"message": "success"}, status=200)
+    
+    
+def manage_user(request):
+    context = {'title':'User Management',
+                 'calendar_slug': 'gci',}
+    return render(request, 'admin_templates/dashboard.html', context)

@@ -1,5 +1,4 @@
-{% extends 'admin_templates/superadmin_base.html' %} {% load static %} {% load crispy_forms_tags %} 
- {% block title %} {{title}} {% endblock title %} {% block main_content %}
+{% extends 'admin_templates/superadmin_base.html' %} {% load static %} {% load crispy_forms_tags %} {% block title %} {{title}} {% endblock title %} {% block main_content %}
 
 <section class="content">
 	<div class="container-fluid">
@@ -14,7 +13,7 @@
 							style="background-color: #094089; color: white"
 						>
 							<h3 style="text-align: center">
-								 <strong>Superuser Portal</strong>
+								<strong>Superuser Portal</strong>
 							</h3>
 						</div>
 					</div>
@@ -22,271 +21,276 @@
 					<!-- /.card-header -->
 
 					<div class="row custom-icon ml-4 mb-4">
-						<div class="col-md-2" 
-          >
+
+
+									<div class="col-md-2">
+						<a href="{% url 'manage-user' %}">
+
+									
+											<span>
+												<i class="fas fa-2x fa-users"></i>
+												<br />
+												<span>
+													<strong>User Management </strong>
+												</span>
+											</span>
+										</a>
+
+									</div>
+						
+						<div class="col-md-2">
 							<span>
-								<i
-									class="fas fa-2x fa-users"
-								></i>
-								<br/>
+								<i class="fas fa-2x fa-unlock-alt"></i>
+								<br />
 								<span>
-									 <strong>User Management </strong>
+									<strong>Permission Management </strong>
+								</span>
+							</span>
+						</div>
+						<div class="col-md-2">
+							<span>
+								<i class="fas fa-2x fa-calendar"></i>
+								<br />
+								<span>
+									<strong>Event Management </strong>
+								</span>
+							</span>
+						</div>
+						<div class="col-md-2">
+							<span>
+								<i class="fas fa-calendar-alt"></i>
+								<br />
+								<span>
+									<strong>Timetable Management </strong>
 								</span>
 							</span>
 						</div>
 
 						<div class="col-md-2">
-              <span>
-								<i
-									class="fas fa-2x fa-unlock-alt"
-								></i>
+							<span>
+								<i class="fas fa-clipboard-list"></i>
 								<br />
 								<span>
-									 <strong>Permission Management </strong>
+									<strong>Notice Management </strong>
 								</span>
 							</span>
-            </div>
-            <div class="col-md-2">
-              <span>
-								<i
-									class="fas fa-2x fa-calendar"
-								></i>
-								<br/>
-								<span>
-									 <strong >Event Management </strong>
-								</span>
-							</span>
-            </div>
+						</div>
+					</div>
+					
+					<div class="row custom-icon ml-4 mb-4">
 						<div class="col-md-2">
-              <span>
-								<i
-									class="fas  fa-calendar-alt"
-								></i>
-								<br/>
+							<span>
+								<i class="fas fa-id-badge"></i>
+							 <i class="fas fa-clipboard-list-check"></i> 
+								<br />
 								<span>
-									 <strong >Timetable Management </strong>
+									<strong>Attendance Management </strong>
 								</span>
 							</span>
-            </div>
+						</div>
 
-			<div class="col-md-2">
-				<span>
-					<i class="fas fa-clipboard-list"></i>
-								  <br/>
-								  <span>
-									   <strong >Notice Management </strong>
-								  </span>
-							  </span>
-			  </div>
-            <div class="col-md-2">
-				<span>
-					<i class="fas fa-id-badge"></i>
-					{% comment %} <i class="fas fa-clipboard-list-check"></i> {% endcomment %}
-					<br/>
-					<span>
-						 <strong>Attendance Management </strong>
-					</span>
-				</span>
-            </div>
-			<div class="col-md-2">
-				<span>
-				  <i class="fas fa-info"></i>
-								  <br/>
-								  <span>
-									   <strong >Inquiry Management </strong>
-								  </span>
-							  </span>
-			  </div>
-			  <div class="col-md-2">
-				<span>
-					<i class="fas fa-book"></i>
-								  <br/>
-								  <span>
-									   <strong >Library Management </strong>
-								  </span>
-							  </span>
-			  </div>
-			  <div class="col-md-2">
-
-				<span>
-					<i class="fas fa-file-alt"></i>
-								  <br/>
-								  <span>
-									   <strong >Material Management </strong>
-								  </span>
-							  </span>
-			  </div>
-			  <div class="col-md-2">
-				<span>
-					<i class="fas fa-book"></i>
-								  <br/>
-								  <span>
-									   <strong >Asset Management </strong>
-								  </span>
-							  </span>
-			  </div>
-			  <div class="col-md-2">
-				<span>
-					<i class="fas fa-rupee-sign"></i>
-								  <br/>
-								  <span>
-									   <strong >Finance Management </strong>
-								  </span>
-							  </span>
-			  </div>
-			  <div class="col-md-2">
-				<span>
-					<i class="fas fa-bus"></i>
-								  <br/>
-								  <span>
-									   <strong >Transport Management </strong>
-								  </span>
-							  </span>
-			  </div>
-			  <div class="col-md-2">
-
-				<span>
-					<img src="https://img.icons8.com/glyph-neue/64/000000/certificate.png"/>
-					{% comment %} <i class="fas fa-print"></i> {% endcomment %}
-								  <br/>
-								  <span>
-									   <strong >Certificate Generation </strong>
-								  </span>
-							  </span>
-			  </div>
-			  <div class="col-md-2">
-
-				<span>
-					<i class="fas fa-bed"></i>
-								  <br/>
-								  <span>
-									   <strong >Hostel Management </strong>
-								  </span>
-							  </span>
-			  </div>
-			  <div class="col-md-2">
-
-				<span>
-					<i class="fas fa-warehouse"></i>
-								  <br/>
-								  <span>
-									   <strong >Inventory Management </strong>
-								  </span>
-							  </span>
-			  </div>
-			  <div class="col-md-2">
-
-				<span>
-					<i class="fas fa-star"></i>
-								  <br/>
-								  <span>
-									   <strong >Result Module </strong>
-								  </span>
-							  </span>
-			  </div>
-			  <div class="col-md-2">
-
-				<span>
-					<i class="fas fa-file"></i>
-								  <br/>
-								  <span>
-									   <strong >Test and Paper </strong>
-								  </span>
-							  </span>
-			  </div>
-			  {% comment %} <div class="col-md-2">
-
-				<span>
-					<i class="fas fa-bus"></i>
-								  <br/>
-								  <span>
-									   <strong >Exam Planner and Schedule  </strong>
-								  </span>
-							  </span>
-			  </div> {% endcomment %}
-			  <div class="col-md-2">
-				<span>
-					<i class="fas fa-newspaper"></i>
-								  <br/>
-								  <span>
-									   <strong >NewsLetters </strong>
-								  </span>
-							  </span>
-			  </div>
-			  <div class="col-md-2">
-				<span>
-					<i class="fas fa-envelope"></i>
-								  <br/>
-								  <span>
-									   <strong >Email Services </strong>
-								  </span>
-							  </span>
-			  </div>
-            <div class="col-md-2">
-				<span>
-					<i class="fas fa-address-book"></i>
-					<br/>
-					<span>
-						 <strong>User Logs </strong>
-					</span>
-				</span>
-            </div>
-           
-            <div class="col-md-2">
-              					<span>
-									<i class="fas fa-cogs"></i>
-								<br/>
+						<div class="col-md-2">
+							<span>
+								<i class="fas fa-info"></i>
+								<br />
 								<span>
-									 <strong>Settings </strong>
+									<strong>Inquiry Management </strong>
 								</span>
 							</span>
-            </div>
-           
-			<div class="col-md-2">
-				<span>
-					<i class="fas fa-chart-line"></i>
-			  <br/>
-			  <span>
-				   <strong>Analysis and report </strong>
-			  </span>
-		  </span>
-</div>
-            
+						</div>
+						<div class="col-md-2">
+							<span>
+								<i class="fas fa-book"></i>
+								<br />
+								<span>
+									<strong>Library Management </strong>
+								</span>
+							</span>
+						</div>
+						<div class="col-md-2">
+							<span>
+								<i class="fas fa-file-alt"></i>
+								<br />
+								<span>
+									<strong>Material Management </strong>
+								</span>
+							</span>
+						</div>
+						<div class="col-md-2">
+							<span>
+								<i class="fas fa-book"></i>
+								<br />
+								<span>
+									<strong>Asset Management </strong>
+								</span>
+							</span>
+						</div>
+					</div>
+
+					<div class="row custom-icon ml-4 mb-4">
+						<div class="col-md-2">
+							<span>
+								<i class="fas fa-rupee-sign"></i>
+								<br />
+								<span>
+									<strong>Finance Management </strong>
+								</span>
+							</span>
+						</div>
+						<div class="col-md-2">
+							<span>
+								<i class="fas fa-bus"></i>
+								<br />
+								<span>
+									<strong>Transport Management </strong>
+								</span>
+							</span>
+						</div>
+						<div class="col-md-2">
+							<span>
+								<img
+									src="https://img.icons8.com/glyph-neue/64/000000/certificate.png"
+								/>
+								{% comment %} <i class="fas fa-print"></i> {% endcomment %}
+								<br />
+								<span>
+									<strong>Certificate Generation </strong>
+								</span>
+							</span>
+						</div>
+						<div class="col-md-2">
+							<span>
+								<i class="fas fa-bed"></i>
+								<br />
+								<span>
+									<strong>Hostel Management </strong>
+								</span>
+							</span>
+						</div>
+						<div class="col-md-2">
+							<span>
+								<i class="fas fa-warehouse"></i>
+								<br />
+								<span>
+									<strong>Inventory Management </strong>
+								</span>
+							</span>
+						</div>
+					</div>
+
+					<div class="row custom-icon ml-4 mb-4">
+						<div class="col-md-2">
+							<span>
+								<i class="fas fa-star"></i>
+								<br />
+								<span>
+									<strong>Result Module </strong>
+								</span>
+							</span>
+						</div>
+						<div class="col-md-2">
+							<span>
+								<i class="fas fa-file"></i>
+								<br />
+								<span>
+									<strong>Test and Paper </strong>
+								</span>
+							</span>
+						</div>
+						{% comment %}
+						<div class="col-md-2">
+							<span>
+								<i class="fas fa-bus"></i>
+								<br />
+								<span>
+									<strong>Exam Planner and Schedule </strong>
+								</span>
+							</span>
+						</div>
+						{% endcomment %}
+						<div class="col-md-2">
+							<span>
+								<i class="fas fa-newspaper"></i>
+								<br />
+								<span>
+									<strong>NewsLetters </strong>
+								</span>
+							</span>
+						</div>
+						<div class="col-md-2">
+							<span>
+								<i class="fas fa-envelope"></i>
+								<br />
+								<span>
+									<strong>Email Services </strong>
+								</span>
+							</span>
+						</div>
+						<div class="col-md-2">
+							<span>
+								<i class="fas fa-address-book"></i>
+								<br />
+								<span>
+									<strong>User Logs </strong>
+								</span>
+							</span>
+						</div>
+					</div>
+
+					<div class="row custom-icon ml-4 mb-4">
+						<div class="col-md-2">
+							<span>
+								<i class="fas fa-cogs"></i>
+								<br />
+								<span>
+									<strong>Settings </strong>
+								</span>
+							</span>
+						</div>
+
+						<div class="col-md-2">
+							<span>
+								<i class="fas fa-chart-line"></i>
+								<br />
+								<span>
+									<strong>Analysis and report </strong>
+								</span>
+							</span>
+						</div>
+					</div>
 					</div>
 				</div>
-			</div>
 		</div>
 	</div>
 </section>
 
 <style>
-								
-.col-md-2{
-	border-radius: 5px;
-    border: none;
-    -webkit-box-shadow: 0 0 15px 0 #ddd;
-    box-shadow: 0 0 15px 0 #ddd;
-  
-    text-align: center;
-    background: #fff;
- 	 padding-top:1rem;
-	  padding-bottom:1rem;
-  	margin:10px 2px 0px 2px;
 
-}
+	.col-md-2{
+		border-radius: 5px;
+	    border: none;
+	    -webkit-box-shadow: 0 0 15px 0 #ddd;
+	    box-shadow: 0 0 15px 0 #ddd;
 
-.custom-icon i{
-    padding: 20px;
-    font-size: 50px;
-    text-align: center;
-    color: #115c8d;
-	padding-top:inherit;
-	padding-bottom: 1px;
-	margin-bottom:0.7rem;
-}
+	    text-align: center;
+	    background: #fff;
+	 	 padding-top:1rem;
+		  padding-bottom:1rem;
+	  	margin:10px 7px 0px 20px;
 
-}
+	}
+
+	.custom-icon i{
+	    padding: 20px;
+	    font-size: 50px;
+	    text-align: center;
+	    color: #115c8d;
+		padding-top:inherit;
+		padding-bottom: 1px;
+		margin-bottom:0.7rem;
+	}
+
+	}
 </style>
 
-{% endblock main_content %}
- {% block custom_js %} {% endblock custom_js %}
+{% endblock main_content %} {% block custom_js %} {% endblock custom_js %}

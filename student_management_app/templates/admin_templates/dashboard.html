@@ -32,7 +32,7 @@ Dashboard
     {% endif %}
       
 
-  </div>
+  </div>       
 </div>
 
 
@@ -41,6 +41,8 @@ Dashboard
 
 
 {% include "main_home.html" %}
+
+
   
 {% endif %}
 
@@ -52,6 +54,67 @@ Dashboard
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+
+<!---------------------------------------------Admin dashboard end----------------------------------------------------------------->
+
+<div class="row">
+  <div class="col-md-6">
+
+    <!---------------------------------------------Student dashboard start----------------------------------------------------------------->
+
+    {% elif request.user|has_group:'Student' %}
+
+    {% include "includes/include_admin/include_dashboard/student_dashboard.html" %}
+    {% include "includes/calendar.html" %}
+    {% include "includes/include_admin/notice.html" %}
+
+    <!---------------------------------------------Student dashboard end----------------------------------------------------------------->
+
+
+    <!---------------------------------------------parent dashboard start----------------------------------------------------------------->
+
+    {% elif request.user|has_group:'Parent' %}
+
+    {% include "includes/include_admin/include_dashboard/parent_dashboard.html" %}
+    {% include "includes/calendar.html" %}
+
+    {% include "includes/include_admin/notice.html" %}
+
+    <!---------------------------------------------parent dashboard end----------------------------------------------------------------->
+
+
+    <!---------------------------------------------Teacher dashboard start----------------------------------------------------------------->
+
+    {% elif request.user|has_group:'Teacher' %}
+
+    {% include "includes/include_admin/include_dashboard/teacher_dashboard.html" %}
+    {% include "includes/calendar.html" %}
+
+    <!---------------------------------------------Teacher dashboard end----------------------------------------------------------------->
+
+    {% endif %}
+
+
+
+
+    {% endblock %}
+
+
+
+    {% block custom_js %}
+
+    {% include "fullcalendar_script.html" %}
+
+    <script type="text/javascript">
+      $(window).on('load', function () {
+        $('#noticeModal').modal('show');
+      });
+    </script>
+
+    {% endblock custom_js %}
+
+
 
 <!-- Main content -->
 <section class="content">
@@ -163,61 +226,3 @@ Dashboard
     {% include "includes/calendar.html" %}
 
 </section>
-
-<!---------------------------------------------Admin dashboard end----------------------------------------------------------------->
-
-<div class="row">
-  <div class="col-md-6">
-
-    <!---------------------------------------------Student dashboard start----------------------------------------------------------------->
-
-    {% elif request.user|has_group:'Student' %}
-
-    {% include "includes/include_admin/include_dashboard/student_dashboard.html" %}
-    {% include "includes/calendar.html" %}
-    {% include "includes/include_admin/notice.html" %}
-
-    <!---------------------------------------------Student dashboard end----------------------------------------------------------------->
-
-
-    <!---------------------------------------------parent dashboard start----------------------------------------------------------------->
-
-    {% elif request.user|has_group:'Parent' %}
-
-    {% include "includes/include_admin/include_dashboard/parent_dashboard.html" %}
-    {% include "includes/calendar.html" %}
-
-    {% include "includes/include_admin/notice.html" %}
-
-    <!---------------------------------------------parent dashboard end----------------------------------------------------------------->
-
-
-    <!---------------------------------------------Teacher dashboard start----------------------------------------------------------------->
-
-    {% elif request.user|has_group:'Teacher' %}
-
-    {% include "includes/include_admin/include_dashboard/teacher_dashboard.html" %}
-    {% include "includes/calendar.html" %}
-
-    <!---------------------------------------------Teacher dashboard end----------------------------------------------------------------->
-
-    {% endif %}
-
-
-
-
-    {% endblock %}
-
-
-
-    {% block custom_js %}
-
-    {% include "fullcalendar_script.html" %}
-
-    <script type="text/javascript">
-      $(window).on('load', function () {
-        $('#noticeModal').modal('show');
-      });
-    </script>
-
-    {% endblock custom_js %}
