@@ -296,7 +296,67 @@ def mass_delete(request,app,model):
         return JsonResponse({"message": "success"}, status=200)
     
     
+    
+    
 def manage_user(request):
-    context = {'title':'User Management',
-                 'calendar_slug': 'gci',}
+    context = {
+        'title':'User Management',
+                 }
+    return render(request, 'admin_templates/dashboard.html', context)
+
+
+def manage_permission(request):
+    context = {
+        'title':'Permission Management',
+                 }
+    return render(request, 'admin_templates/dashboard.html', context)
+
+def manage_academic(request):
+    context = {
+        'title':'Academic Management',
+                 }
+    return render(request, 'admin_templates/dashboard.html', context)
+
+def manage_event(request):
+    context = {
+        'title':'Event Management',
+                 }
+    
+    return render(request, 'admin_templates/dashboard.html', context)
+
+def manage_routine(request):
+    context = {
+        'title':'Routine Management',
+                 }
+    return render(request, 'admin_templates/dashboard.html', context)
+
+def manage_notice(request):
+    context = {
+        'title':'Notice Management',
+                 }
+    return render(request, 'admin_templates/dashboard.html', context)
+
+def manage_attendance(request):
+    context = {
+        'title':'Attendance Management',
+                 }
+    return render(request, 'admin_templates/dashboard.html', context)
+
+def manage_enquiry(request):
+    context = {
+        'title':'Enquiry Management',
+                 }
+    return render(request, 'admin_templates/dashboard.html', context)
+
+
+def manage_email_services(request):
+    context = {
+        'title':'Email Service Management',
+                 }
+    return render(request, 'admin_templates/dashboard.html', context)
+
+def manage_asset(request):
+    context = {
+        'title':'Asset Management',
+                 }
     return render(request, 'admin_templates/dashboard.html', context)

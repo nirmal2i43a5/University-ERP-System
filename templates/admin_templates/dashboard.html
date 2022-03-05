@@ -1,5 +1,4 @@
-{% extends 'admin_templates/base_admin_calendar.html' %}
-
+{% extends 'admin_templates/base_admin.html' %}
 {% load scheduletags i18n %}
 
 {% load auth_extras %}
@@ -66,7 +65,7 @@ Dashboard
     {% elif request.user|has_group:'Student' %}
 
     {% include "includes/include_admin/include_dashboard/student_dashboard.html" %}
-    {% include "includes/calendar.html" %}
+    {% comment %} {% include "includes/calendar.html" %} {% endcomment %}
     {% include "includes/include_admin/notice.html" %}
 
     <!---------------------------------------------Student dashboard end----------------------------------------------------------------->
@@ -77,7 +76,6 @@ Dashboard
     {% elif request.user|has_group:'Parent' %}
 
     {% include "includes/include_admin/include_dashboard/parent_dashboard.html" %}
-    {% include "includes/calendar.html" %}
 
     {% include "includes/include_admin/notice.html" %}
 
@@ -89,7 +87,6 @@ Dashboard
     {% elif request.user|has_group:'Teacher' %}
 
     {% include "includes/include_admin/include_dashboard/teacher_dashboard.html" %}
-    {% include "includes/calendar.html" %}
 
     <!---------------------------------------------Teacher dashboard end----------------------------------------------------------------->
 
@@ -104,7 +101,6 @@ Dashboard
 
     {% block custom_js %}
 
-    {% include "fullcalendar_script.html" %}
 
     <script type="text/javascript">
       $(window).on('load', function () {

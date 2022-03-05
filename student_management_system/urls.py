@@ -26,7 +26,9 @@ from django.views.i18n import JavaScriptCatalog
 from student_management_system.views import admin_home,get_user_by_role_ajax
 from student_management_system.views import home as main_home
 from student_management_system.views import (superuser_home,a_level_home,bachelor_home,master_home,
-                                             mass_delete,manage_user,)
+                                             mass_delete,manage_user,manage_attendance,manage_event,
+                                             manage_enquiry,manage_notice,manage_permission,manage_routine,
+                                             manage_email_services,manage_asset,manage_academic)
 from django.contrib.auth import views as auth_views
 
 
@@ -41,7 +43,6 @@ urlpatterns = [
     path('api/', include('student_management_system.api', namespace='api')),
     path('admin/', admin.site.urls),
     path('home/', admin_home,name = 'admin-home'),
-     path('user-management/', manage_user,name = 'manage-user'),
     # path('logs/', HistoryLogs.as_view(), name ="history_log"),
     path('common/mass/delete/<app>/<model>/', mass_delete, name ="mass_delete"),
     path('dashboard/', main_home.as_view(), name ="home"),
@@ -70,6 +71,19 @@ urlpatterns = [
     path('',include('school_apps.role_permission.urls',namespace='role_app')),
     path('notifications/', include('school_apps.notifications.urls',namespace='notifications')),
     path('academic/', include('school_apps.academic.urls',namespace='academic')),
+    
+    # Respective dashboard part
+    path('user-management/', manage_user,name = 'manage-user'),
+    path('permission-management/', manage_permission,name = 'manage-permission'),
+        path('academic-management/', manage_academic,name = 'manage-academic'),
+    path('event-management/', manage_event,name = 'manage-event'),
+    path('routine-management/', manage_routine,name = 'manage-routine'),
+    path('notice-management/', manage_notice,name = 'manage-notice'),
+    path('attendance-management/', manage_attendance,name = 'manage-attendance'),
+    path('enquiry-management/', manage_enquiry,name = 'manage-enquiry'),
+      path('email-service-management/', manage_email_services,name = 'manage-email-service'),
+    path('asset-management/', manage_asset,name = 'manage-asset'),
+     
     path('schedule/',include('schedule.urls')),
     
       

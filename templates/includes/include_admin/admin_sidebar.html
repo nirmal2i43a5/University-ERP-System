@@ -66,63 +66,48 @@
           </a>
         </li>
 
-        <li class="nav-item">
-          <a href="https://virtualclass.gci.edu.np/login/" class="nav-link">
-            <i class="fas  fa-book-open mr-1"></i>
-            <p>
-              Virtual Classroom
-
-            </p>
-          </a>
-        </li>
-
-        <!-----------------------------------User Sidebar------------------------------------------>
-
-
-
-
         {% if request.user.is_superuser %}
       
-        {% url 'manage-user' as url %}
-        {% if request.path ==  url %}
+        {% url 'manage-user' as user_url %}
+        {% if request.path ==  user_url %}
         {% include "includes/include_admin/includes_sidebar/users.html" %}
-        {% endif %}
-        <!-----------------------------------Role_Permission Sidebar------------------------------------------>
 
+        {% url 'manage-permission' as permission_url %}
+        {% elif request.path ==  permission_url %}
         {% include "includes/include_admin/includes_sidebar/role_permission.html" %}
-  
 
-
-        <!-----------------------------------admin_academic Sidebar------------------------------------------>
+        {% url 'manage-academic' as academic_url %}
+        {% elif request.path ==  academic_url %}
         {% include "includes/include_admin/includes_sidebar/academic.html" %}
+
+        {% url 'manage-event' as event_url %}
+        {% elif request.path ==  event_url %}
+        {% include "includes/include_admin/includes_sidebar/announcement.html" %}
+
+        {% url 'manage-attendance' as attendance_url %}
+        {% elif request.path ==  attendance_url %}
+        {% include "includes/include_admin/includes_sidebar/attendance.html" %}
+
+        {% url 'manage-asset' as asset_url %}
+        {% elif request.path ==  asset_url %}
+        {% include "includes/include_admin/includes_sidebar/inventory.html" %}
+
+
+        {% url 'manage-enquiry' as enquiry_url %}
+        {% elif request.path ==  enquiry_url %}
+        {% include "includes/include_admin/includes_sidebar/enquiry.html" %}
+
+        {% url 'manage-email-service' as email_service_url %}
+        {% elif request.path ==  email_service_url %}
+        {% include "includes/include_admin/includes_sidebar/email_service_sidebar.html" %}
+
+
+        {% endif %}
+
+
         <!-----------------------------------Exam Management Sidebar------------------------------------------>
         {% include "includes/include_admin/course_sidebar.html" %}
 
-        <li class="nav-item">
-          <a href="https://library.gci.edu.np/" class="nav-link">
-            <i class="fas  fa-book-open mr-1"></i>
-            <p>
-              Library
-
-            </p>
-          </a>
-        </li>
-
-        {% include "includes/include_admin/includes_sidebar/enquiry.html" %}
-            {% include "includes/include_admin/includes_sidebar/visitor.html" %}
-            {% include "includes/include_admin/includes_sidebar/inventory.html" %}
-
-        <li class="nav-item has-treeview">
-          <!-- <a href="https://cbt.gci.edu.np/admin/login" class="nav-link">
-            <p>
-              <i class="fas  fa-th"></i>  GCI CBT
-            </p>
-          </a> -->
-
-        </li>
-
-        
-        {% include "includes/include_admin/includes_sidebar/formbuilder_sidebar.html" %}
 
         <li class="nav-item">
           <a href="https://accounts.google.com/signin/v2/identifier?service=mail&passive=true&rm=false&continue=https%3A%2F%2Fmail.google.com%2Fmail%2F&ss=1&scc=1&ltmpl=default&ltmplcache=2&emr=1&osid=1&flowName=GlifWebSignIn&flowEntry=ServiceLogin" class="nav-link">
@@ -133,35 +118,18 @@
             </p>
           </a>
         </li>
-
-        <!-----------------------------------attendance Sidebar------------------------------------------>
-
-
-        {% include "includes/include_admin/includes_sidebar/attendance.html" %}
-        <!-------------------------------------------Announcement sidebar------------------------------------------------- -->
-
-        {% include "includes/include_admin/includes_sidebar/announcement.html" %}
-       
-        <!-- ------------------------email services sidebar--------------------------- -->
-        {% include "includes/include_admin/includes_sidebar/email_service_sidebar.html" %}
-    
-
-
         <!-----------------------------------administrator Sidebar------------------------------------------>
-
         {% include "includes/include_admin/includes_sidebar/administrator.html" %}
-
             <!-----------------------------------Report  Sidebar------------------------------------------>
             {% include "includes/include_admin/includes_sidebar/report.html" %}
-                  <!-----------------------------------end Report  Sidebar------------------------------------------>
-
-         
-                  <!-----------------------------------end Report  Sidebar------------------------------------------>
-
-            <!-----------------------------------Log History Sidebar------------------------------------------>
-
             {% include "includes/include_admin/includes_sidebar/log_sidebar.html" %}
-            <!-----------------------------------Log History Sidebar end------------------------------------------>
+
+   <!-----------------------------------Visitor Sidebar------------------------------------------>
+            {% comment %} {% include "includes/include_admin/includes_sidebar/visitor.html" %} {% endcomment %}
+   <!-----------------------------------Formbuilder sidebar------------------------------------------>
+        {% comment %} {% include "includes/include_admin/includes_sidebar/formbuilder_sidebar.html" %} {% endcomment %}
+
+       
                     <!-----------------------------------transport Sidebar------------------------------------------>
 
         <!-- <li class="nav-item has-treeview">
