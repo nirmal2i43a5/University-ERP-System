@@ -21,7 +21,7 @@
 					<div class="row custom-icon ml-4 mb-4">
 
 									<div class="col-md-2">
-						<a href="{% url 'manage-user' %}">
+									<a href="{% url 'manage-user' %}">
 
 											<span>
 												<i class="fas fa-2x fa-users"></i>
@@ -30,11 +30,14 @@
 													<strong>User Management </strong>
 												</span>
 											</span>
-										</a>
+									</a>
 
 									</div>
 						
 						<div class="col-md-2">
+
+							<a href="{% url 'manage-permission' %}">
+
 							<span>
 								<i class="fas fa-2x fa-unlock-alt"></i>
 								<br />
@@ -42,8 +45,12 @@
 									<strong>Permission Management </strong>
 								</span>
 							</span>
+						</a>
 						</div>
 						<div class="col-md-2">
+
+							<a href="{% url 'manage-academic' %}">
+
 							<span>
 								<i class="fas fa-university"></i>
 								<br />
@@ -51,8 +58,12 @@
 									<strong>Academic Management </strong>
 								</span>
 							</span>
+						</a>
 						</div>
 						<div class="col-md-2">
+
+							<a href="{% url 'manage-event' %}">
+
 							<span>
 								<i class="fas fa-2x fa-calendar"></i>
 								<br />
@@ -60,8 +71,12 @@
 									<strong>Event Management </strong>
 								</span>
 							</span>
+						</a>
 						</div>
 						<div class="col-md-2">
+
+							<a href="{% url 'manage-routine' %}">
+
 							<span>
 								<i class="fas fa-calendar-alt"></i>
 								<br />
@@ -69,13 +84,13 @@
 									<strong>Timetable Management </strong>
 								</span>
 							</span>
+						</a>
 						</div>
 
 						
-					</div>
 					
-					<div class="row custom-icon ml-4 mb-4">
 						<div class="col-md-2">
+							<a href="{% url 'manage-notice' %}">
 							<span>
 								<i class="fas fa-clipboard-list"></i>
 								<br />
@@ -83,8 +98,10 @@
 									<strong>Notice Management </strong>
 								</span>
 							</span>
+						</a>
 						</div>
 						<div class="col-md-2">
+							<a href="{% url 'manage-attendance' %}">
 							<span>
 								<i class="fas fa-id-badge"></i>
 							 <i class="fas fa-clipboard-list-check"></i> 
@@ -93,6 +110,7 @@
 									<strong>Attendance Management </strong>
 								</span>
 							</span>
+						</a>
 						</div>
 
 					
@@ -115,6 +133,7 @@
 							</span>
 						</div>
 						<div class="col-md-2">
+							<a href="{% url 'manage-asset' %}">
 							<span>
 								<i class="fas fa-book"></i>
 								<br />
@@ -122,29 +141,23 @@
 									<strong>Asset Management </strong>
 								</span>
 							</span>
+						</a>
 						</div>
-					</div>
 
-					<div class="row custom-icon ml-4 mb-4">
 						<div class="col-md-2">
+								<a href="{% url 'manage-fee' %}">
 							<span>
 								<i class="fas fa-rupee-sign"></i>
 								<br />
 								<span>
-									<strong>Finance Management </strong>
+									<strong>Fee Management </strong>
 								</span>
 							</span>
+						</a>
 						</div>
+					
 						<div class="col-md-2">
-							<span>
-								<i class="fas fa-bus"></i>
-								<br />
-								<span>
-									<strong>Transport Management </strong>
-								</span>
-							</span>
-						</div>
-						<div class="col-md-2">
+							<a href="{% url 'manage-certificate' %}">
 							<span>
 								<img
 									src="https://img.icons8.com/glyph-neue/64/000000/certificate.png"
@@ -155,6 +168,7 @@
 									<strong>Certificate Generation </strong>
 								</span>
 							</span>
+						</a>
 						</div>
 						<div class="col-md-2">
 							<span>
@@ -174,9 +188,7 @@
 								</span>
 							</span>
 						</div>
-					</div>
 
-					<div class="row custom-icon ml-4 mb-4">
 						<div class="col-md-2">
 							<span>
 								<i class="fas fa-star"></i>
@@ -216,6 +228,7 @@
 							</span>
 						</div>
 						<div class="col-md-2">
+							<a href="{% url 'manage-email-service' %}">
 							<span>
 								<i class="fas fa-envelope"></i>
 								<br />
@@ -223,8 +236,10 @@
 									<strong>Email Services </strong>
 								</span>
 							</span>
+						</a>
 						</div>
 						<div class="col-md-2">
+							<a href="{% url 'manage-log-history' %}">
 							<span>
 								<i class="fas fa-address-book"></i>
 								<br />
@@ -232,12 +247,12 @@
 									<strong>User Logs </strong>
 								</span>
 							</span>
+						</a>
 						</div>
-					</div>
 
-					<div class="row custom-icon ml-4 mb-4">
 
 						<div class="col-md-2">
+							<a href="{% url 'manage-enquiry' %}">
 							<span>
 								<i class="fas fa-info"></i>
 								<br />
@@ -245,8 +260,10 @@
 									<strong>Enquiry Management </strong>
 								</span>
 							</span>
+						</a>
 						</div>
 						<div class="col-md-2">
+							<a href="{% url 'manage-complain' %}">
 							<span>
 								<i class="fas  fa-comment-dots"></i>
 								<br />
@@ -254,6 +271,29 @@
 									<strong>Complain Management </strong>
 								</span>
 							</span>
+						</a>
+						</div>
+						<div class="col-md-2">
+							<a href="{% url 'manage-meeting' %}">
+							<span>
+								<i class="fa fa-users"></i>
+								<br />
+								<span>
+									<strong> Council and Meeting</strong>
+								</span>
+							</span>
+						</a>
+						</div>
+						<div class="col-md-2">
+							<a href="{% url 'manage-transport' %}">
+							<span>
+								<i class="fas fa-bus"></i>
+								<br />
+								<span>
+									<strong>Transport Management </strong>
+								</span>
+							</span>
+						</a>
 						</div>
 						<div class="col-md-2">
 							<span>
@@ -266,6 +306,7 @@
 						</div>
 
 						<div class="col-md-2">
+							<a href="{% url 'manage-report' %}">
 							<span>
 								<i class="fas fa-chart-line"></i>
 								<br />
@@ -273,9 +314,10 @@
 									<strong>Analysis and report </strong>
 								</span>
 							</span>
+						</a>
 						</div>
-						
 					</div>
+						
 					</div>
 				</div>
 	</div>

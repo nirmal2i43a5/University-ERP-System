@@ -342,12 +342,6 @@ def manage_attendance(request):
                  }
     return render(request, 'admin_templates/dashboard.html', context)
 
-def manage_enquiry(request):
-    context = {
-        'title':'Enquiry Management',
-                 }
-    return render(request, 'admin_templates/dashboard.html', context)
-
 
 def manage_email_services(request):
     context = {
@@ -355,8 +349,73 @@ def manage_email_services(request):
                  }
     return render(request, 'admin_templates/dashboard.html', context)
 
+def manage_enquiry(request):
+    context = {
+        'title':'Enquiry Management',
+                 }
+    return render(request, 'admin_templates/dashboard.html', context)
+
+def manage_complain(request):
+    context = {
+        'title':'Complain Management',
+                 }
+    return render(request, 'admin_templates/dashboard.html', context)
+
+
+def manage_meeting(request):
+    '''
+    Managing the meeting and discussion of student council and teacher meetings
+    '''
+    context = {
+        'title':'Meeting Management',
+                 }
+    return render(request, 'admin_templates/dashboard.html', context)
+
+
+
+
 def manage_asset(request):
     context = {
         'title':'Asset Management',
+                 }
+    return render(request, 'admin_templates/dashboard.html', context)
+
+
+def manage_fee(request):
+    context = {
+        'title':'Fee Management',
+                 }
+    return render(request, 'admin_templates/dashboard.html', context)
+
+
+def manage_certificate(request):
+    context = {
+        'title':'Certificate Management',
+                 }
+    return render(request, 'admin_templates/dashboard.html', context)
+
+
+def manage_transport(request):
+    context = {
+        'title':'Transport Management',
+                 }
+    return render(request, 'admin_templates/dashboard.html', context)
+
+def manage_log_history(request):
+    context = {
+        'title':'Log History Management',
+                 }
+    return render(request, 'admin_templates/dashboard.html', context)
+
+def manage_report(request):
+    context = {
+        'title':'Report Management',
+                 }
+    return render(request, 'admin_templates/dashboard.html', context)
+
+
+def manage_exam(request):
+    context = {
+        'title':'Exam Management',
                  }
     return render(request, 'admin_templates/dashboard.html', context)

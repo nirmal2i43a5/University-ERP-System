@@ -28,7 +28,9 @@ from student_management_system.views import home as main_home
 from student_management_system.views import (superuser_home,a_level_home,bachelor_home,master_home,
                                              mass_delete,manage_user,manage_attendance,manage_event,
                                              manage_enquiry,manage_notice,manage_permission,manage_routine,
-                                             manage_email_services,manage_asset,manage_academic)
+                                             manage_email_services,manage_asset,manage_academic,manage_complain,
+                                             manage_meeting,manage_fee,manage_transport,manage_log_history,
+                                             manage_report,manage_certificate)
 from django.contrib.auth import views as auth_views
 
 
@@ -75,14 +77,21 @@ urlpatterns = [
     # Respective dashboard part
     path('user-management/', manage_user,name = 'manage-user'),
     path('permission-management/', manage_permission,name = 'manage-permission'),
-        path('academic-management/', manage_academic,name = 'manage-academic'),
+    path('academic-management/', manage_academic,name = 'manage-academic'),
     path('event-management/', manage_event,name = 'manage-event'),
     path('routine-management/', manage_routine,name = 'manage-routine'),
     path('notice-management/', manage_notice,name = 'manage-notice'),
     path('attendance-management/', manage_attendance,name = 'manage-attendance'),
     path('enquiry-management/', manage_enquiry,name = 'manage-enquiry'),
-      path('email-service-management/', manage_email_services,name = 'manage-email-service'),
+    path('email-service-management/', manage_email_services,name = 'manage-email-service'),
     path('asset-management/', manage_asset,name = 'manage-asset'),
+    path('fee-management/', manage_fee,name = 'manage-fee'),
+      path('certificate-management/', manage_certificate,name = 'manage-certificate'),
+    path('transport-management/', manage_transport,name = 'manage-transport'),
+    path('complain-management/', manage_complain,name = 'manage-complain'),
+    path('meeting-management/', manage_meeting,name = 'manage-meeting'),
+       path('log-history-management/', manage_log_history,name = 'manage-log-history'),
+           path('report-management/', manage_report,name = 'manage-report'),
      
     path('schedule/',include('schedule.urls')),
     
