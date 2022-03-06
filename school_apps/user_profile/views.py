@@ -1,26 +1,23 @@
 """this views can be access by both student and staff"""
-
-from django.template import Context
+import requests
 from django.template.loader import get_template
-from django.http.request import HttpRequest
-from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import get_object_or_404, render, redirect
-from school_apps.user_profile.forms import LoginForm, UserRoleForm,CustomSetPasswordForm
+from django.shortcuts import  render, redirect
+from school_apps.user_profile.forms import LoginForm,CustomSetPasswordForm
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.models import Group
 from django.contrib.auth.forms import PasswordChangeForm
 from student_management_app.django_forms.forms import (
-	AddCustomUserForm, StaffForm, EditCustomUserForm
+	 StaffForm, EditCustomUserForm
 )
+from django.http import JsonResponse,HttpResponse
 from school_apps.student.forms import StudentForm
 from student_management_app.django_forms.administrative_forms import SystemAdminForm
 from django.views import View
 from django.contrib.auth.decorators import login_required, permission_required
-from student_management_app.models import (CourseCategory, Student,Staff,CustomUser)
+from student_management_app.models import (Section,  ExtraUser, Student,Staff,CustomUser)
 from school_apps.parents.forms import ParentForm
 
 def logoutView(request):
@@ -390,3 +387,91 @@ def particular_user_email(request):
 		# 	return redirect('send_bulk_email')
 
 	return render(request, 'bulk_email/particular_user.html', {'title': 'User  Message'})
+
+
+
+
+def send_sms(request):
+	section = Section.objects.filter(course_category = request.user.adminuser.course_category)
+	if request.method =='POST':
+		for item in request.POST.items():
+			print(item)
+		return HttpResponse("ok")
+	
+	context = {
+		'section':section
+	}
+	return render(request, 'sms/send_sms.html', context=context)
+
+def send_sms_ajax(request):
+	# print(list(request.GET.items()))
+	section_string = request.GET['section']
+	section_string = section_string.replace("[","").replace("]","").replace(","," ").replace("\"","")
+	section_list = section_string.split(" ")
+	sections = []
+	for item in section_list:
+		sections.append(Section.objects.get(pk=int(item)))
+	
+	students=[]
+
+	for item in sections:
+		students.append(list(item.student_set.all()))
+	
+	final_list = [item for sublist in students for item in sublist]
+	student_list = []
+	for item in final_list:
+		if len(item.contact)==10:
+			student_list.append(item.contact)
+	
+	teacher = request.GET['teacher']
+	staff=request.GET['staff']
+	teacher_list = []
+	staff_list = []
+
+	if teacher == 'true':
+		for item in Staff.objects.all():
+			if len(item.contact)==10:
+				teacher_list.append(item.contact)
+	
+	if staff=='true':
+		for item in ExtraUser.objects.all():
+			if len(item.contact)==10:
+				staff_list.append(item.contact)
+	
+	final_list = []
+	for item in student_list:
+		final_list.append(item)
+	for item in teacher_list:
+		final_list.append(item)
+	for item in staff_list:
+		final_list.append(item)
+	
+	message = request.GET['msg']
+
+	r = requests.post(
+		"http://api.sparrowsms.com/v2/login/",
+		data={
+			'username':'info@gci.edu.np',
+			'password':'Global@123@info'
+		})
+
+	status_code = r.status_code
+	response = r.text
+	response_json = r.json()
+
+	token=response_json['token']
+	print(token)
+	identity='GCIsms'
+
+	sms_request = requests.post(
+		"http://api.sparrowsms.com/v2/sms/",
+            data={'token' : token,
+                  'from'  : identity,
+                  'to'    : '<comma_separated 10-digit mobile numbers>',
+                  'text'  : 'SMS Message to be sent'})
+
+	status_code = sms_request.status_code
+	response = sms_request.text
+	response_json = sms_request.json()
+
+	return JsonResponse({'a':'b'})

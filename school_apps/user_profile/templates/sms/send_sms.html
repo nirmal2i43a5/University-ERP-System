@@ -1,0 +1,124 @@
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+{{title}}
+{% endblock title %}
+
+{% block main_content %}
+<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+
+    {% include "includes/messages.html" %}
+
+    <div class="row">
+      <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="card card-info">
+          {% include 'override_table/header.html' with card_title="Send SMS" %}
+          <!-- /.card-header -->
+
+          <!-- form start -->
+          <form  method="POST" action="" enctype="multipart/form-data" id="send_sms_form">
+            {% csrf_token %}
+          <div class="card-body">
+            <a name="contact"></a>
+            
+            <div class="row">
+                <div class = "col-3">
+                    <label for="students_section">Select students by section:</label><br>
+                    <!-- <select name="students_section" id="students_section" multiple>
+                    {% for item in section %}
+                    <option value="{{item.pk}}">{{item}}</option>
+                    {% endfor %} -->
+                    {% for item in section %}
+                        <input type="checkbox" name="section" id="{{item.pk}}" value="{{item.pk}}">
+                        <label for="{{item.pk}}">{{item}}</label><br>
+                    {% endfor %}
+                  </select>
+                </div>
+
+                <div class="col-2">
+                    <strong>Send to teachers?</strong><p>
+                    <strong>Send to staffs?</strong>
+                </div>
+                <div class = "col-4">
+                    <input type="checkbox" id="teacher_check" name="teacher" value="teacher">
+                    <label for="teacher">Yes</label><br>
+                    <input type="checkbox" id="staff_check" name="staff" value="staff">
+                    <label for="staff">Yes</label><br>
+                </div>
+                </div>   
+
+
+            </div>
+          
+
+            <!-- <strong><label for="eml">Email</label></strong>
+            <input required class="form-control" id="eml" type="text" name="email"><br> -->
+
+              <strong>   <label for="msg">Message</label></strong>
+            <textarea required id="msg" class="form-control form-control-lg" name="message" rows="10" cols="75"></textarea><br>
+            
+            <!-- <script type="text/javascript">
+              CKEDITOR.replace( 'message' ,
+              
+              
+              );
+           </script> -->
+            
+
+
+            <input id="submit-btn" class="btn btn-sm btn-success mt-2" type="submit" value="SEND MESSAGE">
+          </div>
+        </form>
+        </div>
+        <!-- /.card -->
+
+
+
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+
+{% endblock main_content %}
+
+{% block javascript %}
+<script>
+    $("#send_sms_form").submit(function(e){
+        e.preventDefault();
+        section=[];
+        $("input:checkbox[name=section]:checked").each(function(){
+            section.push($(this).val());
+        });
+        var section_json = JSON.stringify(section);
+        var teacher = false;
+        var staff = false;
+        //var desc = CKEDITOR.instances['msg'].getData();\
+        var msg = $("#msg").val()
+        if($("#teacher_check").is(':checked')){
+            teacher= true;
+        }
+        if($("#staff_check").is(':checked')){
+            staff= true;
+        }
+        $.ajax({
+            url:" {% url 'send_sms_ajax' %}",
+            data:{
+                'section':section_json,
+                'teacher':teacher,
+                'staff':staff,
+                'msg':msg,
+            },
+            success:function(data){
+                alert(data['a'])
+            }
+        })
+    })
+</script>
+{% endblock %}
