@@ -616,7 +616,12 @@ def add_syllabus(request):
 
         try:
             if form.is_valid():
-                form.save()
+                instance = form.save(commit = False)
+                instance.save()
+                semester = form.cleaned_data['semester']
+                
+                create_notification(request, post=f'Syllabus is added for Semester : {semester}', notification_type=1, 
+                                    created_by=request.user,type='syllabus')
                 messages.success(request, "Syllabus is Added Successfully.")
                 return redirect('admin_app:add_syllabus')
         except:
@@ -991,7 +996,13 @@ def add_routine(request):
         form = RoutineForm(request.POST, request.FILES)
         try:
             if form.is_valid():
-                form.save()
+                instance = form.save(commit = False)
+                instance.save()
+                semester = form.cleaned_data['semester']
+                section = form.cleaned_data['section']
+                
+                create_notification(request, post=f'Routine is added for {section}', notification_type=1, 
+                                    created_by=request.user,type='routine')
                 messages.success(request, "Routine is Added Successfully.")
                 return redirect('admin_app:manage_routine')
         except:

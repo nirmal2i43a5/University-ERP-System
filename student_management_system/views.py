@@ -375,15 +375,20 @@ def manage_meeting(request):
 
 
 def manage_asset(request):
+    from django import urls
+
+
+
+    # from django.urls import resolve
+    # app_namespace = request.resolver_match.namespace#Use this where there is url with namespace
+    # if resolve(request.path).namespace  == app_namespace:
+        # check requst.path namespace with respective app namespace
+    #     # pass respective namespace from template tags but dynamically such that u dont need to change code again and again
+    #     print("Yes")
+    # else:
+    #     print("No")
     
-    from django.urls import resolve
-    app_namespace = request.resolver_match.namespace#Use this where there is url with namespace
-    if resolve(request.path).namespace  == app_namespace:
-        #check requst.path namespace with respective app namespace
-        # pass respective namespace from template tags but dynamically such that u dont need to change code again and again
-        print("Yes")
-    else:
-        print("No")
+
 
     context = {
         'title':'Asset Management',

@@ -6,7 +6,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import Group
 from school_apps.school_settings.models import MisSetting
-
+from schedule.models import Calendar
 
 
 
@@ -26,6 +26,7 @@ def populate_models(sender, **kwargs):
     master, created = CourseCategory.objects.get_or_create(course_name="Master")
     super_admin_group, created = Group.objects.get_or_create(name='Super-Admin')
     setting_object, created = MisSetting.objects.get_or_create(version='1.0')
+    calendar_slug, created = Calendar.objects.get_or_create(name='event')
     return [a_level_admin, bachelor_admin_group, master_admin_group,teacher_group,student_group,parent_group,super_admin_group ]
     
     

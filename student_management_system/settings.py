@@ -163,6 +163,10 @@ TEMPLATES = [
                 'school_apps.school_settings.context_processors.settings_detail',
                 
             ],
+             'libraries':{
+            'check_namespace': 'student_management_system.templatetags.check_namespace',
+            
+            }
         },
     },
 ]

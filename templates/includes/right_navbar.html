@@ -23,7 +23,8 @@
     </a>
 
 
-    <div class="dropdown-menu dropdown-menu-xl dropdown-menu-right">
+    <div class="dropdown-menu dropdown-menu-xl dropdown-menu-right" style = " max-height:200px;
+    overflow:scroll; ">
       <span class="dropdown-item dropdown-header">
         <!-- {% if notify_count == 1 %}
         {{notify_count}} Notification</span>
@@ -49,6 +50,12 @@
           {% elif notify.type == "assignment" %}
           <a href="{% url 'notifications:notification_detail' notify.pk %}"> {{notify.post|striptags}} assignment is added.</a>
 
+          {% elif notify.type == "routine" %}
+          <a href="{% url 'notifications:notification_detail' notify.pk %}"> {{notify.post|striptags}}</a>
+
+          {% elif notify.type == "syllabus" %}
+          <a href="{% url 'notifications:notification_detail' notify.pk %}"> {{notify.post|striptags}}</a>
+          
           {% elif notify.type == "event" %}
           <a href='{% url 'notifications:notification_detail' notify.pk %}'> {{notify.post|striptags}} event is added.</a>
           {% endif %}

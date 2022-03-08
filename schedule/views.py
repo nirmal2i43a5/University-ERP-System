@@ -327,7 +327,7 @@ class ListEventView(CalendarMixin, View):
         events = Event.objects.all()
         try:
             
-            calendar = get_object_or_404(Calendar, id=1)
+            calendar = Calendar.objects.filter(name = 'college').first()
         except:
             return render(request,'slug_404_error.html')
         context =  {'events': events, 

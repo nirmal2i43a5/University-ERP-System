@@ -5,7 +5,6 @@ from django.forms.widgets import HiddenInput
 from django.shortcuts import get_object_or_404
 from student_management_app.models import Semester, Section, Subject,CourseCategory
 from .models import AttendanceReport
-# from school_apps.role_permission.templatetags.auth_extras import has_group
 
 
 faculty_choices = (

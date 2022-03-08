@@ -1,6 +1,8 @@
 {% load static %}
 
 {% load auth_extras %}
+{% load check_namespace %}
+
 <link rel="stylesheet" href="{% static 'main_dashboard/css/dashboard.css' %}">
 <!------------------------------------------- Main Sidebar Container------------------------------------------------- -->
 
@@ -83,7 +85,8 @@
         {% url 'manage-transport' as transport_url %}
         {% url 'manage-report' as report_url %}
 
-        {% if request.path ==  user_url %}
+
+        {% if request.path ==  user_url or request.path|has_namespace %}
         {% include "includes/include_admin/includes_sidebar/users.html" %}
 
         {% elif request.path ==  permission_url %}
