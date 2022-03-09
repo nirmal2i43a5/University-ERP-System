@@ -6,7 +6,7 @@
     <div class="modal-content">
 
       <div class="modal-body">
-            <form action="{% url 'admin_app:delete_syllabus' syllabus.id %}" method="post">
+            <form action="{% url 'academic:delete_syllabus' syllabus.id %}" method="post">
 
               {% csrf_token %}
               <p>Are you sure you want to delete detail of  syllabus?</p>

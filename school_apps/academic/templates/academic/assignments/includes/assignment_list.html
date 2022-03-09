@@ -81,7 +81,7 @@
       </button>
       <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
         <a class="dropdown-item" href="{% url 'academic:student_assignment_grade' assignment.pk %}">Check Assignment</a>
-        <a class="dropdown-item" href="{% url 'admin_app:edit_assignment' assignment.id %}">Edit</a>
+        <a class="dropdown-item" href="{% url 'academic:edit_assignment' assignment.id %}">Edit</a>
         <button class="dropdown-item" data-target='#deleteAssignment-{{ assignment.id}}'
           data-toggle="modal">Delete
         </button>

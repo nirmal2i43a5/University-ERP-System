@@ -44,7 +44,7 @@
             var student_id = $('#student_id').val();
             
             $.ajax({
-                url:"{% url 'courses:return_student_subject'%}",
+                url:"{% url 'academic:return_student_subject'%}",
                 data: {'student':student_id},
                 statusCode:{
                     500:function(data){
@@ -86,7 +86,7 @@
             var student_id = $('#student_id').val();
             
             $.ajax({
-                url:"{% url 'courses:return_student_subject'%}",
+                url:"{% url 'academic:return_student_subject'%}",
                 data: {'student':student_id},
                 statusCode:{
                     500:function(data){

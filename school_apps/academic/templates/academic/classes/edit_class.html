@@ -21,7 +21,7 @@
                 {% include 'override_table/header.html' with card_title='Edit Class' %}
                 <!-- /.card-header -->
                 <!-- form start -->
-               {% url 'admin_app:manage_class' as back_url %}
+               {% url 'academic:manage_class' as back_url %}
                 {% include "admin_templates/form.html" with form=form button_text="Save Class" back_url=back_url %}
               </div>
               <!-- /.card -->

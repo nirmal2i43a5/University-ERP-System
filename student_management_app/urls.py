@@ -6,8 +6,7 @@ from school_apps.student.student_views import views as student_views
 from school_apps.teacher.teacher_views import views as teacher_views
 from school_apps.parents import views as parent_views
 from school_apps.extrausers import views as user_views
-from school_apps.announcement import views as announcement_views
-from school_apps.academic import views as academic_views
+
 from school_apps.admin_user import views as admin_user_views
 from student_management_system.views import (user_home,routine_home,academic_home)
 
@@ -16,50 +15,6 @@ app_name = 'admin_app'
 
 urlpatterns = [
 
-      #for course
-      path('add_manage_course/', academic_views.add_manage_course, name="add_manage_course"),
-        path('add_department/', academic_views.add_department, name="add_department"),
-          path('edit_department/<str:pk>/', academic_views.edit_department, name="edit_department"),
-               path('delete_department/<str:pk>/', academic_views.delete_department, name="delete_department"),
-      path('edit_course/<str:course_id>/', academic_views.edit_course, name="edit_course"),
-      path('save_edit_course/', academic_views.save_edit_course, name="save_edit_course"),
-      path('delete_course/<str:course_id>/', academic_views.delete_course, name="delete_course"),
-      
-            
-      #for class
-      path('manage_class/', academic_views.manage_class, name="manage_class"),
-      # path('manage_class/', academic_views.manage_class, name="manage_class"),
-      path('edit_class/<str:class_id>/', academic_views.edit_class, name="edit_class"),
-      path('delete_class/<str:class_id>/', academic_views.delete_class, name="delete_class"),
-      
-      #for section  
-      path('manage_section/', academic_views.manage_section, name="manage_section"),
-      path('edit_section/<str:section_id>/', academic_views.edit_section, name="edit_section"),
-       path('delete_section/<str:section_id>/', academic_views.delete_section, name="delete_section"),
-      
-      #for subject
-      path('manage_subject/', academic_views.manage_subject, name="manage_subject"),
-      path('edit_subject/<str:subject_id>/', academic_views.edit_subject, name="edit_subject"),
-      path('search_subject/', academic_views.search_subject, name="search_subject"),
-      path('delete_subject/<str:subject_id>/', academic_views.delete_subject, name="delete_subject"),
-      
-      
-         
-      #for syllabus
-      path('add_syllabus/', academic_views.add_syllabus, name="add_syllabus"),
-      path('manage_syllabus/', academic_views.manage_syllabus, name="manage_syllabus"),
-      path('edit_syllabus/<str:syllabus_id>/', academic_views.edit_syllabus, name="edit_syllabus"),
-        path('delete_syllabus/<str:syllabus_id>/', academic_views.delete_syllabus, name="delete_syllabus"),
-      
-
-      #for assignment
-      path('add_assignment/', academic_views.add_assignment, name="add_assignment"),
-      path('manage_assignment/', academic_views.manage_assignment, name="manage_assignment"),
-       path('student_assignment/', academic_views.student_assignment, name="student_assignment"),
-      path('edit_assignment/<str:assignment_id>/', academic_views.edit_assignment, name="edit_assignment"),
-      path('delete_assignment/<str:assignment_id>/', academic_views.delete_assignment, name="delete_assignment"),
-      
-    
       
       #for teacher 
       path('add_teacher/', teacher_views.add_teacher, name="add_staff"),
@@ -102,7 +57,7 @@ urlpatterns = [
       #for student
       path('add_student/', student_views.add_student, name="add_student"),
       path('student_file_upload/', student_views.student_file_upload, name="student_file_upload"),
-            path('student_id_card/<str:pk>/', student_views.student_id_card, name="student_id_card"),
+      path('student_id_card/<str:pk>/', student_views.student_id_card, name="student_id_card"),
       path('manage_student/', student_views.manage_student, name="manage_student"),
       path('edit_student/<str:student_id>/', student_views.edit_student, name="edit_student"),
       path('delete_student/<pk>/', student_views.delete_student, name="delete_student"),
@@ -117,10 +72,7 @@ urlpatterns = [
    
      
       
-     
-      
 
-      
       
       #for session year
       path('add_manage_session/', administrative_views.add_manage_session_year, name="add_manage_session"),
@@ -136,7 +88,7 @@ urlpatterns = [
     
      
     
-         path('add_sociallink/', administrative_views.add_sociallink, name="add_sociallink"),
+      path('add_sociallink/', administrative_views.add_sociallink, name="add_sociallink"),
       path('manage_sociallink/', administrative_views.manage_sociallink, name="manage_sociallink"),
       path('edit_sociallink/<str:sociallink_id>/', administrative_views.edit_sociallink, name="edit_sociallink"),
       path('delete_sociallink/<str:sociallink_id>/', administrative_views.delete_sociallink, name="delete_sociallink"),
@@ -153,5 +105,5 @@ urlpatterns = [
     
     # Sidebar module manage
     path('user-management/', user_home,name = 'user-management'),
-      path('academic-management/',academic_home,name = 'academic-management'),
+   
 ]

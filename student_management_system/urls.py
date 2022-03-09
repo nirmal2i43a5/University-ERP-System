@@ -69,7 +69,7 @@ urlpatterns = [
     path('',include('school_apps.user_profile.urls')),
     path('',include('school_apps.role_permission.urls',namespace='role_app')),
     path('notifications/', include('school_apps.notifications.urls',namespace='notifications')),
-    path('academic/', include('school_apps.academic.urls',namespace='academic')),
+    path('', include('school_apps.academic.urls',namespace='academic')),
     path('', include('school_apps.email_sms.urls',namespace='email_sms')),
     path('', include('school_apps.transports.urls',namespace='transport')),
     path('', include('school_apps.routine.urls',namespace='routine')),

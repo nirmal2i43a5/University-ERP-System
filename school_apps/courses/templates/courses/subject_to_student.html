@@ -143,7 +143,7 @@
                     
                     if (student && subject_count>0 ){
                         $.ajax({
-                            url: "{% url 'courses:subject_to_student_ajax' %}",
+                            url: "{% url 'academic:subject_to_student_ajax' %}",
                             data: {'student': student,
                                     'subjects[]':subjects,
                                     },

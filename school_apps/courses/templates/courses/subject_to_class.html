@@ -100,7 +100,7 @@
                     
                     if (section && subject){
                         $.ajax({
-                            url: "{% url 'courses:subject_to_class_ajax' %}",
+                            url: "{% url 'academic:subject_to_class_ajax' %}",
                             data: {'section': section,
                                     'subject':subject,
                                     },

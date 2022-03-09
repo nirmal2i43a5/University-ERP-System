@@ -21,7 +21,7 @@
   <!-- <td>{{ subject.course }}</td> -->
 
   <td>
-  <a href="{% url 'admin_app:edit_subject' subject.subject_code %}" class="btn btn-xs btn-success"><i class="fas fa-xs fa-edit"></i></a>
+  <a href="{% url 'academic:edit_subject' subject.subject_code %}" class="btn btn-xs btn-success"><i class="fas fa-xs fa-edit"></i></a>
 
   
   <button  class="btn btn-danger btn-xs"  data-target='#deleteSubject-{{ subject.subject_code }}' data-toggle="modal"><i

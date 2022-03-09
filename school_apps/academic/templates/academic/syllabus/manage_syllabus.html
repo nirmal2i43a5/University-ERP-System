@@ -36,7 +36,7 @@
           <!-- /.card-header -->
           <div class="card-body table-responsive">
             {% if  request.user|has_group:'Admin' or request.user.is_superuser or request.user|has_group:'Teacher'   %}   
-            {% url 'admin_app:add_syllabus' as button_url %}
+            {% url 'academic:add_syllabus' as button_url %}
             
             {% include 'override_table/header_button.html' with button_title='syllabus' button_url=button_url %}
             <a href="{% url 'academic:syllabus_log' %}" class="btn btn-xs float-right mr-2 text-white" style="background-color: #094089;"  >
@@ -79,7 +79,7 @@
                   <td>{{ syllabus.description }}</td>
 
                   <td>
-                    <a href="{% url 'admin_app:edit_syllabus' syllabus.id %}" class="btn btn-xs btn-success"><i class="fas fa-xs fa-edit"></i></a>
+                    <a href="{% url 'academic:edit_syllabus' syllabus.id %}" class="btn btn-xs btn-success"><i class="fas fa-xs fa-edit"></i></a>
                    
                        
                     <button  class="btn btn-danger btn-xs"  data-target='#deleteSyllabus-{{ syllabus.id }}' data-toggle="modal"><i

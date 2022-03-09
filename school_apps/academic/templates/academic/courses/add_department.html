@@ -80,9 +80,9 @@
                   <td>{{ department.description }}</td>
                
                   <td>
-                    <a href="{% url 'admin_app:edit_department' department.pk %}" class="btn btn-success btn-xs" data-placement="top"
+                    <a href="{% url 'academic:edit_department' department.pk %}" class="btn btn-success btn-xs" data-placement="top"
                       data-toggle="tooltip" title="Edit"><i class="fas fa-sm fa-edit"></i></a>
-                    <a href="{% url 'admin_app:delete_department' department.pk %}" class="btn btn-danger btn-xs"    
+                    <a href="{% url 'academic:delete_department' department.pk %}" class="btn btn-danger btn-xs"    
                     data-placement='top' data-toggle='tooltip' title='Delete'><i class="fas fa-sm fa-trash-alt"></i></a>
                   </td>
                 </tr>

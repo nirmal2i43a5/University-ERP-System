@@ -13,7 +13,7 @@ Student Details
 </div><p></p>
 
 <div class="row" style="margin-left: 25px; margin-right: 25px;">  
-    <form action= "{% url 'courses:student_details' %}" method='POST'>
+    <form action= "{% url 'academic:student_details' %}" method='POST'>
         {% csrf_token %}
         <label for = "student_id"> Enter Student ID: </label>
         <input type="text" id="student_id" name="student_id">

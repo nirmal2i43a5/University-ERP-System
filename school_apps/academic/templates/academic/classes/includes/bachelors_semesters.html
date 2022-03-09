@@ -11,7 +11,7 @@
     {{ semester.get_teachers }}
   </td> -->
   <td>
-    <a href="{% url 'admin_app:edit_class' semester.id %}" class="btn btn-xs btn-success"><i
+    <a href="{% url 'academic:edit_class' semester.id %}" class="btn btn-xs btn-success"><i
         class="fas fa-xs fa-edit"></i></a>
 
         <button  class="btn btn-danger btn-xs"  data-target='#deleteClass-{{ semester.id }}' data-toggle="modal"><i

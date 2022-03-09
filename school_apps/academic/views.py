@@ -2,11 +2,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.utils import timezone
 
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 from django.db.models import Q
 from student_management_app.django_forms.forms import (
     CourseForm
 )
+from school_apps.academic.forms import StudentFormSearch
 from .forms import (SubjectForm,MasterSubjectForm, BachelorSubjectForm,SemesterForm,BachelorSemesterForm,MasterSemesterForm,SectionForm,
                     SemesterSectionSearchForm,RoutineSearchForm,SyllabusSearchForm)
 from school_apps.academic.forms import ClassFormSearch
@@ -23,6 +24,8 @@ from school_apps.notifications.utilities import create_notification
 from school_apps.courses.forms import CourseCategoryeForm, CourseForm, DepartmentForm
 from django.template.loader import get_template
 from django.core.mail import EmailMessage
+from student_management_app.models import Section, Semester, Staff, Student, Subject, SubjectTeacher
+from school_apps.courses.models import selectedcourses,application_form,studentgrades
 
 # this view is for adding and managing degree
 @permission_required(['student_management_app.view_course', 'student_management_app.add_course'], raise_exception=True)
@@ -34,7 +37,7 @@ def add_manage_course(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Course is Added Successfully")
-            return redirect('admin_app:add_manage_course')
+            return redirect('academic:add_manage_course')
     context = {'form': form,
                "courses": courses,
                'title': 'Course'
@@ -88,10 +91,10 @@ def save_edit_course(request):
             if form.is_valid():
                 form.save()
                 messages.success(request, "Successfully Edited Course")
-                return redirect("admin_app:add_manage_course")
+                return redirect("academic:add_manage_course")
         except:
             messages.error(request, "Failed To Edit Course.")
-            return redirect("admin_app:add_manage_course")
+            return redirect("academic:add_manage_course")
     else:
 
         return HttpResponse("<h1>Method Not Allowed</h1>")
@@ -105,7 +108,7 @@ def add_department(request):
         if formdata.is_valid():
             formdata.save()
             messages.success(request, 'Department info added.')
-            return redirect(('admin_app:add_department'))
+            return redirect(('academic:add_department'))
         else:
             messages.error(
                 request, "Department info invalid. Please check your information and try again.")
@@ -123,7 +126,7 @@ def edit_department(request,pk):
         if formdata.is_valid():
             formdata.save()
             messages.success(request, 'Department info edited.')
-            return redirect(('admin_app:add_department'))
+            return redirect(('academic:add_department'))
         else:
             messages.error(
                 request, "Department info invalid. Please check your information and try again.")
@@ -136,7 +139,7 @@ def delete_department(request,pk):
     instance = get_object_or_404(Department, pk = pk)
     instance.delete()
     messages.success(request, 'Department info deleted.')
-    return redirect(('admin_app:add_department'))
+    return redirect(('academic:add_department'))
     
    
 
@@ -149,10 +152,10 @@ def delete_course(request, course_id):
         course.delete()
         messages.success(
             request, f'Course {course.course_name} is Deleted Successfully')
-        return redirect('admin_app:add_manage_course')
+        return redirect('academic:add_manage_course')
     except:
         messages.error(request, 'Failed To Delete course')
-        return redirect('admin_app:add_manage_course')
+        return redirect('academic:add_manage_course')
 
 
 
@@ -173,11 +176,11 @@ def manage_subject(request):
                     instance.course_category = a_level_course_category
                     instance.save()
                     messages.success(request, "Subject is Added Successfully.")
-                    return redirect('admin_app:manage_subject')
+                    return redirect('academic:manage_subject')
 
             except:
                 messages.error(request, "Failed To Add Subject.")
-                return redirect('admin_app:manage_subject')
+                return redirect('academic:manage_subject')
             
     if request.user.adminuser.course_category == bachelor_course_category :
         form = BachelorSubjectForm()
@@ -189,11 +192,11 @@ def manage_subject(request):
                     instance.course_category = bachelor_course_category
                     instance.save()
                     messages.success(request, "Subject is Added Successfully.")
-                    return redirect('admin_app:manage_subject')
+                    return redirect('academic:manage_subject')
 
             except:
                 messages.error(request, "Failed To Add Subject.")
-                return redirect('admin_app:manage_subject')
+                return redirect('academic:manage_subject')
             
     if request.user.adminuser.course_category == master_course_category :
         form = MasterSubjectForm()
@@ -205,11 +208,11 @@ def manage_subject(request):
                     instance.course_category = master_course_category
                     instance.save()
                     messages.success(request, "Subject is Added Successfully.")
-                    return redirect('admin_app:manage_subject')
+                    return redirect('academic:manage_subject')
 
             except:
                 messages.error(request, "Failed To Add Subject.")
-                return redirect('admin_app:manage_subject')
+                return redirect('academic:manage_subject')
             
     # subjects = Subject.objects.all()
     # search_form = ClassFormSearch(user = request.user)
@@ -252,11 +255,11 @@ def edit_subject(request, subject_id):  # keep subject_id hidden field in edit_s
             if form.is_valid():
                 form.save()
                 messages.success(request, "Subject is Edited Successfully.")
-                return redirect('admin_app:manage_subject')
+                return redirect('academic:manage_subject')
 
         except:
             messages.error(request, "Failed To Edit Subject.")
-            return redirect('admin_app:edit_subject', subject_id)
+            return redirect('academic:edit_subject', subject_id)
 
     context = {'form': form,
                'title': 'Subject'
@@ -271,10 +274,10 @@ def delete_subject(request, subject_id):
     subject.delete()
     messages.success(
         request, f' {subject.subject_name} is Deleted Successfully')
-    return redirect('admin_app:manage_subject')
+    return redirect('academic:manage_subject')
     # except:
       # messages.error(request, 'Failed To Delete Subject')
-      # return redirect('admin_app:manage_subject')
+      # return redirect('academic:manage_subject')
 
 
 def search_subject(request):
@@ -287,9 +290,314 @@ def search_subject(request):
     else:
         subjects = Subject.objects.all()
         return render(request, 'subjects/manage_subject.html', {'subjects': subjects})
+    
+
+#----------------------------------------------------------------------------------------------------------------------
+#subject to student#
+#----------------------------------------------------------------------------------------------------------------------
+
+def assign_subject_to_student(request):
+    
+    form = StudentFormSearch(user = request.user)
+    
+    subjects = Subject.objects.all()
+    semesters = Semester.objects.all()
+    student = Student.objects.all()
+
+    semester_query = request.GET.get('semester')
+    section_query = request.GET.get('section')
+    group_query = request.GET.get('group')
+
+    if semester_query and section_query and group_query:
+        print("--------------------")
+        search_students = Student.objects.filter(semester = semester_query, section = section_query,faculty = group_query)
+        context = {'student': search_students,'subjects':subjects,
+                    'form':form}
+        # return HttpResponse(student)
+        return render(request, 'courses/subject_to_student.html', context)
+    
+    elif semester_query:
+        search_students = Student.objects.filter(semester = semester_query)
+        context = {'student': search_students,
+                    'subjects':subjects,
+                    'classes': semesters,
+                   'form':form}
+        return render(request, 'courses/subject_to_student.html', context)
+    
+    elif section_query:
+        search_students = Student.objects.filter(section = section_query)
+        context = {'student': search_students,
+                    'subjects':subjects,
+                    'classes': semesters,
+                   'form':form}
+        return render(request, 'courses/subject_to_student.html', context)
+    
+    elif group_query:
+        search_students = Student.objects.filter(faculty = group_query)
+        context = {'student': search_students,
+                    'subjects':subjects,
+                    'classes': semesters,
+                   'form':form}
+        return render(request, 'courses/subject_to_student.html', context)
+
+    else:
+
+        context = {
+                    'student':student,
+                    'subjects':subjects,
+                    'classes': semesters,
+                    'form':form
+        }
+        return render(request, 'courses/subject_to_student.html', context)
 
 
-# this is for semester
+
+
+
+
+def subject_to_student_Ajax(request):
+    student = Student.objects.get(student_user__username = request.GET['student'])
+    subject_id = request.GET.getlist('subjects[]')
+    group=""
+    subjects = []
+    assigned = []
+    exists = []
+    for item in subject_id:
+        subjects.append(Subject.objects.get(subject_code=item))
+
+    for item in subjects:
+        obj, created = selectedcourses.objects.get_or_create(
+            student_id=student,
+            subject_id=item,
+            semester=student.semester
+            )
+        if(created):
+            assigned.append(item.subject_name)
+        else:
+            exists.append(item.subject_name)
+        
+    selected_subjects = selectedcourses.objects.filter(student_id=student)
+    groups=[]
+
+    for item in selected_subjects:
+        groups.append(item.subject_id.faculty)
+    
+    print(groups, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print(student.faculty,"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    
+    if 'Science' in groups:
+        student.faculty = 'Science'
+        student.save()
+        print(student.faculty, "faculty")
+        group="Science"
+    else:
+        student.faculty = 'Non-Science'
+        student.save()
+        print(student.faculty, "faculty")
+        group="Non-Science"
+    
+    count = selectedcourses.objects.filter(student_id=student).count()
+    student_info = student.student_user.full_name + " (" + student.student_user.username +")"
+
+    return JsonResponse({'message':'ok', 'assigned':assigned, 'exists':exists, 'student':student_info, 'count':count,
+                        'group':group},
+                        status=201)
+
+def drop_subject(request):
+    return render(request, 'courses/drop_subject.html')
+
+
+
+
+
+def return_student_subject(request):
+    student = Student.objects.none()
+    subjects = selectedcourses.objects.none()
+    try:
+        student = Student.objects.get(student_user__username = request.GET['student'])
+    except:
+        return JsonResponse({'message':'Student not found'}, status=500)
+    
+    if (student):
+        subjects |= selectedcourses.objects.filter(student_id=student)
+    
+    context = {'subjects':subjects,
+                'student':student}
+
+    return render (request, 'courses/student_subjectlist.html' ,context,status=201)
+
+def deletesubjectstudent(request, pk):
+    group=""
+    selected_object = selectedcourses.objects.get(pk=pk)
+    selected_subject = selected_object.subject_id
+    applications = application_form.objects.filter(term__is_published=False, student=selected_object.student_id)
+    print('applications', applications,'\n')
+
+    exam_list = []
+    for item in applications:
+        try:
+            exam_list.append(item.exam.get(subject_id=selected_subject))
+        except:
+            print("Exam not found")
+    print('exam_list',exam_list,'\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+
+    for item in exam_list:
+        
+        try:
+            selected_exam = studentgrades.objects.filter(application_id__student = selected_object.student_id,
+                                                        exam_id__subject_id=selected_subject,
+                                                        application_id__in=applications)
+            print('selected exam',selected_exam, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+            for gradeitem in  selected_exam:
+                gradeitem.delete()
+        except:
+            print("Not found")
+
+    selected_object.delete()
+
+    student = selected_object.student_id
+    selected_subjects = selectedcourses.objects.filter(student_id=student)
+    groups=[]
+
+    for item in selected_subjects:
+        groups.append(item.subject_id.faculty)
+    
+    # print(groups, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    # print(student.faculty,"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    
+    if '1' in groups:
+        student.faculty = 'Science'
+        student.save()
+        # print(student.faculty, "faculty")
+        group="Science"
+    else:
+        student.faculty = 'Non-Science'
+        student.save()
+        # print(student.faculty, "faculty")
+        group="Non-Science"
+
+    messages.success(request, "Delete successful. Student placed in {} group.".format(group))
+    return redirect('academicdrop_subject')
+
+#----------------------------------------------------------------------------------------------------------------------
+#subject to teacher#
+#----------------------------------------------------------------------------------------------------------------------
+
+def assign_subject_to_teacher(request):
+    teachers = Staff.objects.filter(courses=request.user.adminuser.course_category)
+    subjects = Subject.objects.filter(course_category=request.user.adminuser.course_category)
+    semesters = Semester.objects.filter(course_category=request.user.adminuser.course_category)
+
+    context = {'teachers':teachers,
+                'subjects':subjects,
+                'classes': semesters,
+              
+    }
+    return render(request, 'courses/subject_to_teacher.html', context)
+
+
+
+
+
+def subject_to_teacher_Ajax(request):
+    teacher = Staff.objects.get(staff_user__pk = request.GET['teacher'])
+    subject = Subject.objects.get(pk = request.GET['subject'])
+    section = Section.objects.get(pk = request.GET['section'])
+
+    try:
+        SubjectTeacher.objects.create(subject=subject, teacher=teacher.staff_user, section=section)
+        print(teacher, subject,section,"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        return JsonResponse({'message':'Subject assigned to teacher successfully'}, status = 201)
+    except:
+        print ("error~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",teacher, subject,section)
+        return JsonResponse({'error_message':'Assignment failed. Please check if the subject is already assigned to the teacher'}, status = 500)
+    
+    
+    
+def showsubjectteacherlist(request):
+    teacherlist = SubjectTeacher.objects.filter(
+        subject__course_category=request.user.adminuser.course_category,
+        section__semester__course_category=request.user.adminuser.course_category,
+    )
+
+    context = {'teacherlist':teacherlist
+    }
+    return render (request, 'courses/showsubjectteacherlist.html', context)
+
+def editsubjectteacher(request):
+    teacher = Staff.objects.get(staff_user__pk = request.GET['teacher'])
+    subject = Subject.objects.get(pk = request.GET['subject'])
+    pass
+
+def deletesubjectteacher(request, pk):
+    item = SubjectTeacher.objects.get(pk=pk)
+    print(item,"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    item.delete()
+
+    messages.success(request, "Delete successful.")
+    return redirect('academicshowsubjectteacherlist')
+
+
+#----------------------------------------------------------------------------------------------------------------------
+
+#subject to class#
+
+def subject_to_class(request):
+    section = Section.objects.filter(semester__course_category=request.user.adminuser.course_category)
+    subjects = SubjectTeacher.objects.filter(
+        section__semester__course_category=request.user.adminuser.course_category
+    )
+
+    context = {'section':section,
+                'subjects': subjects}
+
+    return render(request, 'courses/subject_to_class.html', context)
+
+def subject_to_class_Ajax(request):
+    section = Section.objects.get(pk = request.GET['section'])
+    subject = SubjectTeacher.objects.get(pk = request.GET['subject'])
+
+    students = Student.objects.filter(section=section)
+
+    student_count = students.count()
+    errorlist = []
+
+    for student in students:
+        test = selectedcourses.objects.filter(Q(student_id=student) & Q(subject_id=subject.subject))
+        if (test):
+            errorlist.append(student)
+        else:
+            selectedcourses.objects.create(student_id=student, subject_id=subject.subject, semester=student.semester)
+
+    message = "Subject assignment to {successful} students complete. {errors} students have already selected {subject}".format(successful = student_count - len(errorlist), errors = len(errorlist), subject=subject.subject)
+    print (message)
+    # print(section, subject, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    # print(students, student_count, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+    return JsonResponse({'message':message}, status=201)
+
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Student details for selected courses~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+def student_details(request):
+    if request.method == "GET":
+        return render(request, 'courses/studentdetails.html')
+    else:
+        student=Student.objects.none()
+        try:
+            student = Student.objects.get(stu_id = request.POST['student_id'])
+        except:
+            print("ERROR HERE~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+            messages.error(request, "Student not found.")
+            return render(request, 'courses/studentdetails.html')
+    
+        if (student):
+            courses = selectedcourses.objects.filter(student_id = student)
+            
+            context = {'courses':courses,
+                        'student':student}
+            return render (request, 'courses/studentdetails.html', context)
+# -------------------------class
 
 @permission_required('student_management_app.add_semester', raise_exception=True)
 @permission_required('student_management_app.view_semester', raise_exception=True)
@@ -309,10 +617,10 @@ def manage_class(request):
                     instance.course_category = a_level_course_category
                     instance.save()
                     messages.success(request, "Class is Added Successfully.")
-                    return redirect('admin_app:manage_class')
+                    return redirect('academic:manage_class')
             except:
                 messages.error(request, "Failed To Add Class.")
-                return redirect('admin_app:manage_class')
+                return redirect('academic:manage_class')
         
         
     if request.user.adminuser.course_category == bachelor_course_category:
@@ -330,10 +638,10 @@ def manage_class(request):
                     instance.save()
                     print(4)
                     messages.success(request, "Class is Added Successfully.")
-                    return redirect('admin_app:manage_class')
+                    return redirect('academic:manage_class')
             except:
                 messages.error(request, "Failed To Add Class.")
-                return redirect('admin_app:manage_class')
+                return redirect('academic:manage_class')
         
         
     if request.user.adminuser.course_category == master_course_category:
@@ -346,10 +654,10 @@ def manage_class(request):
                     instance.course_category = master_course_category
                     instance.save()
                     messages.success(request, "Class is Added Successfully.")
-                    return redirect('admin_app:manage_class')
+                    return redirect('academic:manage_class')
             except:
                 messages.error(request, "Failed To Add Class.")
-                return redirect('admin_app:manage_class')
+                return redirect('academic:manage_class')
    
 
     context = {'form': form,
@@ -382,10 +690,10 @@ def edit_class(request, class_id):
                     instance.course_category = a_level_course_category
                     instance.save()
                     messages.success(request, "Class is Updated Successfully.")
-                    return redirect('admin_app:manage_class')
+                    return redirect('academic:manage_class')
             except:
                 messages.error(request, "Failed To Add Class.")
-                return redirect('admin_app:manage_class')
+                return redirect('academic:manage_class')
         
         
     if request.user.adminuser.course_category == bachelor_course_category:
@@ -398,10 +706,10 @@ def edit_class(request, class_id):
                     instance.course_category = bachelor_course_category
                     instance.save()
                     messages.success(request, "Class is Updated Successfully.")
-                    return redirect('admin_app:manage_class')
+                    return redirect('academic:manage_class')
             except:
                 messages.error(request, "Failed To Add Class.")
-                return redirect('admin_app:manage_class')
+                return redirect('academic:manage_class')
         
         
     if request.user.adminuser.course_category == master_course_category:
@@ -414,10 +722,10 @@ def edit_class(request, class_id):
                     instance.course_category = master_course_category
                     instance.save()
                     messages.success(request, "Class is Updated Successfully.")
-                    return redirect('admin_app:manage_class')
+                    return redirect('academic:manage_class')
             except:
                 messages.error(request, "Failed To Add Class.")
-                return redirect('admin_app:manage_class')
+                return redirect('academic:manage_class')
    
 
     context = {'form': form,
@@ -441,10 +749,10 @@ def delete_class(request, class_id):
         semester_instance.delete()
         messages.success(
             request, f' Class is Deleted Successfully')
-        return redirect('admin_app:manage_class')
+        return redirect('academic:manage_class')
     except:
         messages.error(request, 'Failed To Delete Semester')
-        return redirect('admin_app:manage_class')
+        return redirect('academic:manage_class')
 
 
 @permission_required('student_management_app.add_section', raise_exception=True)
@@ -476,10 +784,10 @@ def manage_section(request):
                     instance.course_category = a_level_course_category
                     instance.save()
                     messages.success(request, "Section is added successfully.")
-                    return redirect('admin_app:manage_section')
+                    return redirect('academic:manage_section')
             except:
                 messages.error(request, "Failed to add section.")
-                return redirect('admin_app:manage_section')
+                return redirect('academic:manage_section')
       
             
     if request.user.adminuser.course_category == bachelor_course_category :
@@ -491,10 +799,10 @@ def manage_section(request):
                     instance.course_category = bachelor_course_category
                     instance.save()
                     messages.success(request, "Section is added successfully.")
-                    return redirect('admin_app:manage_section')
+                    return redirect('academic:manage_section')
             except:
                 messages.error(request, "Failed to add section.")
-                return redirect('admin_app:manage_section')
+                return redirect('academic:manage_section')
             
             
     if request.user.adminuser.course_category == master_course_category :
@@ -506,10 +814,10 @@ def manage_section(request):
                     instance.course_category = master_course_category
                     instance.save()
                     messages.success(request, "Section is added successfully.")
-                    return redirect('admin_app:manage_section')
+                    return redirect('academic:manage_section')
             except:
                 messages.error(request, "Failed to add section.")
-                return redirect('admin_app:manage_section')
+                return redirect('academic:manage_section')
             
     context = {'form': form,
             #    'sections': sections,
@@ -546,10 +854,10 @@ def edit_section(request, section_id):
                     instance.course_category = a_level_course_category
                     instance.save()
                     messages.success(request, "Section is updated successfully.")
-                    return redirect('admin_app:manage_section')
+                    return redirect('academic:manage_section')
             except:
                 messages.error(request, "Failed to add section.")
-                return redirect('admin_app:manage_section')
+                return redirect('academic:manage_section')
       
             
     if request.user.adminuser.course_category == bachelor_course_category :
@@ -561,10 +869,10 @@ def edit_section(request, section_id):
                     instance.course_category = bachelor_course_category
                     instance.save()
                     messages.success(request, "Section is updated successfully.")
-                    return redirect('admin_app:manage_section')
+                    return redirect('academic:manage_section')
             except:
                 messages.error(request, "Failed to add section.")
-                return redirect('admin_app:manage_section')
+                return redirect('academic:manage_section')
             
             
     if request.user.adminuser.course_category == master_course_category :
@@ -576,10 +884,10 @@ def edit_section(request, section_id):
                     instance.course_category = master_course_category
                     instance.save()
                     messages.success(request, "Section is updated successfully.")
-                    return redirect('admin_app:manage_section')
+                    return redirect('academic:manage_section')
             except:
                 messages.error(request, "Failed to add section.")
-                return redirect('admin_app:manage_section')
+                return redirect('academic:manage_section')
 
     context = {
         'form': form,
@@ -603,10 +911,10 @@ def delete_section(request, section_id):
     section.delete()
     messages.success(
         request, f' {section.section_name} is Deleted Successfully')
-    return redirect('admin_app:manage_section')
+    return redirect('academic:manage_section')
     # except:
     #     messages.error(request, 'Failed To Delete Section')
-    #     return redirect('admin_app:manage_section')
+    #     return redirect('academic:manage_section')
 
 
 @permission_required('academic.add_syllabus', raise_exception=True)
@@ -623,10 +931,10 @@ def add_syllabus(request):
                 create_notification(request, post=f'Syllabus is added for Semester : {semester}', notification_type=1, 
                                     created_by=request.user,type='syllabus')
                 messages.success(request, "Syllabus is Added Successfully.")
-                return redirect('admin_app:add_syllabus')
+                return redirect('academic:add_syllabus')
         except:
             messages.error(request, "Failed to Add Syllabus.")
-            return redirect('admin_app:add_syllabus')
+            return redirect('academic:add_syllabus')
 
     else:
         form = SyllabusForm()
@@ -675,10 +983,10 @@ def edit_syllabus(request, syllabus_id):
             if form.is_valid():
                 form.save()
                 messages.success(request, "Syllabus is Edited Successfully  .")
-                return redirect('admin_app:manage_syllabus')
+                return redirect('academic:manage_syllabus')
         except:
             messages.error(request, "Failed To  Edit Syllabus.")
-            return redirect('admin_app:edit_syllabus', syllabus_id)
+            return redirect('academic:edit_syllabus', syllabus_id)
     context = {
         'form': form,
         'title': 'Syllabus'
@@ -692,10 +1000,10 @@ def delete_syllabus(request, syllabus_id):
         syllabus = get_object_or_404(Syllabus, pk=syllabus_id)
         syllabus.delete()
         messages.success(request, f' {syllabus.title} is Deleted Successfully')
-        return redirect('admin_app:manage_syllabus')
+        return redirect('academic:manage_syllabus')
     except:
         messages.error(request, 'Failed To Delete Syllabus')
-        return redirect('admin_app:manage_syllabus')
+        return redirect('academic:manage_syllabus')
 
 
 def student_send_bulk_email(request):
@@ -783,10 +1091,10 @@ def add_assignment(request):
             user = request.user
             create_notification(request, post=title, notification_type=1, created_by=user,type='assignment')
             messages.success(request, "Assignment is Added Successfully.")
-            return redirect('admin_app:add_assignment')
+            return redirect('academic:add_assignment')
         # except:
         #     messages.error(request, "Failed to Add Assignment.")
-        #     return redirect('admin_app:add_assignment')
+        #     return redirect('academic:add_assignment')
 
     else:
         form = AssignmentForm()  # passing user so as to restrict choice field for respective user
@@ -864,7 +1172,7 @@ def draft_publish_unpublish(request,pk):
     else:
         assignment.draft=True
         assignment.save()
-    return redirect('admin_app:manage_assignment')
+    return redirect('academic:manage_assignment')
     
 def add_assignment_grade(request,pk):
     assignment = Assignment.objects.get(pk = pk)
@@ -891,10 +1199,10 @@ def edit_assignment(request, assignment_id):
                     request, post=title, notification_type=2, created_by=user, type='assignment')
                 messages.success(
                     request, "Assignment is Edited Successfully  .")
-                return redirect('admin_app:manage_assignment')
+                return redirect('academic:manage_assignment')
         except:
             messages.error(request, "Failed To  Edit Assignment.")
-            return redirect('admin_app:edit_assignment', assignment_id)
+            return redirect('academic:edit_assignment', assignment_id)
     context = {
         'form': form,
         'title': 'Assignment'
@@ -909,10 +1217,10 @@ def delete_assignment(request, assignment_id):
         assignment.delete()
         messages.success(
             request, f' {assignment.title} is Deleted Successfully')
-        return redirect('admin_app:manage_assignment')
+        return redirect('academic:manage_assignment')
     except:
         messages.error(request, 'Failed To Delete Assignment')
-        return redirect('admin_app:manage_assignment')
+        return redirect('academic:manage_assignment')
 
 
 def student_assignment(request):
@@ -961,7 +1269,7 @@ def assignment_answer_upload(request, assignment_id, student_id):
         student_grade.save()
         # # assignment.student.set([request.user.id])
         messages.success(request, 'Your Answer is submitted successully.')
-        return redirect('admin_app:student_assignment')
+        return redirect('academic:student_assignment')
 
     return render(request, 'academic/assignments/upload_answer.html')
 

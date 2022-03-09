@@ -35,7 +35,7 @@
           <!-- /.card-header -->
           <div class="card-body table-responsive">
             
-            <a href="{% url 'admin_app:add_subject' %}" class="btn btn-xs btn-info float-right "><i class = "fas fa-xs fa-plus"></i> Add subject</a>
+            <a href="{% url 'academic:add_subject' %}" class="btn btn-xs btn-info float-right "><i class = "fas fa-xs fa-plus"></i> Add subject</a>
        
             <table id="dataTable" class="table table-sm  table-striped table-bordered table-hover  text-nowrap  dataTable no-footer">
               <thead>
@@ -71,8 +71,8 @@
                   <!-- <td>{{ subject.course }}</td> -->
                
                   <td>
-                    <a href="{% url 'admin_app:edit_subject' subject.id %}" class="btn btn-xs btn-success"><i class="fas fa-xs fa-edit"></i></a>
-                    <a href="{% url 'admin_app:delete_subject' subject.id %}" class="btn btn-xs btn-danger"><i class="fas fa-xs fa-trash-alt"></i></a>
+                    <a href="{% url 'academic:edit_subject' subject.id %}" class="btn btn-xs btn-success"><i class="fas fa-xs fa-edit"></i></a>
+                    <a href="{% url 'academic:delete_subject' subject.id %}" class="btn btn-xs btn-danger"><i class="fas fa-xs fa-trash-alt"></i></a>
                   </td>
                 </tr>
                 {% endfor %}

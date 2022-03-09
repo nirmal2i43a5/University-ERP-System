@@ -22,7 +22,7 @@
         <div class="card card-info">
           {% include 'override_table/header.html' with card_title='Add Syllabus' %}
           <!-- /.card-header -->
-          {% url 'admin_app:manage_syllabus' as url %}
+          {% url 'academic:manage_syllabus' as url %}
           <!-- form start -->
           {% include 'admin_templates/form.html' with messages=messages form=form back_url=url  button_text="Save" %}
 

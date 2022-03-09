@@ -23,7 +23,7 @@
           <!-- /.card-header -->
           
           <!-- form start -->
-          {% url 'admin_app:manage_routine' as routine_url %}
+          {% url 'routine:manage_routine' as routine_url %}
           {% include 'admin_templates/form.html' with messages=messages form=form back_url=routine_url  button_text="Add Routine" %}
 
         <!-- /.card -->

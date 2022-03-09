@@ -23,7 +23,7 @@
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
-                <form role="form" action="{% url 'admin_app:save_edit_course' %}" method="post" class="col-md-6">
+                <form role="form" action="{% url 'academic:save_edit_course' %}" method="post" class="col-md-6">
                     {% csrf_token %}
                   <div class="card-body">
                     <div class="form-group">
@@ -37,7 +37,7 @@
                   <!-- /.card-body -->
   
                   <div class="card-footer">
-                    <a href="{% url 'admin_app:add_manage_course' %}" class="btn btn-danger">Back</a>
+                    <a href="{% url 'academic:add_manage_course' %}" class="btn btn-danger">Back</a>
                     <button type="submit" class="btn btn-success">Save Course</button>
                   </div>
                 </form>

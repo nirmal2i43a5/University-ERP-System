@@ -1,16 +1,7 @@
-<li class="nav-item has-treeview">
-  <a href="#" class="nav-link">
-    <i class="fas  fa-university mr-1"></i>
-    <p>
-      Academic
-      <i class="fas fa-angle-left right"></i>
 
-    </p>
-  </a>
-  <ul class="nav nav-treeview">
 
-    <li class="nav-item ml-3">
-      <a href="{% url 'admin_app:add_department' %}" class="nav-link">
+    <li class="nav-item">
+      <a href="{% url 'academic:add_department' %}" class="nav-link">
         <i class="fas  fa-book-open"></i>
         <p>
           Department
@@ -20,7 +11,7 @@
     </li>
 
 
-    <li class="nav-item ml-3">
+    <li class="nav-item">
       <a href="#" class="nav-link">
         <i class="fas  fa-book"></i>
         <p>
@@ -40,7 +31,7 @@
           </a>
         </li>
         <li class="nav-item ml-3">
-          <a href="{% url 'admin_app:add_manage_course' %}" class="nav-link">
+          <a href="{% url 'academic:add_manage_course' %}" class="nav-link">
             <i class="fas  fa-book-open"></i>
             <p>
               Course
@@ -51,8 +42,8 @@
     
       </ul>
     </li>
-    <li class="nav-item ml-3">
-      <a href="{% url 'admin_app:manage_class' %}" class="nav-link">
+    <li class="nav-item">
+      <a href="{% url 'academic:manage_class' %}" class="nav-link">
         <i class="fas  fa-sitemap"></i>
         <p>
           Class
@@ -61,8 +52,8 @@
       </a>
     </li>
 
-    <li class="nav-item ml-3">
-      <a href="{% url 'admin_app:manage_section' %}" class="nav-link">
+    <li class="nav-item">
+      <a href="{% url 'academic:manage_section' %}" class="nav-link">
         <i class="fas  fa-star"></i>
         <p>
           Section
@@ -71,7 +62,7 @@
       </a>
     </li>
 
-    <li class="nav-item ml-3">
+    <li class="nav-item">
       <a href="#" class="nav-link">
         <i class="fas  fa-book"></i>
         <p>
@@ -82,7 +73,7 @@
 
       <ul class="nav nav-treeview">
         <li class="nav-item ml-2">
-          <a href="{% url 'admin_app:manage_subject' %}" class="nav-link">
+          <a href="{% url 'academic:manage_subject' %}" class="nav-link">
             <i class="fas  fa-sm fa-book"></i>
             <p>Subjects</p>
           </a>
@@ -90,21 +81,21 @@
 
 
         <li class="nav-item ml-2">
-          <a href="{% url 'courses:assign_subject_to_teacher' %}" class="nav-link">
+          <a href="{% url 'academic:assign_subject_to_teacher' %}" class="nav-link">
             <i class="fas  fa-sm fa-book"></i>
             <p>Assign subject to teacher</p>
           </a>
         </li>
 
         <li class="nav-item ml-2">
-          <a href="{% url 'courses:showsubjectteacherlist' %}" class="nav-link">
+          <a href="{% url 'academic:showsubjectteacherlist' %}" class="nav-link">
             <i class="fas  fa-sm fa-book"></i>
             <p>Teacher Subject Manage</p>
           </a>
         </li>
 
         <li class="nav-item ml-2">
-          <a href="{% url 'courses:subject_to_class' %}" class="nav-link">
+          <a href="{% url 'academic:subject_to_class' %}" class="nav-link">
             <i class="fas  fa-sm fa-book"></i>
             <p>Assign subject to class</p>
           </a>
@@ -118,36 +109,7 @@
 
       </ul>
     </li>
-    <li class="nav-item ml-3">
-      <a href="{% url 'admin_app:manage_syllabus' %}" class="nav-link">
-        <i class="fas  fa-folder-open"></i>
-        <p>
-          Syllabus
-
-        </p>
-      </a>
-    </li>
-    <li class="nav-item ml-3">
-      <a href="{% url 'admin_app:manage_assignment' %}" class="nav-link">
-        <i class="fas  fa-file"></i>
-        <p>
-          Assignment
-
-        </p>
-      </a>
-    </li>
- 
-    <li class="nav-item ml-3">
-      <a href="{% url 'courses:student_details' %}" class="nav-link">
-        <i class="fas  fa-book"></i>
-        <p>
-          Student Details
-
-        </p>
-      </a>
-    </li>
-
-    <li class="nav-item ml-3">
+    <li class="nav-item">
       <a href="#" class="nav-link">
         <i class="fas  fa-book"></i>
         <p>
@@ -157,19 +119,47 @@
       </a>
       <ul class="nav nav-treeview">
         <li class="nav-item ml-2">
-          <a href="{% url 'courses:assign_subject_to_student' %}" class="nav-link">
+          <a href="{% url 'academic:assign_subject_to_student' %}" class="nav-link">
             <i class="fas  fa-sm fa-book"></i>
             <p>Subject Assignment</p>
           </a>
         </li>
 
         <li class="nav-item ml-2">
-          <a href="{% url 'courses:drop_subject' %}" class="nav-link">
+          <a href="{% url 'academic:drop_subject' %}" class="nav-link">
             <i class="fas  fa-sm fa-book"></i>
             <p>Drop Subject</p>
           </a>
         </li>
       </ul>
     </li>
-  </ul>
-</li>
+   
+    <li class="nav-item">
+      <a href="{% url 'academic:manage_assignment' %}" class="nav-link">
+        <i class="fas  fa-file"></i>
+        <p>
+          Assignment
+
+        </p>
+      </a>
+    </li>
+ 
+    <li class="nav-item">
+      <a href="{% url 'academic:student_details' %}" class="nav-link">
+        <i class="fas  fa-book"></i>
+        <p>
+          Student Details
+
+        </p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="{% url 'academic:manage_syllabus' %}" class="nav-link">
+        <i class="fas  fa-folder-open"></i>
+        <p>
+          Syllabus
+
+        </p>
+      </a>
+    </li>
+   

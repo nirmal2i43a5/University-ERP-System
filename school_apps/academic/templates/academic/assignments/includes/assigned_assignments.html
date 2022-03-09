@@ -54,7 +54,7 @@
     </td>
     {% if  request.user|has_group:'Admin' or request.user.is_superuser or request.user|has_group:'Teacher'   %}
     <td>
-      <a href="{% url 'admin_app:edit_assignment' assignment.id %}" class="btn btn-xs btn-success"><i class="fas fa-xs fa-edit"></i></a>
+      <a href="{% url 'academic:edit_assignment' assignment.id %}" class="btn btn-xs btn-success"><i class="fas fa-xs fa-edit"></i></a>
       
       
       <button  class="btn btn-danger btn-xs"  data-target='#deleteAssignment-{{ assignment.id}}' data-toggle="modal"><i

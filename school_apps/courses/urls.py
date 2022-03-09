@@ -19,7 +19,6 @@ urlpatterns=[
     path('examtoppers/', views.examtoppers, name='examtoppers'),
     path('addstudentmarks/', views.addstudentmarks, name='addstudentmarks'),
     path('submitscores/', views.submitscores, name='submitscores'),
-    path('studentdetails/', views.student_details, name='student_details'),
     
 
     #bulk print admit cards
@@ -41,26 +40,9 @@ urlpatterns=[
     path('ajax/studentlist/', views.studentsAjax, name='studentlist'),
     path('ajax/confirmAjax/', views.confirmAjax, name='confirmAjax'),
 
-    #subject to teacher
-    path('assign_subject_to_teacher/', views.assign_subject_to_teacher, name='assign_subject_to_teacher'),
-    path('manage_subject_teacher/', views.showsubjectteacherlist, name='showsubjectteacherlist'),
-    path('edit_subject_teacher/', views.editsubjectteacher, name='editsubjectteacher'),      #<str:exam_id>
-    path('delete_subjectteacher/<str:pk>/', views.deletesubjectteacher, name='deletesubjectteacher'),
-    path('ajax/subject_to_teacher/', views.subject_to_teacher_Ajax, name='subject_to_teacher_ajax'),
-    path('ajax/fill_section_select/', views.fill_section_select, name='fill_section_select'),
-
-    #subject to class
-    path('subject_to_class/', views.subject_to_class, name='subject_to_class'),
-    path('ajax/subject_to_class/', views.subject_to_class_Ajax, name='subject_to_class_ajax'),
     path('ajax/returnexamlist/', views.returnexamlist_Ajax, name='returnexamlist_ajax'),
     path('printexamreport/<str:pk>', views.printexamreport, name='printexamreport'),
-
-    #subject to student
-    path('assign_subject_to_student/', views.assign_subject_to_student, name='assign_subject_to_student'),
-    path('drop_subject/', views.drop_subject, name='drop_subject'),
-    path('ajax/subject_to_student/', views.subject_to_student_Ajax, name='subject_to_student_ajax'),
-    path('ajax/return_student_subject/', views.return_student_subject, name='return_student_subject'),
-    path('delete_subjectstudent/<str:pk>/', views.deletesubjectstudent, name='deletesubjectstudent'),
+    path('ajax/fill_section_select/', views.fill_section_select, name='fill_section_select'),
 
     #add exam marks
     path('addexammarks/', views.addexammarks, name='addexammarks'),
