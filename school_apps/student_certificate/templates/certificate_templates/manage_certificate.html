@@ -22,7 +22,7 @@
           <!-- /.card-header -->
           <div class="card-body table-responsive ">
 
-            {% url 'admin_app:add_certificate_template' as button_url %}
+            {% url 'certificate:add_certificate_template' as button_url %}
 
             {% include 'override_table/header_button.html' with button_title='certificate' button_url=button_url %}
             <a href="{% url 'administrator:certificate_log' %}" class="btn btn-xs float-right mr-2 text-white" style="background-color: #094089;"  >
@@ -54,16 +54,16 @@
                   <td>{{ certificate.student.student_user }}</td>
                   <td>{{ certificate.student.stu_id }}</td>
                   <td>{{ certificate.certificate_number }}</td>
-                  <td>     <a href="{% url 'admin_app:print_character_certificate' certificate.id certificate.student_id %}" class="btn btn-xs btn-success"><i class = "fas fa-print"></i> Print</a></td>
+                  <td>     <a href="{% url 'certificate:print_character_certificate' certificate.id certificate.student_id %}" class="btn btn-xs btn-success"><i class = "fas fa-print"></i> Print</a></td>
                   </td>
                  
               
               
                   <td>
                  
-                    <a href="{% url 'admin_app:edit_certificate_template' certificate.id %}" class="btn btn-success btn-xs" data-placement="top"
+                    <a href="{% url 'certificate:edit_certificate_template' certificate.id %}" class="btn btn-success btn-xs" data-placement="top"
                       data-toggle="tooltip" title="Edit"><i class="fas fa-xs fa-edit"></i></a>
-                    <!-- <a href="{% url 'admin_app:delete_certificate_template' certificate.id %}" class="btn btn-danger btn-xs"    
+                    <!-- <a href="{% url 'certificate:delete_certificate_template' certificate.id %}" class="btn btn-danger btn-xs"    
                     data-placement='top' data-toggle='tooltip' title='Delete'><i class="fas fa-xs fa-trash-alt"></i></a> -->
                   </td>
                 </tr>

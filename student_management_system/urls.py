@@ -70,17 +70,14 @@ urlpatterns = [
     path('',include('school_apps.role_permission.urls',namespace='role_app')),
     path('notifications/', include('school_apps.notifications.urls',namespace='notifications')),
     path('academic/', include('school_apps.academic.urls',namespace='academic')),
-      path('', include('school_apps.email_sms.urls',namespace='email_sms')),
-       path('', include('school_apps.transports.urls',namespace='transport')),
-        path('', include('school_apps.routine.urls',namespace='routine')),
-             path('', include('school_apps.complain.urls',namespace='complain')),
+    path('', include('school_apps.email_sms.urls',namespace='email_sms')),
+    path('', include('school_apps.transports.urls',namespace='transport')),
+    path('', include('school_apps.routine.urls',namespace='routine')),
+    path('', include('school_apps.complain.urls',namespace='complain')),
+    path('', include('school_apps.student_certificate.urls',namespace='certificate')),
     # Respective dashboard part
     # path('event-management/', manage_event,name = 'manage-event'),
-    
-    # 
     # path('fee-management/', manage_fee,name = 'manage-fee'),
-    # path('certificate-management/', manage_certificate,name = 'manage-certificate'),
-    # 
     # path('meeting-management/', manage_meeting,name = 'manage-meeting'),
     # path('log-history-management/', manage_log_history,name = 'manage-log-history'),
     # path('report-management/', manage_report,name = 'manage-report'),

@@ -141,13 +141,7 @@ urlpatterns = [
       path('edit_sociallink/<str:sociallink_id>/', administrative_views.edit_sociallink, name="edit_sociallink"),
       path('delete_sociallink/<str:sociallink_id>/', administrative_views.delete_sociallink, name="delete_sociallink"),
     
-        #for certificate template
-        path('add_certificate_template/', administrative_views.add_certificate_template, name="add_certificate_template"),
-      path('edit_certificate_template/<str:certificate_template_id>/', administrative_views.edit_certificate_template, name="edit_certificate_template"),
-      path('manage_certificate_template/', administrative_views.manage_certificate_template, name="manage_certificate_template"),
-      path('delete_certificate_template/<str:certificate_template_id>/', administrative_views.delete_certificate_template, name="delete_certificate_template"),
-    
-      path('print_character_certificate/<str:certificate_id>/<str:student_id>/', administrative_views.print_character_certificate, name="print_character_certificate"),
+       
     
     #for admin
       path('add_system_admin/', admin_user_views.add_admin, name="add_system_admin"),

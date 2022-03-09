@@ -63,6 +63,7 @@ INSTALLED_APPS = [
      'school_apps.extrausers.apps.ExtrausersConfig',
     'school_apps.notifications.apps.NotificationsConfig',
      'school_apps.administrator.apps.AdministratorConfig',
+       'school_apps.student_certificate.apps.StudentCertificateConfig',
     'school_apps.customusers.apps.CustomusersConfig',
     'school_apps.inventory.apps.InventoryConfig',
     # 'school_apps.inventory',
