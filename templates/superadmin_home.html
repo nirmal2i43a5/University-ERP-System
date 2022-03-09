@@ -21,7 +21,7 @@
 					<div class="row custom-icon ml-4 mb-4">
 
 									<div class="col-md-2">
-									<a href="{% url 'manage-user' %}">
+									<a href="{% url 'admin_app:user-management' %}">
 
 											<span>
 												<i class="fas fa-2x fa-users"></i>
@@ -36,7 +36,7 @@
 						
 						<div class="col-md-2">
 
-							<a href="{% url 'manage-permission' %}">
+							<a href="{% url 'role_app:permission-management' %}">
 
 							<span>
 								<i class="fas fa-2x fa-unlock-alt"></i>
@@ -49,7 +49,7 @@
 						</div>
 						<div class="col-md-2">
 
-							<a href="{% url 'manage-academic' %}">
+							<a href="{% url 'admin_app:academic-management' %}">
 
 							<span>
 								<i class="fas fa-university"></i>
@@ -62,7 +62,7 @@
 						</div>
 						<div class="col-md-2">
 
-							<a href="{% url 'manage-event' %}">
+							<a href="">
 
 							<span>
 								<i class="fas fa-2x fa-calendar"></i>
@@ -75,7 +75,7 @@
 						</div>
 						<div class="col-md-2">
 
-							<a href="{% url 'manage-routine' %}">
+							<a href="{% url 'routine:routine-management' %}">
 
 							<span>
 								<i class="fas fa-calendar-alt"></i>
@@ -90,18 +90,18 @@
 						
 					
 						<div class="col-md-2">
-							<a href="{% url 'manage-notice' %}">
+							<a href="{% url 'announcement:announcement-management' %}">
 							<span>
 								<i class="fas fa-clipboard-list"></i>
 								<br />
 								<span>
-									<strong>Notice Management </strong>
+									<strong>Announcement Management </strong>
 								</span>
 							</span>
 						</a>
 						</div>
 						<div class="col-md-2">
-							<a href="{% url 'manage-attendance' %}">
+							<a href="{% url 'attendance_app:attendance-management' %}">
 							<span>
 								<i class="fas fa-id-badge"></i>
 							 <i class="fas fa-clipboard-list-check"></i> 
@@ -133,7 +133,7 @@
 							</span>
 						</div>
 						<div class="col-md-2">
-							<a href="{% url 'manage-asset' %}">
+							<a href="{% url 'inventory:asset-management' %}">
 							<span>
 								<i class="fas fa-book"></i>
 								<br />
@@ -145,7 +145,7 @@
 						</div>
 
 						<div class="col-md-2">
-								<a href="{% url 'manage-fee' %}">
+								<a href="">
 							<span>
 								<i class="fas fa-rupee-sign"></i>
 								<br />
@@ -157,7 +157,7 @@
 						</div>
 					
 						<div class="col-md-2">
-							<a href="{% url 'manage-certificate' %}">
+							<a href="">
 							<span>
 								<img
 									src="https://img.icons8.com/glyph-neue/64/000000/certificate.png"
@@ -228,7 +228,7 @@
 							</span>
 						</div>
 						<div class="col-md-2">
-							<a href="{% url 'manage-email-service' %}">
+							<a href="{% url 'email_sms:email-sms-management' %}">
 							<span>
 								<i class="fas fa-envelope"></i>
 								<br />
@@ -239,7 +239,7 @@
 						</a>
 						</div>
 						<div class="col-md-2">
-							<a href="{% url 'manage-log-history' %}">
+							<a href="">
 							<span>
 								<i class="fas fa-address-book"></i>
 								<br />
@@ -252,7 +252,7 @@
 
 
 						<div class="col-md-2">
-							<a href="{% url 'manage-enquiry' %}">
+							<a href="{% url 'enquiry:enquiry-management' %}">
 							<span>
 								<i class="fas fa-info"></i>
 								<br />
@@ -263,7 +263,7 @@
 						</a>
 						</div>
 						<div class="col-md-2">
-							<a href="{% url 'manage-complain' %}">
+							<a href="{% url 'complain:complain-management' %}">
 							<span>
 								<i class="fas  fa-comment-dots"></i>
 								<br />
@@ -274,7 +274,7 @@
 						</a>
 						</div>
 						<div class="col-md-2">
-							<a href="{% url 'manage-meeting' %}">
+							<a href="">
 							<span>
 								<i class="fa fa-users"></i>
 								<br />
@@ -285,7 +285,7 @@
 						</a>
 						</div>
 						<div class="col-md-2">
-							<a href="{% url 'manage-transport' %}">
+							<a href="{% url 'transport:transport-management' %}">
 							<span>
 								<i class="fas fa-bus"></i>
 								<br />
@@ -306,12 +306,23 @@
 						</div>
 
 						<div class="col-md-2">
-							<a href="{% url 'manage-report' %}">
+							<a href="">
 							<span>
 								<i class="fas fa-chart-line"></i>
 								<br />
 								<span>
 									<strong>Analysis and report </strong>
+								</span>
+							</span>
+						</a>
+						</div>
+						<div class="col-md-2">
+							<a href="">
+							<span>
+								<i class="fas fa-chart-line"></i>
+								<br />
+								<span>
+									<strong>Nepali Calendar </strong>
 								</span>
 							</span>
 						</a>

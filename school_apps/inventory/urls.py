@@ -1,6 +1,7 @@
 from os import name
 from django.urls import path
 from .views import *
+from student_management_system.views import asset_home
 
 app_name = 'inventory'
 
@@ -48,5 +49,7 @@ urlpatterns=[
     path('ajax/register_new_inventory_ajax', register_new_inventory_ajax, name='register_new_inventory_ajax'),
     path('ajax/transaction_register_item', transaction_register_item, name='transaction_register_item'),
     
+    
+     path('asset-management/', asset_home,name = 'asset-management'),#for sidebar
 
 ]

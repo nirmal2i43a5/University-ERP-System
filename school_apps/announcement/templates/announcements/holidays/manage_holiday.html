@@ -24,7 +24,7 @@
             
             {% if request.user|has_group:'Admin' or request.user|has_group:'Teacher'  %}
 
-            <a href="{% url 'admin_app:add_holiday' %}" class="btn btn-sm btn-info float-right "><i class = "fas fa-xs fa-plus"></i> Add holiday</a>
+            <a href="{% url 'announcement:add_holiday' %}" class="btn btn-sm btn-info float-right "><i class = "fas fa-xs fa-plus"></i> Add holiday</a>
 
             {% endif %}
               
@@ -52,8 +52,8 @@
                        
                   
                   <td>
-                    <a href="{% url 'admin_app:edit_holiday' holiday.id %}" class="btn btn-xs btn-success"><i class="fas fa-xs fa-edit"></i></a>
-                    <a href="{% url 'admin_app:delete_holiday' holiday.id %}" class="btn btn-xs btn-danger"><i class="fas fa-xs fa-trash-alt"></i></a>
+                    <a href="{% url 'announcement:edit_holiday' holiday.id %}" class="btn btn-xs btn-success"><i class="fas fa-xs fa-edit"></i></a>
+                    <a href="{% url 'announcement:delete_holiday' holiday.id %}" class="btn btn-xs btn-danger"><i class="fas fa-xs fa-trash-alt"></i></a>
                   </td>
                 </tr>
                 {% endfor %}

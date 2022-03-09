@@ -20,10 +20,10 @@ def add_holiday(request):
             if form.is_valid():
                 form.save()
                 messages.success(request, "Holiday is Added Successfully.")
-                return redirect('admin_app:manage_holiday')
+                return redirect('announcement:manage_holiday')
         except:
             messages.error(request, "Failed to Add Holiday.")
-            return redirect('admin_app:add_holiday')
+            return redirect('announcement:add_holiday')
             
     else:
         form = HolidayForm()
@@ -42,10 +42,10 @@ def edit_holiday(request, holiday_id):
             if form.is_valid():
                 form.save()
                 messages.success(request, "Holiday is Updated Successfully.")
-                return redirect('admin_app:manage_holiday')
+                return redirect('announcement:manage_holiday')
         except:
             messages.error(request, "Failed to Updated Holiday.")
-            return redirect('admin_app:edit_holiday')
+            return redirect('announcement:edit_holiday')
             
     else:
         form = HolidayForm(instance = holiday_instance)
@@ -68,10 +68,10 @@ def delete_holiday(request, holiday_id):
         holiday = get_object_or_404(Holiday, id = holiday_id)
         holiday.delete()
         messages.success(request, f' Holiday is Deleted Successfully')
-        return redirect('admin_app:manage_holiday')
+        return redirect('announcement:manage_holiday')
     except:
         messages.error(request, 'Failed To Delete Holiday')
-        return redirect('admin_app:manage_holiday')
+        return redirect('announcement:manage_holiday')
 
 
 
@@ -96,10 +96,10 @@ def add_notice(request):
                 create_notification(request, post=title,notification_type=1,created_by=user,type='notice')
                 
                 messages.success(request, "Notice is Added Successfully.")
-                return redirect('admin_app:manage_notice')
+                return redirect('announcement:manage_notice')
         except:
             messages.error(request, "Failed to Add Notice.")
-            return redirect('admin_app:add_notice')
+            return redirect('announcement:add_notice')
     else:
         form = NoticeForm()
    
@@ -117,10 +117,10 @@ def edit_notice(request, notice_id):
             if form.is_valid():
                 form.save()
                 messages.success(request, "Notice is Updated Successfully.")
-                return redirect('admin_app:manage_notice')
+                return redirect('announcement:manage_notice')
         except:
             messages.error(request, "Failed to Updated Notice.")
-            return redirect('admin_app:edit_notice')
+            return redirect('announcement:edit_notice')
             
     else:
         form = NoticeForm(instance = notice_instance)
@@ -135,10 +135,10 @@ def delete_notice(request, notice_id):
         notice = get_object_or_404(Notice, id = notice_id)
         notice.delete()
         messages.success(request, f' Notice is Deleted Successfully')
-        return redirect('admin_app:manage_notice')
+        return redirect('announcement:manage_notice')
     except:
         messages.error(request, 'Failed To Delete Notice')
-        return redirect('admin_app:manage_notice')
+        return redirect('announcement:manage_notice')
 
 
 # @permission_required('announcement.view_notice', raise_exception=True)

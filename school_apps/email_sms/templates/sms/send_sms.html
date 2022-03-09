@@ -108,7 +108,7 @@
             staff= true;
         }
         $.ajax({
-            url:" {% url 'send_sms_ajax' %}",
+            url:" {% url 'email_sms:send_sms_ajax' %}",
             data:{
                 'section':section_json,
                 'teacher':teacher,

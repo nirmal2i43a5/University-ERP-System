@@ -23,7 +23,7 @@
           <!-- /.card-header -->
           <div id="noticepopup" class="card-body table-responsive">
             {% if  request.user|has_group:'Admin' or request.user.is_superuser   %}
-            {% url 'admin_app:add_notice' as button_url %}
+            {% url 'announcement:add_notice' as button_url %}
 
             {% include 'override_table/header_button.html' with button_title='notice' button_url=button_url %}
             <a href="{% url 'announcement:notice_log' %}" class="btn btn-xs float-right mr-2 text-white" style="background-color: #094089;"  >
@@ -75,8 +75,8 @@
                   <!-- ......../status.................... -->
                
                   <td>
-                    <a href="{% url 'admin_app:edit_notice' notice.id %}" class="btn btn-xs btn-success"><i class="fas fa-xs fa-edit"></i></a>
-                    <a href="{% url 'admin_app:delete_notice' notice.id %}" class="btn btn-xs btn-danger"><i class="fas fa-xs fa-trash-alt"></i></a>
+                    <a href="{% url 'announcement:edit_notice' notice.id %}" class="btn btn-xs btn-success"><i class="fas fa-xs fa-edit"></i></a>
+                    <a href="{% url 'announcement:delete_notice' notice.id %}" class="btn btn-xs btn-danger"><i class="fas fa-xs fa-trash-alt"></i></a>
                   </td>
                   {% endif %}
                 </tr>
@@ -104,7 +104,7 @@
         var id = $(this).data('id');
 
         $.ajax({
-            url: "{% url 'admin_app:update_notice' %}",
+            url: "{% url 'announcement:update_notice' %}",
             data: { 'id': id },
             success: function (data) {
 

@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-
+from student_management_system.views import enquiry_home
 app_name = 'enquiry'
 
 urlpatterns = [
@@ -30,5 +30,8 @@ urlpatterns = [
     path('app_enroll/<int:pk>', views.app_enroll, name='app_enroll'),
     path('enquiry_students/api/', views.enquiry_students_api, name='enquiry_students_api'),
     path('api/test/', views.enquiry_api_test, name='enquiry_students_api'),
+    
+    path('enquiry-management/', enquiry_home,name = 'enquiry-management'),#for dynamic sidebar
+    
     
 ]

@@ -298,71 +298,71 @@ def mass_delete(request,app,model):
     
     
     
-def manage_user(request):
+def user_home(request):
     context = {
         'title':'User Management',
                  }
     return render(request, 'admin_templates/dashboard.html', context)
 
 
-def manage_permission(request):
+def permission_home(request):
     context = {
         'title':'Permission Management',
                  }
     return render(request, 'admin_templates/dashboard.html', context)
 
-def manage_academic(request):
+def academic_home(request):
     context = {
         'title':'Academic Management',
                  }
     return render(request, 'admin_templates/dashboard.html', context)
 
-def manage_event(request):
+def event_home(request):
     context = {
         'title':'Event Management',
                  }
     
     return render(request, 'admin_templates/dashboard.html', context)
 
-def manage_routine(request):
+def routine_home(request):
     context = {
         'title':'Routine Management',
                  }
     return render(request, 'admin_templates/dashboard.html', context)
 
-def manage_notice(request):
+def announcement_home(request):
     context = {
         'title':'Notice Management',
                  }
     return render(request, 'admin_templates/dashboard.html', context)
 
-def manage_attendance(request):
+def attendance_home(request):
     context = {
         'title':'Attendance Management',
                  }
     return render(request, 'admin_templates/dashboard.html', context)
 
 
-def manage_email_services(request):
+def email_services_home(request):
     context = {
         'title':'Email Service Management',
                  }
     return render(request, 'admin_templates/dashboard.html', context)
 
-def manage_enquiry(request):
+def enquiry_home(request):
     context = {
         'title':'Enquiry Management',
                  }
     return render(request, 'admin_templates/dashboard.html', context)
 
-def manage_complain(request):
+def complain_home(request):
     context = {
         'title':'Complain Management',
                  }
     return render(request, 'admin_templates/dashboard.html', context)
 
 
-def manage_meeting(request):
+def meeting_home(request):
     '''
     Managing the meeting and discussion of student council and teacher meetings
     '''
@@ -374,7 +374,7 @@ def manage_meeting(request):
 
 
 
-def manage_asset(request):
+def asset_home(request):
     from django import urls
 
 
@@ -396,14 +396,14 @@ def manage_asset(request):
     return render(request, 'admin_templates/dashboard.html', context)
 
 
-def manage_fee(request):
+def fee_home(request):
     context = {
         'title':'Fee Management',
                  }
     return render(request, 'admin_templates/dashboard.html', context)
 
 
-def manage_certificate(request):
+def certificate_home(request):
     context = {
         'title':'Certificate Management',
                  }
@@ -411,7 +411,7 @@ def manage_certificate(request):
 
 
 
-def manage_transport(request):
+def transport_home(request):
     context = {
         'title':'Transport Management',
                  }
@@ -419,20 +419,20 @@ def manage_transport(request):
 
 
 
-def manage_log_history(request):
+def log_history_home(request):
     context = {
         'title':'Log History Management',
                  }
     return render(request, 'admin_templates/dashboard.html', context)
 
-def manage_report(request):
+def report_home(request):
     context = {
         'title':'Report Management',
                  }
     return render(request, 'admin_templates/dashboard.html', context)
 
 
-def manage_exam(request):
+def exam_home(request):
     context = {
         'title':'Exam Management',
                  }

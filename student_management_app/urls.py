@@ -8,9 +8,8 @@ from school_apps.parents import views as parent_views
 from school_apps.extrausers import views as user_views
 from school_apps.announcement import views as announcement_views
 from school_apps.academic import views as academic_views
-from school_apps.transports import views as transport_views
 from school_apps.admin_user import views as admin_user_views
-
+from student_management_system.views import (user_home,routine_home,academic_home)
 
 
 app_name = 'admin_app'
@@ -60,11 +59,7 @@ urlpatterns = [
       path('edit_assignment/<str:assignment_id>/', academic_views.edit_assignment, name="edit_assignment"),
       path('delete_assignment/<str:assignment_id>/', academic_views.delete_assignment, name="delete_assignment"),
       
-      #for routine
-      path('add_routine/', academic_views.add_routine, name="add_routine"),
-      path('manage_routine/', academic_views.manage_routine, name="manage_routine"),
-      path('edit_routine/<str:routine_id>/', academic_views.edit_routine, name="edit_routine"),
-      path('delete_routine/<str:routine_id>/', academic_views.delete_routine, name="delete_routine"),
+    
       
       #for teacher 
       path('add_teacher/', teacher_views.add_teacher, name="add_staff"),
@@ -120,25 +115,11 @@ urlpatterns = [
       path('edit_student_document/', student_views.edit_student_document, name="edit_student_document"),
       path('delete_student_document/<str:student_id>/<str:document_id>/', student_views.delete_student_document, name="delete_student_document"),
    
-      #for notice
-      path('add_notice/', announcement_views.add_notice, name="add_notice"),
-      path('ajax/update_notice/', announcement_views.update_notice, name="update_notice"),
-      path('manage_notice/', announcement_views.manage_notice, name="manage_notice"),
-      path('edit_notice/<str:notice_id>/', announcement_views.edit_notice, name="edit_notice"),
-      path('delete_notice/<str:notice_id>/', announcement_views.delete_notice, name="delete_notice"),
+     
       
-      #for holiday
-      path('add_holiday/', announcement_views.add_holiday, name="add_holiday"),
-      path('manage_holiday/', announcement_views.manage_holiday, name="manage_holiday"),
-      path('edit_holiday/<str:holiday_id>/', announcement_views.edit_holiday, name="edit_holiday"),
-      path('delete_holiday/<str:holiday_id>/', announcement_views.delete_holiday, name="delete_holiday"),
+     
       
-      #for transport
-      path('add_transport/', transport_views.add_transport, name="add_transport"),
-      path('manage_transport/', transport_views.manage_transport, name="manage_transport"),
-      path('edit_transport/<str:transport_id>/', transport_views.edit_transport, name="edit_transport"),
-      path('delete_transport/<str:transport_id>/', transport_views.delete_transport, name="delete_transport"),
-      path('transport_member/', transport_views.transport_member, name="transport_member"),
+
       
       
       #for session year
@@ -151,20 +132,9 @@ urlpatterns = [
       path('edit_studentgroup/<str:group_id>/', administrative_views.edit_group, name="edit_group"),
       path('delete_studentgroup/<str:group_id>/', administrative_views.delete_group, name="delete_group"),
       
-      #for complain
-      
-      path('add_complain/', administrative_views.add_complain, name="add_complain"),
-      path('manage_complain/', administrative_views.manage_complain, name="manage_complain"),
-      path('edit_complain/<str:complain_id>/', administrative_views.edit_complain, name="edit_complain"),
-      path('delete_complain/<str:complain_id>/', administrative_views.delete_complain, name="delete_complain"),
+
     
-      #for complain
-      
-      path('add_complain/', administrative_views.add_complain, name="add_complain"),
-      path('manage_complain/', administrative_views.manage_complain, name="manage_complain"),
-        path('user_role/', administrative_views.user_role, name="user_role"),
-      path('edit_complain/<str:complain_id>/', administrative_views.edit_complain, name="edit_complain"),
-      path('delete_complain/<str:complain_id>/', administrative_views.delete_complain, name="delete_complain"),
+     
     
          path('add_sociallink/', administrative_views.add_sociallink, name="add_sociallink"),
       path('manage_sociallink/', administrative_views.manage_sociallink, name="manage_sociallink"),
@@ -186,5 +156,8 @@ urlpatterns = [
     
      path('delete_system_admin/<str:admin_id>/', admin_user_views.delete_system_admin, name="delete_system_admin"),
     
-   
+    
+    # Sidebar module manage
+    path('user-management/', user_home,name = 'user-management'),
+      path('academic-management/',academic_home,name = 'academic-management'),
 ]

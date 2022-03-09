@@ -26,11 +26,8 @@ from django.views.i18n import JavaScriptCatalog
 from student_management_system.views import admin_home,get_user_by_role_ajax
 from student_management_system.views import home as main_home
 from student_management_system.views import (superuser_home,a_level_home,bachelor_home,master_home,
-                                             mass_delete,manage_user,manage_attendance,manage_event,
-                                             manage_enquiry,manage_notice,manage_permission,manage_routine,
-                                             manage_email_services,manage_asset,manage_academic,manage_complain,
-                                             manage_meeting,manage_fee,manage_transport,manage_log_history,
-                                             manage_report,manage_certificate)
+                                             mass_delete
+                                            )
 from django.contrib.auth import views as auth_views
 
 
@@ -65,7 +62,7 @@ urlpatterns = [
     path('',include('school_apps.courses.urls',namespace='courses')),
     path('extrauser/',include('school_apps.extrausers.urls',namespace='extrauser')),
     path('',include('school_apps.customusers.urls',namespace='customuser')),
-    path('announcement/',include('school_apps.announcement.urls',namespace='announcement')),
+    path('',include('school_apps.announcement.urls',namespace='announcement')),
     path('administrator/',include('school_apps.administrator.urls',namespace='administrator')),
     path('',include('school_apps.attendance.urls',namespace='attendance_app')),
     path('',include('school_apps.school_settings.urls',namespace='setting_app')),
@@ -73,25 +70,20 @@ urlpatterns = [
     path('',include('school_apps.role_permission.urls',namespace='role_app')),
     path('notifications/', include('school_apps.notifications.urls',namespace='notifications')),
     path('academic/', include('school_apps.academic.urls',namespace='academic')),
-    
+      path('', include('school_apps.email_sms.urls',namespace='email_sms')),
+       path('', include('school_apps.transports.urls',namespace='transport')),
+        path('', include('school_apps.routine.urls',namespace='routine')),
+             path('', include('school_apps.complain.urls',namespace='complain')),
     # Respective dashboard part
-    path('user-management/', manage_user,name = 'manage-user'),
-    path('permission-management/', manage_permission,name = 'manage-permission'),
-    path('academic-management/', manage_academic,name = 'manage-academic'),
-    path('event-management/', manage_event,name = 'manage-event'),
-    path('routine-management/', manage_routine,name = 'manage-routine'),
-    path('notice-management/', manage_notice,name = 'manage-notice'),
-    path('attendance-management/', manage_attendance,name = 'manage-attendance'),
-    path('enquiry-management/', manage_enquiry,name = 'manage-enquiry'),
-    path('email-service-management/', manage_email_services,name = 'manage-email-service'),
-    path('asset-management/', manage_asset,name = 'manage-asset'),
-    path('fee-management/', manage_fee,name = 'manage-fee'),
-      path('certificate-management/', manage_certificate,name = 'manage-certificate'),
-    path('transport-management/', manage_transport,name = 'manage-transport'),
-    path('complain-management/', manage_complain,name = 'manage-complain'),
-    path('meeting-management/', manage_meeting,name = 'manage-meeting'),
-       path('log-history-management/', manage_log_history,name = 'manage-log-history'),
-           path('report-management/', manage_report,name = 'manage-report'),
+    # path('event-management/', manage_event,name = 'manage-event'),
+    
+    # 
+    # path('fee-management/', manage_fee,name = 'manage-fee'),
+    # path('certificate-management/', manage_certificate,name = 'manage-certificate'),
+    # 
+    # path('meeting-management/', manage_meeting,name = 'manage-meeting'),
+    # path('log-history-management/', manage_log_history,name = 'manage-log-history'),
+    # path('report-management/', manage_report,name = 'manage-report'),
      
     path('schedule/',include('schedule.urls')),
     

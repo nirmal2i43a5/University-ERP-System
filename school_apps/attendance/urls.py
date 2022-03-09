@@ -6,7 +6,7 @@ from school_apps.attendance.views import (get_students, save_student_attendance,
                               student_attendance_list,fill_semester_select,fill_section_select,
                               fill_subject_select,student_attendance_report,student_daily_attendance,student_monthly_attendance
                               )
-
+from student_management_system.views import attendance_home
 app_name = 'attendance_app'
 
 urlpatterns = [
@@ -34,6 +34,6 @@ urlpatterns = [
      path('fill_section_select/',fill_section_select,name = 'fill_section_select'),
         path('fill_subject_select/',fill_subject_select,name = 'fill_subject_select'),
     
- 
+ path('attendance-management/', attendance_home,name = 'attendance-management'),
 
 ]

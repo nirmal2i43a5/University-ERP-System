@@ -1,6 +1,7 @@
 from django.urls import  path
 from .views import (UserRoleCreate, UserRoleUpdate,UserRoleMange,UserPermissionCreate,
                                    user_permission_manage,save_permission)
+from student_management_system.views import permission_home
 
 app_name = 'role_app'
 
@@ -12,4 +13,5 @@ urlpatterns = [
     # path('edit_permission/<str:pk>/',UserRoleUpdate.as_view(),name = 'edit_permission'),
       path('manage_permission/',user_permission_manage,name = 'manage_permission'),
          path('save_permission/',save_permission,name = 'save_permission'),
+            path('permission-management/', permission_home,name = 'permission-management'),
 ]

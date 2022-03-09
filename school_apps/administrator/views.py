@@ -143,24 +143,7 @@ def delete_group(request, group_id):
         return redirect('admin_app:add_manage_group')
 
 
-@permission_required('student_management_app.add_complain', raise_exception=True)  
-def add_complain(request):
-    form = ComplainForm()
-    if request.method == 'POST':
-        form = ComplainForm(request.POST, request.FILES)
 
-        try:
-            if form.is_valid():
-                form.save()
-                messages.success(request, "Successfully Added Complain.")
-                return redirect('admin_app:manage_complain')
-        except:
-            messages.error(request, "Failed To  Added Complain.")
-            return redirect('admin_app:add_complain')
-
-    context = {'form': form,
-               'title':'Complain'}
-    return render(request, 'administrator/complains/add_complain.html', context)
 
 
 # this code can be use for all other field that is based on user_role and user
@@ -173,49 +156,6 @@ def user_role(request):#from add_complain and other field
     return JsonResponse(user_data, safe=False)
 
 
-@permission_required('student_management_app.view_complain', raise_exception=True)  
-def manage_complain(request):
-    complains = Complain.objects.all()
-    context = {'complains': complains,  'title':'Manage Complain'}
-    return render(request, 'administrator/complains/manage_complain.html', context)
-
-
-@permission_required('student_management_app.change_complain', raise_exception=True)  
-def edit_complain(request, complain_id):
-    try:
-        complain = get_object_or_404(Complain, id=complain_id)
-    except:
-        return render(request, '404.html')
-
-    form = ComplainForm(instance=complain)
-    if request.method == 'POST':
-        form = ComplainForm(request.POST, request.FILES, instance=complain)
-
-        try:
-            if form.is_valid():
-                form.save()
-                messages.success(request, "Successfully Update Complain.")
-                return redirect('admin_app:manage_complain')
-
-        except:
-            messages.error(request, "Failed To  Update Complain.")
-            return redirect('admin_app:edit_complain', complain_id)
-
-    context = {'form': form,  'title':'Complain' }
-    return render(request, 'administrator/complains/edit_complain.html', context)
-
-
-@permission_required('student_management_app.delete_complain', raise_exception=True)  
-def delete_complain(request, complain_id):
-    try:
-        # i am using custom user so i use staff_user_id instead of normal complain id = staff_id
-        complain = get_object_or_404(Complain, id=complain_id)
-        complain.delete()
-        messages.success(request, f'Complain is Deleted Successfully')
-        return redirect('admin_app:manage_complain')
-    except:
-        messages.error(request, 'Failed To Delete Complain')
-        return redirect('admin_app:manage_complain')
 
 
 
