@@ -3,6 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from .serializers import StudentSerializer
 from rest_framework import viewsets
 from student_management_app.models import Student
+from school_apps.log_history.models import UserLog
 
     
 
@@ -27,13 +28,3 @@ class StudentApiView(viewsets.ModelViewSet):
     #     return queryset_list
     
     
-class UserLogViewSet(viewsets.ModelViewSet):
-    queryset = UserLog.objects.order_by('-id')
-    serializer_class = UserLogSerializer
-    authentication_classes = (TokenAuthentication, SessionAuthentication)
-    permission_classes = (IsAuthenticated,)
-    http_method_names = ['get']
-    def filter_queryset(self, queryset):
-        if self.request.GET.get('id'):
-            queryset = queryset.filter(user_id=self.request.GET.get('id')).order_by('-id')
-        return queryset

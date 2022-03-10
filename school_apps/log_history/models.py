@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
-
+from student_management_app.models import CustomUser
 
 class UserLog(models.Model):
     ACTION_TYPE_CREATE = 1
@@ -80,7 +80,7 @@ class UserLog(models.Model):
                 print(self.__dict__[key],obj.__dict__[key])
                 if not self.__dict__[key] == obj.__dict__[key]:
                     return False
-            elif key == 'created_at':
+            elif key == 'created_at': 
                 if((obj.__dict__[key]-self.__dict__[key]).seconds > 50):
                     print('left time')
                     print((obj.__dict__[key]-self.__dict__[key]).seconds)

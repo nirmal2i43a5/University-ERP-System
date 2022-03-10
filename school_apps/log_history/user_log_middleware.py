@@ -12,6 +12,7 @@ from school_apps.notifications.models import Notification
 
 
 class UserLoggingMiddleware(object):
+    print(":::I am inside Log middleware")
     ip_address = None
     def __init__(self, get_response):
         self.get_response = get_response
@@ -53,25 +54,25 @@ class UserLoggingMiddleware(object):
             )
 
     def _save_to_log(self, instance, action, user):
-        pass
-        # content_type = ContentType.objects.get_for_model(instance)
-        # if content_type.app_label != 'user_log' and user:
-        #     object_id = instance.id if hasattr(instance, 'id') else 0
-        #     userlog = UserLog( 
-        #         object_id=object_id,
-        #         app_name=content_type.app_label,
-        #         model_name=content_type.model,
-        #         action=action,
-        #         object_instance=serializers.serialize('json', [instance]),
-        #         user=user,
-        #         ip=self.ip_address,
-        #     )
-        #     if UserLog.objects.all().count():
-        #         last_log = UserLog.objects.latest('id')
-        #         if not last_log.__eq__(userlog):
-        #             userlog.save()
-        #     else:
-        #         userlog.save()
+        # pass
+        content_type = ContentType.objects.get_for_model(instance)
+        if content_type.app_label != 'user_log' and user:
+            object_id = instance.id if hasattr(instance, 'id') else 0
+            userlog = UserLog( 
+                object_id=object_id,
+                app_name=content_type.app_label,
+                model_name=content_type.model,
+                action=action,
+                object_instance=serializers.serialize('json', [instance]),
+                user=user,
+                ip=self.ip_address,
+            )
+            if UserLog.objects.all().count():
+                last_log = UserLog.objects.latest('id')
+                if not last_log.__eq__(userlog):
+                    userlog.save()
+            else:
+                userlog.save()
                     
     def _update_post_save_info(
             self,

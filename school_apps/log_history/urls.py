@@ -12,5 +12,6 @@ app_name = 'user_history'
 urlpatterns = [
          #for routine
         path('user/logs/',user_log_list,name="user_log"),
+           path('log-history-management/',log_history_home,name="log-history-management"),
  
 ]

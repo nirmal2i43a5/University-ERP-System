@@ -81,12 +81,13 @@
         {% url 'certificate:certificate-management' as certificate_url %}
         {% url 'enquiry:enquiry-management' as enquiry_url %}
         {% url 'email_sms:email-sms-management' as email_sms_url %}
+        {% url 'user_history:log-history-management' as user_log_url %}
         {% url 'manage-log-history' as log_history_url %}
         {% url 'complain:complain-management' as complain_url %}
         {% url 'manage-metting' as metting_url %}
         {% url 'transport:transport-management' as transport_url %}
         {% url 'manage-report' as report_url %}
-                                     
+       
 
         {% if request.path ==  user_url or request.path|has_namespace:'/user-management/,admin_app'  %}
         {% include "includes/include_admin/includes_sidebar/users.html" %}
@@ -120,6 +121,9 @@
 
         {% elif request.path ==  email_sms_url or request.path|has_namespace:'/email-sms-management/, email_sms' %}
         {% include "includes/include_admin/includes_sidebar/email_service_sidebar.html" %}
+
+        {% elif request.path ==  user_log_url or request.path|has_namespace:'/log-history-management/, user_history' %}
+        {% include "includes/include_admin/includes_sidebar/user_log.html" %}
 
         {% elif request.path ==  complain_url or request.path|has_namespace:'/complain-management/,complain' %}
         {% include "includes/include_admin/includes_sidebar/complain.html" %}
