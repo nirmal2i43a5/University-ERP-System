@@ -70,10 +70,7 @@ urlpatterns = [
       path('edit_student_document/', student_views.edit_student_document, name="edit_student_document"),
       path('delete_student_document/<str:student_id>/<str:document_id>/', student_views.delete_student_document, name="delete_student_document"),
    
-     
-      
 
-      
       #for session year
       path('add_manage_session/', administrative_views.add_manage_session_year, name="add_manage_session"),
       path('edit_session/<str:session_id>/', administrative_views.edit_session, name="edit_session"),

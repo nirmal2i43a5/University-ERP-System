@@ -66,6 +66,9 @@ INSTALLED_APPS = [
        'school_apps.student_certificate.apps.StudentCertificateConfig',
     'school_apps.customusers.apps.CustomusersConfig',
     'school_apps.inventory.apps.InventoryConfig',
+        'school_apps.log_history.apps.LogHistoryConfig',
+    
+
     # 'school_apps.inventory',
 
     #~~~~~~~~~~~~~~~~~~api~~~~~~~~~~~~~~~~~~~~
@@ -115,7 +118,10 @@ MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',#django debug
     # 'whitenoise.middleware.WhiteNoiseMiddleware',  #for heroku
     'simple_history.middleware.HistoryRequestMiddleware',#for simple history
-    'school_apps.user_profile.middleware.LoginRequiredMiddleware'
+    'school_apps.user_profile.middleware.LoginRequiredMiddleware',
+    
+        # ===============user log middleware=================
+    'school_apps.log_history.user_log_middleware.UserLoggingMiddleware',
 ]
 
 # SESSION_ENGINE =[

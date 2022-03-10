@@ -1,0 +1,106 @@
+{% extends 'admin_templates/base_admin.html' %}{% load static from static %}{% block content%}
+<style>
+    code {
+    color: #195da9;
+    font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+    font-size: .8rem;
+}
+</style>
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0 text-dark">
+          <i class="fas fa-clipboard-list"></i>&nbsp;{{ title }}
+        </h1>
+      </div>
+      <!-- /.col -->
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item active">{{ title }}</li>
+        </ol>
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
+</div>
+<div class="card card-danger card-outline">
+  <div class="card-body">
+    <div class="table-title">
+      <p class="title-text">
+        <span class="active"> All {{title}}s </span>
+      </p>
+    </div>
+    <div class="table-responsive">
+      <table
+        id="table"
+        data-ajax="/api/v1/userlog/?format=datatables&id={{ request.GET.id | stringformat:'s' }}"
+        class="table table-bordered table-striped table-hover dataTable"
+      >
+        <thead>
+          <tr>
+            <th>#</th>
+            <th >User</th>
+            <th data-data="ip">IP</th>
+            <th data-data="app_name">App</th>
+            <th data-data="model_name">Model</th>
+            <th>Action</th>
+            <th>Fields</th>
+            <th data-data="created_at">Log Date Time</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+  </div>
+  <!-- /.card-body -->
+</div>
+
+{% endblock %} {% block javascript %}
+<script>
+  $(function () {
+    table = $("#table").DataTable({
+      dom: "B<'m-2 row d-flex justify-content-between'lf>rtip",
+      buttons: ["copy", "csv", "excel", "pdf", "print"],
+      columnDefs: [
+        {
+          targets: 0,
+          render: function (data, type, row, meta) {
+            return meta.row + 1;
+          },
+        },
+        {
+          targets: 1,
+          render: function (data, type, row, meta) {
+            if(row.user.employee){
+              return row.user.employee.full_name + '('+row.user.email+')';
+            }
+            return '('+row.user.email+')';
+          },
+        },
+        {
+          targets: 6,
+          render: function (data, type, row, meta) {
+             return  `<code>${row.object_instance}</code>`;            
+          },
+        },
+        {
+          targets: 5,
+          render: function (data, type, row, meta) {
+              if(row.action == 1){
+                  return '<span class="badge badge-success">create</span>'
+              }else if(row.action == 2){
+                    return '<span class="badge badge-warning">update</span>'
+              }else{
+                    return '<span class="badge badge-danger">delete</span>'
+              }
+            return "";
+          },
+        },
+      ],
+    });
+  });
+</script>
+{% endblock %}
