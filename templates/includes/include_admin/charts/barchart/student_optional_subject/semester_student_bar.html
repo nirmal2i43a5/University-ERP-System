@@ -27,7 +27,7 @@
         },
         series: [{
             name: 'Semesters',
-            color:'#094089',
+            color:'#743DB8',
             data: [
             {% for student in semester_student_dataset %}{{ student.students }}{% if not forloop.last %}, {% endif %}{% endfor %}
             ]

@@ -78,7 +78,7 @@
       </div>
       <!-- /.card -->
 
-      <button type="button" id="save_attendance" class="btn btn-info btn-info">Save Attendance</button>
+      <button type="button" id="save_attendance" class="btn btn-info">Save Attendance</button>
       {% endif %}
 
     </form>
