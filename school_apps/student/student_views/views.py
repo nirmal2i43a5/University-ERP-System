@@ -713,7 +713,7 @@ def manage_student(request):
     a_level_course_category = get_object_or_404(CourseCategory,course_name = 'A-Level')
     bachelor_course_category = get_object_or_404(CourseCategory,course_name = 'Bachelor')
     master_course_category = get_object_or_404(CourseCategory,course_name = 'Master')
-    
+    search_form = StudentSearch(user = request.user)
     students = Student.objects.filter(student_user__is_active = 1,course_category = request.user.adminuser.course_category)
     
     if request.user.adminuser.course_category == a_level_course_category:

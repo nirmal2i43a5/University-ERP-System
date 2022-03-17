@@ -1,4 +1,6 @@
-{% extends 'admin_templates/base_admin.html' %}{% load static from static %}{% block content%}
+{% extends 'admin_templates/base_admin.html' %}{% load static from static %}
+{% block title %}User Log{% endblock %}
+{% block content%}
 <style>
     code {
     color: #195da9;
@@ -6,57 +8,41 @@
     font-size: .8rem;
 }
 </style>
-<div class="content-header">
-  <div class="container-fluid">
-    <div class="row mb-2">
-      <div class="col-sm-6">
-        <h1 class="m-0 text-dark">
-          <i class="fas fa-clipboard-list"></i>&nbsp;{{ title }}
-        </h1>
-      </div>
-      <!-- /.col -->
-      <div class="col-sm-6">
-        <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item active">{{ title }}</li>
-        </ol>
-      </div>
-      <!-- /.col -->
-    </div>
-    <!-- /.row -->
+<div class="card mx-2">
+  {% include 'override_table/header.html' with card_title=title %}
+
+
+  <!-- /.card-header -->
+  <div class="card-body table-responsive">
+
+
+
+        {% url 'admin_app:add_staff' as button_url %}
+
+        <div class="table-responsive">
+          <table
+            id="table"
+            data-ajax="/api/v1/userlog/?format=datatables&id={{ request.GET.id | stringformat:'s' }}"
+            class="table table-bordered table-striped table-hover dataTable"
+          >
+            <thead>
+              <tr>
+                <th>#</th>
+                <th data-data = "username">User</th><!-- targets: 1-->
+                <th data-data="ip">IP</th>
+                {% comment %} <th data-data="app_name">App</th> {% endcomment %}
+                <th data-data="model_name">Model</th>
+                <th>Action</th>
+                {% comment %} <th>Fields</th> {% endcomment %}
+                <th data-data="created_at">Log Date Time</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+
   </div>
-  <!-- /.container-fluid -->
 </div>
-<div class="card card-danger card-outline">
-  <div class="card-body">
-    <div class="table-title">
-      <p class="title-text">
-        <span class="active"> All {{title}}s </span>
-      </p>
-    </div>
-    <div class="table-responsive">
-      <table
-        id="table"
-        data-ajax="/api/v1/userlog/?format=datatables&id={{ request.GET.id | stringformat:'s' }}"
-        class="table table-bordered table-striped table-hover dataTable"
-      >
-        <thead>
-          <tr>
-            <th>#</th>
-            <th data-data = "username">User</th>
-            <th data-data="ip">IP</th>
-            <th data-data="app_name">App</th>
-            <th data-data="model_name">Model</th>
-            <th>Action</th>
-            <th>Fields</th>
-            <th data-data="created_at">Log Date Time</th>
-          </tr>
-        </thead>
-      </table>
-    </div>
-  </div>
-  <!-- /.card-body -->
-</div>
+
 
 {% endblock %} {% block javascript %}
 <script>
@@ -74,20 +60,22 @@
         {
           targets: 1,
           render: function (data, type, row, meta) {
-            if(row.user.employee){
-              return row.user.employee.full_name + '('+row.user.email+')';
+            console.log(row.user,"Inside console")
+            if(row.user){
+              return row.user.full_name + '('+row.user.email+')';
             }
             return '('+row.user.email+')';
           },
         },
+       /*
         {
-          targets: 6,
+          targets: 6,//target to Fields in 
           render: function (data, type, row, meta) {
              return  `<code>${row.object_instance}</code>`;            
           },
-        },
+        },*/
         {
-          targets: 5,
+          targets: 4,
           render: function (data, type, row, meta) {
               if(row.action == 1){
                   return '<span class="badge badge-success">create</span>'
