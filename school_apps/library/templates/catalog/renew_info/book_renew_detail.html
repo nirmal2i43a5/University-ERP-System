@@ -1,0 +1,59 @@
+{% extends 'admin_templates/base_admin.html'  %} {% block title %}Renew Detail{% endblock title %} {% block breadcrumbs %}
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="row m-0">
+            <div class="col-sm-4">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1>Dashboard</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="page-header float-right">
+                    <div class="page-title">
+                        <ol class="breadcrumb text-right">
+                            <li><a href="#">Dashboard</a></li>
+                            <li><a href="#">Renew</a></li>
+                            <li class="active">Detail</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock breadcrumbs %} {% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <strong class="card-title">Renew Detail</strong>
+            </div>
+            <div class="card-body">
+                <!-- Credit Card -->
+                <div id="pay-invoice">
+                    <div class="card-body">
+                        <form action="#" method="post" novalidate="novalidate">
+                            {% csrf_token %} {{form}}
+                        </form>
+                        <a style="text-align: center;display: block;" href="{% url 'library:book_renew_list' %}" class="btn btn-xs btn-success"><i class="fas fa-long-arrow-alt-left"></i>Return</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- .card -->
+
+    </div>
+    <!--/.col-->
+</div>
+{% endblock content %} {% block scripts %}
+<script>
+    $(function() {
+        $("#datetimepicker1").datetimepicker({
+            format: 'DD/MM/YYYY HH:mm',
+        });
+    });
+</script>
+{% endblock scripts %}

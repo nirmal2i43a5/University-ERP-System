@@ -12,7 +12,6 @@ from school_apps.notifications.models import Notification
 
 
 class UserLoggingMiddleware(object):
-    print(":::I am inside Log middleware")
     ip_address = None
     def __init__(self, get_response):
         self.get_response = get_response

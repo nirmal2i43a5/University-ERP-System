@@ -1,0 +1,94 @@
+{% extends 'admin_templates/base_admin.html'  %} {% block title %}Return Book{% endblock title %} {% block breadcrumb %}
+<a class="btn btn-primary" href="{% url 'library:book_return_list' %}"><i
+    class="fas fa-plus"></i> Return Book</a> {% endblock breadcrumb %} {% block content %}
+<div class="table-responsive">
+    <table id="librarytable" class="table table-bordered table-striped" data-page-length='100'>
+        <thead class="thead-light">
+            <tr>
+                <th></th>
+                <th class="serial">#</th>
+                <th>Member</th>
+                <th>Book</th>
+                <th>Quantity</th>
+                <th>Return Date</th>
+
+            </tr>
+        </thead>
+        <tbody>
+
+            {% if book_return %} {% for bookreturnlist in book_return %}
+            <tr class='clickable-row' data-href="#">
+                <td></td>
+                <td class="serial">{{ forloop.counter }}</td>
+                <td>{{ bookreturnlist.issue_id.member.full_name }}</td>
+                <td>{{ bookreturnlist.title }}</td>
+                <td>{{ bookreturnlist.quantity }}</td>
+                <td>{{ bookreturnlist.return_date}}</td>
+            </tr>
+            {% endfor %} {% else %}
+            <tr>
+                <td>No Book Return Data Found</td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %} {% block morejs %}
+<script>
+    $('#librarytable').DataTable({
+        dom: 'lBfrtip', //if i use buttons then entries goes away
+        pagingType: "full_numbers",
+
+        buttons: [{
+                'extend': 'copy',
+                'text': '<i class="fas fa-copy" aria-hidden="true"></i> Copy',
+
+                'className': 'btn-datatables', //button css does not work
+
+
+
+            }, {
+                extend: 'excel',
+                text: '<i class="fas fa-file-excel" aria-hidden="true"></i> Excel',
+                'className': 'btn-datatables',
+
+
+            }, {
+                extend: 'csv',
+                text: '<i class="fas fa-file-csv" aria-hidden="true"></i> CSV',
+                'className': 'btn-datatables',
+
+
+            }, {
+                extend: 'pdf',
+                text: '<i class="fas fa-file-pdf" aria-hidden="true"></i> PDF',
+                'className': 'btn-datatables',
+
+
+            },
+
+        ],
+
+        //for checkbox
+        columnDefs: [{
+                orderable: false,
+
+                className: 'select-checkbox',
+                targets: 0,
+
+            },
+
+        ],
+
+        select: {
+            style: 'multi',
+            // selector: 'td:first-child'
+
+        },
+        order: [
+            [1, 'asc']
+        ],
+    });
+</script>
+
+{% endblock morejs %}

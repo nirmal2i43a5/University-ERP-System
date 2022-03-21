@@ -1,0 +1,99 @@
+{% extends 'admin_templates/base_admin.html'  %} {% block title %}Book Renew{% endblock title %} {% block breadcrumb %}
+<a class="btn btn-primary" href="{% url 'library:book_renew' %}"><i
+    class="fas fa-plus"></i> Renew Book</a> {% endblock breadcrumb %} {% block content %}
+<div class="table-responsive">
+    <table id="librarytable" class="table table-bordered table-striped" data-page-length='100'>
+        <thead class="thead-light">
+            <tr>
+                <th></th>
+                <th class="serial">ID</th>
+                <th>Title</th>
+                <th>Member</th>
+                <th>Quantity</th>
+                <th>Renew Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if book_renew %}
+            <tr class='clickable-row' data-href="#">
+                {% for bookrenew in book_renew %}
+                <td></td>
+                <td class="serial">{{ forloop.counter }}</td>
+                <td>{{ bookrenew.title }}</td>
+                <td>{{ bookrenew.member_name }}</td>
+                <td>{{ bookrenew.quantity }}</td>
+                <td>{{ bookrenew.renew_date}}</td>
+                <td>
+                    <a href="{% url 'library:book_renew_detail' bookrenew.id %}" class="btn btn-xs btn-success"><i class="fas fa-info"></i></a>
+                    <a href="{% url 'library:book_renew_edit' bookrenew.id%}" class="btn btn-xs btn-warning"><i class="fas fa-edit"></i></a>
+                    <a href="{% url 'library:del_book_renew' bookrenew.id %}" class="btn btn-xs btn-danger"><i class="fas fa-xs fa-trash-alt"></i></a>
+                </td>
+            </tr>
+            {% endfor %} {% else %}
+            <tr>
+                <td>No Book Return Data Found</td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %} {% block morejs %}
+<script>
+    $('#librarytable').DataTable({
+        dom: 'lBfrtip', //if i use buttons then entries goes away
+        pagingType: "full_numbers",
+
+        buttons: [{
+                'extend': 'copy',
+                'text': '<i class="fas fa-copy" aria-hidden="true"></i> Copy',
+
+                'className': 'btn-datatables', //button css does not work
+
+
+
+            }, {
+                extend: 'excel',
+                text: '<i class="fas fa-file-excel" aria-hidden="true"></i> Excel',
+                'className': 'btn-datatables',
+
+
+            }, {
+                extend: 'csv',
+                text: '<i class="fas fa-file-csv" aria-hidden="true"></i> CSV',
+                'className': 'btn-datatables',
+
+
+            }, {
+                extend: 'pdf',
+                text: '<i class="fas fa-file-pdf" aria-hidden="true"></i> PDF',
+                'className': 'btn-datatables',
+
+
+            },
+
+        ],
+
+        //for checkbox
+        columnDefs: [{
+                orderable: false,
+
+                className: 'select-checkbox',
+                targets: 0,
+
+            },
+
+        ],
+
+        select: {
+            style: 'multi',
+            // selector: 'td:first-child'
+
+        },
+        order: [
+            [1, 'asc']
+        ],
+    });
+</script>
+
+{% endblock morejs %}

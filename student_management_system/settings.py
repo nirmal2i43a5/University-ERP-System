@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'school_apps.teacher.apps.TeachersConfig',
     'school_apps.courses.apps.CoursesConfig',
     'school_apps.parents.apps.ParentsConfig',
+       'school_apps.library.apps.LibraryConfig',
     'school_apps.admin_user.apps.AdminUserConfig',
       'school_apps.email_sms.apps.EmailSmsConfig',
     'viewer.apps.ViewerConfig',

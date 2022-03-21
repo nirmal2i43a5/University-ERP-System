@@ -1,0 +1,95 @@
+{% extends 'admin_templates/base_admin.html'  %} {% block title %}Members{% endblock title %} {% block breadcrumb %}
+<a class="btn btn-primary" href="{% url 'library:add_member' %}"><i
+    class="fas fa-plus"></i> Add Members</a> {% endblock breadcrumb %} {% block content %}
+<div class="table-responsive">
+    <table id="librarytable" class="table table-bordered table-striped" data-page-length='100'>
+        <thead class="thead-light">
+            <tr>
+                <th></th>
+                <th class="serial">#</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>User ID</th>
+                <th>Created Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if memberlist %} {% for member_list in memberlist %}
+            <tr class='clickable-row' data-href="{% url 'library:bookissue-create' member_list.id %}">
+                <td></td>
+                <td class="serial">{{ forloop.counter }}</td>
+                <td>{{ member_list.full_name }}</td>
+                <td>{{ member_list.email }}</td>
+                <td>{{ member_list.id }}</td>
+                <td>{{ member_list.created_at }}</td>
+                <td>
+                    <a href="{% url 'library:member_detail' member_list.id %}" class="btn btn-xs btn-success"><i class="fas fa-info"></i></a>
+                    <a href="{% url 'library:edit_member' member_list.id %}" class="btn btn-xs btn-warning"><i class="fas fa-user"></i></a>
+                    <a href="{% url 'library:del_member' member_list.id %}" class="btn btn-xs btn-danger"><i class="fas fa-xs fa-trash-alt"></i></a>
+                </td>
+            </tr>
+            {% endfor %} {% else %}
+            <tr>
+                <td>No Member Added</td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %} {% block morejs %}
+<script>
+    $('#librarytable').DataTable({
+        dom: 'lBfrtip', //if i use buttons then entries goes away
+        pagingType: "full_numbers",
+
+        buttons: [{
+                'extend': 'copy',
+                'text': '<i class="fas fa-copy" aria-hidden="true"></i> Copy',
+                'className': 'btn-datatables', //button css does not work
+
+            }, {
+                extend: 'excel',
+                text: '<i class="fas fa-file-excel" aria-hidden="true"></i> Excel',
+                'className': 'btn-datatables',
+
+
+            }, {
+                extend: 'csv',
+                text: '<i class="fas fa-file-csv" aria-hidden="true"></i> CSV',
+                'className': 'btn-datatables',
+
+
+            }, {
+                extend: 'pdf',
+                text: '<i class="fas fa-file-pdf" aria-hidden="true"></i> PDF',
+                'className': 'btn-datatables',
+
+
+            },
+
+        ],
+
+        //for checkbox
+        columnDefs: [{
+                orderable: false,
+
+                className: 'select-checkbox',
+                targets: 0,
+
+            },
+
+        ],
+
+        select: {
+            style: 'multi',
+            // selector: 'td:first-child'
+
+        },
+        order: [
+            [1, 'asc']
+        ],
+    });
+</script>
+
+{% endblock morejs %}

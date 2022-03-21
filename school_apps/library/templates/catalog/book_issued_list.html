@@ -1,0 +1,42 @@
+{% extends 'admin_templates/base_admin.html'  %} {% block title %}Issue Book{% endblock title %} {% block breadcrumb %}
+<a class="btn btn-primary" href="{% url 'library:book_issue_list' %}"><i
+    class="fas fa-plus"></i> Issue Book</a> {% endblock breadcrumb %} {% block content %}
+<div class="table-responsive">
+    <table id="librarytable" class="table table-bordered table-striped" data-page-length='100'>
+        <thead class="thead-light">
+            <tr>
+                <th class="serial">ID</th>
+                <th>Title</th>
+                <th>Member</th>
+                <th>Issued Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% if book_issue %} {% for book_issue in book_issue %}
+            <tr>
+                <td class="serial">{{ forloop.counter }}</td>
+                <td>{{ book_issue.issue_book_name }}</td>
+                <td>{{ book_issue.member_name }}</td>
+                <td>{{ book_issue.issue_date}}</td>
+                <td>
+                    <a href="{% url 'library:book_issue_detail' book_issue.id %}" class="btn btn-xs btn-success"><i class="fas fa-info"></i></a>
+                    <a href="{% url 'library:book_issue_edit' book_issue.id %}" class="btn btn-xs btn-warning"><i class="fas fa-edit"></i></a>
+                    <a href="{% url 'library:del_book_issue' book_issue.id %}" class="btn btn-xs btn-danger"><i class="fas fa-xs fa-trash-alt"></i></a>
+                </td>
+            </tr>
+            {% endfor %} {% else %}
+            <tr>
+                <td>No Book issued</td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %} {% block morejs %}
+<script>
+    $('#librarytable').DataTable({});
+</script>
+
+{% endblock morejs %}

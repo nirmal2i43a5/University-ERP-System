@@ -1,0 +1,68 @@
+{% extends 'admin_templates/base_admin.html'  %} {% load static %} {% block content-header %}
+<div class="card-header">
+    <div class="card-tools">
+        <a href="#" class="btn btn-tool">Print</a>
+        <a href="" class="btn btn-tool">
+            <i class="fas fa-edit"></i>
+        </a>
+        <a href="" class="btn btn-tool">
+            <i class="fas fa-times"></i>
+        </a>
+    </div>
+</div>
+{% endblock content-header %} {% block content %}
+<label class="col-sm-3 col-form-label" for="{{ field.auto_id }}">
+    {% if messages %}
+    {% for message in messages %}
+
+      <small id="{{ field.auto_id }}" class="text-success">{{ message }}</small>
+    {% endfor %}
+    {% endif %}
+	  {% if form.errors %}
+	  <small id="{{ field.auto_id }}" class="text-danger">{{form.errors}}</small>
+
+	  {% endif %}
+</label>
+<h4> Book Issue Description</h4>
+
+{% if object %}
+
+<h1>{{issue.member.full_name}}</h1>
+<h3>{{issue.member.email}}</h3>
+<h3>{{issue.date}}</h3>
+
+
+<div class='card'>
+    <div class='table-responsive'>
+        <table class='table' id='myTable'>
+            <thead>
+                <tr>
+                    <th>Book</th>
+                    <th>Quantity</th>
+                    <th>Expiry Date</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for saleitem in issue.bookissue_set.all %}
+                <tr>
+                    <td>{{ saleitem.title }}</td>
+                    <td>{{saleitem.quantity}}</td>
+                    <td>{{saleitem.expirydate}}</td>
+
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td class="btn btn-primary" style="width:40%">Total</td>
+                    <td style="font-size:20px">{{issue.total_qty}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <a style="text-align: center;display: block; font-size:20px;" href="{% url 'library:book_issue_list' %}" class="btn btn-xs btn-success"><i class="fas fa-long-arrow-alt-left"></i> Done</a>
+    </div>
+
+
+</div>
+{% else %}
+<p>There are no description for {{object}}</p>
+{% endif %} {% endblock content %}
