@@ -74,7 +74,7 @@ urlpatterns = [
     path('', include('school_apps.transports.urls',namespace='transport')),
     path('', include('school_apps.routine.urls',namespace='routine')),
     path('', include('school_apps.complain.urls',namespace='complain')),
-     path('library/', include('school_apps.library.urls',namespace='library')),
+     path('', include('school_apps.library.urls',namespace='library')),
     path('', include('school_apps.student_certificate.urls',namespace='certificate')),
         path('', include('school_apps.log_history.urls',namespace='user_history')),
     

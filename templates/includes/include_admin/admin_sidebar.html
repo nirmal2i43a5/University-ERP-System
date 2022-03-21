@@ -77,6 +77,7 @@
         {% url 'routine:routine-management' as routine_url %}
         {% url 'announcement: announcement-management' as announcement_url %}
         {% url 'attendance_app:attendance-management' as attendance_url %}
+        {% url 'library:library-management' as library_url %}
         {% url 'inventory:asset-management' as asset_url %}
         {% url 'certificate:certificate-management' as certificate_url %}
         {% url 'enquiry:enquiry-management' as enquiry_url %}
@@ -109,6 +110,9 @@
 
         {% elif request.path ==  attendance_url or request.path|has_namespace:'/attendance-management/, attendance_app' %}
         {% include "includes/include_admin/includes_sidebar/attendance.html" %}
+
+        {% elif request.path ==  library_url or request.path|has_namespace:'/library-management/, library' %}
+        {% include "includes/include_admin/includes_sidebar/library.html" %}
 
         {% elif request.path ==  asset_url or request.path|has_namespace:'/asset-management/, inventory'  %}
         {% include "includes/include_admin/includes_sidebar/inventory.html" %}

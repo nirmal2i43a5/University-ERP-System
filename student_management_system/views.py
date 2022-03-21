@@ -317,6 +317,7 @@ def academic_home(request):
                  }
     return render(request, 'admin_templates/dashboard.html', context)
 
+
 def event_home(request):
     context = {
         'title':'Event Management',
@@ -342,6 +343,11 @@ def attendance_home(request):
                  }
     return render(request, 'admin_templates/dashboard.html', context)
 
+def library_home(request):
+    context = {
+        'title':'Library Management',
+                 }
+    return render(request, 'admin_templates/dashboard.html', context)
 
 def email_services_home(request):
     context = {

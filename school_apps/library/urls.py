@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import * 
+from student_management_system.views import library_home
 app_name = 'library'
 urlpatterns = [
     #-------------------------------- login logout url -----------------------------------------
@@ -51,4 +52,6 @@ urlpatterns = [
     path('book_renew_edit/<int:pk>', book_renew_edit, name='book_renew_edit'),
     path('book_renew_detail/<int:pk>', book_renew_detail, name='book_renew_detail'),
     path('del_book_renew/<int:pk>', BookRenewDeleteView.as_view(), name='del_book_renew'),
+    
+        path('library-management/',library_home,name = 'library-management'),
 ]

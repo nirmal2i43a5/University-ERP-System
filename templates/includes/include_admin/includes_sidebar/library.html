@@ -1,0 +1,82 @@
+
+
+
+    <!-- Sidebar -->
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-table"></i>
+                        <p>
+                            Book Transaction
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{% url 'library:book_issue_list' %}" class="nav-link">
+                                <i class="nav-icon fas fa-cart-plus"></i>
+                                <p>Issue</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'library:book_return' %}" class="nav-link">
+                                <i class="nav-icon fas fa-long-arrow-alt-left"></i>
+                                <p>Return</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'library:book_renew_list' %}" class="nav-link">
+                                <i class="nav-icon fas fa-history"></i>
+                                <p>Renew</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'library:add_member' %}" class="nav-link">
+                        <i class="nav-icon fa fa-archive"></i>
+                        <p>
+                            Add member
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'library:member_list' %}" class="nav-link">
+                        <i class="nav-icon fa fa-users"></i>
+                        <p>
+                            Members
+                        </p>
+                    </a>
+                </li>
+              
+                <li class="nav-item">
+                    <a href="{% url 'library:add_categories' %}" class="nav-link">
+                        <i class="nav-icon fa fa-archive"></i>
+                        <p>
+                            Add category
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'library:category_list' %}" class="nav-link">
+                        <i class="nav-icon fa fa-archive"></i>
+                        <p>
+                            Manage category
+                        </p>
+                    </a>
+                </li>
+               
+                <li class="nav-item">
+                    <a href="{% url 'library:book_list' %}" class="nav-link">
+                        <i class="nav-icon fa fa-archive"></i>
+                        <p>
+                            Books
+                        </p>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->

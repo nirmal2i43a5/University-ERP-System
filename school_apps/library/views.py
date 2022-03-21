@@ -467,3 +467,6 @@ class BookRenewDeleteView(DeleteView):
     model = BookRenew
     template_name = 'catalog/confirm_delete.html'
     success_url = reverse_lazy('book_renew_list')
+
+
+
