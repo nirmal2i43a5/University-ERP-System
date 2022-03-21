@@ -3,19 +3,10 @@
 {% if perms.enquiry.view_enquiry or perms.enquiry.add_enquiry or perms.enquiry.view_application  %}
   
   
-<li class="nav-item has-treeview">
-    <a href="#" class="nav-link">
-      <i class="fas  fa-university mr-1"></i>
-      <p>
-        Enquiry
-        <i class="fas fa-angle-left right"></i>
-  
-      </p>
-    </a>
-    <ul class="nav nav-treeview">
+
       
       {% if perms.enquiry.add_enquiry %}
-      <li class="nav-item ml-3">
+      <li class="nav-item">
         <a href="{% url 'enquiry:enquiryform' %}" class="nav-link">
           <i class="fas  fa-sitemap"></i>
           <p>
@@ -26,7 +17,7 @@
       </li>
 {% endif %}
 {% if perms.enquiry.view_enquiry %}
-      <li class="nav-item ml-3">
+      <li class="nav-item">
         <a href="{% url 'enquiry:enquiry_list' %}" class="nav-link">
           <i class="fas  fa-star"></i>
           <p>
@@ -36,7 +27,7 @@
       </li>
       {% endif %}
       {% if perms.enquiry.view_application %}
-      <li class="nav-item ml-3">
+      <li class="nav-item">
         <a href="{% url 'enquiry:application_list' %}" class="nav-link">
           <i class="fas  fa-star"></i>
           <p>
@@ -44,7 +35,6 @@
           </p>
         </a>
       </li>
-    </ul>
-  </li>
+    
   {% endif %}
   {% endif %}
