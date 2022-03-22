@@ -111,7 +111,7 @@
         {% elif request.path ==  attendance_url or request.path|has_namespace:'/attendance-management/, attendance_app' %}
         {% include "includes/include_admin/includes_sidebar/attendance.html" %}
 
-        {% elif request.path ==  library_url or request.path|has_namespace:'/library-management/, library' %}
+        {% elif request.path ==  library_url or request.path|has_namespace:'/library/library-management/, library' %}
         {% include "includes/include_admin/includes_sidebar/library.html" %}
 
         {% elif request.path ==  asset_url or request.path|has_namespace:'/asset-management/, inventory'  %}
@@ -120,7 +120,7 @@
         {% elif request.path ==  certificate_url or request.path|has_namespace:'/certificate-management/,certificate' %}
         {% include "includes/include_admin/includes_sidebar/certificate.html" %}
         
-        {% elif request.path ==  enquiry_url or request.path|has_namespace:'/enquiry-management/, enquiry' %}
+        {% elif request.path ==  enquiry_url or request.path|has_namespace:'/enquiry/enquiry-management/, enquiry' %}
         {% include "includes/include_admin/includes_sidebar/enquiry.html" %}
 
         {% elif request.path ==  email_sms_url or request.path|has_namespace:'/email-sms-management/, email_sms' %}

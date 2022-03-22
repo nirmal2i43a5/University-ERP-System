@@ -1,44 +1,92 @@
-{% extends 'admin_templates/base_admin.html'  %} {% block title %}Book Renew{% endblock title %} {% block breadcrumb %}
-<a class="btn btn-primary" href="{% url 'library:book_renew' %}"><i
-    class="fas fa-plus"></i> Renew Book</a> {% endblock breadcrumb %} {% block content %}
-<div class="table-responsive">
-    <table id="librarytable" class="table table-bordered table-striped" data-page-length='100'>
-        <thead class="thead-light">
-            <tr>
-                <th class="serial">ID</th>
-                <th>Title</th>
-                <th>Member</th>
-                <th>Renew Date</th>
-                <th>created_at</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% if book_renew %}
-            <tr class='clickable-row' data-href="#">
-                {% for bookrenew in book_renew %}
-                <td class="serial">{{ forloop.counter }}</td>
-                <td>{{ bookrenew.title }}</td>
-                <td>{{ bookrenew.member_name }}</td>
-                <td>{{ bookrenew.renew_date}}</td>
-                <td>{{ bookrenew.created_at}}</td>
-                <td>
-                    <a href="{% url 'library:book_renew_detail' bookrenew.id %}" class="btn btn-xs btn-success"><i class="fas fa-info"></i></a>
-                    <a href="{% url 'library:book_renew_edit' bookrenew.id%}" class="btn btn-xs btn-warning"><i class="fas fa-edit"></i></a>
-                    <a href="{% url 'library:del_book_renew' bookrenew.id %}" class="btn btn-xs btn-danger"><i class="fas fa-xs fa-trash-alt"></i></a>
-                </td>
-            </tr>
-            {% endfor %} {% else %}
-            <tr>
-                <td>No Book Return Data Found</td>
-            </tr>
-            {% endif %}
-        </tbody>
-    </table>
-</div>
-{% endblock content %} {% block morejs %}
-<script>
-    $('#librarytable').DataTable({});
-</script>
 
-{% endblock morejs %}
+
+
+{% extends 'admin_templates/base_admin.html' %}
+{% load static %}
+{% block title %}
+Renew Book 
+{% endblock title %}
+{% block main_content %}
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+
+    <!-- /.card-header -->
+
+    <div class="row">
+      <div class="col-12">
+
+        {% include "includes/messages.html" %}
+
+        <div class="card">
+          {% include 'override_table/header.html' with card_title='Renew Book' %}
+        
+
+          <!-- /.card-header -->
+          <div class="card-body table-responsive">
+
+        
+            {% url 'library:book_renew' as button_url %}
+
+                {% include 'override_table/header_button.html' with button_title='renew book' button_url=button_url %}
+
+            <table id="dataTable"
+              class="table table-sm  table-striped table-bordered table-hover text-nowrap dataTable no-footer">
+              <thead class="thead-light">
+                <tr>
+                  <th>#</th>
+                    <th>Title</th>
+                    <th>Member</th>
+                    <th>Renew Date</th>
+                    <th>created_at</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if book_renew %}
+                <tr>
+                    {% for bookrenew in book_renew %}
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ bookrenew.title }}</td>
+                    <td>{{ bookrenew.member_name }}</td>
+                    <td>{{ bookrenew.renew_date}}</td>
+                    <td>{{ bookrenew.created_at}}</td>
+                    <td>
+                        
+                        <a href="{% url 'library:book_renew_detail' bookrenew.id %}" class="btn btn-xs btn-success"><i class="fas fa-info"></i></a>
+                        <a href="{% url 'library:book_renew_edit' bookrenew.id%}" class="btn btn-xs btn-warning"><i class="fas fa-edit"></i></a>
+                        <a href="{% url 'library:del_book_renew' bookrenew.id %}" class="btn btn-xs btn-danger"><i class="fas fa-xs fa-trash-alt"></i></a>
+                    </td>
+                </tr>
+                {% endfor %} {% else %}
+                <tr>
+                    <td>No Book Return Data Found</td>
+                </tr>
+                {% endif %}
+            </tbody>
+            </table>
+
+
+
+
+
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+    </div>
+
+  </div>
+</section>
+<!-- /.content -->
+
+<!-- Delete Modal Form -->
+
+
+
+{% endblock main_content %}
+
+
+

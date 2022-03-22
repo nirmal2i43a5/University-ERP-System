@@ -26,6 +26,14 @@
         </a>
       </li>
       {% endif %}
+      <li class="nav-item">
+        <a href="{% url 'enquiry:application_form' %}" class="nav-link">
+          <i class="fas  fa-star"></i>
+          <p>
+            Application Form
+          </p>
+        </a>
+      </li>
       {% if perms.enquiry.view_application %}
       <li class="nav-item">
         <a href="{% url 'enquiry:application_list' %}" class="nav-link">

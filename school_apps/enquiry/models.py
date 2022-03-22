@@ -27,7 +27,7 @@ class Enquiry(models.Model):
     home_contact = models.CharField(max_length=60, blank=True)
     mobile_no = models.CharField(max_length=60)
     email = models.EmailField(unique=True)
-    discovery_method = models.CharField(verbose_name = "How did you discover GCI?",max_length = 250, blank=True)
+    discovery_method = models.CharField(verbose_name = "How did you know about this college?",max_length = 250, blank=True)
     called = models.BooleanField(default=False)
     status = models.CharField(max_length = 100, choices = STATUS,blank=True, default='ENQ')
     application_sent = models.BooleanField(default=False)
@@ -99,7 +99,7 @@ class Application(models.Model):
     guardian_email = models.EmailField(null=True, blank=True)
     additional_fields = models.JSONField(null=True, blank=True)
     
-    discovery = models.TextField(verbose_name = "How did you discover GCI?",null=True, blank=True)
+    discovery = models.TextField(verbose_name = "How did you know about this college?",null=True, blank=True)
 
     status = models.CharField(max_length = 100, choices = STATUS,blank=True, default='APL')
     entrance_marks = models.IntegerField(null=True, blank=True)

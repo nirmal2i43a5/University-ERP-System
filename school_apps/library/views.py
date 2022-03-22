@@ -49,7 +49,7 @@ def CategoryAddView(request):
         form = CategoryAddForm(data=request.POST, files=request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('category_list')
+            return redirect('library:category_list')
     context = {
         'form': form
     }
@@ -74,7 +74,7 @@ def CategoryUpdateView(request, pk):
         form = CategoryAddForm(data=request.POST, files=request.FILES, instance=category_instance)
         if form.is_valid():
             form.save()
-            return redirect('category_list')
+            return redirect('library:category_list')
     context = {
         'form' : form 
     }
@@ -88,7 +88,12 @@ class CategoryDeleteView(DeleteView):
 # ----------------------------- Book CRUD views ------------------------------------------
 def book_list(request):
     book_list = BookEntry.objects.all().order_by('-isbn')
-    return render(request, 'catalog/book_info/book_list.html', {'book_list': book_list})
+    category_list = Category.objects.all()
+    context = {
+        'category_list':category_list,
+        'book_list': book_list
+    }
+    return render(request, 'catalog/book_info/book_list.html', context)
     
 def add_book(request):
     if not request.user.is_superuser:
@@ -98,7 +103,7 @@ def add_book(request):
         form = BookForm(data=request.POST, files=request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('book_list')
+            return redirect('library:book_list')
     context = {
         'form':form
     }
@@ -118,9 +123,11 @@ def edit_book(request, pk):
         'form':form
     }
     return render(request, 'catalog/book_info/book_edit.html', context=context)
+
 def book_list(request):
     book_list = BookEntry.objects.all()
-    return render(request, 'dashboard.html', {'book_list':book_list})
+    return render(request, 'catalog/book_info/book_list.html', {'book_list':book_list})
+
 def view_book(request, pk):
     if not request.user.is_superuser:
         return redirect('login')
@@ -161,7 +168,7 @@ def add_member(request):
                 print(member_user,"-----I am user----------------")
                 print("---------2----------------")
                 LibraryMemberProfile.objects.create(user = member_user, full_name = full_name, email = email ,avatar = avatar)
-                return redirect('member_list')
+                return redirect('library:member_list')
     context = {
         'form':form,
     }
@@ -179,7 +186,7 @@ def edit_member(request, pk):
             email = form.cleaned_data['email']
             avatar = form.cleaned_data['avatar']
             form.save()
-            return redirect('member_list')
+            return redirect('library:member_list')
     context = {
         'form':form,
     }
@@ -382,7 +389,7 @@ class BookReturnView(LoginRequiredMixin,DetailView,CreateView):
 #                 book_quantity.quantity += qt
 #                 book_quantity.save()
 #                 form.save()
-#             return redirect('book_return_list')
+#             return redirect('library:book_return_list')
 #     context = {
 #         'form':form
 #     }
@@ -397,7 +404,7 @@ def book_return_edit(request, pk):
         form = BookReturnForm(data=request.POST, files=request.FILES, instance=book_instance)
         if form.is_valid():
             form.save()
-            return redirect('book_return_list')
+            return redirect('library:book_return_list')
     context = {
         'form':form
     }
@@ -432,7 +439,7 @@ def book_renew(request):
         form = BookRenewForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('book_renew_list')
+            return redirect('library:book_renew_list')
     context = {
         'form':form
     }
@@ -447,7 +454,7 @@ def book_renew_edit(request, pk):
         form = BookRenewForm(data=request.POST, files=request.FILES, instance=book_instance)
         if form.is_valid():
             form.save()
-            return redirect('book_renew_list')
+            return redirect('library:book_renew_list')
     context = {
         'form':form
     }

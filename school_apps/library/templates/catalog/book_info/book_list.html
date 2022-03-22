@@ -1,126 +1,102 @@
-{% extends 'admin_templates/base_admin.html'  %} {% block title %}Books{% endblock title %} {% block breadcrumb %}
-<a class="btn btn-primary" href="{% url 'library:add_book' %}"><i
-    class="fas fa-plus"></i> Add Book</a>
-<a class="btn btn-primary" href="{% url 'library:category_list' %}"><i
-        class="fas fa-plus"></i> Book Category</a>
 
-{% endblock breadcrumb %} {% block content %}
-<div class="table-responsive">
-    <!-- <li><a>Category</a>  
-        <ul>
+
+
+
+{% extends 'admin_templates/base_admin.html' %}
+{% load static %}
+{% block title %}
+Book List
+{% endblock title %}
+{% block main_content %}
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+
+    <!-- /.card-header -->
+
+    <div class="row">
+      <div class="col-12">
+
+        {% include "includes/messages.html" %}
+
+        <div class="card">
+          {% include 'override_table/header.html' with card_title='Book List' %}
+        
+
+          <!-- /.card-header -->
+          <div class="card-body table-responsive">
             {% if category_list %}
-            {% for categorylist in category_list %}
-            <li><a href="#">{{categorylist.name}}</a></li>
-            {% endfor %}
-            {% endif %}     
-        </ul>
-    </li> -->
-    {% if category_list %}
-    <form action="/action_page.php">
-        <label for="cars">Choose a car:</label>
-        {% for categorylist in category_list %}
-        <select id="cars" name="cars">
-          <option value="">{{categorylist.name}}</option>
-        </select>
-        {% endfor %}
-    </form>
-    {% endif %} 
-    <table id="librarytable" class="table table-bordered table-striped" data-page-length='100'>
-        <thead class="thead-light">
-            <tr>
-                <th></th>
-                <th class="serial">#</th>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Book Type</th>
-                <th>Isbn</th>
-                <th>Quantity</th>
-                <th>Created At</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% if book_list %}
-            <tr>
-                {% for booklist in book_list %}
-                <td></td>
-                <td class="serial">{{ forloop.counter }}</td>
-                <td>{{ booklist.title }}</td>
-                <td>{{ booklist.author }}</td>
-                <td>{{ booklist.category }}</td>
-                <td>{{ booklist.isbn }}</td>
-                <td>{{ booklist.quantity}}</td>
-                <td>{{ booklist.created_at }}</td>
-                <td>
-                    <a href="{% url 'library:view_book' booklist.isbn %}" class="btn btn-xs btn-success">View</a>
-                    <a href="{% url 'library:edit_book' booklist.isbn %}" class="btn btn-xs btn-warning"><i class="fas fa-edit"></i></a>
-                    <a href="{% url 'library:del_book' booklist.isbn %}" class="btn btn-xs btn-danger"><i class="fas fa-xs fa-trash-alt"></i></a>
-                </td>
-            </tr>
-            {% endfor %} {% else %}
-            <tr>
-                <td>No Book Data Found</td>
-            </tr>
-            {% endif %}
-        </tbody>
-    </table>
-</div>
-{% endblock content %} {% block morejs %}
-<script>
-    $('#librarytable').DataTable({
-        dom: 'lBfrtip', //if i use buttons then entries goes away
-        pagingType: "full_numbers",
+            <form action="/action_page.php">
+                <label for="cars">Choose a category:</label>
+                {% for categorylist in category_list %}
+                <select id="cars" name="cars">
+                  <option value="">{{categorylist.name}}</option>
+                </select>
+                {% endfor %}
+            </form>
+            {% endif %}         
+            {% url 'library:add_book' as button_url %}
 
-        buttons: [{
-                'extend': 'copy',
-                'text': '<i class="fas fa-copy" aria-hidden="true"></i> Copy',
+                {% include 'override_table/header_button.html' with button_title='book' button_url=button_url %}
 
-                'className': 'btn-datatables', //button css does not work
+            <table id="dataTable"
+              class="table table-sm  table-striped table-bordered table-hover text-nowrap dataTable no-footer">
+              <thead class="thead-light">
+                <tr>
+                    <th class="serial">#</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Book Type</th>
+                    
+                    <th>Status</th>
+                    <th>Created At</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if book_list %}
+                <tr class='clickable-row' data-href="#">
+                    {% for booklist in book_list %}
+                    <td class="serial">{{ forloop.counter }}</td>
+                    <td>{{ booklist.title }}</td>
+                    <td>{{ booklist.author }}</td>
+                    <td>{{ booklist.genre }}</td>
+                    <td>total: {{ booklist.total_copies}} copies <br> available: {{ booklist.available_copies}} copies</td>
+                    <td>{{ booklist.created_at }}</td>
+                    <td>
+                        <a href="{% url 'library:view_book' booklist.isbn %}" class="btn btn-xs btn-info"><strong>view</strong></a>
+                        <a href="{% url 'library:edit_book' booklist.isbn %}" class="btn btn-xs btn-success"><i class="fas fa-edit"></i></a>
+                        <a href="{% url 'library:del_book' booklist.isbn %}" class="btn btn-xs btn-danger"><i class="fas fa-trash-alt"></i></a>
+                    </td>
+                </tr>
+                {% endfor %} {% else %}
+                <tr>
+                    <td>No Book Data Found</td>
+                </tr>
+                {% endif %}
+            </tbody>
+            
+            </table>
 
 
 
-            }, {
-                extend: 'excel',
-                text: '<i class="fas fa-file-excel" aria-hidden="true"></i> Excel',
-                'className': 'btn-datatables',
 
 
-            }, {
-                extend: 'csv',
-                text: '<i class="fas fa-file-csv" aria-hidden="true"></i> CSV',
-                'className': 'btn-datatables',
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+    </div>
+
+  </div>
+</section>
+<!-- /.content -->
+
+<!-- Delete Modal Form -->
 
 
-            }, {
-                extend: 'pdf',
-                text: '<i class="fas fa-file-pdf" aria-hidden="true"></i> PDF',
-                'className': 'btn-datatables',
 
+{% endblock main_content %}
 
-            },
-
-        ],
-
-        //for checkbox
-        columnDefs: [{
-                orderable: false,
-
-                className: 'select-checkbox',
-                targets: 0,
-
-            },
-
-        ],
-
-        select: {
-            style: 'multi',
-            // selector: 'td:first-child'
-
-        },
-        order: [
-            [1, 'asc']
-        ],
-    });
-</script>
-
-{% endblock morejs %}
