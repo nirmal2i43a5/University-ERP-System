@@ -1069,7 +1069,7 @@ def add_assignment(request):
         #     for email in students_email:
         #         student_bulk_email.append(email)
         #     context = {
-        #     'message': "Please, Check Your Assignment in GCI Mis.",
+        #     'message': "Please, Check Your Assignment in Easy Academy Mis.",
         # }
         #     template = get_template(
         #     'bulk_email/email_message.html').render(context)

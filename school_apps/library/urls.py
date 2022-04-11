@@ -53,5 +53,5 @@ urlpatterns = [
     path('book_renew_detail/<int:pk>/', book_renew_detail, name='book_renew_detail'),
     path('del_book_renew/<int:pk>/', BookRenewDeleteView.as_view(), name='del_book_renew'),
     
-        path('library-management/',library_home,name = 'library-management'),
+    path('library-management/',library_home,name = 'library-management'),
 ]
