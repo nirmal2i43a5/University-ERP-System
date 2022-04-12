@@ -16,6 +16,7 @@
 
   {% include "includes/adminlte_css.html" %}
   {% include "includes/datatables_css.html" %}
+ 
   <link
   rel="stylesheet"
   href="{% static 'plugins/select2-bootstrap4-theme/select2-bootstrap4.css' %}"
@@ -456,6 +457,10 @@ function deleteSelected({table,id,message_title, model,app_name,replace_app_name
        
 
       });
+    
+        $(document).ready(function(){
+          $('.page-loader').hide();
+        });
       
 </script>
 

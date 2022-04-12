@@ -6,7 +6,10 @@
     color: #195da9;
     font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
     font-size: .8rem;
+
+
 }
+
 </style>
 <div class="card mx-2">
   {% include 'override_table/header.html' with card_title=title %}
@@ -17,13 +20,12 @@
 
 
 
-        {% url 'admin_app:add_staff' as button_url %}
 
         <div class="table-responsive">
           <table
-            id="table"
+            id="table" 
             data-ajax="/api/v1/userlog/?format=datatables&id={{ request.GET.id | stringformat:'s' }}"
-            class="table table-bordered table-striped table-hover dataTable"
+            class="table table-bordered table-striped table-hover"
           >
             <thead>
               <tr>
@@ -60,7 +62,6 @@
         {
           targets: 1,
           render: function (data, type, row, meta) {
-            console.log(row.user,"Inside console")
             if(row.user){
               return row.user.full_name + '('+row.user.email+')';
             }
@@ -92,3 +93,4 @@
   });
 </script>
 {% endblock %}
+

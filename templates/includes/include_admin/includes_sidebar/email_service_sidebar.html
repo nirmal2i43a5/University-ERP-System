@@ -1,40 +1,44 @@
 
       <li class="nav-item">
-        <a href="{% url 'email_sms:student_send_bulk_email' %}" class="nav-link">
-          <i class="far  fa-circle"></i>
-          <p>
-            Students Bulk
+        {% url 'email_sms:student_send_bulk_email' as student_message_url%}
+        <a href="{% url 'email_sms:student_send_bulk_email' %}" class=" nav-item nav-link {% if request.path == student_message_url %} active{% endif %}">
+      Students Bulk
 
-          </p>
         </a>
       </li>
       <li class="nav-item">
-        <a href="{% url 'email_sms:teacher_send_bulk_email' %}" class="nav-link">
-          <i class="far  fa-circle"></i>
-          <p>
+        {% url 'email_sms:teacher_send_bulk_email' as teacher_message_url%}
+        <a href="{% url 'email_sms:teacher_send_bulk_email' %}" class=" nav-item nav-link {% if request.path == teacher_message_url %} active{% endif %}">
             Teachers Bulk
 
-          </p>
         </a>
       </li>
       <li class="nav-item">
-        <a href="{% url 'email_sms:user_send_bulk_email' %}" class="nav-link">
-          <i class="far  fa-circle"></i>
-          <p>
+        {% url 'email_sms:user_send_bulk_email' as extrauser_message_url%}
+        <a href="{% url 'email_sms:user_send_bulk_email' %}" class=" nav-item nav-link {% if request.path == extrauser_message_url %} active{% endif %}">
             Extra User
 
-          </p>
         </a>
       </li>
 
       <li class="nav-item">
-        <a href="{% url 'email_sms:send_sms' %}" class="nav-link">
-          <i class="far  fa-circle"></i>
-          <p>
+        {% url 'email_sms:send_sms' as send_sms%}
+        <a href="{% url 'email_sms:send_sms' %}" class=" nav-item nav-link {% if request.path == send_sms %} active{% endif %}">
             Send SMS
 
-          </p>
         </a>
       </li>
 
 
+
+
+      <style>
+       .nav-item.nav-link.active{
+          background-color: #fff;
+          color:#7650B9;
+           }
+        .nav-pills .nav-link{
+          color:white;
+        }
+        
+      </style>

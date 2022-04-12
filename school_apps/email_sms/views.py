@@ -46,7 +46,7 @@ def student_send_bulk_email(request):
 		# 	messages.error(request, 'Failed to Sent message.')
 		# 	return redirect('email_sms:send_bulk_email')
 
-	return render(request, 'bulk_email/form.html', {'title': 'Student  Message'})
+	return render(request, 'bulk_email/form.html', {'title': 'Student Message'})
 
 
 def teacher_send_bulk_email(request):
