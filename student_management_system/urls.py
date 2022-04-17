@@ -77,6 +77,7 @@ urlpatterns = [
     path('library/', include('school_apps.library.urls',namespace='library')),
     path('', include('school_apps.student_certificate.urls',namespace='certificate')),
     path('', include('school_apps.log_history.urls',namespace='user_history')),
+    path('', include('school_apps.classroom.urls',namespace='classroom')),
      
     path('schedule/',include('schedule.urls')),
     

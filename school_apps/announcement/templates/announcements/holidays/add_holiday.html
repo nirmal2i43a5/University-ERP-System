@@ -1,7 +1,9 @@
 {% extends 'admin_templates/base_admin.html' %}
 
 {% load crispy_forms_tags %}
-
+{% block title %}
+Add Holiday
+{% endblock title %}
 
 
 {% block main_content %}
@@ -15,9 +17,7 @@
       <div class="col-md-12" >
         <!-- general form elements -->
         <div class="card card-info">
-          <div class="card-header">
-            <h3 class="card-title">Add Holiday</h3>
-          </div>
+          {% include 'override_table/header.html' with card_title='Add Holiday' %}
 
           {% include 'admin_templates/form.html' with messages=messages form=form  button_text="Add Holiday" %}
           {{form.media}}
