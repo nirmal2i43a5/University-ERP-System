@@ -1,26 +1,18 @@
-import json
 import datetime
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import Http404
 from django.contrib import messages
-from django.http import HttpResponse,JsonResponse
-from django.db.models import Q
-from django.core.files.storage import FileSystemStorage
-from django.views.decorators.csrf import csrf_exempt
-from django.views import View
 from student_management_app.django_forms.forms import (
-                                           AddCustomUserForm, DocumentFileForm, EditCustomUserForm,AddSystemAdminForm
+                                          AddSystemAdminForm
                                           )
                                                                       
 from student_management_app.django_forms.administrative_forms import SystemAdminForm
 
 from student_management_app.models import (
-                                        	 CourseCategory, CustomUser, AdminUser , DocumentFile
+                                        	 CourseCategory, CustomUser, AdminUser
                                            )
 
-from django.contrib.auth.models import Group, Permission
-from django.contrib.auth.decorators import login_required, permission_required  
-
+from django.contrib.auth.decorators import  permission_required  
+from django.contrib.auth.models import Group
 
 
 @permission_required('student_management_app.add_adminuser', raise_exception=True)
@@ -34,8 +26,6 @@ def add_admin(request):
         if custom_form.is_valid() and admin_form.is_valid():
             email = custom_form.cleaned_data["email"]
             user_type = custom_form.cleaned_data["user_type"]
-            print(user_type,"--------------------")
-            print(type(user_type),":::::::::::::::::::::;;;")
             full_name = custom_form.cleaned_data["full_name"]
             
             address = admin_form.cleaned_data["address"]
@@ -70,7 +60,7 @@ def add_admin(request):
             
 
 
-            if user_type == Group.objects.get(name =  'Admin'):
+            if user_type == Group.objects.get(name =  'Admin'):#for plus2
                 user.adminuser.course_category = get_object_or_404(CourseCategory, course_name = "A-Level")
             if user_type == Group.objects.get(name =  'Bachelor-Admin'):
                 user.adminuser.course_category = get_object_or_404(CourseCategory, course_name = "Bachelor")

@@ -13,7 +13,11 @@ from schedule.models import Calendar
 
 
 def populate_models(sender, **kwargs):
-    a_level_admin, created = Group.objects.get_or_create(name='Admin')
+    a_level_admin, created = Group.objects.get_or_create(name='Admin')#a level admin
+    # a_level_admin, created = Group.objects.get_or_create(name='School-Admin')
+    # a_level_admin, created = Group.objects.get_or_create(name='Alevel-Admin')
+    # 
+    # a_level_admin, created = Group.objects.get_or_create(name='Plus2-Admin')
     bachelor_admin_group, created = Group.objects.get_or_create(name='Bachelor-Admin')
     master_admin_group, created = Group.objects.get_or_create(name='Master-Admin')
     teacher_group, created = Group.objects.get_or_create(name='Teacher')

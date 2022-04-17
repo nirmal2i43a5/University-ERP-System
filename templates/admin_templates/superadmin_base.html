@@ -13,11 +13,12 @@
 
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
   {% include "includes/adminlte_css.html" %}
 
+  {% include "includes/datatables_css.html" %}
 
   <title> {% block title %} {% endblock %}</title>
+  <link href="{% static 'main_dashboard/css/loader.css' %}" rel="stylesheet">
   <link rel="icon" type="images/jpg" href="{% static 'image/easy-academy-1.png' %}"> 
   {% block head_css %}
   {% endblock head_css%}
@@ -26,7 +27,18 @@
 {% endblock head %}
 
 <body class="hold-transition sidebar-mini layout-fixed">
-
+  <div class="page-loader home-loader">
+    <div class="inner-loader">
+      <div class="spinner-border text-center" style="width: 3rem; height: 3rem;" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <div class="spinner-grow text-center" style="width: 3rem; height: 3rem;" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <div class="loader__figure"/>
+    </div>
+  </div>
+</div>
   <div class="wrapper">
 
     <!-- Navbar -->
@@ -106,7 +118,7 @@
 
     <div class="row">
       <div class="col-md-12">
-        <strong>Copyright &copy; {% now 'Y' %} <a href="https://mangosoftsolution.com/">Mangosoft Solution</a>.</strong> All rights
+        <strong>Copyright &copy; {% now 'Y' %} <a href=""></a>.</strong> All rights
         reserved.
       </div>
      
@@ -125,13 +137,20 @@
   {% include "includes/adminlte_jquery.html" %}
   <!--------------for datatables---------------------->
 
+  {% include "includes/datatables_js.html" %}
 
   
 
   {% block custom_css %}{% endblock custom_css %}
   {% block custom_js %}{% endblock custom_js %}
   {% block javascript %}{% endblock %}
+<script>
+  $(document).ready(function(){
+    $('.page-loader').hide();
+  });
 
+
+</script>
 </body>
 
 

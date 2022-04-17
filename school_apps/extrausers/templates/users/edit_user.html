@@ -13,10 +13,8 @@
     <div class="row">
       <div class="col-md-12">
         <!-- general form elements -->
-        <div class="card card-info">
-          <div class="card-header">
-            <h3 class="card-title">Edit User</h3>
-          </div>
+        <div class="card">
+          {% include 'override_table/header.html' with card_title=title %}
           <!-- /.card-header -->
           <!-- form start -->
           <form role="form" method="post" enctype="multipart/form-data">
