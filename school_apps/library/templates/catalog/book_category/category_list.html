@@ -33,7 +33,6 @@ Book Category
               class="table table-sm  table-striped table-bordered table-hover text-nowrap dataTable no-footer">
               <thead>
                 <tr>
-                    <th></th>
                     <th class="serial">#</th>
                     <th>Name</th>
                     <th>Created At</th>
@@ -46,7 +45,6 @@ Book Category
                 {% if category_list %}
                 <tr>
                     {% for categorylist in category_list %}
-                    <td></td>
                     <td class="serial">{{ forloop.counter }}</td>
                     <td>{{ categorylist.name }}</td>
                     <td>{{ categorylist.created_at }}</td>

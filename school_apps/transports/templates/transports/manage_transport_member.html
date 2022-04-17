@@ -17,9 +17,9 @@
       <div class="col-12">
 
 
-        <div class="card card-info">
+        <div class="card">
           
-          <div class="card-header ">
+          <div class="card-header " style = "background-color:#7650B9;color:white;">
             
 
             <span>Transport Member</span>
@@ -84,10 +84,10 @@
                   <td>{{ student.student_user.email }}</td>
                   <td>{{ student.transport }}</td>
 
-                  <td>
+                  {% comment %} <td>
                     <!-- <a href="{% url 'admin_app:edit_student' student.student_user.id %}" class="btn btn-xs btn-success"><i class="fas fa-xs fa-edit"></i></a> -->
                     <!-- <a href="{% url 'admin_app:delete_student' student.student_user.id %}" class="btn btn-xs btn-danger"><i class="fas fa-xs fa-trash-alt"></i></a> -->
-                  </td>
+                  </td> {% endcomment %}
                
                 </tr>
                
