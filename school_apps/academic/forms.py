@@ -6,6 +6,7 @@ from django.contrib.admin.widgets import AdminSplitDateTime
 
 
 
+
 class FilterForm(forms.Form):
     def __init__(self, *args, user = None, **kwargs):
         super().__init__(*args, **kwargs)
@@ -32,7 +33,7 @@ class FilterForm(forms.Form):
             section.queryset = section.queryset.filter(course_category = master_course_category)
 
 class SyllabusForm(forms.ModelForm):
-    course_category = forms.ModelChoiceField(queryset = CourseCategory.objects.all(), widget=forms.RadioSelect())
+    course_category = forms.ModelChoiceField(queryset = CourseCategory.objects.all(), widget=forms.RadioSelect(attrs={'class': 'inline'}))
     title=forms.CharField(widget=forms.TextInput(attrs={"class":"form-control","placeholder": " Enter Syllabus Title",}))
     semester = forms.ModelChoiceField(label='Class',empty_label="Select Class", queryset = Semester.objects.all())
     description = forms.CharField( required = False, widget=forms.Textarea(attrs={'rows': 2, 'cols': 10,"placeholder": " Enter  Course Description",}))
@@ -40,6 +41,7 @@ class SyllabusForm(forms.ModelForm):
     class Meta:
         model = Syllabus
         fields = '__all__'
+        
 
 
 

@@ -26,7 +26,7 @@ from django.views.i18n import JavaScriptCatalog
 from student_management_system.views import admin_home,get_user_by_role_ajax
 from student_management_system.views import home as main_home
 from student_management_system.views import (superuser_home,a_level_home,bachelor_home,master_home,
-                                             mass_delete
+                                             mass_delete,school_class
                                             )
 from django.contrib.auth import views as auth_views
 
@@ -45,6 +45,7 @@ urlpatterns = [
     # path('logs/', HistoryLogs.as_view(), name ="history_log"),
     path('common/mass/delete/<app>/<model>/', mass_delete, name ="mass_delete"),
     path('dashboard/', main_home.as_view(), name ="home"),
+    path('school/classroom/',school_class,name = "school-classroom"),
     path('a_level_home/',a_level_home,name = "a_level_home"),
     path('bachelor_home/',bachelor_home,name = "bachelor_home"),
     path('master_home/',master_home,name = "master_home"),

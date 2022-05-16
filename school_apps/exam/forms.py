@@ -69,7 +69,7 @@ class QuestionGradeForm(forms.ModelForm):
 #for managing details
 class StudentDetailsSearch(forms.Form):
 
-    semester = forms.ModelChoiceField(label= '',empty_label = 'Choose Semester',
+    semester = forms.ModelChoiceField(label= '',empty_label = 'Choose Class',
                                       queryset = Semester.objects.all(),widget=forms.Select(attrs = {'class':'col-md-12'}))
     section = forms.ModelChoiceField(label= '',empty_label = 'Choose Section', widget=forms.Select(attrs={'class':'col-md-12'}),
                                      queryset = Section.objects.all())

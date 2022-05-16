@@ -443,3 +443,17 @@ def exam_home(request):
         'title':'Exam Management',
                  }
     return render(request, 'admin_templates/dashboard.html', context)
+
+
+
+
+"""Visit School Class"""
+
+def school_class(request):
+
+    school_classes = Semester.objects.filter(course_category = get_object_or_404(CourseCategory, course_name = 'School'))
+    context = {
+        'title':'Class Room',
+        'school_classes':school_classes
+                 }
+    return render(request, 'classroom/school_classroom.html', context)

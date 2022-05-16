@@ -28,7 +28,7 @@ def get_students(request):
         course_category_id = request.POST.get('course_category')
         course_category = get_object_or_404(CourseCategory, pk = course_category_id)
         semester_id = request.POST.get('semester')
-        group = request.POST.get('group')
+        # group = request.POST.get('group')
         section = request.POST.get('section')
         subject = request.POST.get('subject')
         semester = get_object_or_404(Semester, pk = semester_id)

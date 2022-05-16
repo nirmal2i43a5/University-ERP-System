@@ -350,7 +350,7 @@ DBBACKUP_STORAGE_OPTIONS = {'location': os.path.join(BASE_DIR,'dbbackup')}
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-#for debug toolbar
+# for debug toolbar
 # INTERNAL_IPS = [
 #     # ...
 #     '127.0.0.1',

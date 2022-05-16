@@ -166,7 +166,7 @@ def manage_subject(request):
     master_course_category = get_object_or_404(CourseCategory,course_name = 'Master')
     
     
-    if request.user.adminuser.course_category == a_level_course_category :
+    if request.user.adminuser.course_category == a_level_course_category:
         form = SubjectForm()
         if request.method == 'POST':
             form = SubjectForm(request.POST)
@@ -177,7 +177,6 @@ def manage_subject(request):
                     instance.save()
                     messages.success(request, "Subject is Added Successfully.")
                     return redirect('academic:manage_subject')
-
             except:
                 messages.error(request, "Failed To Add Subject.")
                 return redirect('academic:manage_subject')

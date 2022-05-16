@@ -30,6 +30,37 @@ gender_choice = (
     ('Female', 'Female'),
     ('Third Gender', 'Third Gender')
 )
+
+
+school_classes_choices = (
+        ('NURSERY','NURSERY'),
+        ('LKG','LKG'),
+        ('UKG','UKG'),
+        ('ONE','ONE'),
+        ('TWO','TWO'),
+        ('THREE','THREE'),
+        ('FOUR','FOUR'),
+        ('FIVE','FIVE'),
+        ('SIX','SIX'),
+        ('SEVEN','SEVEN'),
+        ('EIGHT','EIGHT'),
+        ('NINE','NINE'),
+        ('TEN','TEN'),
+        
+    )
+
+# PLUS_TWO_CHOICES = [
+#         ('AS', 'Advanced Subsidiary (AS)'),
+#         ('AL', 'Advanced Level (AL)'),
+#         ('PA', 'Passed out')
+#         ]
+
+ALEVEL_CHOICES = [
+        ('AS', 'Advanced Subsidiary (AS)'),
+        ('AL', 'Advanced Level (AL)'),
+        ('PA', 'Passed out')
+        ]
+
 bachelor_semester_choices = (
         ('First','First'),
         ('Second','Second'),
@@ -46,6 +77,8 @@ master_semester_choices = (
         ('Third','Third'),
         ('Fourth','Fourth'),
     )
+
+
 YEAR_CHOICES = []
 for r in range(2010, (datetime.datetime.now().year+1)):
     YEAR_CHOICES.append((r,r))
@@ -256,19 +289,13 @@ class ExtraUser(models.Model):  # this all other user like driver accountant and
 
 
 class Semester(models.Model):
-
-    ALEVEL_CHOICES = [
-        ('AS', 'Advanced Subsidiary (AS)'),
-        ('AL', 'Advanced Level (AL)'),
-        ('PA', 'Passed out')
-        ]
-    
+ 
     course_category = models.ForeignKey(CourseCategory, on_delete=models.CASCADE,null = True, blank=True)
+    name = models.CharField(max_length=100)#for school classes
+    level = models.CharField(max_length=20, choices=ALEVEL_CHOICES, default='AS',null = True,blank = True)
     bachelor_semester = models.CharField(_("Course Name"),max_length=100,null = True, blank = True)
     master_semester = models.CharField(_("Course Name"),max_length=100,null = True, blank = True)
-    name = models.CharField(max_length=100, verbose_name="Year")
     semester_value = models.IntegerField(null=True, blank=True)
-    level = models.CharField(max_length=20, choices=ALEVEL_CHOICES, default='AS',null = True,blank = True)
     # staff_user = models.ForeignKey(CustomUser, on_delete=models.CASCADE,null = True, blank = True)
     description = models.TextField(blank=True)
     status = models.BooleanField(default=True)
@@ -278,13 +305,19 @@ class Semester(models.Model):
         db_table = 'tbl_Semester'
         verbose_name = _("semester")
         verbose_name_plural = _("semesters")
+        ordering = ('pk',)
 
 
     def __str__(self):
+        
+        school_course_category = get_object_or_404(CourseCategory,course_name = 'School')
         a_level_course_category = get_object_or_404(CourseCategory,course_name = 'A-Level')
         bachelor_course_category = get_object_or_404(CourseCategory,course_name = 'Bachelor')
         master_course_category = get_object_or_404(CourseCategory,course_name = 'Master')
         
+        if self.course_category == school_course_category:
+               return f'{self.name}'
+           
         if self.course_category == a_level_course_category:
            return f'{self.name}'
             
