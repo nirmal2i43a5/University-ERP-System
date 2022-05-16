@@ -29,15 +29,15 @@ gunicorn==20.0.4
 icalendar==4.0.7
 idna==3.2
 isort==5.8.0
-jsmin==2.2.2
-jsonfield==3.1.0
+# jsmin==2.2.2
+# jsonfield==3.1.0
 lazy-object-proxy==1.6.0
 MarkupPy==1.14
 mccabe==0.6.1
 odfpy==1.4.1
 openpyxl==3.0.7
-Pillow==8.0.1
-psycopg2-binary==2.8.6
+# Pillow
+psycopg2-binary
 pylint==2.8.2
 python-barcode==0.13.1
 python-dateutil==2.8.1
