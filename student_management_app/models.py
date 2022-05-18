@@ -347,7 +347,7 @@ class Subject(models.Model):
     master_semester = models.CharField(_('Semester'),max_length=100,choices = master_semester_choices,null = True, blank = True)
     subject_name = models.CharField(max_length=255)
     course = models.ForeignKey(Course, on_delete=models.CASCADE, null= True, blank=True)
-    staff_user = models.ManyToManyField(CustomUser, through='SubjectTeacher', null = True, blank = True)
+    staff_user = models.ManyToManyField(CustomUser, through='SubjectTeacher',  blank = True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     history = HistoricalRecords()

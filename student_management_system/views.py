@@ -457,3 +457,9 @@ def school_class(request):
         'school_classes':school_classes
                  }
     return render(request, 'classroom/school_classroom.html', context)
+
+
+
+def error_404(request, exception):
+    data = {}
+    return render(request,'page-errors/page-404.html', data)

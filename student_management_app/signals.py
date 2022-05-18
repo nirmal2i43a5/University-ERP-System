@@ -8,7 +8,8 @@ from django.contrib.auth.models import Group
 from school_apps.school_settings.models import MisSetting
 from django.shortcuts import get_object_or_404
 from schedule.models import Calendar
-school_classes_choices = ['NURSERY','LKG','UKG','ONE','TWO','THREE','FOUR','FIVE','SIX','SEVEN','EIGHT','NINE','TEN']
+school_classes_choices = ['Class Montessori','Class Nursery','Class LKG','Class UKG','Class One','Class Two','Class Three','Class Four','Class Five',
+                          'Class Six','Class Seven','Class Eight','Class Nine','Class Ten']
        
 def populate_models(sender, **kwargs):
     a_level_admin, created = Group.objects.get_or_create(name='Admin')#a level admin

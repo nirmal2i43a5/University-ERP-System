@@ -20,7 +20,6 @@ from django.urls import path,include
 from django.conf.urls import url
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.views.generic.base import RedirectView
-import debug_toolbar
 from django.views.generic.base import RedirectView
 from django.views.i18n import JavaScriptCatalog
 from student_management_system.views import admin_home,get_user_by_role_ajax
@@ -98,9 +97,7 @@ urlpatterns = [
 	path('reset/complete/',auth_views.PasswordResetCompleteView.as_view(template_name='passwordreset/password_reset_complete.html'),
 		 name="password_reset_complete"),
     
-    
-    #debug toolbar
-    # path('__debug__/', include(debug_toolbar.urls)),
+
     
     #for admin js
     path('jsi18n', JavaScriptCatalog.as_view(), name='js-catlog'),
@@ -115,10 +112,16 @@ urlpatterns = [
     
 ]#+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)+static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
 
+handler404 = 'student_management_system.views.error_404'
 
 if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [path('__debug__/', include('debug_toolbar.urls'))] + urlpatterns
+    
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    # if apps.is_installed("silk"):
+    # urlpatterns = [path("silk/", include("silk.urls",namespace='silk'))] + urlpatterns
     
     
     

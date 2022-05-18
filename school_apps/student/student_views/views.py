@@ -245,8 +245,7 @@ def student_file_upload(request):
             name=batch,
             course_category = request.user.adminuser.course_category
         )
-        print(batch)
-        print(sem_obj)
+
         sem = sem_obj
         role = Group.objects.get(name = 'Student')
         # ---
@@ -379,7 +378,6 @@ def add_student_document(request, student_id):  # for ajax part
                 document.student = student
 
             else:  # if not id then edit data clicking on save button
-                print("------inside else part-------")
                 document = form.save(commit=False)
                 document.id = document_id  # for updating particular field
                 document.student = student
@@ -393,7 +391,6 @@ def add_student_document(request, student_id):  # for ajax part
 
             return JsonResponse({'status': 'True', 'document_data': document_data, 'message': 'Document is Successfully Saved'}, safe=False)
         else:
-            print("---error part-------")
             return JsonResponse({'status': 0})
 
 

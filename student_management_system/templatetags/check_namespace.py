@@ -7,7 +7,6 @@ register = template.Library()
 def has_namespace(request_url,args): 
     
     request_url_namespace = urls.resolve(request_url).namespace
-    print(":::Inside templatetags:::")
     if len(args.split(',')) == 2:
         module_home_url,my_namespace =  args.split(',')#args content multi variables
     else:#this is for some app that do not have namespace(i.e for schedule app or others)
