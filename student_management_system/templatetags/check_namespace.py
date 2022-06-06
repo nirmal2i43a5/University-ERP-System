@@ -5,6 +5,7 @@ register = template.Library()
 
 @register.filter(name='has_namespace')
 def has_namespace(request_url,args): 
+    print(":::::I am inside Namespace:::")
     
     request_url_namespace = urls.resolve(request_url).namespace
     if len(args.split(',')) == 2:
