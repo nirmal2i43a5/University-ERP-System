@@ -158,7 +158,7 @@ class AdminUser(models.Model):
     status = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    history = HistoricalRecords()
+    
 
     class Meta:
         db_table = 'tbl_Adminuser'
@@ -189,7 +189,7 @@ class Course(models.Model):  # i also want to see subject for particular course
     course_description = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
-    history = HistoricalRecords()
+    
 
     class Meta:
         db_table = 'tbl_Course'
@@ -215,7 +215,7 @@ class Staff(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     image = models.ImageField(null=True, blank=True)
     status = models.BooleanField(default=True)
-    history = HistoricalRecords()
+    
 
     class Meta:
         db_table = 'tbl_Staff'
@@ -262,7 +262,7 @@ class ExtraUser(models.Model):  # this all other user like driver accountant and
     status = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    history = HistoricalRecords()
+    
 
     class Meta:
         db_table = 'tbl_Extrauser'
@@ -299,7 +299,7 @@ class Semester(models.Model):
     # staff_user = models.ForeignKey(CustomUser, on_delete=models.CASCADE,null = True, blank = True)
     description = models.TextField(blank=True)
     status = models.BooleanField(default=True)
-    history = HistoricalRecords()
+    
 
     class Meta:
         db_table = 'tbl_Semester'
@@ -350,7 +350,7 @@ class Subject(models.Model):
     staff_user = models.ManyToManyField(CustomUser, through='SubjectTeacher',  blank = True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
-    history = HistoricalRecords()
+    
 
     class Meta:
         db_table = 'tbl_Subject'
@@ -381,7 +381,7 @@ class Section(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     subject = models.ManyToManyField(Subject)
-    history = HistoricalRecords()
+    
     
     class Meta:
         db_table = 'tbl_Section'
@@ -566,7 +566,7 @@ class Student(models.Model):
     country = models.CharField(max_length = 50, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    history = HistoricalRecords()
+    
     
         
     class Meta:
@@ -647,7 +647,7 @@ class DocumentFile(models.Model):
     extra_user = models.ForeignKey(ExtraUser, on_delete=models.CASCADE, null=True)
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
-    history = HistoricalRecords()
+    
 
     class Meta:
         db_table = 'tbl_Documentfile'
@@ -669,7 +669,7 @@ class Complain(models.Model):
     attachment = models.FileField(upload_to='Complain_attachment', blank=True)
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
-    history = HistoricalRecords()
+    
 
     class Meta:
         db_table = 'tbl_Complain'
@@ -697,7 +697,7 @@ class CertificateTemplate(models.Model):
     photo = models.ImageField( upload_to='student_character_certificates_photos', blank=True, null = True)
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
-    history = HistoricalRecords()
+    
     # -------------------------------extra field --------------------------
     certificate_name = models.CharField(max_length=250)
     theme = models.CharField(max_length=50, choices=theme_choices)
@@ -732,7 +732,7 @@ class SocialLink(models.Model):
     google_plus = models.URLField(max_length=200, blank=True)
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
-    history = HistoricalRecords()
+    
     # image = models.ImageField(upload_to = 'user_sociallink_images')
 
     class Meta:

@@ -54,11 +54,7 @@
                 </div>
 
                 <div>
-                  {% if  request.user|has_group:'Admin' or request.user.is_superuser   %}
-                  <a href="{% url 'academic:assignment_log' %}" class="btn btn-xs  text-white mt-2 ml-1" style="background-color: #743DB8;"  >
-                    <span><i class="fas fa-sm fa-history"></i> <strong>Log History</strong></span>
-                </a>
-                {% endif %}
+                 
                 </div>
                 
              

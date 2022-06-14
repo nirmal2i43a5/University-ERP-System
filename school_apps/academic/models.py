@@ -17,7 +17,7 @@ class Syllabus(models.Model):
     file = models.FileField(upload_to='syllabus')
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
     description = models.TextField()
-    history = HistoricalRecords()
+    
 
     class Meta:
         db_table = 'syllabus'
@@ -46,7 +46,7 @@ class Assignment(models.Model):
     draft = models.BooleanField(_('Save as Draft'),default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    history = HistoricalRecords()
+    
 
     class Meta:
         db_table = 'assignment'
@@ -98,7 +98,7 @@ class Routine(models.Model):
     room = models.CharField( max_length=100,null=True, blank=True)
     # course = models.ForeignKey(SectionSubject, on_delete=models.CASCADE)
     course = models.ForeignKey(Section, on_delete=models.CASCADE, related_name= 'routine_course', null=True, blank=True)
-    history = HistoricalRecords()
+    
     
     
     class Meta:

@@ -8,14 +8,7 @@ from django.utils.encoding import force_text
 from django.contrib.admin.models import LogEntry, ADDITION
 
 def academic_logs(request):
-#     assignemnt = Assignment.objects.get(id=11)
-#     assignments_logs = LogEntry.objects.log_action(
-#     user_id         = request.user.pk, 
-#     content_type_id = ContentType.objects.get_for_model(assignemnt).pk,
-#     object_id       = assignemnt.pk,
-#     object_repr     = force_text(assignemnt), 
-#     action_flag     = ADDITION
-# )
+    
 
     assignments_logs = Assignment.history.all()
     subjects_logs  = Subject.history.all()

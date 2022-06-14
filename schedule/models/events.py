@@ -87,7 +87,7 @@ class Event(models.Model):
         Calendar, on_delete=models.CASCADE, verbose_name=_("calendar")
     )
     color_event = models.CharField(_("Color event"), blank=True, max_length=10)
-    history = HistoricalRecords()
+    
     
     objects = EventManager()
 

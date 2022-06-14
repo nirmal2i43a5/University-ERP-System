@@ -15,7 +15,7 @@ class Notice(models.Model):
     status = models.BooleanField(default = True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    history = HistoricalRecords()
+    
 
 
     class Meta:
@@ -35,7 +35,7 @@ class Holiday(models.Model):
     details = RichTextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    history = HistoricalRecords()
+    
 
     class Meta:
         db_table = 'tbl_Holiday'

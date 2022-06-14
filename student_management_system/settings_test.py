@@ -83,7 +83,6 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'ckeditor',
     'django_extensions',
-    'simple_history',
     'schedule',
     'djangobower',
     'dbbackup',
@@ -118,7 +117,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',#django debug
     # 'whitenoise.middleware.WhiteNoiseMiddleware',  #for heroku
-    'simple_history.middleware.HistoryRequestMiddleware',#for simple history
+    # 'simple_history.middleware.HistoryRequestMiddleware',#for simple history
     'school_apps.user_profile.middleware.LoginRequiredMiddleware',
     
         # ===============user log middleware=================

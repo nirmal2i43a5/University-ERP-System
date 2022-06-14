@@ -7,7 +7,7 @@ from django.db.models.fields import CharField
 import datetime
 from django.utils import timezone
 from student_management_app.models import Student, Staff, Subject, Semester,CourseCategory
-from simple_history.models import HistoricalRecords
+
 from django.utils.translation import gettext_lazy as _
 from student_management_app.models import Department
 
@@ -29,7 +29,7 @@ class Term(models.Model):
     is_published = models.BooleanField(default = False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    history = HistoricalRecords()
+    
    
     
     def get_latest(self):
@@ -63,7 +63,7 @@ class Exams(models.Model):
     pass_marks = models.IntegerField(default=40)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    history = HistoricalRecords()
+    
 
     def save(self, *args, **kwargs):
         self.exam_type = self.term.type
@@ -83,7 +83,7 @@ class application_form(models.Model):
     remarks = models.CharField(max_length=255, default="No Remarks")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    history = HistoricalRecords()
+    
 
     
     def save(self, *args, **kwargs):
@@ -112,7 +112,7 @@ class studentgrades(models.Model):
     rank = models.IntegerField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    history = HistoricalRecords()
+    
 
     def __str__(self):
         return self.application_id.student.student_user.full_name + " " + self.exam_id.exam_title
@@ -159,7 +159,7 @@ class selectedcourses(models.Model):
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    history = HistoricalRecords()
+    
 
     def __str__(self):
         return self.student_id.student_user.full_name + " " + self.subject_id.subject_name
@@ -184,7 +184,7 @@ class selectedcourses(models.Model):
 #     period = models.IntegerField(choices=PERIOD_CHOICES)
 #     created_at = models.DateTimeField(auto_now_add=True)
 #     updated_at = models.DateTimeField(auto_now=True)
-#     history = HistoricalRecords()
+#     
 
 #     class Meta:
 #         constraints = [
