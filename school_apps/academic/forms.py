@@ -161,6 +161,7 @@ class MasterSubjectForm(forms.ModelForm):
         fields = ('subject_name','subject_code','master_semester')
         
 class SemesterForm(forms.ModelForm):#for a-level
+    course_category = forms.ModelChoiceField(queryset = CourseCategory.objects.exclude(course_name__in = ['School']), widget=forms.RadioSelect())
     name = forms.CharField(required = False, widget=forms.TextInput(
         attrs={'placeholder': 'Enter Your Class Name'}))
     # semester_value = forms.IntegerField(required = False, widget=forms.NumberInput(
@@ -171,66 +172,97 @@ class SemesterForm(forms.ModelForm):#for a-level
    
     class Meta:
         model = Semester
-        fields = ('name','level','description')
+        fields = ('course_category','name','description')
         
-        # exclude = ('status','semester_value')
+class ClassSearchForm(forms.Form):
+    course_category = forms.ModelChoiceField(label= '',
+                                      empty_label = '---Click Here To  Filter Class---', 
+                                      queryset = CourseCategory.objects.all())
+class SectionSearchForm(forms.Form):
+    course_category = forms.ModelChoiceField(label= '',
+                                      empty_label = '---Click Here To  Filter Course Category---', 
+                                      queryset = CourseCategory.objects.all())
+    filter_semester = forms.ModelChoiceField(label= '',
+                                      empty_label = '---Click Here To  Filter Class---', 
+                                      queryset = Semester.objects.all())
+# class BachelorSemesterForm(forms.ModelForm):#for a-level
+#     description = forms.CharField(required=False, widget=forms.Textarea(
+#         attrs={'rows': 2, 'cols': 10, "placeholder": " Enter  Course Description", }))
+
+   
+#     class Meta:
+#         model = Semester
+#         fields = ('bachelor_semester','description','name')
         
-class BachelorSemesterForm(forms.ModelForm):#for a-level
+        
+# class MasterSemesterForm(forms.ModelForm):#for a-level
+#     description = forms.CharField(required=False, widget=forms.Textarea(
+#         attrs={'rows': 2, 'cols': 10, "placeholder": " Enter  Course Description", }))
+
+#     class Meta:
+#         model = Semester
+#         fields = ('master_semester','description','name')
+        
+class SectionForm(forms.ModelForm):#for a-level
+    course_category = forms.ModelChoiceField(queryset = CourseCategory.objects.exclude(course_name__in = ['School']), widget=forms.RadioSelect())
+    name = forms.CharField(required = False, widget=forms.TextInput(
+        attrs={'placeholder': 'Enter Your Class Name'}))
+    # semester_value = forms.IntegerField(required = False, widget=forms.NumberInput(
+    #     attrs={'placeholder': 'Enter Semester Value'}))
     description = forms.CharField(required=False, widget=forms.Textarea(
         attrs={'rows': 2, 'cols': 10, "placeholder": " Enter  Course Description", }))
 
    
     class Meta:
         model = Semester
-        fields = ('bachelor_semester','description','name')
+        fields = ('course_category','name','description')
         
-        
-class MasterSemesterForm(forms.ModelForm):#for a-level
+class SectionForm(forms.ModelForm):#for a-level
+    course_category = forms.ModelChoiceField(queryset = CourseCategory.objects.all(), widget=forms.RadioSelect())
+    name = forms.CharField(required = False, widget=forms.TextInput(
+        attrs={'placeholder': 'Enter Your Class Name'}))
+    # semester_value = forms.IntegerField(required = False, widget=forms.NumberInput(
+    #     attrs={'placeholder': 'Enter Semester Value'}))
     description = forms.CharField(required=False, widget=forms.Textarea(
         attrs={'rows': 2, 'cols': 10, "placeholder": " Enter  Course Description", }))
 
+   
     class Meta:
         model = Semester
-        fields = ('master_semester','description','name')
-        
+        fields = ('course_category','name','description')
         
 class SectionForm(forms.ModelForm):
  
-    
-    # if request.user.adminuser.course_category == a_level_course_category :
-    # semester = forms.ModelChoiceField(
-    #      label='Class', empty_label="-----Select Class----- ", queryset=Semester.objects.filter(course_category = a_level_course_category))
-    section_name = forms.CharField(label='Section Name', widget=forms.TextInput(
-        attrs={"class": "form-control", "placeholder": " Enter Section Name", }))
-    capacity = forms.IntegerField(required = False, label='Capacity', widget=forms.NumberInput(
-        attrs={"class": "form-control", "placeholder": " Enter Section  Capacity", }))
-    category = forms.CharField(required=False, widget=forms.TextInput(
-        attrs={"class": "form-control", "placeholder": " Enter Section Category", }))
+    course_category = forms.ModelChoiceField(queryset = CourseCategory.objects.all(), widget=forms.RadioSelect())
+    # semester = forms.ModelChoiceField(queryset = Semester.objects.all(), )
+    # section_name = forms.CharField(label='Section Name', widget=forms.TextInput(
+    #     attrs={"class": "form-control", "placeholder": " Enter Section Name", }))
+    # capacity = forms.IntegerField(required = False, label='Capacity', widget=forms.NumberInput(
+    #     attrs={"class": "form-control", "placeholder": " Enter Section  Capacity", }))
+  
 
 
-    def __init__(self, *args, user=None, **kwargs):
-        super().__init__(*args, **kwargs)
-        a_level_course_category = get_object_or_404(CourseCategory,course_name = 'A-Level')
-        bachelor_course_category = get_object_or_404(CourseCategory,course_name = 'Bachelor')
-        master_course_category = get_object_or_404(CourseCategory,course_name = 'Master')
+    # def __init__(self, *args, user=None, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     a_level_course_category = get_object_or_404(CourseCategory,course_name = 'A-Level')
+    #     bachelor_course_category = get_object_or_404(CourseCategory,course_name = 'Bachelor')
+    #     master_course_category = get_object_or_404(CourseCategory,course_name = 'Master')
         
-        if user.adminuser.course_category == a_level_course_category:
-            semester = self.fields['semester']
-            semester.queryset = semester.queryset.filter(course_category = a_level_course_category)
-        if user.adminuser.course_category == bachelor_course_category:
-            semester = self.fields['semester']
-            semester.queryset = semester.queryset.filter(course_category = bachelor_course_category)
-        if user.adminuser.course_category == master_course_category:
-            semester = self.fields['semester']
-            semester.queryset = semester.queryset.filter(course_category = master_course_category)
+    #     if user.adminuser.course_category == a_level_course_category:
+    #         semester = self.fields['semester']
+    #         semester.queryset = semester.queryset.filter(course_category = a_level_course_category)
+    #     if user.adminuser.course_category == bachelor_course_category:
+    #         semester = self.fields['semester']
+    #         semester.queryset = semester.queryset.filter(course_category = bachelor_course_category)
+    #     if user.adminuser.course_category == master_course_category:
+    #         semester = self.fields['semester']
+    #         semester.queryset = semester.queryset.filter(course_category = master_course_category)
     
     
     class Meta:
         model = Section
-        fields = '__all__'
-        exclude = ('staff', 'class','subject','course_category')
-        
-        
+        fields = ['course_category','semester','section_name','capacity','description']
+     
 
             
 class ClassFormSearch(FilterForm):

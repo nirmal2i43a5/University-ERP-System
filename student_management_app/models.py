@@ -1,4 +1,5 @@
 import datetime
+from dis import code_info
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -292,9 +293,9 @@ class Semester(models.Model):
  
     course_category = models.ForeignKey(CourseCategory, on_delete=models.CASCADE,null = True, blank=True)
     name = models.CharField(max_length=100)#for school classes
-    level = models.CharField(max_length=20, choices=ALEVEL_CHOICES, default='AS',null = True,blank = True)
-    bachelor_semester = models.CharField(_("Course Name"),max_length=100,null = True, blank = True)
-    master_semester = models.CharField(_("Course Name"),max_length=100,null = True, blank = True)
+    # level = models.CharField(max_length=20, choices=ALEVEL_CHOICES, default='AS',null = True,blank = True)
+    # bachelor_semester = models.CharField(_("Course Name"),max_length=100,null = True, blank = True)
+    # master_semester = models.CharField(_("Course Name"),max_length=100,null = True, blank = True)
     semester_value = models.IntegerField(null=True, blank=True)
     # staff_user = models.ForeignKey(CustomUser, on_delete=models.CASCADE,null = True, blank = True)
     description = models.TextField(blank=True)
@@ -309,23 +310,24 @@ class Semester(models.Model):
 
 
     def __str__(self):
+        return f'{self.name}'
         
-        school_course_category = get_object_or_404(CourseCategory,course_name = 'School')
-        a_level_course_category = get_object_or_404(CourseCategory,course_name = 'A-Level')
-        bachelor_course_category = get_object_or_404(CourseCategory,course_name = 'Bachelor')
-        master_course_category = get_object_or_404(CourseCategory,course_name = 'Master')
+        # school_course_category = get_object_or_404(CourseCategory,course_name = 'School')
+        # a_level_course_category = get_object_or_404(CourseCategory,course_name = 'A-Level')
+        # bachelor_course_category = get_object_or_404(CourseCategory,course_name = 'Bachelor')
+        # master_course_category = get_object_or_404(CourseCategory,course_name = 'Master')
         
-        if self.course_category == school_course_category:
-               return f'{self.name}'
+        # if self.course_category == school_course_category:
+        #        return f'{self.name}'
            
-        if self.course_category == a_level_course_category:
-           return f'{self.name}'
+        # if self.course_category == a_level_course_category:
+        #    return f'{self.name}'
             
-        if self.course_category == bachelor_course_category:
-            return f'{self.name}'
+        # if self.course_category == bachelor_course_category:
+        #     return f'{self.name}'
         
-        if self.course_category == master_course_category:
-            return f'{self.name}'
+        # if self.course_category == master_course_category:
+        #     return f'{self.name}'
 
     
 
@@ -374,9 +376,9 @@ class Section(models.Model):
     course_category = models.ForeignKey(CourseCategory, on_delete=models.CASCADE,null = True, blank=True)
     section_name = models.CharField(max_length=100)
     capacity = models.IntegerField(null = True, blank = True)
-    semester = models.ForeignKey(Semester, on_delete=models.CASCADE, null = True)
+    semester = models.ForeignKey(Semester, verbose_name = 'Class', on_delete=models.CASCADE, null = True)
     staff = models.ForeignKey(CustomUser, on_delete=models.CASCADE,null = True, blank = True)
-    category = models.CharField(max_length=200, blank=True)
+    # category = models.CharField(max_length=200, blank=True)
     description = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

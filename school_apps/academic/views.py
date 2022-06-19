@@ -8,8 +8,22 @@ from student_management_app.django_forms.forms import (
     CourseForm
 )
 from school_apps.academic.forms import StudentFormSearch
-from .forms import (SubjectForm,MasterSubjectForm, BachelorSubjectForm,SemesterForm,BachelorSemesterForm,MasterSemesterForm,SectionForm,
-                    SemesterSectionSearchForm,RoutineSearchForm,SyllabusSearchForm)
+from .forms import (
+    SubjectForm,
+                    MasterSubjectForm, 
+                    BachelorSubjectForm,
+                    SemesterForm,
+                    SectionForm,
+                    ClassSearchForm,
+                    SectionSearchForm,
+                    # BachelorSemesterForm,
+                    # MasterSemesterForm,
+                    SectionForm,
+                    SemesterSectionSearchForm,
+                    RoutineSearchForm,
+                    SyllabusSearchForm
+                    )
+
 from school_apps.academic.forms import ClassFormSearch
 from school_apps.academic.forms import (
     SyllabusForm, AssignmentForm, RoutineForm, SubjectSearchForm)
@@ -308,7 +322,6 @@ def assign_subject_to_student(request):
     group_query = request.GET.get('group')
 
     if semester_query and section_query and group_query:
-        print("--------------------")
         search_students = Student.objects.filter(semester = semester_query, section = section_query,faculty = group_query)
         context = {'student': search_students,'subjects':subjects,
                     'form':form}
@@ -381,8 +394,6 @@ def subject_to_student_Ajax(request):
     for item in selected_subjects:
         groups.append(item.subject_id.faculty)
     
-    print(groups, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-    print(student.faculty,"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
     
     if 'Science' in groups:
         student.faculty = 'Science'
@@ -602,71 +613,49 @@ def student_details(request):
 @permission_required('student_management_app.view_semester', raise_exception=True)
 def manage_class(request):
     
-    a_level_course_category = get_object_or_404(CourseCategory,course_name = 'A-Level')
-    bachelor_course_category = get_object_or_404(CourseCategory,course_name = 'Bachelor')
-    master_course_category = get_object_or_404(CourseCategory,course_name = 'Master')
+    form = SemesterForm()
+    class_search_form = ClassSearchForm()
     
-    if request.user.adminuser.course_category == a_level_course_category :
-        form = SemesterForm()
-        if request.method == 'POST':
-            form = SemesterForm(request.POST)
-            try:
-                if form.is_valid():
-                    instance = form.save(commit = False)
-                    instance.course_category = a_level_course_category
-                    instance.save()
-                    messages.success(request, "Class is Added Successfully.")
-                    return redirect('academic:manage_class')
-            except:
-                messages.error(request, "Failed To Add Class.")
-                return redirect('academic:manage_class')
+    course_category = request.GET.get('course_category')
+    if course_category:        
+        classes = Semester.objects.filter(course_category = 
+                                          get_object_or_404(CourseCategory, pk = course_category))
+        context = {
+            'form':form,
+               'class_search_form':class_search_form,
+               'title': 'Class',
+               'classes':classes, 
+           
+               }
+        return render(request, "academic/classes/manage_class.html", context)
+    
+    
+
+    if request.method == 'POST':
+        course_category_id = request.POST['course_category']
+        name = request.POST['name']
+        description = request.POST['description']
+     
+        try:
+            semester = Semester.objects.create(name = name,
+                                               description = description, 
+                                               course_category = get_object_or_404(
+                                                   CourseCategory,pk = course_category_id)
+                                               )
+            
+            messages.success(request, "Class is Added Successfully.")
+            return redirect('academic:manage_class')
+        except:
+            messages.error(request, "Failed To Add Class.")
+            return redirect('academic:manage_class')
         
-        
-    if request.user.adminuser.course_category == bachelor_course_category:
-        form = BachelorSemesterForm()
-        if request.method == 'POST':
-            form = BachelorSemesterForm(request.POST)
-            print(form)
-            try:
-                if form.is_valid():
-                    print(1)
-                    instance = form.save(commit = False)
-                    print(2)
-                    instance.course_category = bachelor_course_category
-                    print(3)
-                    instance.save()
-                    print(4)
-                    messages.success(request, "Class is Added Successfully.")
-                    return redirect('academic:manage_class')
-            except:
-                messages.error(request, "Failed To Add Class.")
-                return redirect('academic:manage_class')
-        
-        
-    if request.user.adminuser.course_category == master_course_category:
-        form = MasterSemesterForm()
-        if request.method == 'POST':
-            form = MasterSemesterForm(request.POST)
-            try:
-                if form.is_valid():
-                    instance = form.save(commit = False)
-                    instance.course_category = master_course_category
-                    instance.save()
-                    messages.success(request, "Class is Added Successfully.")
-                    return redirect('academic:manage_class')
-            except:
-                messages.error(request, "Failed To Add Class.")
-                return redirect('academic:manage_class')
-   
 
     context = {'form': form,
                'title': 'Class',
-               'a_level_course_category':a_level_course_category,
-               'bachelor_course_category':bachelor_course_category,
-               'master_course_category':master_course_category,
-                'a_level_classes':Semester.objects.filter(course_category = a_level_course_category),
-               'bachelors_semesters':Semester.objects.filter(course_category = bachelor_course_category),
-                 'masters_semesters':Semester.objects.filter(course_category = master_course_category)
+               'class_search_form':class_search_form,
+               'title': 'Class',
+               
+           
                }
     return render(request, "academic/classes/manage_class.html", context)
 
@@ -675,66 +664,27 @@ def manage_class(request):
 @permission_required('student_management_app.edit_semester', raise_exception=True)
 def edit_class(request, class_id):
     class_instance = get_object_or_404(Semester, pk=class_id)
-    a_level_course_category = get_object_or_404(CourseCategory,course_name = 'A-Level')
-    bachelor_course_category = get_object_or_404(CourseCategory,course_name = 'Bachelor')
-    master_course_category = get_object_or_404(CourseCategory,course_name = 'Master')
-    
-    if request.user.adminuser.course_category == a_level_course_category :
-        form = SemesterForm(instance = class_instance)
-        if request.method == 'POST':
-            form = SemesterForm(request.POST, instance = class_instance)
-            try:
-                if form.is_valid():
-                    instance = form.save(commit = False)
-                    instance.course_category = a_level_course_category
-                    instance.save()
-                    messages.success(request, "Class is Updated Successfully.")
-                    return redirect('academic:manage_class')
-            except:
-                messages.error(request, "Failed To Add Class.")
-                return redirect('academic:manage_class')
-        
-        
-    if request.user.adminuser.course_category == bachelor_course_category:
-        form = BachelorSemesterForm(instance = class_instance)
-        if request.method == 'POST':
-            form = BachelorSemesterForm(request.POST,instance = class_instance)
-            try:
-                if form.is_valid():
-                    instance = form.save(commit = False)
-                    instance.course_category = bachelor_course_category
-                    instance.save()
-                    messages.success(request, "Class is Updated Successfully.")
-                    return redirect('academic:manage_class')
-            except:
-                messages.error(request, "Failed To Add Class.")
-                return redirect('academic:manage_class')
-        
-        
-    if request.user.adminuser.course_category == master_course_category:
-        form = MasterSemesterForm(instance = class_instance)
-        if request.method == 'POST':
-            form = MasterSemesterForm(request.POST,instance = class_instance)
-            try:
-                if form.is_valid():
-                    instance = form.save(commit = False)
-                    instance.course_category = master_course_category
-                    instance.save()
-                    messages.success(request, "Class is Updated Successfully.")
-                    return redirect('academic:manage_class')
-            except:
-                messages.error(request, "Failed To Add Class.")
-                return redirect('academic:manage_class')
-   
 
+    form = SemesterForm()
+    class_search_form = ClassSearchForm()
+    
+    form = SemesterForm(instance = class_instance)
+    if request.method == 'POST':
+        form = SemesterForm(request.POST, instance = class_instance)
+        try:
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Class is Updated Successfully.")
+                return redirect('academic:manage_class')
+        except:
+            messages.error(request, "Failed To Add Class.")
+            return redirect('academic:manage_class')
+        
+        
     context = {'form': form,
+               'class_search_form':class_search_form,
                'title': 'Class',
-               'a_level_course_category':a_level_course_category,
-               'bachelor_course_category':bachelor_course_category,
-               'master_course_category':master_course_category,
-                'a_level_classes':Semester.objects.filter(course_category = a_level_course_category),
-               'bachelors_semesters':Semester.objects.filter(course_category = bachelor_course_category),
-                 'masters_semesters':Semester.objects.filter(course_category = master_course_category)
+              
                }
     return render(request, "academic/classes/manage_class.html", context)
 
@@ -768,66 +718,49 @@ def manage_section(request):
     #                }
     #     return render(request, 'academic/sections/manage_section.html', context)
     # -----------
-    a_level_course_category = get_object_or_404(CourseCategory,course_name = 'A-Level')
-    bachelor_course_category = get_object_or_404(CourseCategory,course_name = 'Bachelor')
-    master_course_category = get_object_or_404(CourseCategory,course_name = 'Master')
-    form = SectionForm(user = request.user)
-    
-    if request.user.adminuser.course_category == a_level_course_category :
-        if request.method == 'POST':
 
-            form = SectionForm(request.POST, user = request.user)
-            try:
-                if form.is_valid():
-                    instance = form.save(commit = False)
-                    instance.course_category = a_level_course_category
-                    instance.save()
-                    messages.success(request, "Section is added successfully.")
-                    return redirect('academic:manage_section')
-            except:
-                messages.error(request, "Failed to add section.")
+    form = SectionForm()
+    section_search_form = SectionSearchForm()
+    
+    course_category = request.GET.get('course_category')
+    semester = request.GET.get('filter_semester')
+   
+    if course_category and semester:        
+        course_category_instance = get_object_or_404(CourseCategory, pk = course_category)
+        semester_instance = get_object_or_404(Semester, pk = semester)
+        sections = Section.objects.filter(course_category = course_category_instance,
+                                          semester = semester_instance,
+                                          
+                                          
+                                          )
+        context = {
+            'form':form,
+               'section_search_form':section_search_form,
+               'title': 'Class',
+               'sections':sections, 
+           
+               }
+        return render(request, "academic/sections/manage_section.html", context)
+    # if request.user.adminuser.course_category == a_level_course_category :
+    if request.method == 'POST':
+
+        form = SectionForm(request.POST)
+        try:
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Section is added successfully.")
                 return redirect('academic:manage_section')
+        except:
+            messages.error(request, "Failed to add section.")
+            return redirect('academic:manage_section')
       
+           
+    context = { 'form':form,
+               'section_search_form':section_search_form,
+               'title': 'Section',
+            #    'sections':sections, 
+         
             
-    if request.user.adminuser.course_category == bachelor_course_category :
-        if request.method == 'POST':
-            form = SectionForm(request.POST,user = request.user)
-            try:
-                if form.is_valid():
-                    instance = form.save(commit = False)
-                    instance.course_category = bachelor_course_category
-                    instance.save()
-                    messages.success(request, "Section is added successfully.")
-                    return redirect('academic:manage_section')
-            except:
-                messages.error(request, "Failed to add section.")
-                return redirect('academic:manage_section')
-            
-            
-    if request.user.adminuser.course_category == master_course_category :
-        if request.method == 'POST':
-            form = SectionForm(request.POST,user = request.user)
-            try:
-                if form.is_valid():
-                    instance = form.save(commit = False)
-                    instance.course_category = master_course_category
-                    instance.save()
-                    messages.success(request, "Section is added successfully.")
-                    return redirect('academic:manage_section')
-            except:
-                messages.error(request, "Failed to add section.")
-                return redirect('academic:manage_section')
-            
-    context = {'form': form,
-            #    'sections': sections,
-            #    'search_form': search_form,
-               'sections': Section.objects.all(),
-                'a_level_course_category':a_level_course_category,
-               'bachelor_course_category':bachelor_course_category,
-               'master_course_category':master_course_category,
-                'a_level_sections':Section.objects.filter(course_category = a_level_course_category),
-               'bachelor_sections':Section.objects.filter(course_category = bachelor_course_category),
-                 'master_sections':Section.objects.filter(course_category = master_course_category),
                'title': 'Section'}
     
     return render(request, "academic/sections/manage_section.html", context)
@@ -838,66 +771,33 @@ def manage_section(request):
 def edit_section(request, section_id):
 
     section = get_object_or_404(Section, pk=section_id)
-    a_level_course_category = get_object_or_404(CourseCategory,course_name = 'A-Level')
-    bachelor_course_category = get_object_or_404(CourseCategory,course_name = 'Bachelor')
-    master_course_category = get_object_or_404(CourseCategory,course_name = 'Master')
-    form = SectionForm(user = request.user,instance = section)
-    
-    if request.user.adminuser.course_category == a_level_course_category :
-        if request.method == 'POST':
+ 
+    form = SectionForm(instance = section)
+    section_search_form = SectionSearchForm()
+    if request.method == 'POST':
 
-            form = SectionForm(request.POST, user = request.user,instance = section)
-            try:
-                if form.is_valid():
-                    instance = form.save(commit = False)
-                    instance.course_category = a_level_course_category
-                    instance.save()
-                    messages.success(request, "Section is updated successfully.")
-                    return redirect('academic:manage_section')
-            except:
-                messages.error(request, "Failed to add section.")
+        form = SectionForm(request.POST, instance = section)
+        try:
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Section is updated successfully.")
                 return redirect('academic:manage_section')
-      
+        except:
+            messages.error(request, "Failed to add section.")
+            return redirect('academic:manage_section')
+    
             
-    if request.user.adminuser.course_category == bachelor_course_category :
-        if request.method == 'POST':
-            form = SectionForm(request.POST,user = request.user,instance = section)
-            try:
-                if form.is_valid():
-                    instance = form.save(commit = False)
-                    instance.course_category = bachelor_course_category
-                    instance.save()
-                    messages.success(request, "Section is updated successfully.")
-                    return redirect('academic:manage_section')
-            except:
-                messages.error(request, "Failed to add section.")
-                return redirect('academic:manage_section')
+   
             
             
-    if request.user.adminuser.course_category == master_course_category :
-        if request.method == 'POST':
-            form = SectionForm(request.POST,user = request.user,instance = section)
-            try:
-                if form.is_valid():
-                    instance = form.save(commit = False)
-                    instance.course_category = master_course_category
-                    instance.save()
-                    messages.success(request, "Section is updated successfully.")
-                    return redirect('academic:manage_section')
-            except:
-                messages.error(request, "Failed to add section.")
-                return redirect('academic:manage_section')
+   
 
     context = {
         'form': form,
         'title': 'Section',
          'sections': Section.objects.all(),
-          'a_level_course_category':a_level_course_category,
-               'bachelor_course_category':bachelor_course_category,
-               'master_course_category':master_course_category,
-                'a_level_sections':Section.objects.filter(course_category = a_level_course_category),
-               'bachelor_sections':Section.objects.filter(course_category = bachelor_course_category),
-                 'master_sections':Section.objects.filter(course_category = master_course_category),
+               'section_search_form':section_search_form,
+       
     }
     return render(request, "academic/sections/manage_section.html", context)
 
@@ -1137,7 +1037,6 @@ def manage_assignment(request):
         search_assignments = Assignment.objects.filter(semester=get_object_or_404(Semester, pk = semester_id),
                                                        section = get_object_or_404(Section, pk = section_id),
                                                        Subject = get_object_or_404(Subject, pk = subject_id))
-        print(search_assignments)
         context = {
             'assignments': search_assignments,
             'teacher_assignments': search_assignments,
@@ -1223,7 +1122,6 @@ def delete_assignment(request, assignment_id):
 
 
 def student_assignment(request):
-    print(request.user.student.section,";;;;;;;;;;;;;;;;;;;;;;;;;;")
     
     form = SubjectSearchForm(request=request)
     # try:

@@ -630,7 +630,6 @@ def manage_user_attendance(request):
 
 def fill_semester_select(request):
     course_category = CourseCategory.objects.get(pk = request.GET['course_category'])
-    print(course_category)
     semesters = Semester.objects.filter(course_category=course_category)
     context = {'semesters': semesters}
     return render(request, "attendances/auto_fill_select/semesters.html", context)
@@ -646,7 +645,6 @@ def fill_section_select(request):
 def fill_subject_select(request):
     semester = Semester.objects.get(pk = request.GET['semester'])
     course_category = CourseCategory.objects.get(pk = request.GET['course_category'])  
-    print(course_category)  
     if course_category.course_name == 'Bachelor':
         subjects = Subject.objects.filter(course_category = course_category, bachelor_semester = semester)
     if course_category.course_name == 'Master':

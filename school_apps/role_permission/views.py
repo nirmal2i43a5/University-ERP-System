@@ -6,12 +6,11 @@ from django.contrib import messages
 from django.urls import reverse_lazy
 from django.contrib.auth.models import Group, Permission
 from django.http import HttpResponse
-from django.contrib.auth.decorators import login_required, permission_required  
+from django.contrib.auth.decorators import  permission_required  
 from django.contrib.auth.mixins import (
-    LoginRequiredMixin,
-    PermissionRequiredMixin # new
+    PermissionRequiredMixin 
 )
-from django.contrib.auth.decorators import login_required, permission_required  
+from django.contrib.auth.decorators import  permission_required  
 
 
 class UserRoleCreate(PermissionRequiredMixin, SuccessMessageMixin, CreateView):

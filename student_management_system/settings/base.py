@@ -81,7 +81,7 @@ INSTALLED_APPS = [
     'django_filters',
     'ckeditor',
     'django_extensions',
-    'simple_history',
+    # 'simple_history',
     'schedule',
     'djangobower',
     'dbbackup',
@@ -115,7 +115,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     
-    'simple_history.middleware.HistoryRequestMiddleware',#for simple history
+    # 'simple_history.middleware.HistoryRequestMiddleware',#for simple history
     'school_apps.user_profile.middleware.LoginRequiredMiddleware',
     
         # ===============user log middleware=================

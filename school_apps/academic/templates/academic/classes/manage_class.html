@@ -24,17 +24,33 @@
 
       <div class="col-md-8">
         <div class="card">
-          <div class="card-header"  style="background-color: #743DB8;color:white;">
-            <h3 class="card-title">Manage Class</h3>
+         
+          <div class="card-header" style="background-color: #743DB8;color:white;" >
+            
+
+            <span>{{title}}</span>
+
+            <form class="float-right mb-2" role="search"  method="GET" style="height: 27px;margin:auto;position:relative;">
+              <div class="input-group">
+             
+          
+                {{ class_search_form|crispy }} 
+            
+                <div class="input-group-btn ">
+                  <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+    
+                </div>
+              </div>
+            </form>
+          
+
           </div>
         
         <!-- /.card-header -->
         <div class="card-body table-responsive">
 
          
-          <a href="{% url 'academic:semester_log' %}" class="btn btn-xs float-right mr-2 text-white" style="background-color: #743DB8;"  >
-           
-        </a>
+         
       <table id="dataTable"
         class="table table-sm  table-striped table-bordered table-hover  text-nowrap  dataTable no-footer">
         <thead>
@@ -42,7 +58,7 @@
             <th></th>
             <th>ID</th>
             <th>Course</th>
-            <th>Year</th>
+            {% comment %} <th>Year</th> {% endcomment %}
          
 
             <!-- <th>Facilitator</th> -->
@@ -55,13 +71,29 @@
 
 <!-- -------------------------------------------------------------------A-level classes------------------------------------ -->
 
-{% include "academic/classes/includes/a_level_classes.html" %}
-          <!-- -------------------------------------------------------------------Bachelor classes------------------------------------ -->
-  
-          {% include "academic/classes/includes/bachelors_semesters.html" %}
-          <!-- ------------------------------------------------------------------Master classes------------------------------------ -->
-          {% include "academic/classes/includes/master_semesters.html" %}
-    
+          {% comment %} {% include "academic/classes/includes/a_level_classes.html" %} {% endcomment %}
+
+          {% for semester in classes %}{% include 'academic/classes/delete.html' %}
+            <tr>
+              <td></td>
+              <td>{{ forloop.counter }}</td>
+                <td>{{ semester.name }}</td>
+              <td>{{ semester.description }}</td>
+              <!-- <td>
+                {{ semester.get_teachers }}
+              </td> -->
+
+              <td>
+                <a href="{% url 'academic:edit_class' semester.id %}" class="btn btn-xs btn-success"><i
+                    class="fas fa-xs fa-edit"></i></a>
+
+                    {% comment %} <button  class="btn btn-danger btn-xs"  data-target='#deleteClass-{{ semester.id }}' data-toggle="modal"><i
+                      class="fas fa-sm fa-trash-alt"></i></button>
+                 {% endcomment %}
+              </td>
+            </tr>
+        {% endfor %}
+     
         </tbody>
       </table>
     </div>
@@ -76,7 +108,14 @@
 <!-- /.content -->
 
 
-
+<style>
+  .form-check, .form-check-input{
+   display:inline-block;
+   }
+   .form-check{
+    margin-left:1.5rem;
+  }
+ </style>
 {% endblock content %}
 
 {% block custom_js %}
