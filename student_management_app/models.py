@@ -339,13 +339,14 @@ class Subject(models.Model):
         ('Science',' Science'),
         ('Non-Science',' Non-Science')
     )
-    
-    
-    subject_code = models.CharField(max_length=50, primary_key = True)
+    # I manually created subject because to replace subject_code pk to subject_id
+    subject_id = models.BigAutoField(auto_created=True, primary_key=True)
+    # subject_id = models.CharField(max_length=50, primary_key = True)
     course_category = models.ForeignKey(CourseCategory, on_delete=models.CASCADE,null = True, blank=True)
     semester = models.ForeignKey(Semester, verbose_name = 'Class', on_delete=models.CASCADE)
     faculty = models.CharField(_('Group'), max_length=50,choices = faculty_choices,blank = True)
     subject_name = models.CharField(max_length=255)
+    subject_code = models.CharField(max_length=255,blank=True, null = True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE, null= True, blank=True)
     staff_user = models.ManyToManyField(CustomUser, through='SubjectTeacher',  blank = True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -410,7 +411,7 @@ class SubjectTeacher(models.Model):
 class OptionalSubject(models.Model):
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
     subject_name = models.CharField(max_length=255)
-    subject_code = models.CharField(max_length=50, default='XXX', blank=True, null=True)
+    subject_id = models.CharField(max_length=50, default='XXX', blank=True, null=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     staff_user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)

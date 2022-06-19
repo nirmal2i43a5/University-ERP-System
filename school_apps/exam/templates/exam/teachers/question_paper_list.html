@@ -82,7 +82,7 @@
                   <a href="{% url 'exam:question-edit' question_paper.pk %}" class="btn btn-xs btn-success"><i class="fas fa-xs fa-edit"></i></a>
                 
                   
-                  <button  class="btn btn-danger btn-xs"  data-target='#deletequestion_paper-{{ subject.subject_code }}' data-toggle="modal"><i
+                  <button  class="btn btn-danger btn-xs"  data-target='#deletequestion_paper-{{ subject.subject_id }}' data-toggle="modal"><i
                     class="fas fa-sm fa-trash-alt"></i></button>
                     <a href="{% url 'exam:each-mark-add' question_paper.pk %}" class="btn btn-xs btn-success"><i class="fas fa-xs fa-plus"></i></a>
                     <a href="{% url 'exam:each-mark-index' question_paper.pk %}" class="btn btn-xs btn-success"><strong>View Mark</strong></a>

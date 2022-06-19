@@ -51,7 +51,7 @@ def selectcourse(request):
     courses_remove = selectedcourses.objects.all().filter(student_id=student)
     subject_list = Subject.objects.all()
     for course in courses_remove:
-        subject_list = subject_list.exclude(subject_code=course.subject_id.subject_code)
+        subject_list = subject_list.exclude(subject_id=course.subject_id.subject_id)
 
     return render(request, 'student/selectcourse.html', {'student':student, 'courses':subject_list})
 
@@ -265,7 +265,7 @@ def addAjax(request):
     course_list = []
     course_all = Subject.objects.all()
     for course in course_all:
-        if search_string in course.subject_code:
+        if search_string in course.subject_id:
                 course_list.append(course)
             
     selected_courses = selectedcourses.objects.filter(student_id=student)
@@ -282,7 +282,7 @@ def confirmAjax(request):
     student = get_object_or_404(Student, student_user = request.user.id)
     course_code = request.GET.get("course_id")
     student_object = student
-    course_object = get_object_or_404(Subject, subject_code = course_code)
+    course_object = get_object_or_404(Subject, subject_id = course_code)
 
     to_add = selectedcourses (subject_id=course_object, student_id=student_object, year = date1.now().year, semester=student_object.semester)
     to_add.save() 

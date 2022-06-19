@@ -11,12 +11,12 @@
     </thead>
     <tbody>
         {% for course in courses%}
-            <tr id="{{ course.subject_code }}">
-                <td>{{course.subject_code}}</td>
+            <tr id="{{ course.subject_id }}">
+                <td>{{course.subject_id}}</td>
                 <td>{{course.subject_name}}</td>
                 <td>{{course.teacher_id.teacher_name}}</td>
                 <!-- <td><button type="submit" class="btn btn-primary" id="select_button"> Confirm </button></td> -->
-                <td><button type="button" id="add_button" class="btn btn-primary open-AddBookDialog" data-toggle="modal" data-target="#add-modal" data-id="{{ course.subject_code }}" data-course= "{{ course.subject_name}}">
+                <td><button type="button" id="add_button" class="btn btn-primary open-AddBookDialog" data-toggle="modal" data-target="#add-modal" data-id="{{ course.subject_id }}" data-course= "{{ course.subject_name}}">
                     Add Course
                   </button></td>
             </tr>

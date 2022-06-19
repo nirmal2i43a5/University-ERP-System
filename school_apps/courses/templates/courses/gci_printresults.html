@@ -211,16 +211,16 @@ div.signature{
                     {% for exam in form.exam.all %}
                       <tr>
                         <td class="text-center">
-                          {{exam.subject_id.subject_code}}
+                          {{exam.subject_id.subject_id}}
                         </td>
                         
                         <td>
                           <strong>{{exam.subject_id.subject_name}} 
                             (
-                                {% if exam.subject_id.subject_code == "9608" %}
+                                {% if exam.subject_id.subject_id == "9608" %}
                                 9618
                                 {% else %}
-                                {{exam.subject_id.subject_code}}
+                                {{exam.subject_id.subject_id}}
                                 {% endif %}
                             )</strong>
                         </td>

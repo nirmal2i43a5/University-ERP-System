@@ -26,27 +26,29 @@
         <div class="card">
           <div class="card-header" style="background-color: #743DB8;color:white;">
             <span>Manage Subject</span>
-            <!-- <form class="float-right mb-2" role="search"  method="GET" style="height: 27px;margin:auto;position:relative;">
+           
+            <form class="float-right mb-2" role="search"  method="GET" style="height: 27px;margin:auto;position:relative;">
               <div class="input-group">
              
           
-                {{ search_form|crispy }} 
+                {{ subject_search_form|crispy }} 
             
                 <div class="input-group-btn ">
                   <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
     
                 </div>
               </div>
-            </form> -->
+            </form>
+          
           </div>
 
           <!-- /.card-header -->
           <div class="card-body table-responsive">
-
+{% comment %} 
             <a href="{% url 'academic:subject_log' %}" class="btn btn-xs float-right mr-2 text-white"
               style="background-color: #743DB8;">
              
-            </a>
+            </a> {% endcomment %}
 
             <table id="dataTable" class="table table-sm  table-striped table-bordered table-hover  text-nowrap  dataTable no-footer">
               <thead>
@@ -56,7 +58,6 @@
                   <th>Subject Name</th>
                   <th>Subject Code</th>
                   <th>Class</th>
-                  <th>Group</th>
                   <th>Facilitator</th>
                 
                   <!-- <th>Course Name</th> -->
@@ -65,14 +66,34 @@
                 </tr>
               </thead>
               <tbody>
-                <!-- -------------------------------------------------------------------A-level subjects------------------------------------ -->
-
-{% include "academic/subjects/includes/a_level_subjects.html" %}
-<!-- -------------------------------------------------------------------Bachelor subjects------------------------------------ -->
-
-{% include "academic/subjects/includes/bachelor_subjects.html" %}
-<!-- ------------------------------------------------------------------Master subjects------------------------------------ -->
-{% include "academic/subjects/includes/master_subjects.html" %}
+                {% for subject in subjects %}{% include 'academic/subjects/delete.html' %}
+                <tr>
+                  <td></td>
+                  <td>{{ forloop.counter }}</td>
+                  <td>{{ subject.subject_name }}</td>
+                  <td>{{ subject.subject_code }}</td>
+                  <td>{{ subject.semester }}</td>
+                  <td>
+                
+                    {% for teacher in subject.staff_user.all  %}
+                    {{teacher.full_name}}
+                      
+                    {% endfor %}
+                    
+                
+                  </td>
+                
+                  <!-- <td>{{ subject.course }}</td> -->
+                
+                  <td>
+                  <a href="{% url 'academic:edit_subject' subject.subject_id %}" class="btn btn-xs btn-success"><i class="fas fa-xs fa-edit"></i></a>
+                
+                  
+                  {% comment %} <button  class="btn btn-danger btn-xs"  data-target='#deleteSubject-{{ subject.subject_id }}' data-toggle="modal"><i
+                    class="fas fa-sm fa-trash-alt"></i></button> {% endcomment %}
+                </td>
+                </tr>
+                {% endfor %}
               </tbody>
             </table>
           </div>

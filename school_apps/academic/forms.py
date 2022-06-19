@@ -145,8 +145,8 @@ class SubjectSearchForm(forms.Form):
         
 class SubjectForm(forms.ModelForm):
     course_category = forms.ModelChoiceField(queryset = CourseCategory.objects.all(), widget=forms.RadioSelect())
-    subject_name = forms.CharField(required = False, widget=forms.TextInput(
-        attrs={'placeholder': 'Enter Your Class Name'}))
+    subject_name = forms.CharField(required = True, widget=forms.TextInput(
+        attrs={'placeholder': 'Enter Your Subject Name'}))
     # semester_value = forms.IntegerField(required = False, widget=forms.NumberInput(
     #     attrs={'placeholder': 'Enter Semester Value'}))
     description = forms.CharField(required=False, widget=forms.Textarea(
@@ -176,6 +176,15 @@ class ClassSearchForm(forms.Form):
                                       empty_label = '---Click Here To  Filter Class---', 
                                       queryset = CourseCategory.objects.all())
 class SectionSearchForm(forms.Form):
+    course_category = forms.ModelChoiceField(label= '',
+                                      empty_label = '---Click Here To  Filter Course Category---', 
+                                      queryset = CourseCategory.objects.all())
+    filter_semester = forms.ModelChoiceField(label= '',
+                                      empty_label = '---Click Here To  Filter Class---', 
+                                      queryset = Semester.objects.all())
+    
+
+class SubjectSearchForm(forms.Form):
     course_category = forms.ModelChoiceField(label= '',
                                       empty_label = '---Click Here To  Filter Course Category---', 
                                       queryset = CourseCategory.objects.all())

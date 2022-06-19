@@ -65,13 +65,11 @@ def loginView(request):
 @login_required
 def change_other_password(request):
 	user_id = request.GET.get('user_id')
-	print(user_id,"=============views inside----------")
 	user_id = CustomUser.objects.filter(id = user_id)
 	password_reset_form = CustomSetPasswordForm(user_id)
 
 	if request.method == 'POST':
 		slug = request.POST.get('user')
-		print(slug,"----------I amslg-----------------")
 		user_id = CustomUser.objects.get(id = slug)
 		password_reset_form = CustomSetPasswordForm(user_id, data=request.POST)
 

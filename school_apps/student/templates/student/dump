@@ -7,7 +7,7 @@ Addcourse
         {% csrf_token%}
         <select name = 'course'>
             {% for course in courses%}
-                <option name="sub" value="{{course.subject_code}}">{{course.subject_name}}</option>
+                <option name="sub" value="{{course.subject_id}}">{{course.subject_name}}</option>
             {%endfor%}
             </select>
             <input type="submit">

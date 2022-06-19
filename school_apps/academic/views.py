@@ -15,6 +15,7 @@ from .forms import (
                     SectionForm,
                     ClassSearchForm,
                     SectionSearchForm,
+                    SubjectSearchForm,
                     # BachelorSemesterForm,
                     # MasterSemesterForm,
                     SectionForm,
@@ -176,10 +177,35 @@ def delete_course(request, course_id):
 def manage_subject(request):
 
     form = SubjectForm()
+    subject_search_form = SubjectSearchForm()
+    
+    course_category = request.GET.get('course_category')
+    semester = request.GET.get('filter_semester')
+   
+    if course_category and semester:        
+        course_category_instance = get_object_or_404(CourseCategory, pk = course_category)
+        semester_instance = get_object_or_404(Semester, pk = semester)
+        subjects = Subject.objects.filter(course_category = course_category_instance,
+                                          semester = semester_instance,
+                                          
+                                          
+                                          )
+        context = {
+            'form':form,
+               'subject_search_form':subject_search_form,
+               'title': 'Subject',
+               'subjects':subjects, 
+           
+               }
+        return render(request, "academic/subjects/manage_subject.html", context)
+    
     if request.method == 'POST':
         form = SubjectForm(request.POST)
+        print(form)
+        print(form.is_valid())
         try:
             if form.is_valid():
+                print("Inside")
                 form.save()
                 messages.success(request, "Subject is Added Successfully.")
                 return redirect('academic:manage_subject')
@@ -188,8 +214,7 @@ def manage_subject(request):
             return redirect('academic:manage_subject')
             
    
-            
-    # subjects = Subject.objects.all()
+      # subjects = Subject.objects.all()
     # search_form = ClassFormSearch(user = request.user)
     # query = request.GET.get('faculty')
 
@@ -199,8 +224,7 @@ def manage_subject(request):
     #     return render(request, 'academic/subjects/manage_subject.html', context)
     
     context = {'form': form,
-            #    'subjects': subjects,
-            #    'search_form': search_form,
+              'subject_search_form':subject_search_form,
                'title': 'Subject',
          
                }
@@ -233,7 +257,7 @@ def edit_subject(request, subject_id):  # keep subject_id hidden field in edit_s
     context = {'form': form,
                'title': 'Subject'
                }
-    return render(request, 'academic/subjects/edit_subject.html', context)
+    return render(request, 'academic/subjects/manage_subject.html', context)
 
 
 @permission_required('student_management_app.delete_subject', raise_exception=True)
@@ -331,7 +355,7 @@ def subject_to_student_Ajax(request):
     assigned = []
     exists = []
     for item in subject_id:
-        subjects.append(Subject.objects.get(subject_code=item))
+        subjects.append(Subject.objects.get(subject_id=item))
 
     for item in subjects:
         obj, created = selectedcourses.objects.get_or_create(
