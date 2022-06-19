@@ -459,6 +459,42 @@ def school_class(request):
     return render(request, 'classroom/school_classroom.html', context)
 
 
+def plus_two_class(request):
+    
+    plus_two_classes = Semester.objects.filter(course_category = get_object_or_404(CourseCategory, course_name = 'Plus-Two'))
+    context = {
+        'title':'Class Room',
+        'plus_two_classes':plus_two_classes
+                 }
+    return render(request, 'classroom/plus_two_classroom.html', context)
+
+
+def bachelor_class(request):
+    
+    bachelor_classes = Semester.objects.filter(course_category = get_object_or_404(CourseCategory, course_name = 'Bachelor'))
+    context = {
+        'title':'Class Room',
+        'bachelor_classes':bachelor_classes
+                 }
+    return render(request, 'classroom/bachelor_classroom.html', context)
+
+
+def master_class(request):
+    
+    master_classes = Semester.objects.filter(course_category = get_object_or_404(CourseCategory, course_name = 'Bachelor'))
+    context = {
+        'title':'Class Room',
+        'master_classes':master_classes
+                 }
+    return render(request, 'classroom/master_classroom.html', context)
+
+
+
+
+
+
+
+
 
 def error_404(request, exception):
     data = {}
