@@ -144,22 +144,19 @@ class SubjectSearchForm(forms.Form):
         
         
 class SubjectForm(forms.ModelForm):
+    course_category = forms.ModelChoiceField(queryset = CourseCategory.objects.all(), widget=forms.RadioSelect())
+    subject_name = forms.CharField(required = False, widget=forms.TextInput(
+        attrs={'placeholder': 'Enter Your Class Name'}))
+    # semester_value = forms.IntegerField(required = False, widget=forms.NumberInput(
+    #     attrs={'placeholder': 'Enter Semester Value'}))
+    description = forms.CharField(required=False, widget=forms.Textarea(
+        attrs={'rows': 2, 'cols': 10, "placeholder": " Enter  Course Description", }))
     class Meta:
         model=Subject
-        fields = ('subject_name','subject_code','faculty')
-        
-        
-class BachelorSubjectForm(forms.ModelForm):
-    class Meta:
-        model=Subject
-        fields = ('subject_name','subject_code','bachelor_semester')
-        
+        fields = ('course_category','semester','subject_name','subject_code','description')
+ 
 
-class MasterSubjectForm(forms.ModelForm):
-    class Meta:
-        model=Subject
-        fields = ('subject_name','subject_code','master_semester')
-        
+
 class SemesterForm(forms.ModelForm):#for a-level
     course_category = forms.ModelChoiceField(queryset = CourseCategory.objects.exclude(course_name__in = ['School']), widget=forms.RadioSelect())
     name = forms.CharField(required = False, widget=forms.TextInput(

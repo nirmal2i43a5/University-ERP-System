@@ -343,10 +343,8 @@ class Subject(models.Model):
     
     subject_code = models.CharField(max_length=50, primary_key = True)
     course_category = models.ForeignKey(CourseCategory, on_delete=models.CASCADE,null = True, blank=True)
-    # semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
+    semester = models.ForeignKey(Semester, verbose_name = 'Class', on_delete=models.CASCADE)
     faculty = models.CharField(_('Group'), max_length=50,choices = faculty_choices,blank = True)
-    bachelor_semester = models.CharField(_('Semester'),max_length=100,choices = bachelor_semester_choices,null = True, blank = True)
-    master_semester = models.CharField(_('Semester'),max_length=100,choices = master_semester_choices,null = True, blank = True)
     subject_name = models.CharField(max_length=255)
     course = models.ForeignKey(Course, on_delete=models.CASCADE, null= True, blank=True)
     staff_user = models.ManyToManyField(CustomUser, through='SubjectTeacher',  blank = True)

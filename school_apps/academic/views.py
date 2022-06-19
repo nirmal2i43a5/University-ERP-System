@@ -10,8 +10,7 @@ from student_management_app.django_forms.forms import (
 from school_apps.academic.forms import StudentFormSearch
 from .forms import (
     SubjectForm,
-                    MasterSubjectForm, 
-                    BachelorSubjectForm,
+                 
                     SemesterForm,
                     SectionForm,
                     ClassSearchForm,
@@ -175,57 +174,20 @@ def delete_course(request, course_id):
 
 @permission_required('student_management_app.add_subject', raise_exception=True)
 def manage_subject(request):
-    a_level_course_category = get_object_or_404(CourseCategory,course_name = 'A-Level')
-    bachelor_course_category = get_object_or_404(CourseCategory,course_name = 'Bachelor')
-    master_course_category = get_object_or_404(CourseCategory,course_name = 'Master')
-    
-    
-    if request.user.adminuser.course_category == a_level_course_category:
-        form = SubjectForm()
-        if request.method == 'POST':
-            form = SubjectForm(request.POST)
-            try:
-                if form.is_valid():
-                    instance = form.save(commit = False)
-                    instance.course_category = a_level_course_category
-                    instance.save()
-                    messages.success(request, "Subject is Added Successfully.")
-                    return redirect('academic:manage_subject')
-            except:
-                messages.error(request, "Failed To Add Subject.")
-                return redirect('academic:manage_subject')
-            
-    if request.user.adminuser.course_category == bachelor_course_category :
-        form = BachelorSubjectForm()
-        if request.method == 'POST':
-            form = BachelorSubjectForm(request.POST)
-            try:
-                if form.is_valid():
-                    instance = form.save(commit = False)
-                    instance.course_category = bachelor_course_category
-                    instance.save()
-                    messages.success(request, "Subject is Added Successfully.")
-                    return redirect('academic:manage_subject')
 
-            except:
-                messages.error(request, "Failed To Add Subject.")
+    form = SubjectForm()
+    if request.method == 'POST':
+        form = SubjectForm(request.POST)
+        try:
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Subject is Added Successfully.")
                 return redirect('academic:manage_subject')
+        except:
+            messages.error(request, "Failed To Add Subject.")
+            return redirect('academic:manage_subject')
             
-    if request.user.adminuser.course_category == master_course_category :
-        form = MasterSubjectForm()
-        if request.method == 'POST':
-            form = MasterSubjectForm(request.POST)
-            try:
-                if form.is_valid():
-                    instance = form.save(commit = False)
-                    instance.course_category = master_course_category
-                    instance.save()
-                    messages.success(request, "Subject is Added Successfully.")
-                    return redirect('academic:manage_subject')
-
-            except:
-                messages.error(request, "Failed To Add Subject.")
-                return redirect('academic:manage_subject')
+   
             
     # subjects = Subject.objects.all()
     # search_form = ClassFormSearch(user = request.user)
@@ -240,13 +202,7 @@ def manage_subject(request):
             #    'subjects': subjects,
             #    'search_form': search_form,
                'title': 'Subject',
-                'a_level_course_category':a_level_course_category,
-               'bachelor_course_category':bachelor_course_category,
-               'master_course_category':master_course_category,
-                'a_level_subjects':Subject.objects.filter(course_category = a_level_course_category),
-               'bachelor_subjects':Subject.objects.filter(course_category = bachelor_course_category),
-                'master_subjects':Subject.objects.filter(course_category = master_course_category)
-              
+         
                }
 
     return render(request, 'academic/subjects/manage_subject.html', context)
