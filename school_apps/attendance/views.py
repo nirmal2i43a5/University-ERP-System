@@ -27,6 +27,8 @@ def get_students(request):
         form  = AttendanceFormSearch(request.POST,)
         course_category_id = request.POST.get('course_category')
         course_category_instance = get_object_or_404(CourseCategory, pk = course_category_id)
+        course_id = request.POST.get('course')
+        course_instance = get_object_or_404(Course, pk = course_id)
         print(type(course_category_instance),"::::::::::::::::::::::;;")
         course_category = get_object_or_404(CourseCategory, pk = course_category_id)
         semester_id = request.POST.get('semester')
@@ -43,10 +45,8 @@ def get_students(request):
             section = get_object_or_404(Section, pk = section)
             # subject = get_object_or_404(Subject, pk = subject)
             students = Student.objects.filter(course_category = course_category_instance, semester = semester,section = section, student_user__is_active = 1).order_by('student_user__username')
-        if course_category_instance == get_object_or_404(CourseCategory, course_name = 'Plus-Two'):
-        
-        # if section == '' and subject == '':
-            students = Student.objects.filter(semester = semester, faculty = group, student_user__is_active = 1).order_by('student_user__username')
+        if course_category_instance == CourseCategory.objects.filter(course_name__in = ['Plus-Two','Bachelor','Master']).first():
+            students = Student.objects.filter(semester = semester, course = course_instance, student_user__is_active = 1).order_by('student_user__username')
             
         return render(request,'attendances/students/take_attendance.html', {'form':form,
                                                                             'a_level_course_category':a_level_course_category,

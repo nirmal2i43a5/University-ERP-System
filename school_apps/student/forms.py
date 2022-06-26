@@ -1,15 +1,29 @@
 from django import forms
-from student_management_app.models import Student,Section,Semester,CourseCategory
+from student_management_app.models import Student,Section,Semester,CourseCategory,Course
 from django.shortcuts import get_object_or_404
-
+gender_choices = (
+    ('Male', 'Male'),
+    ('Female', 'Female'),
+    ('Others', 'Others')
+)
 class StudentForm(forms.ModelForm):
     # guardian = forms.ModelChoiceField(required=True, label='Parent Name',
     #                                   empty_label="-----Please Select Your Parent Name----- ", queryset=Parent.objects.all())
+    status_choices = (
+        ('Running','Running'),('In Active','In Active')
+    )
+    shift = (
+        ('Morning','Morning'),
+          ('Day','Day')
+    )
     course_category = forms.ModelChoiceField(queryset = CourseCategory.objects.all(), widget=forms.RadioSelect())
     section = forms.ModelChoiceField(
         required = False,empty_label="Select Section ", queryset=Section.objects.all())
     dob = forms.DateField(label='Date of Birth', widget=forms.DateInput(
         attrs={'type': 'date', "class": "form-control"}))
+    status = forms.ChoiceField(choices=status_choices, widget=forms.RadioSelect())
+    shift = forms.ChoiceField(choices=shift, widget=forms.RadioSelect())
+    gender = forms.ChoiceField(choices=gender_choices, widget=forms.RadioSelect())
     stu_id = forms.CharField(label='Student Id', widget=forms.TextInput(
         attrs={"class": "form-control", "placeholder": " Enter Student Id", }))
    
@@ -30,7 +44,7 @@ class StudentForm(forms.ModelForm):
     class Meta:
         model = Student
         fields = (
-           'course_category', 'join_year','stu_id','roll_no','gender','shift','semester','section','course','faculty','program','status','contact',
+           'course_category', 'course','join_year','stu_id','roll_no','gender','shift','semester','section','faculty','program','status','contact',
             'permanent_address','temporary_address','dob','blood_group','gpa','previous_school_name','image',
         )
     # def __init__(self, *args, user = None, **kwargs):
