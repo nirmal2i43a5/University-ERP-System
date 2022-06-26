@@ -57,23 +57,22 @@ INSTALLED_APPS = [
     'school_apps.admin_user.apps.AdminUserConfig',
       'school_apps.email_sms.apps.EmailSmsConfig',
     'viewer.apps.ViewerConfig',
-     'school_apps.exam.apps.ExamConfig',
-    'school_apps.enquiry.apps.EnquiryConfig',
-    'school_apps.visitor.apps.VisitorConfig',
      'school_apps.extrausers.apps.ExtrausersConfig',
     'school_apps.notifications.apps.NotificationsConfig',
      'school_apps.administrator.apps.AdministratorConfig',
        'school_apps.student_certificate.apps.StudentCertificateConfig',
     'school_apps.customusers.apps.CustomusersConfig',
-    'school_apps.inventory.apps.InventoryConfig',
-        'school_apps.log_history.apps.LogHistoryConfig',
-    
-  'school_apps.classroom.apps.ClassroomConfig',
-    # 'school_apps.inventory',
-
-    #~~~~~~~~~~~~~~~~~~api~~~~~~~~~~~~~~~~~~~~
-    'school_apps.formapi.apps.FormapiConfig',
-
+    'school_apps.log_history.apps.LogHistoryConfig',
+    'school_apps.classroom.apps.ClassroomConfig',
+    # ------------------I have commented the functionality of this app -----------------------
+    #   'school_apps.enquiry.apps.EnquiryConfig',
+    # 'school_apps.visitor.apps.VisitorConfig',
+     'school_apps.exam.apps.ExamConfig',
+    # 'school_apps.inventory.apps.InventoryConfig',
+    #    'school_apps.formapi.apps.FormapiConfig',
+    # ----------------------------------------------------------------------------
+     
+ 
     #-----------third_party--------------'
     
     'crispy_forms',
@@ -156,7 +155,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 
                 # for notification 
-                'school_apps.notifications.context_processors.notifications_data',
+                # 'school_apps.notifications.context_processors.notifications_data',
+                
                 #for calendar link to sidebar
                 # 'schedule.context_processors.fullcalendar_link',
                 
@@ -179,26 +179,26 @@ WSGI_APPLICATION = 'student_management_system.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-      
-    }
-}
-
-
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': config('DB_ENGINE'),
-#         'NAME': config('DB_NAME'),
-#         'USER':  config('DB_USER'),
-#         'PASSWORD':  config('DB_PASSWORD'),
-#         'HOST': '127.0.0.1',
-#         'PORT': '5432',
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+      
 #     }
 # }
+
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': config('DB_ENGINE'),
+        'NAME': config('DB_NAME'),
+        'USER':  config('DB_USER'),
+        'PASSWORD':  config('DB_PASSWORD'),
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+    }
+}
 
 
 
@@ -289,7 +289,7 @@ STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
 
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR,'/media/')
+MEDIA_ROOT = os.path.join(BASE_DIR,'media/')
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 

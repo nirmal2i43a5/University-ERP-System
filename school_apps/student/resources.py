@@ -11,7 +11,7 @@ class StudentResource(resources.ModelResource):
         model = Student
         fields = (
             'id','join_year','stu_id','roll_no','student_user','gender','shift','semester','section','course','faculty','program','status','contact',
-            'permanent_address','temporary_address','dob','blood_group','optional_subject','see_gpa','previous_school_name',
+            'permanent_address','temporary_address','dob','blood_group','optional_subject','gpa','previous_school_name',
         )
         
         # export_order = ('id', 'price', 'author', 'name')

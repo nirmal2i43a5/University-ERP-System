@@ -47,7 +47,7 @@
             user.student.dob = dob
             user.student.blood_group = student_form.cleaned_data['blood_group']
             user.student.optional_subject = student_form.cleaned_data['optional_subject']
-            user.student.see_gpa = student_form.cleaned_data['see_gpa']
+            user.student.gpa = student_form.cleaned_data['gpa']
             user.student.previous_school_name = student_form.cleaned_data["previous_school_name"]
             user.student.guardian = parent
             if image_url != None:

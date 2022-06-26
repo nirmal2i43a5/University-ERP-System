@@ -26,23 +26,27 @@ def get_students(request):
     if request.method == 'POST':
         form  = AttendanceFormSearch(request.POST,)
         course_category_id = request.POST.get('course_category')
+        course_category_instance = get_object_or_404(CourseCategory, pk = course_category_id)
+        print(type(course_category_instance),"::::::::::::::::::::::;;")
         course_category = get_object_or_404(CourseCategory, pk = course_category_id)
         semester_id = request.POST.get('semester')
-        # group = request.POST.get('group')
+        group = request.POST.get('group')
+        print(group)
         section = request.POST.get('section')
         subject = request.POST.get('subject')
+        print(subject)
         semester = get_object_or_404(Semester, pk = semester_id)
         #i add course in student  so as to  access subject for student based on course in the college only.
         # students = Student.objects.filter(semester = semester, section = section, course = course.subject)
         # students = Student.objects.filter(semester = semester, section = section)
-        
-        if section !='' and subject !='':
+        if course_category_instance == get_object_or_404(CourseCategory, course_name = 'School'):
             section = get_object_or_404(Section, pk = section)
-            subject = get_object_or_404(Subject, pk = subject)
-            students = Student.objects.filter(semester = semester,section = section, student_user__is_active = 1).order_by('student_user__username')
-            
-        if section == '' and subject == '':
-            students = Student.objects.filter(semester = semester, faculty = group,student_user__is_active = 1).order_by('student_user__username')
+            # subject = get_object_or_404(Subject, pk = subject)
+            students = Student.objects.filter(course_category = course_category_instance, semester = semester,section = section, student_user__is_active = 1).order_by('student_user__username')
+        if course_category_instance == get_object_or_404(CourseCategory, course_name = 'Plus-Two'):
+        
+        # if section == '' and subject == '':
+            students = Student.objects.filter(semester = semester, faculty = group, student_user__is_active = 1).order_by('student_user__username')
             
         return render(request,'attendances/students/take_attendance.html', {'form':form,
                                                                             'a_level_course_category':a_level_course_category,
@@ -51,7 +55,7 @@ def get_students(request):
                                                                             'students':students,
                                                                             'semester':semester,
                                                                             'section':section,
-                                                                            'faculty':group,
+                                                                            # 'faculty':group,
                                                                             'course_category':course_category,
                                                                             'subject':subject,
                                                                             'status_form':status_form

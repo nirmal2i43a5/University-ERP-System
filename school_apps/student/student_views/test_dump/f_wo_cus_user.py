@@ -36,7 +36,7 @@
 #         dob_bs = column[24]
 #         blood_group = column[25]
 #         optional_subject = column[26]
-#         see_gpa = column[27]
+#         gpa = column[27]
 #         # parsing date
 #         # dob = datetime.datetime.strptime(dob_es, "%d/%m/%y")
     
@@ -80,7 +80,7 @@
 #             blood_group = blood_group,
 #             # optional_subject = Subject.objects.get(subject_name = optional_subject),
 #             optional_subject = optional_subject,
-#             see_gpa=see_gpa,
+#             gpa=gpa,
 #             previous_school_name=column[28],
 #             section = Section.objects.get(semester = sem, section_name = section),
 #         )

@@ -37,7 +37,6 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     # path('api/', include(router.urls)) ,
-    path('api/', include('school_apps.formapi.urls')),
     path('api/v1/', include('student_management_system.api', namespace='api')),
     path('admin/', admin.site.urls),
     path('home/', admin_home,name = 'admin-home'),
@@ -58,10 +57,7 @@ urlpatterns = [
     path('',include('school_apps.student.urls',namespace='student')),
     path('parent/',include('school_apps.parents.urls',namespace='parent')),
     path('viewer/',include('viewer.urls',namespace='viewer')),
-    path('exam/',include('school_apps.exam.urls',namespace='exam')),
-    path('enquiry/',include('school_apps.enquiry.urls',namespace='enquiry')),
-    path('',include('school_apps.inventory.urls',namespace='inventory')),
-    path('visitor/',include('school_apps.visitor.urls',namespace='visitor')),
+
     path('',include('school_apps.courses.urls',namespace='courses')),
     path('extrauser/',include('school_apps.extrausers.urls',namespace='extrauser')),
     path('',include('school_apps.customusers.urls',namespace='customuser')),
@@ -81,9 +77,19 @@ urlpatterns = [
     path('', include('school_apps.student_certificate.urls',namespace='certificate')),
     path('', include('school_apps.log_history.urls',namespace='user_history')),
     path('', include('school_apps.classroom.urls',namespace='classroom')),
+     path('exam/',include('school_apps.exam.urls',namespace='exam')),
      
     path('schedule/',include('schedule.urls')),
     
+    # ------------------------------------I have commented the functionality of this app -----------------------------
+    # path('',include('school_apps.inventory.urls',namespace='inventory')),
+    # path('visitor/',include('school_apps.visitor.urls',namespace='visitor')),
+    # path('enquiry/',include('school_apps.enquiry.urls',namespace='enquiry')),
+    # path('api/', include('school_apps.formapi.urls')),
+    
+    
+    
+    # ------------------------------------------------------------------------------------------------------
       
     #For resetting password via email follow below four link 
     path('password/reset/',auth_views.PasswordResetView.as_view(template_name = 'passwordreset/password_reset_email.html'), 

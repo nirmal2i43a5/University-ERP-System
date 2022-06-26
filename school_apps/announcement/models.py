@@ -4,7 +4,6 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from ckeditor.fields import RichTextField
 from student_management_app.models import CustomUser
-from simple_history.models import HistoricalRecords
 
 
 class Notice(models.Model):

@@ -1,7 +1,9 @@
 {% extends 'admin_templates/base_admin.html' %}
 
 {% load crispy_forms_tags %}
-
+{% block title %}
+  Manage Course
+{% endblock title %}
 
 {% block main_content %}
 
@@ -55,8 +57,8 @@
                   <td>
                     <a href="/edit_course/{{ course.id }}" class="btn btn-success btn-xs" data-placement="top"
                       data-toggle="tooltip" title="Edit"><i class="fas fa-sm fa-edit"></i></a>
-                    <a href="{% url 'academic:delete_course' course.id %}" class="btn btn-danger btn-xs"    
-                    data-placement='top' data-toggle='tooltip' title='Delete'><i class="fas fa-sm fa-trash-alt"></i></a>
+                    {% comment %} <a href="{% url 'academic:delete_course' course.id %}" class="btn btn-danger btn-xs"    
+                    data-placement='top' data-toggle='tooltip' title='Delete'><i class="fas fa-sm fa-trash-alt"></i></a> {% endcomment %}
                   </td>
                 </tr>
                 {% endfor %}

@@ -3,7 +3,7 @@ import datetime
 import calendar
 from django.forms.widgets import HiddenInput
 from django.shortcuts import get_object_or_404
-from student_management_app.models import Semester, Section, Subject,CourseCategory
+from student_management_app.models import Semester, Section, Subject,CourseCategory,Course
 from .models import AttendanceReport
 
 
@@ -17,15 +17,15 @@ class AttendanceFormSearch(forms.Form):
 
     course_category = forms.ModelChoiceField(label= '',empty_label = 'Choose Course Category',
                                       queryset = CourseCategory.objects.all())
+    course = forms.ModelChoiceField(required = False, label= '',empty_label = 'Choose Course',widget=forms.Select(attrs = {'hidden':''}),
+                                     queryset = Course.objects.all())
     semester = forms.ModelChoiceField(label= '',empty_label = 'Choose Class',widget=forms.Select(attrs = {'hidden':''}),
                                       queryset = Semester.objects.all())
     section = forms.ModelChoiceField(required = False, label= '',empty_label = 'Choose Section',widget=forms.Select(attrs = {'hidden':''}),
                                      queryset = Section.objects.all())
     subject = forms.ModelChoiceField(required = False, label= '',empty_label = 'Choose Subject',widget=forms.Select(attrs = {'hidden':''}),
                                      queryset = Subject.objects.all())
-    group=forms.ChoiceField(required = False, label = '',choices=faculty_choices,
-                          widget=forms.Select(attrs = {'hidden':''})
-                            )
+  
     
    
     # subject = forms.ModelChoiceField(required = False, label= '',empty_label = 'Select Subject',widget=forms.Select(attrs={'class':''}),

@@ -32,7 +32,7 @@
 #         dob_bs = column[24]
 #         blood_group = column[25]
 #         optional_subject = column[26]
-#         see_gpa = column[27]
+#         gpa = column[27]
 #         # parsing date
 #         # dob = datetime.datetime.strptime(dob_es, "%d/%m/%y")
     
@@ -69,7 +69,7 @@
 #         customuser_object.student.dob = dob_es
 #         customuser_object.student.blood_group = blood_group
 #         customuser_object.student.optional_subject = optional_subject
-#         customuser_object.student.see_gpa = see_gpa
+#         customuser_object.student.gpa = gpa
 #         customuser_object.student.previous_school_name = column[28]
 #         customuser_object.student.guardian = parent_obj
 #         customuser_object.save()

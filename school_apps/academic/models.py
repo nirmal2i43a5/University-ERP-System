@@ -9,7 +9,6 @@ from ckeditor.fields import RichTextField
 from student_management_app.models import CustomUser
 # from school_apps.courses.models import Semester, Section, Subject
 from student_management_app.models import Section, Semester, Subject, Student,CourseCategory
-from simple_history.models import HistoricalRecords
 
 class Syllabus(models.Model):
     course_category = models.ForeignKey(CourseCategory, on_delete=models.CASCADE,null = True, blank=True)

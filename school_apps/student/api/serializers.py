@@ -15,6 +15,7 @@ class StudentSerializer(serializers.ModelSerializer):
     # guardian = ParentSerializer()
     semester = serializers.CharField(source='semester.name', read_only=True)
     section = serializers.CharField(source='section.section_name', read_only=True)
+    # section = serializers.SerializerMethodField(read_only = True)
     father_phone = serializers.CharField(source='guardian.father_phone', read_only=True)
     username = serializers.CharField(source='student_user.username', read_only=True)
     full_name = serializers.CharField(source='student_user.full_name', read_only=True)

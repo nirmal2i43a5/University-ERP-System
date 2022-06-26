@@ -49,7 +49,7 @@
 #         dob_bs = column[23]
 #         blood_group = column[24]
 #         optional_subject = column[25]
-#         see_gpa = column[26]
+#         gpa = column[26]
 # ​
 #         student_obj= 
 # ​

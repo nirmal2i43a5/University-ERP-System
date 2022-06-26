@@ -352,17 +352,24 @@ $("#id_section").change(function(){
 
 $('#id_course_category').change(function(){
   var course_category = $('#id_course_category option:selected').text()
-  if(course_category ==  'A-Level'){
+  if(course_category ==  'School'){
+    $('#id_semester').removeAttr("hidden");
+    $('#id_section').removeAttr("hidden");
+    $('#id_subject').attr("hidden",true);
+  
+   }
+  if(course_category ==  'Plus-Two'){
    $('#id_semester').removeAttr("hidden");
-   $('#id_group').removeAttr("hidden");
+   $('#id_course').removeAttr("hidden");
+   $('#id_section').removeAttr("hidden");
    $('#id_subject').attr("hidden",true);
-   $('#id_section').attr("hidden",true);
   }
+
   if(course_category ==  'Bachelor' || course_category ==  'Master'){
+   $('#id_course').removeAttr("hidden");
    $('#id_semester').removeAttr("hidden");
    $('#id_subject').removeAttr("hidden");
    $('#id_section').removeAttr("hidden");
-   $('#id_group').attr("hidden",true);
   }
 })
 </script>

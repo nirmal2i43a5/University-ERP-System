@@ -514,24 +514,20 @@ class Student(models.Model):
         ('Science','Science'),
         ('Non-Science','Non-Science')
     )
-    category_choices = (
-        ('A-Level','A-Level'),('z','Bachelor'),('Master','Master')
-    )
-        
+ 
 
     # id = models.CharField(max_length=100, primary_key = True)#doing this give error for : foreign key mismatch - "courses_application_form" referencing "tbl_Student" 
     # s_no = models.CharField(max_length=10, null=True,blank=True)
     join_year = models.CharField(_('Join Year'),max_length = 50, default=datetime.datetime.now().year, null = True,blank = True)#this is same as batch
     stu_id = models.CharField(max_length=50,unique=True)
     roll_no = models.CharField(max_length=10,null=True,blank=True)
-    full_name = models.CharField(max_length=50,null = True, blank = True)
+    # full_name = models.CharField(max_length=50,null = True, blank = True)
     student_user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, null = True, blank = True)
     gender = models.CharField(max_length=20, choices=gender_choice,null = True, default='Male')
     shift = models.CharField(max_length=20,  choices=shift,  null=True,blank=True)
-    section = models.ForeignKey(Section, on_delete=models.CASCADE, null=True)
-    course = models.CharField(max_length=250, null=True,blank=True)
+    section = models.ForeignKey(Section, on_delete=models.CASCADE, null=True,blank = True)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE,null = True, blank=True)
     faculty = models.CharField(max_length=50,choices = faculty_choices,null = True, blank = True)
-    # category = models.CharField(max_length=50,choices = category_choices,null = True, blank = True)
     course_category = models.ForeignKey(CourseCategory, on_delete=models.CASCADE,null = True, blank=True)
     program = models.CharField(max_length=250, null=True,blank=True)
     status = models.CharField(max_length=50,choices = status_choices)
@@ -543,7 +539,7 @@ class Student(models.Model):
     dob = models.DateField(null=True, blank=True)
     blood_group = models.CharField(max_length=25, choices=blood_group_choices, blank=True)
     optional_subject = models.ForeignKey(Subject,related_name = 'student_optional_subject', on_delete=models.CASCADE, null=True)
-    see_gpa = models.CharField(max_length = 50, blank=True, null=True)
+    gpa = models.CharField(max_length = 50, blank=True, null=True)
     previous_school_name = models.CharField(max_length=100, null=True,blank=True)
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE, null=True)
     image = models.ImageField( upload_to='student_images', null=True, blank=True)
@@ -554,7 +550,7 @@ class Student(models.Model):
     subject = models.ForeignKey( Subject, on_delete=models.CASCADE, null=True, blank=True)#I am using attendance based on subject
     
     # ---------------------------------------------extra field--------------------------------------------------------
-    bachelor_course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True, blank=True)#this is for which college degree link mba, bca ,etc
+    # bachelor_course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True, blank=True)#this is for which college degree link mba, bca ,etc
 
     register_no = models.CharField(max_length=250, unique=True, null=True,blank=True)
     religion = models.CharField(max_length=100,null=True, blank=True)

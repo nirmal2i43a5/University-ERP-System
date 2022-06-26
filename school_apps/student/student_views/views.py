@@ -2,6 +2,8 @@ import os
 
 import json
 import datetime
+import csv,io
+from dateutil.parser import parse
 from school_apps.courses.models import selectedcourses
 from django.shortcuts import render, HttpResponseRedirect, redirect, get_object_or_404
 from django.http import Http404
@@ -31,7 +33,7 @@ def add_student(request):
     if request.method == 'POST':
 
         custom_form = AddCustomUserForm(request.POST)
-        student_form = StudentForm(request.POST, request.FILES,user = request.user)
+        student_form = StudentForm(request.POST, request.FILES)
         parent_form = ParentForm(request.POST, request.FILES)
         if custom_form.is_valid() and student_form.is_valid() and parent_form.is_valid():
 
@@ -87,11 +89,11 @@ def add_student(request):
             #     user.student.category = 'A-Level'
         #     fields = (
         #     'join_year','stu_id','roll_no','gender','shift','semester','section','course','faculty','program','status','contact',
-        #     'permanent_address','temporary_address','dob','blood_group','see_gpa','previous_school_name','image',
+        #     'permanent_address','temporary_address','dob','blood_group','gpa','previous_school_name','image',
         # )
          
-                
-            user.student.course_category = get_object_or_404(CourseCategory, course_name = request.user.adminuser.course_category)
+           
+            user.student.course_category = get_object_or_404(CourseCategory, course_name = student_form.cleaned_data['course_category'])
             user.student.semester = student_form.cleaned_data['semester']
             user.student.section = student_form.cleaned_data['section']
             user.student.join_year =  student_form.cleaned_data["join_year"]
@@ -109,7 +111,7 @@ def add_student(request):
             user.student.dob = dob
             user.student.blood_group = student_form.cleaned_data['blood_group']
             # user.student.optional_subject = student_form.cleaned_data['optional_subject']
-            user.student.see_gpa = student_form.cleaned_data['see_gpa']
+            user.student.gpa = student_form.cleaned_data['gpa']
             user.student.previous_school_name = student_form.cleaned_data["previous_school_name"]
             user.student.guardian = Father_object.parent
             if image_url != None:
@@ -140,7 +142,7 @@ def add_student(request):
 
     else:
         custom_form = AddCustomUserForm()
-        student_form = StudentForm(user = request.user)
+        student_form = StudentForm()
         parent_form = ParentForm()
     context = {
             'title':'Add Student',
@@ -152,8 +154,7 @@ def add_student(request):
 
 
 
-import csv,io
-from dateutil.parser import parse
+
 
 @permission_required('student_management_app.student_bulk_upload', raise_exception=True)
 def student_file_upload(request):
@@ -201,7 +202,7 @@ def student_file_upload(request):
             dob_bs_parse = parse(column[23]).date()
         blood_group = column[24]
         # optional_subject = column[26]
-        see_gpa = column[26]
+        gpa = column[26]
         previous_school =  column[27]  
         # dob_es_parse = datetime.datetime.strptime(dob_es, "%Y-%m-%d")
     
@@ -286,7 +287,7 @@ def student_file_upload(request):
             customuser_object.student.dob = datetime.date.today()
         customuser_object.student.blood_group = blood_group
         # customuser_object.student.optional_subject = Subject.objects.get(subject_name = column[26])
-        customuser_object.student.see_gpa = see_gpa
+        customuser_object.student.gpa = gpa
         customuser_object.student.previous_school_name = previous_school
         customuser_object.student.guardian = Father_object.parent
         customuser_object.student.join_year = batch[0:4]
@@ -604,7 +605,7 @@ def edit_student(request, student_id):
     parent_form_instance = student_form_instance.guardian
 
     if request.method == 'POST':
-        student_form = StudentForm(request.POST, request.FILES, instance=student_form_instance,user = request.user)
+        student_form = StudentForm(request.POST, request.FILES, instance=student_form_instance)
         custom_form = EditCustomUserForm(request.POST, instance=custom_form_instance)
         parent_form = ParentForm(request.POST, instance=parent_form_instance)
         
@@ -620,7 +621,7 @@ def edit_student(request, student_id):
             return redirect('admin_app:manage_student')
         
     else:
-        student_form = StudentForm(instance=student_form_instance,user = request.user)
+        student_form = StudentForm(instance=student_form_instance)
         custom_form = EditCustomUserForm(instance=custom_form_instance)
         parent_form = ParentForm(instance=parent_form_instance)
 

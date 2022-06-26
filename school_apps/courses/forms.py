@@ -12,6 +12,7 @@ from django import forms
 
 
 class CourseForm(ModelForm):
+    course_category = forms.ModelChoiceField(queryset = CourseCategory.objects.all(), widget=forms.RadioSelect())
     class Meta:
         model = Course
         fields = '__all__'

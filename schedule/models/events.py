@@ -14,7 +14,7 @@ from django.utils.translation import gettext, gettext_lazy as _
 from schedule.models.calendars import Calendar
 from schedule.models.rules import Rule
 from schedule.utils import OccurrenceReplacer
-from simple_history.models import HistoricalRecords
+
 
 freq_dict_order = {
     "YEARLY": 0,
