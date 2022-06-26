@@ -3,7 +3,7 @@ import datetime
 from django.shortcuts import render,redirect, get_object_or_404
 from django.db.models import Q
 from django.http import HttpResponse,JsonResponse
-from student_management_app.models import( Student, Semester, Section, Subject,Staff,CourseCategory,
+from student_management_app.models import( Student, Semester, Section, Subject,Staff,CourseCategory,Course,
                                           ExtraUser)
 from .models import Attendance, AttendanceReport
 from student_management_app.models import CustomUser
@@ -637,7 +637,12 @@ def fill_semester_select(request):
     semesters = Semester.objects.filter(course_category=course_category)
     context = {'semesters': semesters}
     return render(request, "attendances/auto_fill_select/semesters.html", context)
-    
+
+def fill_course_select(request):
+    course_category = CourseCategory.objects.get(pk = request.GET['course_category'])
+    courses = Course.objects.filter(course_category=course_category)
+    context = {'courses': courses}
+    return render(request, "attendances/auto_fill_select/courses.html", context)
 
 def fill_section_select(request):
     semester = Semester.objects.get(pk = request.GET['semester'])

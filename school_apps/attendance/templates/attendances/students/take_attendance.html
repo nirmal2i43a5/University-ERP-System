@@ -304,6 +304,17 @@
     })
 })
 
+$("#id_course_category").change(function(){
+  var course_category_id = $(this).val();
+  
+  $.ajax({
+      url:" {% url 'attendance_app:fill_course_select' %}",
+      data:{'course_category':course_category_id},
+      success:function(data){
+          $("#id_course").html(data);
+      }
+  })
+})
 
 $("#id_semester").change(function(){
   var semester_id = $(this).val();

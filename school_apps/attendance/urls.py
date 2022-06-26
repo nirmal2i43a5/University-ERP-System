@@ -3,7 +3,7 @@ from school_apps.attendance.views import (get_students, save_student_attendance,
                               get_teachers,save_teacher_attendance, manage_teacher_attendance,
                               get_users, save_user_attendance, manage_user_attendance ,
                               edit_student_attendance,edit_save_student_attendance,
-                              student_attendance_list,fill_semester_select,fill_section_select,
+                              student_attendance_list,fill_semester_select,fill_section_select,fill_course_select,
                               fill_subject_select,student_attendance_report,student_daily_attendance,student_monthly_attendance
                               )
 from student_management_system.views import attendance_home
@@ -30,6 +30,7 @@ urlpatterns = [
     path('save_user_attendance/',save_user_attendance,name = 'save_user_attendance'),
     path('manage_user_attendance/',manage_user_attendance,name = 'manage_user_attendance'),
     # for auto fill form part
+      path('fill_course_select/',fill_course_select,name = 'fill_course_select'),
     path('fill_semester_select/',fill_semester_select,name = 'fill_semester_select'),
      path('fill_section_select/',fill_section_select,name = 'fill_section_select'),
         path('fill_subject_select/',fill_subject_select,name = 'fill_subject_select'),
