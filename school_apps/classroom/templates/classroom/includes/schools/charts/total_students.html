@@ -1,0 +1,36 @@
+<script>
+    // Create the chart
+/*
+*/ 
+
+
+
+    Highcharts.chart('total_students-container', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Students from different classes.'
+        },
+        yAxis: {
+            title: {
+                text: 'Total Students'
+            }
+    
+        },
+        xAxis: {
+            categories: [
+          //  'Science students','Non-science studets'
+            {% for semester in class_student_dataset %}'{{ semester.semester_name }}'{% if not forloop.last %}, {% endif %}{% endfor %}
+            ]
+
+        },
+        series: [{
+            name: 'Class',
+            color:'#743DB8',
+            data: [
+            {% for student in class_student_dataset %}{{ student.students }}{% if not forloop.last %}, {% endif %}{% endfor %}
+            ]
+        }, ]
+    });
+</script>

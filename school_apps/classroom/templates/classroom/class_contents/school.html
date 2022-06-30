@@ -1,0 +1,138 @@
+
+
+
+{% extends 'classroom/class_base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+{{title}}
+{% endblock title %}
+  
+
+{% block main_content %}
+
+<section class="content">
+  <div class="container-fluid">
+
+  
+
+   {% include "includes/messages.html" %}
+
+    <div class="row">
+      <div class="col-md-12">
+   
+		<div class="card">
+			<div class="card-header p-2 ">
+			  <ul class="nav nav-tabs nav-custom p-0">
+				<li class="nav-item"><a class="nav-link active" href="#assignment" data-toggle="tab">Assignment</a></li>
+				<!-- <li class="nav-item"><a class="nav-link" href="#routine" data-toggle="tab">Routine</a></li> -->
+				<li class="nav-item"><a class="nav-link" href="#syllabus" data-toggle="tab">Syllabus</a></li>
+				<li class="nav-item"><a class="nav-link" href="#routine" data-toggle="tab">Routine</a></li>
+				<li class="nav-item"><a class="nav-link" href="#e-notes" data-toggle="tab">E-Notes</a></li>
+
+				<li class="nav-item"><a class="nav-link" href="#lesson-plan" data-toggle="tab">Lesson Plan</a></li>
+				<!-- <li class="nav-item"><a class="nav-link " href="#mark" data-toggle="tab">Mark</a></li> -->
+				<!-- <li class="nav-item"><a class="nav-link" href="#invoice" data-toggle="tab">Invoice</a></li> -->
+				<!-- <li class="nav-item"><a class="nav-link" href="#payment" data-toggle="tab">Payment</a></li> -->
+			  </ul>
+			</div><!-- /.card-header -->
+			<div class="card-body">
+			  <div class="tab-content">
+				<div class="active tab-pane" id="assignment">
+  
+				  {% include "students/views/profile.html" %}
+  
+				</div>
+				<!-- /.tab-pane -->
+				<div class="tab-pane" id="e-notes">
+  
+				  {% include "students/views/routine.html" %}
+				</div>
+  
+				<div class="tab-pane" id="syllabus">
+  
+				  {% include "students/views/attendance/attendance_date_filter.html" %}<br>
+				  {% include "students/views/attendance/attendance_details.html" %}
+  
+				</div>
+  
+				<div class="tab-pane" id="routine">
+  
+				  {% include "students/views/mark.html" %}
+  
+				</div>
+  
+				<div class="tab-pane" id="lesson-plan">
+  
+				  {% include "students/views/invoice.html" %}
+  
+				</div>
+  
+				<div class="tab-pane" id="payment">
+  
+				  {% include "students/views/payment.html" %}
+  
+				</div>
+  
+				<div class="tab-pane" id="document">
+				  {% include "students/views/documents/document_list.html" %}
+				</div>
+				<div class="tab-pane" id="subject">
+				  {% include "students/views/courses.html" %}
+				</div>
+			   
+			  </div>
+			  <!-- /.tab-content -->
+			</div><!-- /.card-body -->
+		  </div>
+
+      </div>
+    
+
+    </div>
+  </div>
+</section>
+
+
+<style>
+
+	.col-md-2{
+		border-radius: 50rem;
+	    border: none;
+	    -webkit-box-shadow: 0 0 15px 0 #ddd;
+	    box-shadow: 0 0 15px 0 #ddd;
+	    text-align: center;
+	    background: #fff;
+	 	 padding:3rem 0rem;
+	  	margin:10px 7px 0px 20px;
+
+	}
+
+	.custom-icon i{
+	    padding: 20px;
+	    font-size: 50px;
+	    text-align: center;
+	    color: #115c8d;
+		padding-top:inherit;
+		padding-bottom: 1px;
+		margin-bottom:0.7rem;
+	}
+	.nav-custom > li > a:hover{
+		color:black;
+	  }
+	  .nav-custom > li > a{
+		
+		font-weight: 600;
+		color:white;
+		padding: 8px 10px 8px 10px;
+		background-color:#743DB8;
+		
+	
+	  }
+</style>
+
+{% endblock main_content %}
+
+{% block custom_js %}
+{% endblock custom_js %}

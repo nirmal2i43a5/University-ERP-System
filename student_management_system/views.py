@@ -452,9 +452,19 @@ def exam_home(request):
 def school_class(request):
 
     school_classes = Semester.objects.filter(course_category = get_object_or_404(CourseCategory, course_name = 'School'))
+    class_student_dataset = []
+    # categories = request.user.staff.courses.all()
+    course_category = get_object_or_404(CourseCategory, course_name = 'School')
+    for semester in Semester.objects.filter(course_category  = course_category ):
+        semester_instance = get_object_or_404(Semester, pk = semester.pk)
+        students = semester_instance.student_set.all().count()
+        class_student_dataset.append({'semester_name':semester,'students':students})
+    print(class_student_dataset)
+ 
     context = {
         'title':'Class Room',
-        'school_classes':school_classes
+        'school_classes':school_classes,
+        'class_student_dataset':class_student_dataset,
                  }
     return render(request, 'classroom/school_classroom.html', context)
 

@@ -538,12 +538,12 @@ $("#id_course_category").change(function(){
       data:{'course_category':course_category_id},
       success:function(data){
         $("#id_filter_semester").html(data);
+
     }
  
      
   })
-  }
-  else{
+  }else{
     $.ajax({
       url:" {% url 'attendance_app:fill_course_select' %}",
       data:{'course_category':course_category_id},

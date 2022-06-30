@@ -520,11 +520,10 @@ class Student(models.Model):
  
 
     # id = models.CharField(max_length=100, primary_key = True)#doing this give error for : foreign key mismatch - "courses_application_form" referencing "tbl_Student" 
-    # s_no = models.CharField(max_length=10, null=True,blank=True)
     join_year = models.CharField(_('Join Year'),max_length = 50, default=datetime.datetime.now().year, null = True,blank = True)#this is same as batch
     stu_id = models.CharField(max_length=50,unique=True)
     roll_no = models.CharField(max_length=10,null=True,blank=True)
-    # full_name = models.CharField(max_length=50,null = True, blank = True)
+    # full_name = models.CharField(max_length=,null=True,blank=True)
     student_user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, null = True, blank = True)
     gender = models.CharField(max_length=20, choices=gender_choice,null = True, default='Male')
     shift = models.CharField(max_length=20,  choices=shift,  null=True,blank=True)
@@ -535,7 +534,6 @@ class Student(models.Model):
     program = models.CharField(max_length=250, null=True,blank=True)
     status = models.CharField(max_length=50,choices = status_choices)
     contact = models.CharField(max_length=30, blank=True)
-    # guardian = models.ForeignKey(CustomUser, on_delete=models.DO_NOTHING,null=True, blank=True, related_name = "Student_Parent")
     guardian = models.ForeignKey(Parent, on_delete=models.DO_NOTHING,null=True, blank=True)
     permanent_address = models.CharField(max_length=255, blank=True)
     temporary_address = models.CharField(max_length=255, blank=True)
@@ -547,20 +545,19 @@ class Student(models.Model):
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE, null=True)
     image = models.ImageField( upload_to='student_images', null=True, blank=True)
     barcode = models.ImageField( upload_to='student_barcodes/', blank=True)
-    qr_code = models.ImageField( upload_to='student_Qrcodes/', blank=True)
+    # qr_code = models.ImageField( upload_to='student_Qrcodes/', blank=True)
     
     transport = models.ForeignKey(Transport, on_delete=models.CASCADE, null=True, blank=True)
     subject = models.ForeignKey( Subject, on_delete=models.CASCADE, null=True, blank=True)#I am using attendance based on subject
     
     # ---------------------------------------------extra field--------------------------------------------------------
-    # bachelor_course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True, blank=True)#this is for which college degree link mba, bca ,etc
 
     register_no = models.CharField(max_length=250, unique=True, null=True,blank=True)
     religion = models.CharField(max_length=100,null=True, blank=True)
     remarks = models.CharField(max_length=255,null=True, blank=True)
     extra_curricular_activities = models.CharField(max_length=255, blank=True)
     group = models.ForeignKey( StudentGroup, on_delete=models.CASCADE, null=True, blank=True)#for college group union
-    session_year = models.ForeignKey( SessionYear, on_delete=models.CASCADE, null=True, blank=True)
+    # session_year = models.ForeignKey( SessionYear, on_delete=models.CASCADE, null=True, blank=True)
     state = models.CharField(max_length=255,null=True, blank=True)
     # country = CountryField(blank_label='(select country)',null=True, blank=True)
     country = models.CharField(max_length = 50, blank=True, null=True)
