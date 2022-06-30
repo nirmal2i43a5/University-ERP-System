@@ -28,7 +28,6 @@ urlpatterns=[
     path('ajax/confirmcourse/', views.confirmAjax, name = "confirmAjax"),
     path('student/log/', student_log, name = "student_log"),
     path('student/delete/log/', delete_log, name = "delete_log"),
-    path('student/attendance/<student_id>/', student_attendance_view, name='student_attendance_view'),
     path('check_email_exists/',views.check_email_exist,name='check_email_exist'),
     path('bulkprintidcard/',bulk_print_id_card,name='bulk_print_id_card'),
 
@@ -37,10 +36,8 @@ urlpatterns=[
     path('parent/checkscore/', views.parent_checkscore, name='parent_checkscore'),
     path('ajax/returnExamslist/', views.returnExamslist, name = "returnExamslist"),
     path('student_autocomplete/', views.student_ajax_autocomplete, name = "student_ajax_autocomplete"),
-    path('student_bulk_photo_upload/', student_bulk_photo_upload, name = "student_bulk_photo_upload"),
-      path('make_student_inactive/<pk>/', make_student_inactive, name = "make_student_inactive"),
-         path('restore_inactive_student/<pk>/', restore_inactive_students, name = "restore_inactive_students"),
-        path('inactive_students/', inactive_students, name = "inactive_students"),
+
+      
     
     
 ]

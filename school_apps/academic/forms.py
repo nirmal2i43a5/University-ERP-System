@@ -1,7 +1,7 @@
 from django import forms
 from django.shortcuts import get_object_or_404
 from school_apps.academic.models import Syllabus, Assignment, Routine,Section
-from student_management_app.models import Semester, Subject,CourseCategory
+from student_management_app.models import Semester, Subject,CourseCategory,Course
 from django.contrib.admin.widgets import AdminSplitDateTime
 
 
@@ -145,6 +145,8 @@ class SubjectSearchForm(forms.Form):
         
 class SubjectForm(forms.ModelForm):
     course_category = forms.ModelChoiceField(queryset = CourseCategory.objects.all(), widget=forms.RadioSelect())
+    semester = forms.ModelChoiceField(queryset = Semester.objects.all())
+    course = forms.ModelChoiceField(required = False, queryset = Course.objects.all())
     subject_name = forms.CharField(required = True, widget=forms.TextInput(
         attrs={'placeholder': 'Enter Your Subject Name'}))
     # semester_value = forms.IntegerField(required = False, widget=forms.NumberInput(
@@ -153,7 +155,7 @@ class SubjectForm(forms.ModelForm):
         attrs={'rows': 2, 'cols': 10, "placeholder": " Enter  Course Description", }))
     class Meta:
         model=Subject
-        fields = ('course_category','semester','subject_name','subject_code','description')
+        fields = ('course_category','course','semester','subject_name','subject_code','description')
  
 
 
@@ -169,28 +171,37 @@ class SemesterForm(forms.ModelForm):#for a-level
    
     class Meta:
         model = Semester
-        fields = ('course_category','name','description')
+        fields = ('course_category','course','name','description')
         
 class ClassSearchForm(forms.Form):
     course_category = forms.ModelChoiceField(label= '',
                                       empty_label = '---Click Here To  Filter Class---', 
                                       queryset = CourseCategory.objects.all())
+    filter_course = forms.ModelChoiceField(required = False, label= '',
+                                      empty_label = '---Click Here To  Filter Course---', 
+                                      queryset = Course.objects.none())
 class SectionSearchForm(forms.Form):
     course_category = forms.ModelChoiceField(label= '',
-                                      empty_label = '---Click Here To  Filter Course Category---', 
+                                      empty_label = '--- Filter Course Category ---', 
                                       queryset = CourseCategory.objects.all())
+    filter_course = forms.ModelChoiceField(required = False, label= '',
+                                      empty_label = '--- Filter Course ---', 
+                                      queryset = Course.objects.none())
     filter_semester = forms.ModelChoiceField(label= '',
-                                      empty_label = '---Click Here To  Filter Class---', 
-                                      queryset = Semester.objects.all())
-    
+                                      empty_label = '--- Filter Class ---', 
+                                      queryset = Semester.objects.none())
+     
 
 class SubjectSearchForm(forms.Form):
     course_category = forms.ModelChoiceField(label= '',
-                                      empty_label = '---Click Here To  Filter Course Category---', 
+                                      empty_label = '---Filter Course Category---', 
                                       queryset = CourseCategory.objects.all())
+    filter_course = forms.ModelChoiceField(label= '',
+                                      empty_label = '--- Filter Course---', 
+                                      queryset = Course.objects.none())
     filter_semester = forms.ModelChoiceField(label= '',
-                                      empty_label = '---Click Here To  Filter Class---', 
-                                      queryset = Semester.objects.all())
+                                      empty_label = '---Filter Class---', 
+                                      queryset = Semester.objects.none())
 # class BachelorSemesterForm(forms.ModelForm):#for a-level
 #     description = forms.CharField(required=False, widget=forms.Textarea(
 #         attrs={'rows': 2, 'cols': 10, "placeholder": " Enter  Course Description", }))
@@ -240,7 +251,8 @@ class SectionForm(forms.ModelForm):#for a-level
 class SectionForm(forms.ModelForm):
  
     course_category = forms.ModelChoiceField(queryset = CourseCategory.objects.all(), widget=forms.RadioSelect())
-    # semester = forms.ModelChoiceField(queryset = Semester.objects.all(), )
+    course = forms.ModelChoiceField(required = False, queryset = Course.objects.none())
+    semester = forms.ModelChoiceField(queryset = Semester.objects.none())
     # section_name = forms.CharField(label='Section Name', widget=forms.TextInput(
     #     attrs={"class": "form-control", "placeholder": " Enter Section Name", }))
     # capacity = forms.IntegerField(required = False, label='Capacity', widget=forms.NumberInput(
@@ -267,7 +279,7 @@ class SectionForm(forms.ModelForm):
     
     class Meta:
         model = Section
-        fields = ['course_category','semester','section_name','capacity','description']
+        fields = ['course_category','course','semester','section_name','capacity','description']
      
 
             

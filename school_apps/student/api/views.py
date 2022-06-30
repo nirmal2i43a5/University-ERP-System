@@ -9,7 +9,7 @@ from django.db.models import Q
     
 
 class StudentApiView(viewsets.ModelViewSet):
-    queryset = Student.objects.all()
+    queryset = Student.objects.filter(student_user__is_active = 1)
     serializer_class = StudentSerializer
     authentication_classes = (TokenAuthentication, SessionAuthentication)
     permission_classes = (IsAuthenticated,)

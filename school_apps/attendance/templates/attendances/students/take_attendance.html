@@ -28,6 +28,7 @@
                 <button type="submit" class="btn btn-sm " id="take_attendance"  style="background-color: #743DB8;color:white">
                   <strong>Take Student Attendance</strong>
                 </button>
+                <a href=""  class = "btn btn-sm btn-info" style="background-color: #743DB8;"><i class="fas fa-sync"></i></a>
 
               </div>
             </div>
@@ -38,45 +39,24 @@
       </div>
 
 
-      {% if course_category.course_name == "A-Level" %}
-
+      
+      {% if course_category %}
       <div class="d-flex flex-column bd-highlight " style="margin-right:10%;">
         <div class="card px-4 py-3 ml-4 mt-0">
           <div class="p-1 bd-highlight">
             <strong>Course Category :</strong>: <span class="badge badge-info">{{course_category}}</span>
+          </div>
+          <div class="p-1 bd-highlight">
+            <strong>Course :</strong>: <span class="badge badge-info">{{course}}</span>
           </div>
           <div class="p-1 bd-highlight">
             <strong>Semester</strong>: {{ semester.name }}
           </div>
           <div class="p-1 bd-highlight">
-            <strong>Faculty</strong>:  {{ faculty }}
-          </div>
-          <!-- <div class="p-1 bd-highlight">
-            <strong>Section</strong> : {{ section.section_name }}
-          </div>
-          <div class="p-1 bd-highlight">
-
-            <strong>Subject</strong> : {{ subject.subject_name }}
-          </div> -->
-        </div>
-      </div>
-
-      {% endif %}
-      {% if course_category.course_name == "Bachelor"  %}
-
-      <div class="d-flex flex-column bd-highlight " style="margin-right:10%;">
-        <div class="card px-4 py-3 ml-4 mt-0">
-          <div class="p-1 bd-highlight">
-            <strong>Course Category :</strong>: <span class="badge badge-info">{{course_category}}</span>
-          </div>
-          <div class="p-1 bd-highlight">
-            <strong>Semester</strong>: {{ semester.bachelor_semester }}
-          </div>
-          <div class="p-1 bd-highlight">
             <strong>Section</strong>:  {{ section.section_name }}
           </div>
           <div class="p-1 bd-highlight">
-            <strong>Subject</strong>:  {{ subject.subject_name }}
+            <strong>Subject</strong>:  {{ subject }}
           </div>
           <!-- <div class="p-1 bd-highlight">
             <strong>Section</strong> : {{ section.section_name }}
@@ -87,35 +67,14 @@
           </div> -->
         </div>
       </div>
-
+      {% else %}
+        
       {% endif %}
-      {% if  course_category.course_name == 'Master' %}
+        
 
-      <div class="d-flex flex-column bd-highlight " style="margin-right:10%;">
-        <div class="card px-4 py-3 ml-4 mt-0">
-          <div class="p-1 bd-highlight">
-            <strong>Course Category :</strong>: <span class="badge badge-info">{{course_category}}</span>
-          </div>
-          <div class="p-1 bd-highlight">
-            <strong>Semester</strong>: {{ semester.master_semster }}
-          </div>
-          <div class="p-1 bd-highlight">
-            <strong>Section</strong>:  {{ section.section_name }}
-          </div>
-          <div class="p-1 bd-highlight">
-            <strong>Subject</strong>:  {{ subject.subject_name }}
-          </div>
-          <!-- <div class="p-1 bd-highlight">
-            <strong>Section</strong> : {{ section.section_name }}
-          </div>
-          <div class="p-1 bd-highlight">
+    
 
-            <strong>Subject</strong> : {{ subject.subject_name }}
-          </div> -->
-        </div>
-      </div>
-
-      {% endif %}
+     
 
     </div>
 
@@ -244,11 +203,11 @@
           return { "id": student_id, "status": status, };
         }
       }).get()
-
-
+      var course_category_id = $("#id_course_category").val();
+      var course_id = $("#id_filter_course").val();
       var attendance_date = $("#attendance_date").val();
-      var semester_id = $("#id_semester").val();
-      var faculty_id = $("#id_group").val();
+      var semester_id = $("#id_filter_semester").val();
+   //   var faculty_id = $("#id_group").val();
      var subject_id = $("#id_subject").val();
      var section_id = $("#id_section").val();
       student_data = JSON.stringify(student_data)
@@ -257,18 +216,17 @@
         url: "{% url 'attendance_app:save_student_attendance' %}",
         type: 'POST',
         data: {
+          course_category_id:course_category_id,
+          course_id:course_id,
             student_ids: student_data,
            attendance_date: attendance_date,
             subject_id: subject_id, 
             semester_id: semester_id,
-            group_id:faculty_id,
           section_id: section_id
         },
       })
         .done(function (response) {
           console.log(response)
-
-
           if (response == "True") {
             alert("Attendance Succesfully Saved")
             window.location.href = '/student_attendance_report/'
@@ -281,6 +239,7 @@
         })
         .fail(function () {
           alert("Failed to get Response")
+          location.reload()
         })
     })
 
@@ -292,31 +251,11 @@
 
 
 
-  $("#id_course_category").change(function(){
-    var course_category_id = $(this).val();
-    
-    $.ajax({
-        url:" {% url 'attendance_app:fill_semester_select' %}",
-        data:{'course_category':course_category_id},
-        success:function(data){
-            $("#id_semester").html(data);
-        }
-    })
-})
 
-$("#id_course_category").change(function(){
-  var course_category_id = $(this).val();
-  
-  $.ajax({
-      url:" {% url 'attendance_app:fill_course_select' %}",
-      data:{'course_category':course_category_id},
-      success:function(data){
-          $("#id_course").html(data);
-      }
-  })
-})
 
-$("#id_semester").change(function(){
+
+
+$("#id_filter_semester").change(function(){
   var semester_id = $(this).val();
   
   
@@ -330,7 +269,7 @@ $("#id_semester").change(function(){
 })
 
 
-$("#id_semester").change(function(){
+$("#id_filter_semester").change(function(){
   var semester_id = $(this).val();
   var course_category_id = $('#id_course_category').val();
   
@@ -364,21 +303,21 @@ $("#id_section").change(function(){
 $('#id_course_category').change(function(){
   var course_category = $('#id_course_category option:selected').text()
   if(course_category ==  'School'){
-    $('#id_semester').removeAttr("hidden");
+    $('#id_filter_semester').removeAttr("hidden");
     $('#id_section').removeAttr("hidden");
     $('#id_subject').attr("hidden",true);
   
    }
   if(course_category ==  'Plus-Two'){
-   $('#id_semester').removeAttr("hidden");
-   $('#id_course').removeAttr("hidden");
+   $('#id_filter_semester').removeAttr("hidden");
+   $('#id_filter_course').removeAttr("hidden");
    $('#id_section').removeAttr("hidden");
    $('#id_subject').attr("hidden",true);
   }
 
   if(course_category ==  'Bachelor' || course_category ==  'Master'){
-   $('#id_course').removeAttr("hidden");
-   $('#id_semester').removeAttr("hidden");
+   $('#id_filter_course').removeAttr("hidden");
+   $('#id_filter_semester').removeAttr("hidden");
    $('#id_subject').removeAttr("hidden");
    $('#id_section').removeAttr("hidden");
   }

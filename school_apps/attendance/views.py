@@ -17,9 +17,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 @permission_required('attendance.add_attendancereport', raise_exception=True)
 def get_students(request):
     
-    a_level_course_category = get_object_or_404(CourseCategory,course_name = 'A-Level')
-    bachelor_course_category = get_object_or_404(CourseCategory,course_name = 'Bachelor')
-    master_course_category = get_object_or_404(CourseCategory,course_name = 'Master')
+
     status_form = AttendanceStatusForm()
     form  = AttendanceFormSearch()
     
@@ -27,37 +25,43 @@ def get_students(request):
         form  = AttendanceFormSearch(request.POST,)
         course_category_id = request.POST.get('course_category')
         course_category_instance = get_object_or_404(CourseCategory, pk = course_category_id)
-        course_id = request.POST.get('course')
-        course_instance = get_object_or_404(Course, pk = course_id)
-        print(type(course_category_instance),"::::::::::::::::::::::;;")
+        course_id = request.POST.get('filter_course')
+        if course_id:
+            course_instance = Course.objects.filter(pk = course_id).first()
+        else:
+            course_instance = None
+            
         course_category = get_object_or_404(CourseCategory, pk = course_category_id)
-        semester_id = request.POST.get('semester')
+        semester_id = request.POST.get('filter_semester')
         group = request.POST.get('group')
-        print(group)
         section = request.POST.get('section')
+        section_instance = get_object_or_404(Section, pk = section)
         subject = request.POST.get('subject')
-        print(subject)
+        if subject:
+            subject_instance = Subject.objects.filter(pk = subject).first()
+        else:
+            subject_instance = None
         semester = get_object_or_404(Semester, pk = semester_id)
         #i add course in student  so as to  access subject for student based on course in the college only.
         # students = Student.objects.filter(semester = semester, section = section, course = course.subject)
         # students = Student.objects.filter(semester = semester, section = section)
         if course_category_instance == get_object_or_404(CourseCategory, course_name = 'School'):
-            section = get_object_or_404(Section, pk = section)
+           
             # subject = get_object_or_404(Subject, pk = subject)
-            students = Student.objects.filter(course_category = course_category_instance, semester = semester,section = section, student_user__is_active = 1).order_by('student_user__username')
-        if course_category_instance == CourseCategory.objects.filter(course_name__in = ['Plus-Two','Bachelor','Master']).first():
+            students = Student.objects.filter(course_category = course_category_instance, semester = semester,section = section_instance, student_user__is_active = 1).order_by('student_user__username')
+       
+        if course_category_instance in CourseCategory.objects.filter(course_name__in = ['Plus-Two','Bachelor','Master']):
             students = Student.objects.filter(semester = semester, course = course_instance, student_user__is_active = 1).order_by('student_user__username')
             
         return render(request,'attendances/students/take_attendance.html', {'form':form,
-                                                                            'a_level_course_category':a_level_course_category,
-                                                                             'bachelor_course_category':bachelor_course_category,
-                                                                             'master_course_category':master_course_category,
+                                                                          
                                                                             'students':students,
                                                                             'semester':semester,
-                                                                            'section':section,
+                                                                            'section':section_instance,
+                                                                            'course':course_instance,
                                                                             # 'faculty':group,
                                                                             'course_category':course_category,
-                                                                            'subject':subject,
+                                                                            'subject':subject_instance,
                                                                             'status_form':status_form
                                                                             })
     return render(request,'attendances/students/take_attendance.html', {'form':form,'today_date':datetime.date.today})
@@ -66,28 +70,30 @@ def get_students(request):
 @csrf_exempt
 def save_student_attendance(request):
     
-    a_level_course_category = get_object_or_404(CourseCategory,course_name = 'A-Level')
-    bachelor_course_category = get_object_or_404(CourseCategory,course_name = 'Bachelor')
-    master_course_category = get_object_or_404(CourseCategory,course_name = 'Master')
-    
-    attendance_date = request.POST.get('attendance_date')
-    student_ids = request.POST.get('student_ids')
+    course_category_id = request.POST.get('course_category_id')
+    course_category_instance = get_object_or_404(CourseCategory, pk = course_category_id)
+    attendance_object = str(request.POST.get('attendance_date'))
+    attendance_date = datetime.datetime.strptime(attendance_object, "%Y-%m-%d").date() 
     semester_id = request.POST.get('semester_id')
     semester = Semester.objects.get(pk=semester_id)
     section = request.POST.get('section_id')
-    subject = request.POST.get('subject_id')
+    section_instance  = get_object_or_404(Section, pk = section)
+    student_ids = request.POST.get('student_ids')
     json_student=json.loads(student_ids)
+    subject = request.POST.get('subject_id')
     
-    if section =='' and subject =='':
-        group_id = request.POST.get('group_id')
+    
+    if course_category_instance in CourseCategory.objects.filter(course_name__in = ['School','Plus-Two']):
+        
         try:
             attendance_instance = Attendance.objects.filter(semester=semester,
-                                                            faculty = group_id, 
+                                                            # faculty = group_id, 
+                                                            section = section_instance,
                                                             attendance_date=attendance_date)
             if attendance_instance.exists():
                 print("Attendance already added")
             else:
-                attendance=Attendance(semester=semester,faculty = group_id, attendance_date=attendance_date)
+                attendance=Attendance(semester=semester,  section = section_instance, attendance_date=attendance_date)
                 attendance.save()
 
             for stud in json_student:#FETCH EACH STUDENT AND ASSIGN DATA FOT THEM 
@@ -96,12 +102,12 @@ def save_student_attendance(request):
                     attendance_report.save()
             return HttpResponse(True)
         except:
-            return HttpResponse("Something Went Wrong!")
-    
-    
-
-    if section !='' and subject !='':
-       
+                return HttpResponse("Something Went Wrong!")
+            
+            
+    if course_category_instance in CourseCategory.objects.filter(course_name__in = ['Bachelor','Master']):
+        
+           
         section = Section.objects.get(pk=section)
         subject = Subject.objects.get(pk=subject)
         try:
@@ -126,6 +132,10 @@ def save_student_attendance(request):
             return HttpResponse(True)
         except:
             return HttpResponse("Something Went Wrong!")
+    
+    
+
+
 
 
 
@@ -246,40 +256,48 @@ def student_daily_attendance(request):
     datewise_attendance_form = AttendanceForm()
     if request.method == 'POST':
         # attendance_details_search = AttendanceForm(request.POST, user = request.user)
+        course_category_id = request.POST.get('course_category')
+        course_category_instance = get_object_or_404(CourseCategory, pk = course_category_id)
+        course_instance = get_object_or_404(Course, pk = request.POST.get('course'))
         attendance_details_search = AttendanceForm(request.POST)
         attendance_date = request.POST.get('attendance_date')
+        # course_category = request.POST.get('course_category')
         semester_id = request.POST.get('semester')
         semester = get_object_or_404(Semester , pk = semester_id)
         group = request.POST.get('group')
         section = request.POST.get('section')
+        section_instance = get_object_or_404(Section , pk = section)
         subject = request.POST.get('subject')
         
-        if section !='' and subject !='':
+        # if section !='' and subject !='':
+        if course_category_instance in CourseCategory.objects.filter(course_name__in = ['Bachelor','Master']):
             section = get_object_or_404(Section, pk = section)
             subject = get_object_or_404(Subject, pk = subject)
             attendance = Attendance.objects.filter(
                                 attendance_date = attendance_date,
                                 semester = semester_id,
-                                faculty = group,
+                                # faculty = group,
                                 section = section,
                                 subject = subject
             )
             student_attendances = AttendanceReport.objects.filter(attendance__in = attendance)
             
+        if course_category_instance in CourseCategory.objects.filter(course_name__in = ['School','Puls-Two']):
             
-        if section == '' and subject == '':
             course_category_id = request.POST.get('course_category')
             course_category = get_object_or_404(CourseCategory, pk = course_category_id)
             attendance = Attendance.objects.filter(
                                             attendance_date = attendance_date,
                                             semester = semester,
-                                            faculty = group,
+                                            section = section_instance,
+                                            # faculty = group,
                                             # section = section_id,
                                             # subject = subject_id
                 )
+      
             
             student_attendances = AttendanceReport.objects.filter(attendance__in = attendance)
-            
+           
         # monthly_attendances = AttendanceReport.objects.filter(attendance__attendance_date__month = today.month)
         
         
@@ -539,7 +557,8 @@ def get_teachers(request):
 
 @csrf_exempt
 def save_teacher_attendance(request):
-    attendance_date = request.POST.get('attendance_date')
+    attendance_date_object = request.POST.get('attendance_date')
+    attendance_date = datetime.datetime.strptime(attendance_date_object, "%Y-%m-%d").date() 
     teacher_ids = request.POST.get('teacher_ids')
     json_teacher=json.loads(teacher_ids)
     try:
@@ -551,7 +570,7 @@ def save_teacher_attendance(request):
                 attendance_report.save()
         return HttpResponse("OK")
     except:
-        return HttpResponse("ERR")
+        return HttpResponse("ERROR")
 
 
 def manage_teacher_attendance(request):
@@ -586,7 +605,8 @@ def get_users(request):
 
 @csrf_exempt
 def save_user_attendance(request):
-    attendance_date = request.POST.get('attendance_date')
+    attendance_date_object = request.POST.get('attendance_date')
+    attendance_date = datetime.datetime.strptime(attendance_date_object, "%Y-%m-%d").date() 
     user_ids = request.POST.get('user_ids')
     json_user=json.loads(user_ids)
     try:
@@ -633,16 +653,32 @@ def manage_user_attendance(request):
 
 
 def fill_semester_select(request):
-    course_category = CourseCategory.objects.get(pk = request.GET['course_category'])
+    course_category_id = request.GET['course_category']
+    course_category = CourseCategory.objects.get(pk = course_category_id)
     semesters = Semester.objects.filter(course_category=course_category)
+    context = {'semesters': semesters}
+    
+    return render(request, "attendances/auto_fill_select/semesters.html", context)
+
+def fill_semester_from_course(request):
+    course_id = request.GET['course']
+    course = Course.objects.get(pk = course_id)
+    semesters = Semester.objects.filter(course=course)
     context = {'semesters': semesters}
     return render(request, "attendances/auto_fill_select/semesters.html", context)
 
 def fill_course_select(request):
     course_category = CourseCategory.objects.get(pk = request.GET['course_category'])
+    
     courses = Course.objects.filter(course_category=course_category)
-    context = {'courses': courses}
-    return render(request, "attendances/auto_fill_select/courses.html", context)
+    
+    if(len(courses) == 0):
+        semesters = Semester.objects.filter(course_category=course_category)
+        context = {'semesters': semesters}
+        return render(request, "attendances/auto_fill_select/semesters.html", context)
+    else:
+        context = {'courses': courses}
+        return render(request, "attendances/auto_fill_select/courses.html", context)
 
 def fill_section_select(request):
     semester = Semester.objects.get(pk = request.GET['semester'])
@@ -654,10 +690,10 @@ def fill_section_select(request):
 def fill_subject_select(request):
     semester = Semester.objects.get(pk = request.GET['semester'])
     course_category = CourseCategory.objects.get(pk = request.GET['course_category'])  
-    if course_category.course_name == 'Bachelor':
-        subjects = Subject.objects.filter(course_category = course_category, bachelor_semester = semester)
-    if course_category.course_name == 'Master':
-        subjects = Subject.objects.filter(course_category = course_category,master_semester = semester)
+    # if course_category.course_name == 'Bachelor':
+    subjects = Subject.objects.filter(course_category = course_category, semester = semester)
+    # if course_category.course_name == 'Master':
+    #     subjects = Subject.objects.filter(course_category = course_category,master_semester = semester)
     context = {'subjects': subjects}
     return render(request, "attendances/auto_fill_select/subjects.html", context)
     

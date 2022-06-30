@@ -29,7 +29,7 @@ from django.core.files import File
 gender_choice = (
     ('Male', 'Male'),
     ('Female', 'Female'),
-    ('Third Gender', 'Third Gender')
+    ('Others', 'Others')
 )
 
 
@@ -292,6 +292,7 @@ class ExtraUser(models.Model):  # this all other user like driver accountant and
 class Semester(models.Model):
  
     course_category = models.ForeignKey(CourseCategory, on_delete=models.CASCADE,null = True, blank=True)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE,null = True, blank=True)
     name = models.CharField(max_length=100)#for school classes
     # level = models.CharField(max_length=20, choices=ALEVEL_CHOICES, default='AS',null = True,blank = True)
     # bachelor_semester = models.CharField(_("Course Name"),max_length=100,null = True, blank = True)
@@ -343,11 +344,12 @@ class Subject(models.Model):
     subject_id = models.BigAutoField(auto_created=True, primary_key=True)
     # subject_id = models.CharField(max_length=50, primary_key = True)
     course_category = models.ForeignKey(CourseCategory, on_delete=models.CASCADE,null = True, blank=True)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, null= True, blank=True)
+    
     semester = models.ForeignKey(Semester, verbose_name = 'Class', on_delete=models.CASCADE)
     faculty = models.CharField(_('Group'), max_length=50,choices = faculty_choices,blank = True)
     subject_name = models.CharField(max_length=255)
     subject_code = models.CharField(max_length=255,blank=True, null = True)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, null= True, blank=True)
     staff_user = models.ManyToManyField(CustomUser, through='SubjectTeacher',  blank = True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
@@ -373,6 +375,7 @@ class Subject(models.Model):
 
 class Section(models.Model):
     course_category = models.ForeignKey(CourseCategory, on_delete=models.CASCADE,null = True, blank=True)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE,null = True, blank=True)
     section_name = models.CharField(max_length=100)
     capacity = models.IntegerField(null = True, blank = True)
     semester = models.ForeignKey(Semester, verbose_name = 'Class', on_delete=models.CASCADE, null = True)

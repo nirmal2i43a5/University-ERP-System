@@ -43,11 +43,11 @@
           <!-- /.card-header -->
           <div class="card-body table-responsive">
        
-            <a href="{% url 'student:student_bulk_photo_upload' %}" class="btn btn-xs float-right ml-2 mb-4 "  style="background-color: #743DB8;color:white;">
+            <a href="{% url 'admin_app:student_bulk_photo_upload' %}" class="btn btn-xs float-right ml-2 mb-4 "  style="background-color: #743DB8;color:white;">
               <i class="fas fa-xs fa-upload"></i> <strong> Bulk Photos Upload</strong></a>
               <a href="{% url 'admin_app:student_file_upload' %}" class="btn btn-xs float-right ml-2 mb-4 "  style="background-color: #743DB8;color:white;">
                 <i class="fas fa-xs fa-upload"></i> <strong>Bulk Student Upload</strong></a>
-                <a href="{% url 'student:inactive_students' %}" class="btn btn-xs float-right ml-2 mb-4 "  style="background-color: #743DB8;color:white;">
+                <a href="{% url 'admin_app:inactive_students' %}" class="btn btn-xs float-right ml-2 mb-4 "  style="background-color: #743DB8;color:white;">
                   <i class="fas fa-xs fa-eye"></i> <strong>View Inactive Students</strong></a>
 
             {% url 'admin_app:add_student' as button_url %}
@@ -85,7 +85,7 @@
                   <th data-data="semester">Class</th>
                   <th data-data="section">Section</th>
                   <th data-data="father_phone">Parent Contact</th>
-                  <th data-data="contact">Contact</th>
+                  <th data-data="contact">Student Contact</th>
                   <th data-data="username">Username</th>
                   <th data-data="Action">Action</th>
                 </tr>
@@ -142,8 +142,9 @@
             replace_app_name: 'student_management_app',
             action_index: $("#student-table th").length - 1,
            edit_url: '{% url "admin_app:edit_student"  "pk_val" %}',
-           delete_url: '{% url "admin_app:delete_student"  "pk_val" %}', 
+           delete_url: '', 
            view_url:'{% url "admin_app:view_student"  "pk_val" %}',
+           make_inactive_url:'{% url "admin_app:make_student_inactive"  "pk_val" %}',
            action : 'delete',
         
             additionalColumn: [{
@@ -159,7 +160,7 @@
             },
             
             {
-              targets: 9,//number of field i want to show in datatables(from id(#) to Username = 9)
+              targets: 11,//number of field i want to show in datatables(from id(#) to Username = 9)
               "visible": false,
             },
             ]

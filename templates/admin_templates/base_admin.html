@@ -279,6 +279,7 @@ function deleteSelected({table,id,message_title, model,app_name,replace_app_name
     edit_url,
     delete_url,
     view_url,
+    make_inactive_url,
     app_name = "",
     replace_app_name = "",
     default_order_index = 2,
@@ -346,7 +347,7 @@ function deleteSelected({table,id,message_title, model,app_name,replace_app_name
           orderable: false,
           render: function (data, type, row, meta) {
             return getAppendData(
-              row,edit_url,delete_url,view_url,delete_id_key,
+              row,edit_url,delete_url,view_url,make_inactive_url,delete_id_key,
               append_action,permissionConfig
             );
           },
@@ -376,16 +377,17 @@ function deleteSelected({table,id,message_title, model,app_name,replace_app_name
       ...additionalConfig,
     };
   }
-  function getAppendData(row, edit_url, delete_url,view_url, id,append_action = "",permissionConfig) {
+  function getAppendData(row, edit_url, delete_url,view_url,make_inactive_url, id,append_action = "",permissionConfig) {
     let edit_href = edit_url.replace("pk_val", row[id]);
     let delete_href = delete_url.replace("pk_val", row[id]);
     let view_href = view_url.replace("pk_val", row[id]);
+    let make_inactive_href = make_inactive_url.replace("pk_val", row[id]);
 
     let appendData = '';
     
       appendData+=`
       <div class="btn-group">
-        <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button type="button" style = "background-color:#743DB8;color:white;" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <strong>Action</strong>
         </button>
         <div class="dropdown-menu">
@@ -396,6 +398,7 @@ function deleteSelected({table,id,message_title, model,app_name,replace_app_name
           <form action="${delete_href}" method="POST" class="delete-form">{% csrf_token %}
             <a type="submit" class = "ml-3 btn-delete">Delete</a>
           </form>
+          <a class="dropdown-item" href="${make_inactive_href}">Make Inactive</a>
         </div>
       </div>
       `
@@ -476,43 +479,82 @@ function deleteSelected({table,id,message_title, model,app_name,replace_app_name
         });
 
 
-        {% comment %} for course select field with radio field  {% endcomment %}
-  $("#div_id_course_category input:radio").click(function(){
-    var course_category_id = $(this).val();
-    
-    $.ajax({
-        url:" {% url 'attendance_app:fill_semester_select' %}",
-        data:{'course_category':course_category_id},
-        success:function(data){
-            $("#id_semester").html(data);
-        }
-    })
-})
-
 {% comment %} for course select field  {% endcomment %}
-$("#id_course_category").change(function(){
-  var course_category_id = $(this).val();
+
+
+
+
+$("#id_course").change(function(){
+  var course_id = $(this).val();
   
   
   $.ajax({
-      url:" {% url 'attendance_app:fill_semester_select' %}",
-      data:{'course_category':course_category_id},
+      url:" {% url 'attendance_app:fill_semester_from_course' %}",
+      data:{'course':course_id},
+      success:function(data){
+          $("#id_semester").html(data);
+      }
+  })
+})
+$("#id_filter_course").change(function(){
+  var course_id = $(this).val();
+  
+  
+  $.ajax({
+      url:" {% url 'attendance_app:fill_semester_from_course' %}",
+      data:{'course':course_id},
       success:function(data){
           $("#id_filter_semester").html(data);
       }
   })
 })
-
 $("#div_id_course_category input:radio").change(function(){
   var course_category_id = $(this).val();
-  
-  $.ajax({
+  if(course_category_id == 1){
+    $.ajax({
+      url:" {% url 'attendance_app:fill_course_select' %}",
+      data:{'course_category':course_category_id},
+      success:function(data){
+          $("#id_semester").html(data);
+      }
+  })}
+  else{
+    $.ajax({
+      
       url:" {% url 'attendance_app:fill_course_select' %}",
       data:{'course_category':course_category_id},
       success:function(data){
           $("#id_course").html(data);
       }
   })
+  }
+})
+
+$("#id_course_category").change(function(){
+  var course_category_id = $(this).val();
+  if(course_category_id == 1){
+    $.ajax({
+      url:" {% url 'attendance_app:fill_course_select' %}",
+      data:{'course_category':course_category_id},
+      success:function(data){
+        $("#id_filter_semester").html(data);
+    }
+ 
+     
+  })
+  }
+  else{
+    $.ajax({
+      url:" {% url 'attendance_app:fill_course_select' %}",
+      data:{'course_category':course_category_id},
+      success:function(data){
+        $("#id_filter_course").html(data);
+    }
+ 
+     
+  })
+  }
+
 })
 
 $("#id_semester").change(function(){

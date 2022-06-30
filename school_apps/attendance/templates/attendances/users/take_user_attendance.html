@@ -101,8 +101,7 @@
       //   $(this).text("Saving Attendance Data...")
 
       var user_data = $("input[name='user_data[]']").map(function () {
-        //for radio button
-        //https://stackoverflow.com/questions/59632667/django-html-how-to-pass-radio-option-select-via-ajax-and-load-form
+   
        
         if ($(this).is(":checked")) {
           return { "id": $(this).val(), "status": 1 };
@@ -129,7 +128,7 @@
           console.log("I am done")
 
           if (response == "OK") {
-            alert("Attendance Save")
+            alert("Attendance Save Successfully")
           }
           else {
             alert("Error in Saving Data")

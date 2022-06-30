@@ -57,11 +57,12 @@
           <tr>
             <th></th>
             <th>ID</th>
-            <th>Course</th>
+            <th>Class</th>
             {% comment %} <th>Year</th> {% endcomment %}
          
 
-            <!-- <th>Facilitator</th> -->
+           <th>Course Category</th> 
+           <th>Course</th> 
             <th>Description</th>
             <th>Action</th>
           </tr>
@@ -78,6 +79,9 @@
               <td></td>
               <td>{{ forloop.counter }}</td>
                 <td>{{ semester.name }}</td>
+             
+                <td>  <div class="badge badge-info"> <strong>{{ semester.course_category }} </strong></div></td>
+                <td>  <div class="badge badge-info"> <strong>{{ semester.course }} </strong></div></td>
               <td>{{ semester.description }}</td>
               <!-- <td>
                 {{ semester.get_teachers }}

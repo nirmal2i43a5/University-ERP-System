@@ -180,16 +180,17 @@ def manage_subject(request):
     subject_search_form = SubjectSearchForm()
     
     course_category = request.GET.get('course_category')
+    course = request.GET.get('course')
     semester = request.GET.get('filter_semester')
    
-    if course_category and semester:        
+    if course_category and course and semester:        
         course_category_instance = get_object_or_404(CourseCategory, pk = course_category)
+        course_instance = get_object_or_404(Course, pk = course)
         semester_instance = get_object_or_404(Semester, pk = semester)
-        subjects = Subject.objects.filter(course_category = course_category_instance,
+        subjects = Subject.objects.filter(course_category = course_category_instance,course = course_instance,
                                           semester = semester_instance,
                                           
-                                          
-                                          )
+                                                                       )
         context = {
             'form':form,
                'subject_search_form':subject_search_form,
@@ -199,13 +200,25 @@ def manage_subject(request):
                }
         return render(request, "academic/subjects/manage_subject.html", context)
     
+    if course_category and semester:        
+        course_category_instance = get_object_or_404(CourseCategory, pk = course_category)
+        semester_instance = get_object_or_404(Semester, pk = semester)
+        subjects = Subject.objects.filter(course_category = course_category_instance,
+                                          semester = semester_instance,
+                                          
+                                                                       )
+        context = {
+            'form':form,
+               'subject_search_form':subject_search_form,
+               'title': 'Subject',
+               'subjects':subjects, 
+           
+               }
+        return render(request, "academic/subjects/manage_subject.html", context)
     if request.method == 'POST':
         form = SubjectForm(request.POST)
-        print(form)
-        print(form.is_valid())
         try:
             if form.is_valid():
-                print("Inside")
                 form.save()
                 messages.success(request, "Subject is Added Successfully.")
                 return redirect('academic:manage_subject')
@@ -255,7 +268,8 @@ def edit_subject(request, subject_id):  # keep subject_id hidden field in edit_s
             return redirect('academic:edit_subject', subject_id)
 
     context = {'form': form,
-               'title': 'Subject'
+               'title': 'Subject',
+               'subject_instance':subject_instance
                }
     return render(request, 'academic/subjects/manage_subject.html', context)
 
@@ -596,10 +610,23 @@ def manage_class(request):
     form = SemesterForm()
     class_search_form = ClassSearchForm()
     
-    course_category = request.GET.get('course_category')
-    if course_category:        
-        classes = Semester.objects.filter(course_category = 
-                                          get_object_or_404(CourseCategory, pk = course_category))
+    course_category_id = request.GET.get('course_category')
+    course_id = request.GET.get('filter_course')
+    if course_category_id and course_id:        
+        classes = Semester.objects.filter(course_category = get_object_or_404(CourseCategory, pk = course_category_id),
+                                          course = get_object_or_404(Course, pk = course_id))
+        context = {
+            'form':form,
+               'class_search_form':class_search_form,
+               'title': 'Class',
+               'classes':classes, 
+           
+               }
+        return render(request, "academic/classes/manage_class.html", context)
+    
+    if course_category_id:        
+        classes = Semester.objects.filter(course_category = get_object_or_404(CourseCategory, pk = course_category_id),
+                                         )
         context = {
             'form':form,
                'class_search_form':class_search_form,
@@ -613,6 +640,7 @@ def manage_class(request):
 
     if request.method == 'POST':
         course_category_id = request.POST['course_category']
+        course_id = request.POST['course']
         name = request.POST['name']
         description = request.POST['description']
      
@@ -620,7 +648,8 @@ def manage_class(request):
             semester = Semester.objects.create(name = name,
                                                description = description, 
                                                course_category = get_object_or_404(
-                                                   CourseCategory,pk = course_category_id)
+                                                CourseCategory,pk = course_category_id),
+                                               course = get_object_or_404(Course, pk = course_id)
                                                )
             
             messages.success(request, "Class is Added Successfully.")
@@ -703,9 +732,21 @@ def manage_section(request):
     section_search_form = SectionSearchForm()
     
     course_category = request.GET.get('course_category')
+    course = request.GET.get('filter_course')
     semester = request.GET.get('filter_semester')
    
-    if course_category and semester:        
+    if course_category and course and  semester:        
+        course_category_instance = get_object_or_404(CourseCategory, pk = course_category)
+        course_instance = get_object_or_404(Course, pk = course)
+        semester_instance = get_object_or_404(Semester, pk = semester)
+        sections = Section.objects.filter(course_category = course_category_instance,
+                                          course = course_instance, 
+                                          semester = semester_instance,
+                                          
+                                          
+                                    )
+    # Mainly for school level
+    if course_category and  semester:        
         course_category_instance = get_object_or_404(CourseCategory, pk = course_category)
         semester_instance = get_object_or_404(Semester, pk = semester)
         sections = Section.objects.filter(course_category = course_category_instance,

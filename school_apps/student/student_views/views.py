@@ -91,10 +91,11 @@ def add_student(request):
         #     'join_year','stu_id','roll_no','gender','shift','semester','section','course','faculty','program','status','contact',
         #     'permanent_address','temporary_address','dob','blood_group','gpa','previous_school_name','image',
         # )
-         
+            print(student_form.cleaned_data['course_category'],":::::::::::::::::course cate")
            
             user.student.course_category = get_object_or_404(CourseCategory, course_name = student_form.cleaned_data['course_category'])
             user.student.semester = student_form.cleaned_data['semester']
+            user.student.course = student_form.cleaned_data['course']
             user.student.section = student_form.cleaned_data['section']
             user.student.join_year =  student_form.cleaned_data["join_year"]
             user.student.stu_id = student_form.cleaned_data['stu_id']
@@ -650,9 +651,10 @@ def delete_student(request, pk):
     
 
 def make_student_inactive(request, pk):
-    user = get_object_or_404(CustomUser, pk=pk)
-    user.is_active = 0
-    user.save()
+    
+    user = get_object_or_404(Student, pk=pk)
+    user.student_user.is_active = 0
+    user.student_user.save()
     messages.success(request, 'Student is inactive successfully')
     return redirect('admin_app:manage_student')
     
@@ -663,7 +665,7 @@ def restore_inactive_students(request, pk):
     user.is_active = 1
     user.save()
     messages.success(request, 'Student is activated successfully')
-    return redirect('student:inactive_students')
+    return redirect('admin_app:inactive_students')
     
     
 
@@ -671,7 +673,7 @@ def restore_inactive_students(request, pk):
 @permission_required('student_management_app.view_student', raise_exception=True)
 def inactive_students(request):    
     
-    students = Student.objects.filter(student_user__is_active = 0,course_category = request.user.adminuser.course_category)
+    students = Student.objects.filter(student_user__is_active = 0)
     search_form = StudentFormSearch(user = request.user)
     semester_query = request.GET.get('semester')
     section_query = request.GET.get('section')
@@ -712,12 +714,12 @@ def manage_student(request):
     bachelor_course_category = get_object_or_404(CourseCategory,course_name = 'Bachelor')
     master_course_category = get_object_or_404(CourseCategory,course_name = 'Master')
     search_form = StudentSearch(user = request.user)
-    students = Student.objects.filter(student_user__is_active = 1,course_category = request.user.adminuser.course_category)
+    students = Student.objects.filter(student_user__is_active = 1)
     
-    if request.user.adminuser.course_category == a_level_course_category:
-        search_form = StudentFormSearch(user = request.user)
-    if request.user.adminuser.course_category in [bachelor_course_category,master_course_category]:
-        search_form = StudentSearch(user = request.user)
+    # if request.user.adminuser.course_category == a_level_course_category:
+    #     search_form = StudentFormSearch(user = request.user)
+    # if request.user.adminuser.course_category in [bachelor_course_category,master_course_category]:
+    #     search_form = StudentSearch(user = request.user)
 
     semester_query = request.GET.get('semester')
     section_query = request.GET.get('section')
