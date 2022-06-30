@@ -7,7 +7,9 @@
             text: 'Total attendance status'
         },
         xAxis: {
-            categories: ['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']
+            categories: [
+            {% for semester in student_attendance_dataset %}'{{ semester.semester_name }}'{% if not forloop.last %}, {% endif %}{% endfor %}
+            ]
         },
         yAxis: {
             min: 0,
@@ -50,14 +52,21 @@
             }
         },
         series: [{
-            name: 'John',
+            name: 'Present',
             data: [5, 3, 4, 7, 2],
-            color:'#39FF14',
+            color:'#743DB8',
         },  {
-            name: 'Joe',
-            color:'#fe7651',
+            name: 'Absent(Informed)',
+            color:'#fe4164',
             data: [3, 4, 4, 2, 5]
-        }]
+        },
+       
+        {
+            name: 'Absent(Not Informed)',
+            color:'#fe410f',
+            data: [3, 4, 4, 2, 5]
+        },
+       ]
     });
                
 </script>

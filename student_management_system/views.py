@@ -459,12 +459,23 @@ def school_class(request):
         semester_instance = get_object_or_404(Semester, pk = semester.pk)
         students = semester_instance.student_set.all().count()
         class_student_dataset.append({'semester_name':semester,'students':students})
-    print(class_student_dataset)
- 
+    
+    # for attendance dataset 
+    total_present = AttendanceReport.objects.filter(student__student_user=request.user.id, status='Present')\
+            .values('attendance__attendance_date__month').annotate(count=Count('status'))
+    student_attendance_dataset = []
+    # categories = request.user.staff.courses.all()
+    course_category = get_object_or_404(CourseCategory, course_name = 'School')
+    for semester in Semester.objects.filter(course_category  = course_category ):
+        semester_instance = get_object_or_404(Semester, pk = semester.pk)
+        students = semester_instance.student_set.all().count()
+        student_attendance_dataset.append({'semester_name':semester,'students':students})
+        
     context = {
         'title':'Class Room',
         'school_classes':school_classes,
         'class_student_dataset':class_student_dataset,
+        'student_attendance_dataset':student_attendance_dataset
                  }
     return render(request, 'classroom/school_classroom.html', context)
 
