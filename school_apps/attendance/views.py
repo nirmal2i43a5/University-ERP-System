@@ -17,54 +17,55 @@ from django.contrib.auth.decorators import login_required, permission_required
 @permission_required('attendance.add_attendancereport', raise_exception=True)
 def get_students(request):
     
-
     status_form = AttendanceStatusForm()
     form  = AttendanceFormSearch()
     
     if request.method == 'POST':
         form  = AttendanceFormSearch(request.POST,)
+        
         course_category_id = request.POST.get('course_category')
-        course_category_instance = get_object_or_404(CourseCategory, pk = course_category_id)
         course_id = request.POST.get('filter_course')
-        if course_id:
-            course_instance = Course.objects.filter(pk = course_id).first()
-        else:
-            course_instance = None
-            
-        course_category = get_object_or_404(CourseCategory, pk = course_category_id)
+        section = request.POST.get('section')
+        subject = request.POST.get('subject')
         semester_id = request.POST.get('filter_semester')
         group = request.POST.get('group')
-        section = request.POST.get('section')
-        section_instance = get_object_or_404(Section, pk = section)
-        subject = request.POST.get('subject')
-        if subject:
-            subject_instance = Subject.objects.filter(pk = subject).first()
-        else:
-            subject_instance = None
+        
+        course_category_instance = get_object_or_404(CourseCategory, pk = course_category_id)
+        course_instance  = Course.objects.filter(pk = course_id).first() if course_id else None   
+        section_instance  = get_object_or_404(Section, pk = section) if section else None
+        subject_instance  =  Subject.objects.filter(pk = subject).first() if subject else None 
         semester = get_object_or_404(Semester, pk = semester_id)
-        #i add course in student  so as to  access subject for student based on course in the college only.
-        # students = Student.objects.filter(semester = semester, section = section, course = course.subject)
-        # students = Student.objects.filter(semester = semester, section = section)
+        
         if course_category_instance == get_object_or_404(CourseCategory, course_name = 'School'):
-           
-            # subject = get_object_or_404(Subject, pk = subject)
-            students = Student.objects.filter(course_category = course_category_instance, semester = semester,section = section_instance, student_user__is_active = 1).order_by('student_user__username')
+            students = Student.objects.filter(
+                                              course_category = course_category_instance, 
+                                              semester = semester,
+                                              section = section_instance, 
+                                              student_user__is_active = 1
+                                              ).order_by('student_user__username')
+       
        
         if course_category_instance in CourseCategory.objects.filter(course_name__in = ['Plus-Two','Bachelor','Master']):
-            students = Student.objects.filter(semester = semester, course = course_instance, student_user__is_active = 1).order_by('student_user__username')
+            students = Student.objects.filter(semester = semester, 
+                                              course = course_instance, 
+                                              student_user__is_active = 1
+                                              ).order_by('student_user__username')
             
-        return render(request,'attendances/students/take_attendance.html', {'form':form,
-                                                                          
+        return render(request,'attendances/students/take_attendance.html', {
+                                                                            'form':form,
                                                                             'students':students,
                                                                             'semester':semester,
                                                                             'section':section_instance,
                                                                             'course':course_instance,
                                                                             # 'faculty':group,
-                                                                            'course_category':course_category,
+                                                                            'course_category':course_category_instance,
                                                                             'subject':subject_instance,
                                                                             'status_form':status_form
                                                                             })
-    return render(request,'attendances/students/take_attendance.html', {'form':form,'today_date':datetime.date.today})
+    return render(request,'attendances/students/take_attendance.html', {
+                                                                        'form':form,
+                                                                        'today_date':datetime.date.today
+                                                                        })
 
 
 @csrf_exempt
@@ -77,7 +78,7 @@ def save_student_attendance(request):
     semester_id = request.POST.get('semester_id')
     semester = Semester.objects.get(pk=semester_id)
     section = request.POST.get('section_id')
-    section_instance  = get_object_or_404(Section, pk = section)
+    section_instance  = get_object_or_404(Section, pk = section) if section else None
     student_ids = request.POST.get('student_ids')
     json_student=json.loads(student_ids)
     subject = request.POST.get('subject_id')
@@ -134,10 +135,6 @@ def save_student_attendance(request):
             return HttpResponse("Something Went Wrong!")
     
     
-
-
-
-
 
 @permission_required('attendance.change_attendancereport', raise_exception=True)
 def edit_student_attendance(request):

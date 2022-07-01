@@ -7,14 +7,23 @@
             text: 'Total attendance status'
         },
         xAxis: {
-            categories: [
-            {% for semester in student_attendance_dataset %}'{{ semester.semester_name }}'{% if not forloop.last %}, {% endif %}{% endfor %}
+            
+            categories: 
+            [
+            {% for semester in student_attendance_dataset %}
+            
+
+                '{{ semester.semester_name }}'
+                
+                {% if not forloop.last %}, {% endif %}
+
+            {% endfor %}
             ]
         },
         yAxis: {
             min: 0,
             title: {
-                text: 'Total fruit consumption'
+                text: 'Total Students'
             },
             stackLabels: {
                 enabled: true,
@@ -53,18 +62,18 @@
         },
         series: [{
             name: 'Present',
-            data: [5, 3, 4, 7, 2],
+            data: [5, 3, 4, 7, 2, 3, 4, 7, 2, 3, 4, 7, 2,7],
             color:'#743DB8',
         },  {
             name: 'Absent(Informed)',
             color:'#fe4164',
-            data: [3, 4, 4, 2, 5]
+            data: [3, 4, 4, 2, 5 ,3, 4, 7, 2, 3, 4, 7, 2,7]
         },
        
         {
             name: 'Absent(Not Informed)',
             color:'#fe410f',
-            data: [3, 4, 4, 2, 5]
+            data: [3, 4, 4, 2, 5, 3, 4, 7, 2, 3, 4, 7, 2,7]
         },
        ]
     });
