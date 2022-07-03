@@ -48,14 +48,21 @@
             <p style="margin-left:3rem;"><strong>Home</strong></p>
           </a>
         </li>
+       
+       
 
         {% if school_classes %}
         {% for class in school_classes %}
+        {% url 'classroom:classroom-contents' class.pk as school_classroom_url %}
         <li class="nav-item">
-          <a href="" class="nav-link">
+          <a href="{% url 'classroom:classroom-contents' class.pk %}"  class=" nav-item nav-link {% if request.path == school_classroom_url %} active{% endif %}">
+
               <p style="margin-left:4rem;" ><strong>{{class.name}}</strong></p>
           </a>
         </li>
+
+
+        
         {% endfor %}
 
         {% elif plus_two_classes %}

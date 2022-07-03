@@ -41,7 +41,7 @@
 			  <div class="tab-content">
 				<div class="active tab-pane" id="assignment">
   
-				  {% include "students/views/profile.html" %}
+				  {% include "classroom/includes/class_contents/assignment.html" %}
   
 				</div>
 				<!-- /.tab-pane -->
@@ -52,34 +52,28 @@
   
 				<div class="tab-pane" id="syllabus">
   
-				  {% include "students/views/attendance/attendance_date_filter.html" %}<br>
-				  {% include "students/views/attendance/attendance_details.html" %}
+				
   
 				</div>
   
 				<div class="tab-pane" id="routine">
   
-				  {% include "students/views/mark.html" %}
   
 				</div>
   
 				<div class="tab-pane" id="lesson-plan">
   
-				  {% include "students/views/invoice.html" %}
   
 				</div>
   
 				<div class="tab-pane" id="payment">
   
-				  {% include "students/views/payment.html" %}
   
 				</div>
   
 				<div class="tab-pane" id="document">
-				  {% include "students/views/documents/document_list.html" %}
 				</div>
 				<div class="tab-pane" id="subject">
-				  {% include "students/views/courses.html" %}
 				</div>
 			   
 			  </div>
