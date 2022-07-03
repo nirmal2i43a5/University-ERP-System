@@ -4,21 +4,8 @@ from django.db.models import Count
 from student_management_app.models import CourseCategory, Semester
 from school_apps.attendance.models import (AttendanceReport)
 from school_apps.academic.models import (Syllabus, Routine, Assignment, Grade)
-from school_apps.academic.forms import (
-                    # SubjectForm,
-                 
-                    # SemesterForm,
-                    # SectionForm,
-                    # ClassSearchForm,
-                    # SectionSearchForm,
-                    # SubjectSearchForm,
-                    # BachelorSemesterForm,
-                    # MasterSemesterForm,
-                    # SectionForm,
-                    ContentFilterForm,
-                    # RoutineSearchForm,
-                    # SyllabusSearchForm
-                    )
+from school_apps.academic import forms
+                    
 from student_management_app.models import (Section,Semester,Subject)
 
 
@@ -85,7 +72,7 @@ def manage_assignment(request,semester_id):
     # graded = Grade.objects.filter(status = True).count()
     
     
-    search_form = ContentFilterForm(semester_id)
+    search_form = forms.ContentFilterForm(semester_id)
     # semester_id = request.GET.get('semester')
     section_id = request.GET.get('section')
     subject_id = request.GET.get('subject')

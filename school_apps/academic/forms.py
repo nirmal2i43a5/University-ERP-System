@@ -1,6 +1,7 @@
 from django import forms
 from django.shortcuts import get_object_or_404
 from school_apps.academic.models import Syllabus, Assignment, Routine,Section
+from school_apps.classroom.views import school_class
 from student_management_app.models import Semester, Subject,CourseCategory,Course
 from django.contrib.admin.widgets import AdminSplitDateTime
 
@@ -96,6 +97,15 @@ class SemesterSectionSearchForm(forms.Form):
 
 
 class ContentFilterForm(forms.Form):
+   
+    
+    # if course_category_instance not in CourseCategory.objects.filter(course_name__in = ['Plus-Two','Bachelor','Master']):
+    #     print("Error")
+    # else:
+    #     print("::else part")
+    course = forms.ModelChoiceField(required = False, empty_label = 'Choose Course',
+                                       queryset = Course.objects.all())
+        
     semester = forms.ModelChoiceField(label = '',required = False, empty_label = 'Choose Class',
                                       queryset = Semester.objects.all(),widget=forms.Select(attrs = {'hidden':''}))
     section = forms.ModelChoiceField(required = False, empty_label = 'Choose Section',
@@ -106,13 +116,18 @@ class ContentFilterForm(forms.Form):
     end_date = forms.DateField(required = False,label = 'To',widget=forms.DateInput(attrs = {'type':'date','class':''}))
     
     def __init__(self, semester_id, *args, **kwargs):
+        super(ContentFilterForm,self).__init__(*args, **kwargs)
+        
         section = kwargs.pop('section', None)
         subject = kwargs.pop('subject', None)
-        print(semester_id)
-        super(ContentFilterForm,self).__init__(*args, **kwargs)
+        course = kwargs.pop('course', None)
+        semester = Semester.objects.get(pk = semester_id)
+        if semester.course_category == get_object_or_404(CourseCategory,course_name = 'School'):
+            self.fields['course'].widget = forms.HiddenInput()
+        self.fields['course'].queryset = Course.objects.filter(semester = get_object_or_404(Semester , pk = semester_id))
         self.fields['section'].queryset = Section.objects.filter(semester = get_object_or_404(Semester , pk = semester_id))
         self.fields['subject'].queryset = Subject.objects.filter(semester =  get_object_or_404(Semester , pk = semester_id))
-        
+         
 
 class RoutineSearchForm(forms.Form):
     course_category = forms.ModelChoiceField(label= '',empty_label = 'Choose Course Category',
