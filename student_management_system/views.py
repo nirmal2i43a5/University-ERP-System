@@ -464,32 +464,27 @@ def school_class(request):
     total_present = AttendanceReport.objects.filter(student__student_user=request.user.id, status='Present')\
             .values('attendance__attendance_date__month').annotate(count=Count('status'))
     student_attendance_dataset = []
-    # categories = request.user.staff.courses.all()
     course_category = get_object_or_404(CourseCategory, course_name = 'School')
     for semester in Semester.objects.filter(course_category  = course_category ):
         semester_instance = get_object_or_404(Semester, pk = semester.pk)
-        attendance_list = semester_instance.attendance_set.all()
-        for attendance in attendance_list:
-            attendance_instance = get_object_or_404(Attendance, pk = attendance.pk)
-            present_status_report_count = attendance_instance.attendancereport_set.filter(status = 'Present',attendance__attendance_date = attendance_instance.attendance_date.today()).count()
-            student_attendance_dataset.append({'semester':semester,'present_status':present_status_report_count})
-        print(student_attendance_dataset)
-            
-            # attendance_report = AttendanceReport.objects.filter(
-            #                                                     attendance=attendance_instance, 
-            #                                                     status__in = ['Present','Absent(Informed)','Absent(Not Informed)']) .\
-            #                                                     values('attendance__attendance_date','attendance__semester__name','status').\
-            #                                                     annotate(count=Count('status')
-            #                                                              )
-            # # for report in attendance_report:
-            #     print(report)
-            # print(attendance_report,"::::report")
-        student_attendance_dataset.append({'semester_name':semester,'attendance':attendance,
-                                        #    'present':present,'
-                                        #   absent_informed':absent_informed,'
-                                        # absent_not_informed':absent_not_informed
+        # attendance_list = semester_instance.attendance_set.all()
+        present_status_count =  AttendanceReport.objects.filter(attendance__semester=semester, status='Present',
+                                                                       attendance__attendance_date = datetime.today())\
+                                                                      .annotate(count=Count('status')).count()
+        absent_informed_status_count =  AttendanceReport.objects.filter(attendance__semester=semester, status='Absent(Informed)',
+                                                                       attendance__attendance_date = datetime.today())\
+                                                                      .annotate(count=Count('status')).count()
+        absent_not_informed_status_count =  AttendanceReport.objects.filter(attendance__semester=semester, status='Absent(Not Informed)',
+                                                                       attendance__attendance_date = datetime.today())\
+                                                                      .annotate(count=Count('status')).count()
+        student_attendance_dataset.append({'semester_name':semester,
+                                           'present_status_count':present_status_count,
+                                           'absent_informed_status_count':absent_informed_status_count,
+                                           'absent_not_informed_status_count':absent_not_informed_status_count
                                            })
-    # print(student_attendance_dataset)
+            
+            
+  
         
     context = {
         'title':'Class Room',

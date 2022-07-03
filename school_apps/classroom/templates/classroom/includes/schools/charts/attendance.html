@@ -62,18 +62,22 @@
         },
         series: [{
             name: 'Present',
-            data: [5, 3, 4, 7, 2, 3, 4, 7, 2, 3, 4, 7, 2,7],
+            data: [
+                {% for semester in student_attendance_dataset %} {{ semester.present_status_count }} {% if not forloop.last %}, {% endif %} {% endfor %}
+             ],
             color:'#743DB8',
         },  {
             name: 'Absent(Informed)',
             color:'#fe4164',
-            data: [3, 4, 4, 2, 5 ,3, 4, 7, 2, 3, 4, 7, 2,7]
+            data: [
+            {% for semester in student_attendance_dataset %} {{ semester.absent_informed_status_count }} {% if not forloop.last %}, {% endif %} {% endfor %}
+           ]
         },
        
         {
             name: 'Absent(Not Informed)',
             color:'#fe410f',
-            data: [3, 4, 4, 2, 5, 3, 4, 7, 2, 3, 4, 7, 2,7]
+            data: [ {% for semester in student_attendance_dataset %} {{ semester.absent_not_informed_status_count }} {% if not forloop.last %}, {% endif %} {% endfor %}]
         },
        ]
     });
