@@ -686,9 +686,10 @@ def fill_section_select(request):
     
 def fill_subject_select(request):
     semester = Semester.objects.get(pk = request.GET['semester'])
-    course_category = CourseCategory.objects.get(pk = request.GET['course_category'])  
+    # course_category = CourseCategory.objects.get(pk = request.GET['course_category'])  
     # if course_category.course_name == 'Bachelor':
-    subjects = Subject.objects.filter(course_category = course_category, semester = semester)
+    subjects = Subject.objects.filter(semester = semester)
+    print(subjects)
     # if course_category.course_name == 'Master':
     #     subjects = Subject.objects.filter(course_category = course_category,master_semester = semester)
     context = {'subjects': subjects}

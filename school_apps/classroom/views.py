@@ -15,7 +15,7 @@ from school_apps.academic.forms import (
                     # BachelorSemesterForm,
                     # MasterSemesterForm,
                     # SectionForm,
-                    SemesterSectionSearchForm,
+                    ContentFilterForm,
                     # RoutineSearchForm,
                     # SyllabusSearchForm
                     )
@@ -28,7 +28,6 @@ from student_management_app.models import (Section,Semester,Subject)
 def school_class(request):
 
     '''For students chart dataset'''
-    school_classes = Semester.objects.filter(course_category = get_object_or_404(CourseCategory, course_name = 'School'))
     class_student_dataset = []
     course_category = get_object_or_404(CourseCategory, course_name = 'School')
     for semester in Semester.objects.filter(course_category  = course_category ):
@@ -58,16 +57,16 @@ def school_class(request):
             
     context = {
         'title':'Class Room',
-        'school_classes':school_classes,
         'class_student_dataset':class_student_dataset,
         'student_attendance_dataset':student_attendance_dataset
                  }
     return render(request, 'classroom/school_classroom.html', context)
 
-def manage_assignment(request):
-    assignments = Assignment.objects.all()
-    respective_teacher_assignments = Assignment.objects.filter(teacher_id=request.user.id, draft=False)
-    draft_assignments = Assignment.objects.filter(teacher_id=request.user.id, draft=True)
+def manage_assignment(request,semester_id):
+    semester_instance = get_object_or_404(Semester, pk = semester_id)
+    # assignments = Assignment.objects.filter(semester = semester_instance)
+    respective_teacher_assignments = Assignment.objects.filter(teacher_id=request.user.id, semester = semester_instance, draft=False)
+    draft_assignments = Assignment.objects.filter(teacher_id=request.user.id,semester = semester_instance, draft=True)
     # for assignment in respective_teacher_assignments:
         
     # total_students = Student.objects.filter(section = '')
@@ -79,29 +78,53 @@ def manage_assignment(request):
         assignment.append(submitted_assignment.assignment_id)
     # for student in student:
     #     print(Student.objects.get(student_user = student).section)
-    total_students = Assignment.objects.filter(student__in=student)
-        
+    # total_students = Assignment.objects.filter(student__in=student)
     # submitted_assignment_no = CustomUser.objects.filter(Q(pk__in = student)&
     #                                                     Q()).count()
     # ---
     # graded = Grade.objects.filter(status = True).count()
-    search_form = SemesterSectionSearchForm()
-    semester_id = request.GET.get('semester')
+    
+    
+    search_form = ContentFilterForm(semester_id)
+    # semester_id = request.GET.get('semester')
     section_id = request.GET.get('section')
     subject_id = request.GET.get('subject')
-
-    if semester_id and section_id and subject_id:
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+   
+    if  section_id and subject_id:
+        search_assignments = Assignment.objects.filter(
+                                                       section = get_object_or_404(Section, pk = section_id),
+                                                       Subject = get_object_or_404(Subject, pk = subject_id),
+                                                     )
+        return search_assignments,draft_assignments,search_form 
+    
+    if subject_id:
+        search_assignments = Assignment.objects.filter(
+                                                       Subject = get_object_or_404(Subject, pk = subject_id),
+                                                     )
+        return search_assignments,draft_assignments,search_form 
+    
+    if start_date and end_date:
+        start_data_parse = datetime.strptime(str(start_date), "%Y-%m-%d").date()
+        end_data_parse = datetime.strptime(str(end_date), "%Y-%m-%d").date()
         search_assignments = Assignment.objects.filter(semester=get_object_or_404(Semester, pk = semester_id),
                                                        section = get_object_or_404(Section, pk = section_id),
-                                                       Subject = get_object_or_404(Subject, pk = subject_id))
-        return assignments,respective_teacher_assignments,draft_assignments,search_form 
+                                                       Subject = get_object_or_404(Subject, pk = subject_id),
+                                                        #  created_at__range=(start_data_parse, end_data_parse)
+                                                       )
+        return search_assignments,draft_assignments,search_form 
+    search_assignments = None
+    return search_assignments,draft_assignments,search_form 
 
-    return assignments,respective_teacher_assignments,draft_assignments,search_form 
+
+
+
 
 def classroom_contents(request,pk):
     
     school_classes = Semester.objects.filter(course_category = get_object_or_404(CourseCategory, course_name = 'School'))
-    assignments,respective_teacher_assignments,draft_assignments,search_form = manage_assignment(request)
+    search_assignments,draft_assignments,search_form = manage_assignment(request,pk)
     
     context = {
         
@@ -110,8 +133,8 @@ def classroom_contents(request,pk):
             
             '''-------------------Assignment context-------------------'''
             
-            'assignments': assignments,
-            'teacher_assignments': respective_teacher_assignments,
+            'assignments': search_assignments,
+            'teacher_assignments': search_assignments,
             'draft_assignments': draft_assignments,
             # 'student_assignments':assignments.filter(),
             'form': search_form,
@@ -119,36 +142,31 @@ def classroom_contents(request,pk):
             
       
                  } 
-    print(context)
     return render(request, 'classroom/classroom_contents.html', context)
 
 
 
 def plus_two_class(request):
     
-    plus_two_classes = Semester.objects.filter(course_category = get_object_or_404(CourseCategory, course_name = 'Plus-Two'))
     context = {
         'title':'Class Room',
-        'plus_two_classes':plus_two_classes
                  }
     return render(request, 'classroom/plus_two_classroom.html', context)
 
 
 def bachelor_class(request):
     
-    bachelor_classes = Semester.objects.filter(course_category = get_object_or_404(CourseCategory, course_name = 'Bachelor'))
     context = {
         'title':'Class Room',
-        'bachelor_classes':bachelor_classes
+     
+        
                  }
     return render(request, 'classroom/bachelor_classroom.html', context)
 
 
 def master_class(request):
     
-    master_classes = Semester.objects.filter(course_category = get_object_or_404(CourseCategory, course_name = 'Bachelor'))
     context = {
         'title':'Class Room',
-        'master_classes':master_classes
                  }
     return render(request, 'classroom/master_classroom.html', context)

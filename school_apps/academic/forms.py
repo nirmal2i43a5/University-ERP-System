@@ -60,7 +60,7 @@ class AssignmentForm(forms.ModelForm):
     deadline = forms.SplitDateTimeField(label = 'Deadline', widget=AdminSplitDateTime())
     title=forms.CharField(widget=forms.TextInput(attrs={"class":"form-control","placeholder": " Enter Title",}))
     description = forms.CharField( widget=forms.Textarea(attrs={'rows': 2, 'cols': 10,"placeholder": " Enter  Course Description",}))
-    Subject = forms.ModelChoiceField(required = False, label= '',empty_label = 'Select Subject',
+    Subject = forms.ModelChoiceField(empty_label = 'Select Subject',
                                       queryset = Subject.objects.all()
                                      )
     class Meta:
@@ -79,18 +79,40 @@ class AssignmentForm(forms.ModelForm):
     #         subject.queryset = Subject.objects.all()
 
 class SemesterSectionSearchForm(forms.Form):
-    course_category = forms.ModelChoiceField(label= '',empty_label = 'Choose Course Category',
+    course_category = forms.ModelChoiceField(empty_label = 'Choose Course Category',
                                       queryset = CourseCategory.objects.all())
     
-    semester = forms.ModelChoiceField(label= '',empty_label = 'Choose Class',
+    semester = forms.ModelChoiceField(empty_label = 'Choose Class',
                                       queryset = Semester.objects.none())
-    section = forms.ModelChoiceField(required = False, label= '',empty_label = 'Choose Section',
+    section = forms.ModelChoiceField(required = False, empty_label = 'Choose Section',
                                      queryset = Section.objects.none())
-    subject = forms.ModelChoiceField(required = False, label= '',empty_label = 'Choose Subject',
+    subject = forms.ModelChoiceField(required = False, empty_label = 'Choose Subject',
                                      queryset = Subject.objects.none())
+    start_date = forms.DateField(required = False, label = 'From', widget=forms.DateInput(attrs = {'type':'date','class':''}))
+    end_date = forms.DateField(required = False,label = 'To',widget=forms.DateInput(attrs = {'type':'date','class':''}))
     # group=forms.ChoiceField(required = False, label = '',choices=faculty_choices,
     #                       widget=forms.Select(attrs = {'hidden':''}))
+    
 
+
+class ContentFilterForm(forms.Form):
+    semester = forms.ModelChoiceField(label = '',required = False, empty_label = 'Choose Class',
+                                      queryset = Semester.objects.all(),widget=forms.Select(attrs = {'hidden':''}))
+    section = forms.ModelChoiceField(required = False, empty_label = 'Choose Section',
+                                     queryset = Section.objects.all())
+    subject = forms.ModelChoiceField(empty_label = 'Choose Subject',
+                                     queryset = Subject.objects.none())
+    start_date = forms.DateField(required = False, label = 'From', widget=forms.DateInput(attrs = {'type':'date','class':''}))
+    end_date = forms.DateField(required = False,label = 'To',widget=forms.DateInput(attrs = {'type':'date','class':''}))
+    
+    def __init__(self, semester_id, *args, **kwargs):
+        section = kwargs.pop('section', None)
+        subject = kwargs.pop('subject', None)
+        print(semester_id)
+        super(ContentFilterForm,self).__init__(*args, **kwargs)
+        self.fields['section'].queryset = Section.objects.filter(semester = get_object_or_404(Semester , pk = semester_id))
+        self.fields['subject'].queryset = Subject.objects.filter(semester =  get_object_or_404(Semester , pk = semester_id))
+        
 
 class RoutineSearchForm(forms.Form):
     course_category = forms.ModelChoiceField(label= '',empty_label = 'Choose Course Category',

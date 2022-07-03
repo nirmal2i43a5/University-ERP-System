@@ -171,6 +171,7 @@ src="{% static 'flipbook/pdfjs-flipbook/js/jquery.fancybox.min.js' %}"
 />
 <link rel="stylesheet" href="{% static 'plugins/select2-bootstrap4-theme/select2-bootstrap4.css' %}">
 <link rel="stylesheet" href="{% static 'plugins/select2/css/select2.css' %}">
+<script src="{% static 'plugins/toastr/toastr.min.js' %}"></script>
 <!-- <script src="{% static 'plugins/jquery-ui/jquery-ui.min.js' %}"></script> -->
 
 <script src="{% static 'plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js' %}"></script>
@@ -574,12 +575,14 @@ $("#id_semester").change(function(){
 
 $("#id_semester").change(function(){
   var semester_id = $(this).val();
-  var course_category_id = $('#id_course_category').val();
+ // var course_category_id = $('#id_course_category').val();
   
   
   $.ajax({
       url:" {% url 'attendance_app:fill_subject_select' %}",
-      data:{'semester':semester_id,'course_category':course_category_id},
+      data:{'semester':semester_id,
+     // 'course_category':course_category_id
+    },
       success:function(data){
           $("#id_Subject").html(data);
       }
@@ -622,5 +625,10 @@ a,p,th,td,tr,h1,h2,h3,h4,h5,h6,div,span,i,li,ol,ul{
    }
    
  </style>
+ {% for message in messages %}
+ {% if message.tags %}
+ toastr.{{message.tags}}('{{message}}');
+ {% endif %}
+ {% endfor %}
 
 </html>

@@ -155,7 +155,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 
                 # for notification 
-                # 'school_apps.notifications.context_processors.notifications_data',
+                'school_apps.notifications.context_processors.notifications_data',
                 
                 #for calendar link to sidebar
                 # 'schedule.context_processors.fullcalendar_link',

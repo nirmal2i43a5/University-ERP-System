@@ -47,7 +47,6 @@
 				<!-- /.tab-pane -->
 				<div class="tab-pane" id="e-notes">
   
-				  {% include "students/views/routine.html" %}
 				</div>
   
 				<div class="tab-pane" id="syllabus">
@@ -57,6 +56,7 @@
 				</div>
   
 				<div class="tab-pane" id="routine">
+					{% include "classroom/includes/class_contents/routine.html" %}
   
   
 				</div>
@@ -66,15 +66,7 @@
   
 				</div>
   
-				<div class="tab-pane" id="payment">
-  
-  
-				</div>
-  
-				<div class="tab-pane" id="document">
-				</div>
-				<div class="tab-pane" id="subject">
-				</div>
+				
 			   
 			  </div>
 			  <!-- /.tab-content -->
@@ -129,4 +121,27 @@
 {% endblock main_content %}
 
 {% block custom_js %}
+<script>
+	$(document).ready(function(){
+	  $('.page-loader').hide();
+	});
+  	
+	
+	
+	$("#id_semester").change(function(){
+	  var semester_id = $(this).val();
+	 // var course_category_id = $('#id_course_category').val();
+	  
+	  
+	  $.ajax({
+		  url:" {% url 'attendance_app:fill_subject_select' %}",
+		  data:{'semester':semester_id,
+		 // 'course_category':course_category_id
+		},
+		  success:function(data){
+			  $("#id_Subject").html(data);
+		  }
+	  })
+	})
+  </script>
 {% endblock custom_js %}

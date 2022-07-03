@@ -1091,7 +1091,7 @@ def draft_publish_unpublish(request,pk):
     else:
         assignment.draft=True
         assignment.save()
-    return redirect('academic:manage_assignment')
+    return redirect('classroom:school-classroom')
     
 def add_assignment_grade(request,pk):
     assignment = Assignment.objects.get(pk = pk)
