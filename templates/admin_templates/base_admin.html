@@ -517,6 +517,7 @@ $("#div_id_course_category input:radio").change(function(){
       data:{'course_category':course_category_id},
       success:function(data){
           $("#id_semester").html(data);
+          $("#id_course").html('');
       }
   })}
   else{
@@ -539,6 +540,7 @@ $("#id_course_category").change(function(){
       data:{'course_category':course_category_id},
       success:function(data){
         $("#id_filter_semester").html(data);
+        $("#id_filter_course").html('');
 
     }
  

@@ -1,6 +1,6 @@
 {% extends 'admin_templates/base_admin.html' %}
 {% load scheduletags i18n %}
-
+{% load static %}
 {% load auth_extras %}
 <!--for user group check-->
 
@@ -49,10 +49,23 @@ Dashboard
 <!---------------------------------------------Admin dashboard start----------------------------------------------------------------->
 {% if request.user.is_superuser %}
 
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/modules/export-data.js"></script>
-<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<script
+type="text/javascript"
+src="{% static 'plugins/highcharts/highcharts.js' %}"
+></script>
+<script
+type="text/javascript"
+src="{% static 'plugins/highcharts/modules/exporting.js' %}"
+></script>
+<script
+type="text/javascript"
+src="{% static 'plugins/highcharts/modules/export-data.js' %}"
+></script>
+<script
+type="text/javascript"
+src="{% static 'plugins/highcharts/modules/accessibility.js' %}"
+></script>
+
 
 
 <!---------------------------------------------Admin dashboard end----------------------------------------------------------------->

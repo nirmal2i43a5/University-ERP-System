@@ -9,10 +9,10 @@ from school_apps.academic import forms
 from student_management_app.models import (Section,Semester,Subject)
 
 
-
 """Visit School Class"""
 
 def school_class(request):
+    
 
     '''For students chart dataset'''
     class_student_dataset = []

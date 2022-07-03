@@ -2,7 +2,7 @@ from django import forms
 from django.shortcuts import get_object_or_404
 from school_apps.academic.models import Syllabus, Assignment, Routine,Section
 from school_apps.classroom.views import school_class
-from student_management_app.models import Semester, Subject,CourseCategory,Course
+from student_management_app.models import Semester, Subject,CourseCategory,Course,Staff
 from django.contrib.admin.widgets import AdminSplitDateTime
 
 
@@ -58,6 +58,7 @@ class AssignmentForm(forms.ModelForm):
     # subject = forms.ModelChoiceField(required = False, label= '',empty_label = 'Choose Subject',widget=forms.Select(attrs = {'hidden':''}),
     #                                  queryset = Subject.objects.all())
     course_category = forms.ModelChoiceField(queryset = CourseCategory.objects.all(), widget=forms.RadioSelect())
+    course_category.course = forms.ModelChoiceField(queryset = Course.objects.all(), widget=forms.RadioSelect())
     deadline = forms.SplitDateTimeField(label = 'Deadline', widget=AdminSplitDateTime())
     title=forms.CharField(widget=forms.TextInput(attrs={"class":"form-control","placeholder": " Enter Title",}))
     description = forms.CharField( widget=forms.Textarea(attrs={'rows': 2, 'cols': 10,"placeholder": " Enter  Course Description",}))
@@ -67,7 +68,7 @@ class AssignmentForm(forms.ModelForm):
     class Meta:
         model = Assignment
         fields = '__all__'
-        exclude = ('created_by','student','assignment_category','teacher',)
+        exclude = ('created_by','student','teacher',)
         
     # def __init__(self, *args, user=None, **kwargs):
     #     super().__init__(*args, **kwargs)
@@ -112,6 +113,8 @@ class ContentFilterForm(forms.Form):
                                      queryset = Section.objects.all())
     subject = forms.ModelChoiceField(empty_label = 'Choose Subject',
                                      queryset = Subject.objects.none())
+    teacher = forms.ModelChoiceField(required = False,empty_label = 'Choose Teacher',
+                                     queryset = Staff.objects.all())
     start_date = forms.DateField(required = False, label = 'From', widget=forms.DateInput(attrs = {'type':'date','class':''}))
     end_date = forms.DateField(required = False,label = 'To',widget=forms.DateInput(attrs = {'type':'date','class':''}))
     
@@ -122,7 +125,7 @@ class ContentFilterForm(forms.Form):
         subject = kwargs.pop('subject', None)
         course = kwargs.pop('course', None)
         semester = Semester.objects.get(pk = semester_id)
-        if semester.course_category == get_object_or_404(CourseCategory,course_name = 'School'):
+        if semester.course is None:
             self.fields['course'].widget = forms.HiddenInput()
         self.fields['course'].queryset = Course.objects.filter(semester = get_object_or_404(Semester , pk = semester_id))
         self.fields['section'].queryset = Section.objects.filter(semester = get_object_or_404(Semester , pk = semester_id))
@@ -217,6 +220,8 @@ class ClassSearchForm(forms.Form):
     filter_course = forms.ModelChoiceField(required = False, label= '',
                                       empty_label = '---Click Here To  Filter Course---', 
                                       queryset = Course.objects.none())
+    
+    
 class SectionSearchForm(forms.Form):
     course_category = forms.ModelChoiceField(label= '',
                                       empty_label = '--- Filter Course Category ---', 

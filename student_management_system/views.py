@@ -53,7 +53,6 @@ def superuser_home(request):
 class home(FullCalendarView, View):
 
     def get(self, request, *args, **kwargs):
-        print(request.user.adminuser,"COurse categoryu::::::")
         
         a_level_course_category = get_object_or_404(CourseCategory,course_name = 'A-Level')
         bachelor_course_category = get_object_or_404(CourseCategory,course_name = 'Bachelor')

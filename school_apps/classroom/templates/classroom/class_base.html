@@ -6,11 +6,23 @@
 
 {% block head %}
 
+<script
+type="text/javascript"
+src="{% static 'plugins/highcharts/highcharts.js' %}"
+></script>
+<script
+type="text/javascript"
+src="{% static 'plugins/highcharts/modules/exporting.js' %}"
+></script>
+<script
+type="text/javascript"
+src="{% static 'plugins/highcharts/modules/export-data.js' %}"
+></script>
+<script
+type="text/javascript"
+src="{% static 'plugins/highcharts/modules/accessibility.js' %}"
+></script>
 
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/modules/export-data.js"></script>
-<script src="https://code.highcharts.com/modules/accessibility.js"></script>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -184,6 +196,29 @@
             $("#id_Subject").html(data);
         }
     })
+  })
+
+  $("#div_id_course_category input:radio").change(function(){
+    var course_category_id = $(this).val();
+    if(course_category_id == 1){
+      $.ajax({
+        url:" {% url 'attendance_app:fill_course_select' %}",
+        data:{'course_category':course_category_id},
+        success:function(data){
+            $("#id_semester").html(data);
+            $("#id_course").html('');
+        }
+    })}
+    else{
+      $.ajax({
+        
+        url:" {% url 'attendance_app:fill_course_select' %}",
+        data:{'course_category':course_category_id},
+        success:function(data){
+            $("#id_course").html(data);
+        }
+    })
+    }
   })
 </script>
 <style>
