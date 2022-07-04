@@ -291,8 +291,11 @@
 
 
       var attendance_date = $("#attendance_date").val();
-      var semester_id = $("#id_semester").val();
-      var group_id = $("#id_group").val();
+      alert(attendance_date)
+      var course_category_id = $("#id_course_category").val();
+      var semester_id = $("#id_filter_semester").val();
+      var course_id = $("#id_filter_course").val();
+   //   var group_id = $("#id_group").val();
      var subject_id = $("#id_subject").val();
       var section_id = $("#id_section").val();
       student_data = JSON.stringify(student_data)
@@ -301,9 +304,11 @@
        url: "{% url 'attendance_app:edit_save_student_attendance' %}",
         type: 'POST',
         data: {
-          student_ids: student_data, attendance_date: attendance_date,
+          student_ids: student_data, 
+          course_category_id:course_category_id,
+          attendance_date: attendance_date,
             semester_id: semester_id,
-            group_id:group_id,
+            course_id:course_id,
            subject_id: subject_id,
          section_id: section_id
         },
@@ -325,11 +330,18 @@
     })
     
 
-  
+     //Default date picker 
+
+     var now = new Date();
+     var day = ("0" + now.getDate()).slice(-2);
+     var month = ("0" + (now.getMonth() + 1)).slice(-2);
+     var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+    $('#attendance_date').val(today);
 
     
       //--------------------------------------------------For auto select form fill-------------------------------
 
+    
       $("#id_course_category").change(function(){
         var course_category_id = $(this).val();
         
@@ -343,7 +355,7 @@
     })
     
     
-    $("#id_semester").change(function(){
+    $("#id_filter_semester").change(function(){
       var semester_id = $(this).val();
       
       
@@ -356,8 +368,20 @@
       })
     })
     
+  $("#id_course_category").change(function(){
+  var course_category_id = $(this).val();
+  
+  $.ajax({
+    url:" {% url 'attendance_app:fill_course_select' %}",
+    data:{'course_category':course_category_id},
+    success:function(data){
+        $("#id_filter_course").html(data);
+    }
+  })
+  })
+  
     
-    $("#id_semester").change(function(){
+    $("#id_filter_semester").change(function(){
       var semester_id = $(this).val();
       var course_category_id = $('#id_course_category').val();
       
@@ -373,21 +397,7 @@
 
 //get search form based on course category
 
-$('#id_course_category').change(function(){
-  var course_category = $('#id_course_category option:selected').text()
-  if(course_category ==  'A-Level'){
-   $('#id_semester').removeAttr("hidden");
-   $('#id_group').removeAttr("hidden");
-   $('#id_subject').attr("hidden",true);
-   $('#id_section').attr("hidden",true);
-  }
-  if(course_category ==  'Bachelor' || course_category ==  'Master'){
-   $('#id_semester').removeAttr("hidden");
-   $('#id_subject').removeAttr("hidden");
-   $('#id_section').removeAttr("hidden");
-   $('#id_group').attr("hidden",true);
-  }
-})
+
   })
 
 </script>

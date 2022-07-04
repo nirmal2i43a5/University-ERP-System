@@ -26,7 +26,7 @@
               <th>#</th>
               <!-- <th hidden>Attendance Id</th> -->
               <th>Student Name</th>
-              <th>Group</th>
+              <th>Course</th>
               <th>Class</th>
 
               <th>Section</th>
@@ -50,7 +50,7 @@
               <td>{{forloop.counter}}</td>
               <!-- <td hidden>{{ attendance.attendance.id }}</td> -->
               <td>{{ attendance.student.student_user.full_name }}</td>
-              <td>{{ attendance.student.faculty }}</td>
+              <td> {{ attendance.student.semester.course_category }} <span class="badge badge-sm badge-info"> ({{ attendance.student.course }})</span></td>
               <td>{{ attendance.student.semester }}</td>
               <td>{{ attendance.student.section }}</td>
               <td>{{ attendance.attendance.subject }}</td>
@@ -84,7 +84,7 @@
               <td>
 
 
-                <a href="{% url 'student:student_attendance_view' attendance.student_id %}" class="btn btn-xs btn-info"><strong>View attendance </strong></a>
+                <a href="{% url 'attendance_app:student_attendance_view' attendance.student_id %}" class="btn btn-xs btn-info"><strong>View attendance </strong></a>
 
               </td>
 

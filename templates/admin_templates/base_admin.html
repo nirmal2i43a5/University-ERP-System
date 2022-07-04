@@ -590,6 +590,30 @@ $("#id_semester").change(function(){
       }
   })
 })
+
+  //get search form based on course category
+  
+  $('#id_course_category').change(function(){
+    var course_category = $('#id_course_category option:selected').text()
+    if(course_category ==  'School'){
+      $('#id_filter_semester').removeAttr("hidden");
+      $('#id_section').removeAttr("hidden");
+      $('#id_subject').attr("hidden",true);
+    
+     }
+    if(course_category ==  'Plus-Two'){
+     $('#id_filter_semester').removeAttr("hidden");
+     $('#id_filter_course').removeAttr("hidden");
+     $('#id_section').removeAttr("hidden");
+     $('#id_subject').attr("hidden",true);
+    }
+    if(course_category ==  'Bachelor' || course_category ==  'Master'){
+     $('#id_filter_semester').removeAttr("hidden");
+     $('#id_subject').removeAttr("hidden");
+     $('#id_section').removeAttr("hidden");
+     $('#id_filter_course').removeAttr("hidden");
+    }
+  })
 </script>
 
 

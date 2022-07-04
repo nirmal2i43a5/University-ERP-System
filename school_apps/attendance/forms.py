@@ -77,9 +77,9 @@ class AttendanceForm(forms.Form):
     attendance_date = forms.DateField(label = '', widget=forms.DateInput(attrs = {'type':'date','class':''}),initial=datetime.date.today)
     course_category = forms.ModelChoiceField(label= '',empty_label = 'Choose Course Category',
                                       queryset = CourseCategory.objects.all())
-    course = forms.ModelChoiceField(required = False, label= '',empty_label = 'Choose Course',widget=forms.Select(attrs = {'hidden':''}),
+    filter_course = forms.ModelChoiceField(required = False, label= '',empty_label = 'Choose Course',widget=forms.Select(attrs = {'hidden':''}),
                                      queryset = Course.objects.all())
-    semester = forms.ModelChoiceField(label= '',empty_label = 'Choose Class',widget=forms.Select(attrs = {'hidden':''}),
+    filter_semester = forms.ModelChoiceField(label= '',empty_label = 'Choose Class',widget=forms.Select(attrs = {'hidden':''}),
                                       queryset = Semester.objects.all())
     section = forms.ModelChoiceField(required = False, label= '',empty_label = 'Choose Section',widget=forms.Select(attrs = {'hidden':''}),
                                      queryset = Section.objects.all())
@@ -139,8 +139,10 @@ class FilterMonthlyAttendance(forms.Form):
     month =forms.ChoiceField(required = False, label = '',choices=MONTH_CHOICES, initial=today_month)
     course_category = forms.ModelChoiceField(label= '',empty_label = 'Choose Course Category',
                                       queryset = CourseCategory.objects.all())
+    filter_course = forms.ModelChoiceField(required = False,label= '',empty_label = 'Choose Course',
+                                      queryset = Course.objects.all(),widget=forms.Select(attrs = {'hidden':''}))
     
-    semester = forms.ModelChoiceField(label= '',empty_label = 'Choose Class',widget=forms.Select(attrs = {'hidden':''}),
+    filter_semester = forms.ModelChoiceField(label= '',empty_label = 'Choose Class',widget=forms.Select(attrs = {'hidden':''}),
                                       queryset = Semester.objects.all())
     section = forms.ModelChoiceField(required = False, label= '',empty_label = 'Choose Section',widget=forms.Select(attrs = {'hidden':''}),
                                      queryset = Section.objects.all())
