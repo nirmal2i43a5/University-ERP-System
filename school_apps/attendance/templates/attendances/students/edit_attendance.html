@@ -122,7 +122,7 @@
     </div>
 
        <!-- --------------------------------------------attendace save form ------------------------------------------------ -->
-    <form action="{% url 'attendance_app:save_student_attendance' %}" method="POST">
+    <form action="{% url 'attendance_app:edit_save_student_attendance' %}" method="POST">
 
       <!-- <input type="hidden" name = "semester_id" value = "{{ semester.id }}">
         <input type="hidden" name = "section_id" value = "{{ section.id }}"> -->
@@ -290,8 +290,7 @@
       }).get()
 
 
-      var attendance_date = $("#attendance_date").val();
-      alert(attendance_date)
+      var attendance_date = $("#id_attendance_date").val();
       var course_category_id = $("#id_course_category").val();
       var semester_id = $("#id_filter_semester").val();
       var course_id = $("#id_filter_course").val();

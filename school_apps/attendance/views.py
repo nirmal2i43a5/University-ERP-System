@@ -218,22 +218,19 @@ def edit_student_attendance(request):
 
 @csrf_exempt
 def edit_save_student_attendance(request):
-    print(request.POST)
-    attendance_date = request.POST.get('attendance_date')
-    print(attendance_date,"::::")
+    attendance_date_object = request.POST.get('attendance_date')
+    attendance_date = datetime.datetime.strptime(attendance_date_object, "%Y-%m-%d").date() 
+    
     student_ids = request.POST.get('student_ids')
     semester_id = request.POST.get('semester_id')
-    course_category_id = request.POST.get('course_category')
+    course_category_id = request.POST.get('course_category_id')
     semester = Semester.objects.get(pk=semester_id)
     course_category_instance = get_object_or_404(CourseCategory, pk = course_category_id)
     section = request.POST.get('section_id')
-    print(section)
     subject = request.POST.get('subject_id')
     subject_instance  =  Subject.objects.filter(pk = subject).first() if subject else None 
-    print(subject_instance,"------------------------------------")
     section_instance  =  Section.objects.filter(pk = section).first() if section else None 
     json_student=json.loads(student_ids)
-    
     
     if course_category_instance in CourseCategory.objects.filter(course_name__in = ['Plus-Two','Bachelor','Master']):
         
@@ -243,10 +240,10 @@ def edit_save_student_attendance(request):
                             attendance_date=attendance_date)
         attendance.save()
         for stud in json_student:#FETCH EACH STUDENT AND ASSIGN DATA FOT THEM 
-                student=Student.objects.get(student_user=stud['id'])
-                each_attendance_report = get_object_or_404(AttendanceReport, pk = stud['attendance_report_id'])
-                each_attendance_report.status = stud['status']
-                each_attendance_report.save()
+            student=Student.objects.get(student_user=stud['id'])
+            each_attendance_report = get_object_or_404(AttendanceReport, pk = stud['attendance_report_id'])
+            each_attendance_report.status = stud['status']
+            each_attendance_report.save()
         return HttpResponse(True)
       
     
@@ -257,10 +254,11 @@ def edit_save_student_attendance(request):
                             attendance_date=attendance_date)
         attendance.save()
         for stud in json_student:
-                student=Student.objects.get(student_user=stud['id'])
-                each_attendance_report = get_object_or_404(AttendanceReport, pk = stud['attendance_report_id'])
-                each_attendance_report.status = stud['status']
-                each_attendance_report.save()
+            print(stud,"Inside json data:::------------")
+            student=Student.objects.get(student_user=stud['id'])
+            each_attendance_report = get_object_or_404(AttendanceReport, pk = stud['attendance_report_id'])
+            each_attendance_report.status = stud['status']
+            each_attendance_report.save()
         return HttpResponse(True)
 
 
