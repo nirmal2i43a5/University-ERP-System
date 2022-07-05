@@ -75,6 +75,7 @@
                 {% endfor %}
             </tbody>
         </table>
+        
     </div>
 </div>
 {% endblock %}
@@ -89,7 +90,20 @@
     <script>
         var teacher, subject;
         var teacher_datatable = $('#teachers_table').DataTable({
-            dom: 'Bfrtip',
+            dom: 'fBrtip',
+            columnDefs: [ {
+                orderable: false,
+                className: 'select-checkbox',
+                targets:   0
+            } ],
+            select: {
+                style: 'single'
+            },
+           
+        })
+
+        var subject_datatable = $('#subjects_table').DataTable({
+            dom: 'fBrtip',
             columnDefs: [ {
                 orderable: false,
                 className: 'select-checkbox',
@@ -100,7 +114,7 @@
             },
             buttons:[
             {
-                text: "Add",
+                text: "SUBMIT TABLE DATA",
                 attr:{
                     id:"add_teacher_btn",
                     class:"btn btn-primary"
@@ -122,12 +136,18 @@
                                     'semester':semester
                                 },
                             statusCode:{
+                            
                                 201:function(data){
                                     alert(data['message'])
                                 },
+                                202:function(data){
+                                    alert('Subject is already assigned to teacher.You cannot reassign subject.')
+                                },
                                 500:function(data){
                                     alert(data['error_message'])
-                                }
+                                },
+                             
+                               
                             }
 
                         })
@@ -140,17 +160,6 @@
                 }
                 
             }]
-        })
-
-        var subject_datatable = $('#subjects_table').DataTable({
-            columnDefs: [ {
-                orderable: false,
-                className: 'select-checkbox',
-                targets:   0
-            } ],
-            select: {
-                style: 'single'
-            },
         })
 
         $("#class_select").change(function(){
@@ -167,5 +176,7 @@
         
 
     </script>
-
+<style>
+    
+</style>
 {% endblock%}

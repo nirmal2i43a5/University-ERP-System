@@ -5,15 +5,15 @@ from django.shortcuts import render,redirect, get_object_or_404
 from django.db.models import Q
 from django.http import HttpResponse,JsonResponse
 from httplib2 import Http
-from student_management_app.models import( Student, Semester, Section, Subject,Staff,CourseCategory,Course,
+from student_management_app.models import( Student, Semester, Section, Subject,Staff,CourseCategory,Course,SubjectTeacher,
                                           ExtraUser)
 from .models import Attendance, AttendanceReport
 from student_management_app.models import CustomUser
-from .forms import (AttendanceFormSearch,FilterMonthlyAttendance, StudentAttendanceDetailsSearch,StudentAttendanceEditDetailsSearch,AttendanceDetailsSearch,AttendanceStatusForm,AttendanceForm )
+from .forms import (AttendanceFormSearch,FilterMonthlyAttendance,StudentAttendanceEditDetailsSearch,AttendanceDetailsSearch,AttendanceStatusForm,AttendanceForm )
 from django.views.decorators.csrf import  csrf_exempt
 from django.contrib.auth.models import Group
 from school_apps.academic.forms import StudentFormSearch,StudentSearch
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.decorators import  permission_required
 
 
 @permission_required('attendance.add_attendancereport', raise_exception=True)
@@ -706,7 +706,12 @@ def fill_subject_select(request):
     #     subjects = Subject.objects.filter(course_category = course_category,master_semester = semester)
     context = {'subjects': subjects}
     return render(request, "attendances/auto_fill_select/subjects.html", context)
-    
+
+def fill_teacher_select(request):
+    subject_instance = Subject.objects.get(pk = request.GET['subject_id'])
+    subject_teacher = SubjectTeacher.objects.filter(subject = subject_instance)
+    context = {'teachers': subject_teacher}
+    return render(request, "attendances/auto_fill_select/teachers.html", context)
 
 # def save_attendance(request):
 #     semester_id = request.POST.get('semester_id')

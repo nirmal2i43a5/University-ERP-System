@@ -181,6 +181,19 @@ src="{% static 'plugins/highcharts/modules/accessibility.js' %}"
   })
   
   
+  $("#id_subject").change(function(){
+    var subject_id = $(this).val();
+    
+    
+    $.ajax({
+        url:" {% url 'attendance_app:fill_teacher_select' %}",
+        data:{'subject_id':subject_id},
+        success:function(data){
+            $("#id_teacher").html(data);
+        }
+    })
+  })
+  
   
   $("#id_semester").change(function(){
     var semester_id = $(this).val();
