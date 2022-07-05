@@ -105,7 +105,7 @@ def add_teacher(request):
 
 @permission_required('student_management_app.view_teacher', raise_exception=True)
 def manage_teacher(request):
-    staffs = Staff.objects.filter(courses__course_name__contains=request.user.adminuser.course_category.course_name)    
+    staffs = Staff.objects.all()  
 
     context = {'staffs': staffs,
                'title':'Manage Teacher'

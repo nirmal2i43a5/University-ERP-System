@@ -112,6 +112,11 @@ class CustomUser(AbstractUser):  # use this for extending deafult django auth sy
         db_table = 'tbl_Customuser'
         verbose_name = _("customuser")
         verbose_name_plural = _("customusers")
+        permissions = (
+               ("view_superadmin_home ","Can View  Superadmin Home"),
+           
+         
+        )
 
     def __str__(self):
         return self.full_name
@@ -400,6 +405,7 @@ class Section(models.Model):
 class SubjectTeacher(models.Model):
     subject = models.ForeignKey(Subject, verbose_name=_("Subject"), on_delete=models.CASCADE)
     teacher = models.ForeignKey(CustomUser, on_delete = models.CASCADE)
+    semester = models.ForeignKey(Semester, on_delete=models.CASCADE,null = True, blank=True)
     section = models.ForeignKey(Section, on_delete=models.CASCADE,null = True, blank=True)
 
     class Meta:

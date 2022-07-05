@@ -163,7 +163,8 @@ def edit_student_attendance(request):
         course_id = request.POST.get('filter_course')
         section = request.POST.get('section')
         subject = request.POST.get('subject')
-        attendance_date = request.POST.get('attendance_date')
+        attendance_date_object = request.POST.get('attendance_date')
+        attendance_date = datetime.datetime.strptime(attendance_date_object, "%Y-%m-%d").date() 
         semester = get_object_or_404(Semester, pk = semester_id)
        
         course_category_instance = get_object_or_404(CourseCategory, pk = course_category_id)
@@ -582,7 +583,8 @@ def manage_teacher_attendance(request):
     
     if request.method == 'POST':
         attendance_details_search = AttendanceDetailsSearch(request.POST)
-        attendance_date = request.POST.get('attendance_date')
+        attendance_date_object = request.POST.get('attendance_date')
+        attendance_date = datetime.datetime.strptime(attendance_date_object, "%Y-%m-%d").date() 
         # role = request.POST.get('role')
         attendance = Attendance.objects.filter(attendance_date = attendance_date, )
         staff = Staff.objects.filter(staff_user__user_type = Group.objects.get(name = 'Teacher'))#assigning role for teacher

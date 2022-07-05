@@ -268,11 +268,11 @@ def logout(request):
     return render (request, "teacher/login.html")
 
 def checksubjects(request):
-    self = get_object_or_404(CustomUser, id = request.user.id)
-    subjects = SubjectTeacher.objects.filter(teacher=self)
+    teacher_instance = get_object_or_404(CustomUser, id = request.user.id)
+    subjects = SubjectTeacher.objects.filter(teacher=teacher_instance)
 
     context={
-        'subjects':subjects
+        'subjectsteachers':subjects
     }
     return render(request, 'teacher/checksubjects.html', context)
 

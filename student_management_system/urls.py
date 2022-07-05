@@ -37,9 +37,12 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     # path('api/', include(router.urls)) ,
+    path('',superuser_home, name ="main_home"),
+    path('home/', admin_home,name = 'admin-home'),
+    
+    
     path('api/v1/', include('student_management_system.api', namespace='api')),
     path('admin/', admin.site.urls),
-    path('home/', admin_home,name = 'admin-home'),
     # path('logs/', HistoryLogs.as_view(), name ="history_log"),
     path('common/mass/delete/<app>/<model>/', mass_delete, name ="mass_delete"),
     path('dashboard/', main_home.as_view(), name ="home"),
@@ -47,7 +50,6 @@ urlpatterns = [
     path('a_level_home/',a_level_home,name = "a_level_home"),
     path('bachelor_home/',bachelor_home,name = "bachelor_home"),
     path('master_home/',master_home,name = "master_home"),
-    path('',superuser_home, name ="main_home"),
     path('get_user_by_role/', get_user_by_role_ajax, name ="get_user_by_role"),
     path('',include('student_management_app.urls',namespace='admin_app')),
     path('',include('school_apps.teacher.urls',namespace='teacher')),

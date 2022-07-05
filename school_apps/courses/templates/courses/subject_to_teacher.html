@@ -1,8 +1,9 @@
-{% extends 'student_base.html'%}
+{% extends 'admin_templates/base_admin.html' %}
 
 {% block title %}
 {{title}}
 {% endblock title %}
+{% load crispy_forms_tags %}
     
 {% block content %}
 <div style="margin-left: 25px; margin-right: 25px;">
@@ -15,24 +16,7 @@
 
 <div style="margin-left: 10px; margin-right: 10px;">
     <div class="row" style="margin-left: 10px; margin-right: 10px;">
-        <div class="col-6">
-            <span>Select class:
-                <select id="class_select">
-                    <option value="">--------------</option>
-                    {% for item in classes%}
-                        <option value="{{ item.pk }}">{{item.name}} </option>
-                    {% endfor %}
-                </select>
-            </span>
-        </div>
-
-        <div class="col-6">
-            Select section:
-            <select id="section_select">
-                <option value="">----------------</option>
-            </select>
-            
-        </div>
+       {{form|crispy}}
     </div>
     <hr>
 </div>
@@ -76,15 +60,17 @@
                     <th></th>
                     <th>Subject code</th>   
                     <th>Subject</th>
+                    <th>Course</th>   
                 </tr>
             </thead>
     
             <tbody>
-                {% for item in subjects%}
+                {% for subject in subjects%}
                     <tr>
                         <td style="width: max-content;"></td>
-                        <td>{{item.subject_id}}</td>
-                        <td>{{item.subject_name}}</td>
+                        <td>{{subject.subject_id}}</td>
+                        <td>{{subject.subject_name}}()</td>
+                        <td><span class="badge badge-info">{{subject.course_category}}  </span>( <span class="badge badge-warning">{{subject.course}}</span> )</td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -120,19 +106,21 @@
                     class:"btn btn-primary"
                 },
                 action: function(){
-
-                    var section = $('#section_select').val();
+                    var semester = $('#id_filter_semester').val();
+                    var section = $('#id_section').val();
                     if ( teacher_datatable.rows( '.selected' ).any() ){teacher = teacher_datatable.rows( { selected: true } ).data()[0][1];} else {alert("Please select a teacher")}
                     if ( subject_datatable.rows( '.selected' ).any() ){subject = subject_datatable.rows( { selected: true } ).data()[0][1];} else {alert("Please select a subject")}
-                    if (section ==""){alert("Please choose a class and a section")}
+                  //  if (section ==""){alert("Please choose a class and a section")}
 
                     
-                    if (teacher && subject && section!=""){
+                    if (teacher && subject && semester!=""){
                         $.ajax({
                             url: "{% url 'academic:subject_to_teacher_ajax' %}",
                             data: {'teacher': teacher,
                                     'subject':subject,
-                                    'section':section},
+                                    'section':section,
+                                    'semester':semester
+                                },
                             statusCode:{
                                 201:function(data){
                                     alert(data['message'])

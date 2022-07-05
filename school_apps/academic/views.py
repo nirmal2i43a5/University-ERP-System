@@ -7,7 +7,7 @@ from django.db.models import Q
 from student_management_app.django_forms.forms import (
     CourseForm
 )
-from school_apps.academic.forms import StudentFormSearch
+from school_apps.academic.forms import StudentFormSearch,SubjectAssignFilterForm
 from .forms import (
     SubjectForm,
                  
@@ -488,13 +488,15 @@ def deletesubjectstudent(request, pk):
 #----------------------------------------------------------------------------------------------------------------------
 
 def assign_subject_to_teacher(request):
-    teachers = Staff.objects.filter(courses=request.user.adminuser.course_category)
-    subjects = Subject.objects.filter(course_category=request.user.adminuser.course_category)
-    semesters = Semester.objects.filter(course_category=request.user.adminuser.course_category)
+    teachers = Staff.objects.all()
+    subjects = Subject.objects.all()
+    semesters = Semester.objects.all()
+    form = SubjectAssignFilterForm()
 
     context = {'teachers':teachers,
                 'subjects':subjects,
                 'classes': semesters,
+                'form':form
               
     }
     return render(request, 'courses/subject_to_teacher.html', context)
@@ -506,10 +508,12 @@ def assign_subject_to_teacher(request):
 def subject_to_teacher_Ajax(request):
     teacher = Staff.objects.get(staff_user__pk = request.GET['teacher'])
     subject = Subject.objects.get(pk = request.GET['subject'])
-    section = Section.objects.get(pk = request.GET['section'])
+    semester = Semester.objects.get(pk = request.GET['semester'])
+    section_id = request.GET['section']
+    section = Section.objects.get(pk = section_id) if section_id else None
 
     try:
-        SubjectTeacher.objects.create(subject=subject, teacher=teacher.staff_user, section=section)
+        SubjectTeacher.objects.create(subject=subject, teacher=teacher.staff_user, semester = semester,section=section)
         print(teacher, subject,section,"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         return JsonResponse({'message':'Subject assigned to teacher successfully'}, status = 201)
     except:
@@ -519,14 +523,20 @@ def subject_to_teacher_Ajax(request):
     
     
 def showsubjectteacherlist(request):
-    teacherlist = SubjectTeacher.objects.filter(
-        subject__course_category=request.user.adminuser.course_category,
-        section__semester__course_category=request.user.adminuser.course_category,
-    )
+    if request.user.is_superuser:
+        subjectteacherlist = SubjectTeacher.objects.all()
+    else:
+        subjectteacherlist = SubjectTeacher.objects.filter(
+            subject__course_category=request.user.adminuser.course_category,
+            semester__course_category=request.user.adminuser.course_category,
+            # section__semester__course_category=request.user.adminuser.course_category,
+        )
 
-    context = {'teacherlist':teacherlist
+    context = {'subjectteacherlist':subjectteacherlist
     }
     return render (request, 'courses/showsubjectteacherlist.html', context)
+
+
 
 def editsubjectteacher(request):
     teacher = Staff.objects.get(staff_user__pk = request.GET['teacher'])
@@ -539,7 +549,7 @@ def deletesubjectteacher(request, pk):
     item.delete()
 
     messages.success(request, "Delete successful.")
-    return redirect('academicshowsubjectteacherlist')
+    return redirect('academic:showsubjectteacherlist')
 
 
 #----------------------------------------------------------------------------------------------------------------------

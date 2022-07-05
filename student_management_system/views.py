@@ -20,6 +20,8 @@ from django.contrib.auth.models import Group
 from django.http import HttpResponseRedirect,JsonResponse
 from django.contrib.contenttypes.models import ContentType
 from django.utils import timezone
+from django.contrib.auth.decorators import  permission_required
+
 
 
 @login_required
@@ -37,7 +39,7 @@ class TeacherHome(View):
         particular_teacher_subjects = Subject.objects.filter(
             staff_user=request.user.id)
         # subject belongs to particular teacher and subject is fk in student.so access
-        students = Student.objects.filter(course)
+        students = Student.objects.filter()
         particular_subject_assign = subjects.count()
 
 
@@ -47,6 +49,8 @@ class HistoryLogs(View):
         return render(request, 'logs/index.html')
 
 
+
+@permission_required('student_management_app.view_superadmin_home', raise_exception=True)
 def superuser_home(request):
     return render(request, 'superadmin_home.html')
 

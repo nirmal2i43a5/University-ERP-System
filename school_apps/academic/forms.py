@@ -145,6 +145,21 @@ class RoutineSearchForm(forms.Form):
     #                       widget=forms.Select(attrs = {'hidden':''}))
 
 
+class SubjectAssignFilterForm(forms.Form):
+    course_category = forms.ModelChoiceField(label= '',empty_label = 'Choose Course Category',
+                                      queryset = CourseCategory.objects.all())
+    
+    filter_course = forms.ModelChoiceField(label= '',empty_label = 'Choose Course',
+                                      queryset = Course.objects.all())
+    
+    filter_semester = forms.ModelChoiceField(label= '',empty_label = 'Choose Class',
+                                      queryset = Semester.objects.none())
+    section = forms.ModelChoiceField(required = False, label= '',empty_label = 'Choose Section',
+                                     queryset = Section.objects.none())
+ 
+    # group=forms.ChoiceField(required = False, label = '',choices=faculty_choices,
+    #                       widget=forms.Select(attrs = {'hidden':''}))
+
 class SyllabusSearchForm(forms.Form):
     course_category = forms.ModelChoiceField(label= '',empty_label = 'Choose Course Category',
                                       queryset = CourseCategory.objects.all())

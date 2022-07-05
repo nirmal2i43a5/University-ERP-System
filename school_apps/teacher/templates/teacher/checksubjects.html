@@ -1,22 +1,29 @@
-{% extends 'student_base.html' %}
+{% extends 'admin_templates/base_admin.html' %}
 {% block content %}
     <div style="margin-left: 10px; margin-right: 10px;">
         {% include 'override_table/header.html' with card_title='Your taught subjects' %}
+        <br>
 
-    <table class ="table table-hover">
+    <table id="dataTable" class ="table table-hover">
         <thead class="thead" style="background-color: #743DB8;color:white;">
             <tr>
+                <th>#</th>
                 <th>Subject code</th>
                 <th>Subject name</th>
-                <th>Class/Section</th>
+                <th>Class</th>
+                <th>Section</th>
+                <th>Course</th>
             </tr>
         </thead>
         <tbody>
-            {% for item in subjects %}
+            {% for subject in subjectsteachers %}
                 <tr>
-                    <td> {{ item.subject.subject_id}}</td>
-                    <td> {{ item.subject.subject_name}}</td>
-                    <td> {{ item.section}}</td>
+                    <td></td>
+                    <td> {{ subject.subject.subject_id}}</td>
+                    <td> {{ subject.subject.subject_name}}</td>
+                    <td> {{ subject.semester}}</td>
+                    <td> {{ subject.section}}</td>
+                    <td><span class="badge badge-info">{{subject.subject.course_category}}  </span>( <span class="badge badge-warning">{{subject.subject.course}}</span> )</td>
                 </tr>
             {% endfor %}
         </tbody>
@@ -25,3 +32,5 @@
     </div>
 
 {% endblock%}
+
+{% block javascript %}{% endblock%}

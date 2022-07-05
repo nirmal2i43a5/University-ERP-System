@@ -1,4 +1,5 @@
-{% extends 'student_base.html'%}
+
+{% extends 'admin_templates/base_admin.html' %}
 
 {% block content %}
 <div style="margin-left: 10px; margin-right: 10px;">
@@ -6,29 +7,38 @@
     <hr>
 
     <div style="margin-left: 10px; margin-right: 10px;">
-      <table class="table table-hover " id="teachers_table">
-        <thead class="thead" style="background-color: #743DB8;color:white;"> 
+      <table id="dataTable" class="table table-hover " >
+        <thead class="thead" > 
             <tr>
+              <th></th>
                 <th hidden>Teacher ID</th>   
                 <th>Teacher Name</th>
-                <th>Subject Code</th>
                 <th>Subject</th>
+                <th>Subject Code</th>
+
                 <th>Class</th>
-                <th>Action</th>
+                <th>Section</th>
+                <th>Course</th>
+                <!-- <th>Action</th> -->
             </tr>
         </thead>
     
         <tbody>
-            {% for item in teacherlist%}
+            {% for subject in subjectteacherlist%}
                 <tr>
-                    <td hidden>{{item.teacher.pk}}</td>
-                    <td>{{item.teacher.full_name}}</td>
-                    <td>{{item.subject.subject_id}}</td>
-                    <td>{{item.subject.subject_name}}</td>
-                    <td>{{item.section}}</td>
-                    <td>
-                        <!-- <a href="" class="btn btn-primary btn-sm">Edit</a> -->
-                        <a href=" {% url 'courses:deletesubjectteacher' item.pk %}" class="btn btn-primary btn-sm">Delete</a></td>
+                  <td></td>
+                    <td hidden>{{subject.teacher.pk}}</td>
+                    <td>{{subject.teacher.full_name}}</td>
+                    <td>{{subject.subject.subject_name}}</td>
+
+                    <td>{{subject.subject.subject_id}}</td>
+                    <td>{{subject.semester}}</td>
+                    <td>{{subject.section}}</td>
+                    <td><span class="badge badge-info">{{subject.subject.course_category}}  </span>( <span class="badge badge-warning">{{subject.subject.course}}</span> )</td>
+                    <!-- <td>
+                        <a href="" class="btn btn-primary btn-sm">Edit</a>
+                        <a href=" {% url 'academic:deletesubjectteacher' subject.pk %}" class="btn btn-primary btn-sm">Delete</a>
+                      </td> -->
                 </tr>
             {% endfor %}
         </tbody>
@@ -77,4 +87,4 @@
     </div>
   </div>
 
-{% endblock %}
+{% endblock  %}
