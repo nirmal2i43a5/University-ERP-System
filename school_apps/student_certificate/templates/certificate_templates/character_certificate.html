@@ -43,15 +43,15 @@
           <!-- logo and college information -->
           <div class="college__info">
             <div class="logo">
-              <img src="{% static 'certificates/character_certificate/images/Certificate/gci-logo-removebg.png' %}" alt="" />
+              <img src="{% static 'certificates/character_certificate/images/Certificate/-logo-removebg.png' %}" alt="" />
             </div>
             <div class="college__details">
               <h5 class="college__name">Global College International</h5>
               <span>P.O.Box: 1030</span>
               <span>MidBaneshwor, Kathmandu, Nepal</span>
               <h5>Tel:<span>977-1-4465186, 4488410</span></h5>
-              <h5>E-mail:<span>info@gci.edu.np</span></h5>
-              <h5>Web:<span>www.gci.edu.np</span></h5>
+              <h5>E-mail:<span>info@.edu.np</span></h5>
+              <h5>Web:<span>www..edu.np</span></h5>
             </div>
           </div>
           <div class="profile__photo">
@@ -75,11 +75,12 @@
             <img src="{% static 'certificates/character_certificate/images/Certificate/characterCertificate.png' %}" alt="" />
           </div>
           <div class="certificate__descripiton">
+      
             <p>
               This is to certify that <span><strong>{{certificate.salutations|upper}}. {{ certificate.student.student_user|upper }}</strong></span>, Son of
                {{ certificate.student.guardian.father_name }} and Mrs. {{ certificate.student.guardian.mother_name }}, a resident of {{ certificate.student.permanent_address }}, Nepal, 
                was a bonafide student of this college from {{certificate.student.join_year}} AD to {{certificate.student.join_year|add:'2'}} AD. He has successfully completed
-               GCE A-Level from Global College International affiliated to Cambridge Assessment International Education (CAIE). His date of birth according to the 
+               <strong>Engineering</strong> from <strong>College Name</strong> affiliated to <strong>Tribhuvan University(TU)</strong>. His date of birth according to the 
                college registration is <strong>{{certificate.student.dob | date:'d F, Y'}}</strong>. During the period of his study at the college, his study at the college, his character was very good.
              
             </p>
@@ -88,10 +89,10 @@
             <div class="d-flex justify-content-between">
               <div class=" ml-4 mt-4">{{certificate.date_of_issue}}</div>
               <div class="">
-                <!-- <img src="{% static 'image/gci-stamp.png' %}" style="width:100px;height:100px;" class="img-circle" alt="" /> -->
+                <!-- <img src="{% static 'image/-stamp.png' %}" style="width:100px;height:100px;" class="img-circle" alt="" /> -->
               </div>
               <div class=" mr-2 mt-2">
-                <img src="{% static 'image/gci-signature.png' %}" style = "width:50%;" alt="" />
+                <img src="{% static 'image/-signature.png' %}" style = "width:50%;" alt="" />
               </div>
             </div>
             <img src="{% static 'certificates/character_certificate/images/Certificate/footer.png' %}" alt="" />

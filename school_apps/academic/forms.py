@@ -164,6 +164,7 @@ class SyllabusSearchForm(forms.Form):
     course_category = forms.ModelChoiceField(label= '',empty_label = 'Choose Course Category',
                                       queryset = CourseCategory.objects.all())
     
+    
     semester = forms.ModelChoiceField(label= '',empty_label = 'Choose Class',
                                       queryset = Semester.objects.none())
   
@@ -172,6 +173,26 @@ class SyllabusSearchForm(forms.Form):
     #                       widget=forms.Select(attrs = {'hidden':''}))
 
 
+class DynamicSyllabusForm(forms.Form):
+    course_category = forms.ModelChoiceField(label= '',empty_label = 'Choose Course Category',
+                                      queryset = CourseCategory.objects.all())
+    
+    
+    semester = forms.ModelChoiceField(label= '',empty_label = 'Choose Class',
+                                      queryset = Semester.objects.none())
+    
+    
+    # def __init__(self, semester_id, *args, **kwargs):
+    #         super(ContentFilterForm,self).__init__(*args, **kwargs)
+        
+    #     # course = kwargs.pop('course', None)
+    #     semester = Semester.objects.get(pk = semester_id)
+    #     if semester.course is None:
+    #         self.fields['course'].widget = forms.HiddenInput()
+    #     self.fields['course'].queryset = Course.objects.filter(semester = get_object_or_404(Semester , pk = semester_id))
+    #     self.fields['section'].queryset = Section.objects.filter(semester = get_object_or_404(Semester , pk = semester_id))
+    #     # self.fields['subject'].queryset = Subject.objects.filter(semester =  get_object_or_404(Semester , pk = semester_id))
+    
 
 class RoutineForm(forms.ModelForm):
     course_category = forms.ModelChoiceField(queryset = CourseCategory.objects.all(), widget=forms.RadioSelect())

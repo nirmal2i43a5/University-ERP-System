@@ -26,7 +26,7 @@
                     <div class="input-group">
                    
                 
-                      {{ form|crispy }} 
+                      {{ assignment_form|crispy }} 
                   
                       <div class="input-group-btn ml-1" style="margin-top:2rem;">
                         <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> SEARCH</button>
@@ -63,7 +63,7 @@
          
           <!-- /.card-header -->
           <div class="card-body table-responsive">
-            <div class="tab-content">
+            <div id = "myAssignment" class="tab-content">
 
               <div class="active tab-pane" id="assigned">
                 
@@ -90,7 +90,7 @@
                    </div>
                    {% empty %}
                   
-                   <h3> No Assignments Found!</h3>
+                   <h3> No Assignments Found in Drafts!</h3>
                 {% endfor %}
                   
                </div>

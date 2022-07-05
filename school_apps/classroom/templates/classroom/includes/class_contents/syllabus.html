@@ -1,0 +1,86 @@
+{% load static %}
+{% load auth_extras %}
+{% load crispy_forms_tags %}
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+    <!-- /.card-header -->
+  
+    {% include "includes/messages.html" %}
+    
+      <div class="row">
+        <div class="col-12">
+  
+  
+          <div class="card">
+            
+            <div class="card-header" >
+              <span>Manage Syllabus</span>
+             
+            </div>
+           
+            <!-- /.card-header -->
+            <div class="card-body table-responsive ">
+              {% if  request.user|has_group:'Admin' or request.user.is_superuser or request.user|has_group:'Teacher'   %}   
+              {% url 'academic:add_syllabus' as button_url %}
+              
+           
+    <a href="{{ button_url }}" class="btn btn-xs float-right text-white mb-2 " style="background-color: #743DB8;"  >
+      <span><i class="fas fa-sm fa-plus">&nbsp;</i> <strong>Add syllabus</strong></span>
+  </a>
+
+
+
+             
+            {% endif %}
+         
+              <table class="table table-sm  table-striped table-bordered table-hover  text-nowrap mt-2 dataTable no-footer">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Class</th>
+                    <th>Course</th>
+                    <th>Title</th>
+                    <th>File</th>
+                    <th>Description</th>
+  
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for syllabus in syllabus %}{% include 'academic/syllabus/delete.html' %}
+                  <tr>
+                    <td>{{ forloop.counter }}</td>
+                 <td>{{syllabus.semester}}</td>
+                 <td><span class="badge badge-info">{{syllabus.course_category}}  </span>( <span class="badge badge-warning">{{syllabus.course}}</span> )</td>
+  
+                    <td>{{ syllabus.title }}</td>
+                    <td>
+                      <a href="{{ syllabus.file.url }}" style="cursor: pointer;" class="btn btn-xs btn-info">
+                         <i class="fas fa-xs fa-eye"></i> View Syllabus
+                      </a>
+                    
+                    </td>
+                    <td>{{ syllabus.description }}</td>
+  
+                    <td>
+                      <a href="{% url 'academic:edit_syllabus' syllabus.id %}" class="btn btn-xs btn-success"><i class="fas fa-xs fa-edit"></i></a>
+                     
+                         
+                      <button  class="btn btn-danger btn-xs"  data-target='#deleteSyllabus-{{ syllabus.id }}' data-toggle="modal"><i
+                        class="fas fa-sm fa-trash-alt"></i></button>
+                    </td>
+  
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- /.content -->

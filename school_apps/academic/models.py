@@ -12,6 +12,7 @@ from student_management_app.models import Section, Semester, Subject, Student,Co
 
 class Syllabus(models.Model):
     course_category = models.ForeignKey(CourseCategory, on_delete=models.CASCADE,null = True, blank=True)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE,null = True, blank=True)
     title = models.CharField(max_length=100)
     file = models.FileField(upload_to='syllabus')
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE)

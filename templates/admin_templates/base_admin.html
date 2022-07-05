@@ -544,9 +544,10 @@ $("#id_course_category").change(function(){
 
     }
  
-     
+
   })
-  }else{
+  }
+  else{
     $.ajax({
       url:" {% url 'attendance_app:fill_course_select' %}",
       data:{'course_category':course_category_id},

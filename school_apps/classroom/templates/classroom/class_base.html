@@ -167,6 +167,8 @@ src="{% static 'plugins/highcharts/modules/accessibility.js' %}"
   });
 
 
+
+
   $("#id_semester").change(function(){
     var semester_id = $(this).val();
     
@@ -210,7 +212,18 @@ src="{% static 'plugins/highcharts/modules/accessibility.js' %}"
         }
     })
   })
-
+  $("#id_course").change(function(){
+    var course_id = $(this).val();
+    
+    
+    $.ajax({
+        url:" {% url 'attendance_app:fill_semester_from_course' %}",
+        data:{'course':course_id},
+        success:function(data){
+            $("#id_semester").html(data);
+        }
+    })
+  })
   $("#div_id_course_category input:radio").change(function(){
     var course_category_id = $(this).val();
     if(course_category_id == 1){

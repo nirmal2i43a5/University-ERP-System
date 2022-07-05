@@ -26,52 +26,50 @@
 			<div class="card-header p-2 ">
 			  <ul class="nav nav-tabs nav-custom p-0">
 				<li class="nav-item"><a class="nav-link active" href="#assignment" data-toggle="tab">Assignment</a></li>
-				<!-- <li class="nav-item"><a class="nav-link" href="#routine" data-toggle="tab">Routine</a></li> -->
-				<li class="nav-item"><a class="nav-link" href="#syllabus" data-toggle="tab">Syllabus</a></li>
-				<li class="nav-item"><a class="nav-link" href="#routine" data-toggle="tab">Routine</a></li>
-				<li class="nav-item"><a class="nav-link" href="#e-notes" data-toggle="tab">E-Notes</a></li>
+		<li class="nav-item"><a class="nav-link" href="#syllabus" data-toggle="tab">Syllabus</a></li>
+		<li class="nav-item"><a class="nav-link" href="#routine" data-toggle="tab">Routine</a></li>
+		<li class="nav-item"><a class="nav-link" href="#e-notes" data-toggle="tab">E-Notes</a></li>
 
-				<li class="nav-item"><a class="nav-link" href="#lesson-plan" data-toggle="tab">Lesson Plan</a></li>
-				<!-- <li class="nav-item"><a class="nav-link " href="#mark" data-toggle="tab">Mark</a></li> -->
-				<!-- <li class="nav-item"><a class="nav-link" href="#invoice" data-toggle="tab">Invoice</a></li> -->
-				<!-- <li class="nav-item"><a class="nav-link" href="#payment" data-toggle="tab">Payment</a></li> -->
+		<li class="nav-item"><a class="nav-link" href="#lesson-plan" data-toggle="tab">Lesson Plan</a></li>
 			  </ul>
 			</div><!-- /.card-header -->
 			<div class="card-body">
-			  <div class="tab-content">
+			  <div id="classroomContent" class="tab-content">
 				<div class="active tab-pane" id="assignment">
-  
-				  {% include "classroom/includes/class_contents/assignment.html" %}
-  
+		
+		
 				</div>
 				<!-- /.tab-pane -->
-				<div class="tab-pane" id="e-notes">
-  
-				</div>
-  
 				<div class="tab-pane" id="syllabus">
-  
-				
-  
+					{% include "classroom/includes/class_contents/syllabus.html" %}
 				</div>
-  
+		
 				<div class="tab-pane" id="routine">
+		
 					{% include "classroom/includes/class_contents/routine.html" %}
-  
-  
+		
 				</div>
-  
+		
+				<div class="tab-pane" id="e-notes">
+		
+				  E-notes
+		
+				</div>
+		
 				<div class="tab-pane" id="lesson-plan">
-  
-  
+		
+Lesson plan		
 				</div>
-  
+		
+				
+		
 				
 			   
 			  </div>
 			  <!-- /.tab-content -->
 			</div><!-- /.card-body -->
 		  </div>
+		
 
       </div>
     
@@ -145,3 +143,7 @@
 	})
   </script>
 {% endblock custom_js %}
+
+
+
+{% include "classroom/includes/class_contents/assignment.html" %}
