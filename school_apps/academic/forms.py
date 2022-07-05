@@ -1,6 +1,6 @@
 from django import forms
 from django.shortcuts import get_object_or_404
-from school_apps.academic.models import Syllabus, Assignment, Routine,Section
+from school_apps.academic.models import Syllabus, Assignment, Routine,Section,Enotes
 from school_apps.classroom.views import school_class
 from student_management_app.models import Semester, Subject,CourseCategory,Course,Staff
 from django.contrib.admin.widgets import AdminSplitDateTime
@@ -44,7 +44,14 @@ class SyllabusForm(forms.ModelForm):
         fields = '__all__'
         
 
+class ENoteForm(forms.ModelForm):
+    course_category = forms.ModelChoiceField(queryset = CourseCategory.objects.all(), widget=forms.RadioSelect(attrs={'class': 'inline'}))
+    title=forms.CharField(widget=forms.TextInput(attrs={"class":"form-control","placeholder": " Enter Syllabus Title",}))
+    description = forms.CharField( required = False, widget=forms.Textarea(attrs={'rows': 2, 'cols': 10,"placeholder": " Enter  Course Description",}))
 
+    class Meta:
+        model = Enotes
+        fields = '__all__'
 
 
 class AssignmentForm(forms.ModelForm):
@@ -133,16 +140,21 @@ class ContentFilterForm(forms.Form):
          
 
 class RoutineSearchForm(forms.Form):
-    course_category = forms.ModelChoiceField(label= '',empty_label = 'Choose Course Category',
-                                      queryset = CourseCategory.objects.all())
+    # course_category = forms.ModelChoiceField(label= '',empty_label = 'Choose Course Category',
+    #                                   queryset = CourseCategory.objects.all())
     
-    semester = forms.ModelChoiceField(label= '',empty_label = 'Choose Class',
-                                      queryset = Semester.objects.none())
+    # semester = forms.ModelChoiceField(label= '',empty_label = 'Choose Class',
+    #                                   queryset = Semester.objects.none())
     section = forms.ModelChoiceField(required = False, label= '',empty_label = 'Choose Section',
                                      queryset = Section.objects.none())
  
-    # group=forms.ChoiceField(required = False, label = '',choices=faculty_choices,
-    #                       widget=forms.Select(attrs = {'hidden':''}))
+    def __init__(self, semester_id, *args, **kwargs):
+        super(RoutineSearchForm,self).__init__(*args, **kwargs)
+        
+        section = kwargs.pop('section', None)
+        semester = Semester.objects.get(pk = semester_id)
+        self.fields['section'].queryset = Section.objects.filter(semester = get_object_or_404(Semester , pk = semester_id))
+
 
 
 class SubjectAssignFilterForm(forms.Form):
@@ -207,7 +219,7 @@ class RoutineForm(forms.ModelForm):
 
     class Meta:
         model = Routine
-        fields = ('course_category','routine_file','semester','section',)
+        fields = ('course_category','course','routine_file','semester','section',)
     
 
 class SubjectSearchForm(forms.Form):

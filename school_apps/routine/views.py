@@ -30,7 +30,7 @@ def add_routine(request):
                 return redirect('admin_app:manage_routine')
         except:
             messages.error(request, "Failed to Add Routine.")
-            return redirect('admin_app:add_routine')
+            return redirect('routine:add_routine')
 
     else:
         form = RoutineForm()

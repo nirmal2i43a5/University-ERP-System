@@ -114,11 +114,36 @@ def manage_syllabus(request,semester_id):
     syllabus = Syllabus.objects.filter(semester=semester_id)
     return  syllabus
 
+
+@permission_required('academic.view_routine', raise_exception=True)
+def manage_routine(request,semester_id):
+
+    routine_search_form = forms.RoutineSearchForm(semester_id)
+    semester_instance = get_object_or_404(Semester, pk =  semester_id)
+    search_routines = Routine.objects.filter(semester=semester_instance)
+    
+    
+    section_id = request.GET.get('section')
+    section_instance = get_object_or_404(Section , pk = section_id) if section_id else None
+
+    if section_instance:
+        search_routines = Routine.objects.filter(semester=semester_instance,section = section_instance)
+        return search_routines,routine_search_form 
+    
+    # if semester:
+    #     search_routines = Routine.objects.filter(semester=semester)
+    #     return search_routines,routine_search_form 
+
+  
+    return search_routines,routine_search_form 
+
+
 def classroom_contents(request,pk):
     
     school_classes = Semester.objects.filter(course_category = get_object_or_404(CourseCategory, course_name = 'School'))
     search_assignments,draft_assignments,assignment_search_form = manage_assignment(request,pk)
     syllabus = manage_syllabus(request,pk)
+    search_routines,routine_search_form = manage_routine(request,pk)
     context = {
         
             'school_classes':school_classes,
@@ -131,7 +156,9 @@ def classroom_contents(request,pk):
             'draft_assignments': draft_assignments,
             # 'student_assignments':assignments.filter(),
             'assignment_form': assignment_search_form,
-               'syllabus':syllabus
+               'syllabus':syllabus,
+               'search_routines':search_routines,
+               'routine_form':routine_search_form
              # 'submitted_assignment_no':submitted_assignment_no,
             
       

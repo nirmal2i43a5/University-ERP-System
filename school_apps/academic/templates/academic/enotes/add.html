@@ -8,7 +8,10 @@
 <!-- Main content -->
 <section class="content">
   <div class="container-fluid">
-
+    <!-- <div class="alert alert-default-warning">
+      
+        <h4>Please,upload syllabus with .pdf file extension.</h4>
+    </div> -->
     {% include "includes/messages.html" %}
 
     
@@ -16,15 +19,12 @@
     <div class="row">
       <div class="col-md-12">
         <!-- general form elements -->
-        <div class="card">
-          <div class="card-header" style="background-color: #743DB8;color:white;">
-            <h3 class="card-title">Add Routine</h3>
-          </div>
+        <div class="card card-info">
+          {% include 'override_table/header.html' with card_title='Add E-Note' %}
           <!-- /.card-header -->
-          
+          {% url 'academic:manage_syllabus' as url %}
           <!-- form start -->
-          {% url 'routine:manage_routine' as routine_url %}
-          {% include 'admin_templates/form.html' with messages=messages form=form back_url=routine_url  button_text="Add Routine" %}
+          {% include 'admin_templates/form.html' with messages=messages form=form back_url=url  button_text="Save" %}
 
         <!-- /.card -->
 
@@ -34,14 +34,16 @@
     </div>
   </div>
 </section>
+
 <style>
-  .form-check, .form-check-input{
-   display:inline-block;
-   }
-   .form-check{
+ .form-check, .form-check-input{
+  display:inline-block;
+  
+  }
+  .form-check{
     margin-left:1.5rem;
   }
- </style>
+</style>
 <!-- /.content -->
 {% endblock main_content %}
 

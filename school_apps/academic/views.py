@@ -9,6 +9,7 @@ from student_management_app.django_forms.forms import (
 )
 from school_apps.academic.forms import StudentFormSearch,SubjectAssignFilterForm
 from .forms import (
+    ENoteForm,
     SubjectForm,
                  
                     SemesterForm,
@@ -31,7 +32,7 @@ from student_management_app.models import (
     Course, CourseCategory, CustomUser, Subject,
     Semester, Section,   Department, Student
 )
-from school_apps.academic.models import (Syllabus, Routine, Assignment, Grade)
+from school_apps.academic.models import (Enotes, Syllabus, Routine, Assignment, Grade)
 
 from django.contrib.auth.decorators import permission_required
 from school_apps.notifications.utilities import create_notification
@@ -888,10 +889,10 @@ def manage_syllabus(request):
     semester = request.GET.get('semester')
     
     if semester:
-        search_syllabus = Routine.objects.filter(semester=semester)
+        search_syllabus = Syllabus.objects.filter(semester=semester)
         context = {'syllabus': search_syllabus,
                    'form': SyllabusSearchForm(initial = {'semester': semester}),#show selected instance in search form
-                   'title': 'Routine'
+                   'title': 'Syllabus'
                    }
 
         return render(request, 'academic/syllabus/manage_syllabus.html', context)
@@ -941,6 +942,54 @@ def delete_syllabus(request, syllabus_id):
     except:
         messages.error(request, 'Failed To Delete Syllabus')
         return redirect('academic:manage_syllabus')
+
+@permission_required('academic.add_enotes', raise_exception=True)
+def add_enotes(request):
+    if request.method == 'POST':
+        form = ENoteForm(request.POST, request.FILES)
+
+        try:
+            if form.is_valid():
+                instance = form.save(commit = False)
+                instance.save()
+                messages.success(request, " E-Note is Added Successfully.")
+                return redirect('academic:add_enotes')
+        except:
+            messages.error(request, "Failed to Add E-Note.")
+            return redirect('academic:add_enotes')
+
+    else:
+        form = ENoteForm()
+
+    context = {'form': form,
+               'title': 'E-Note'}
+    return render(request, "academic/enotes/add.html", context)
+
+@permission_required('academic.change_enotes', raise_exception=True)
+def edit_enotes(request,pk):
+    enote_instance = get_object_or_404(Enotes,pk = pk)
+    
+    if request.method == 'POST':
+        form = ENoteForm(request.POST, request.FILES,instance=enote_instance)
+
+        try:
+            if form.is_valid():
+                instance = form.save(commit = False)
+                instance.save()
+                messages.success(request, " E-Note is Added Successfully.")
+                return redirect('academic:add_enotes')
+        except:
+            messages.error(request, "Failed to Add E-Note.")
+            return redirect('academic:add_enotes')
+
+    else:
+        form = ENoteForm(instance = enote_instance)
+
+    context = {'form': form,
+               'title': 'E-Note'}
+    return render(request, "academic/syllabus/add_syllabus.html", context)
+
+
 
 
 def student_send_bulk_email(request):

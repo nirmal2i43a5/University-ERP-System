@@ -17,6 +17,8 @@ class Syllabus(models.Model):
     file = models.FileField(upload_to='syllabus')
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
     description = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     
 
     class Meta:
@@ -26,7 +28,21 @@ class Syllabus(models.Model):
     def __str__(self):
         return self.title
 
-
+class Enotes(models.Model):
+    category = (('Subject','Subject'),('Extra','Extra'))
+    course_category = models.ForeignKey(CourseCategory, on_delete=models.CASCADE,null = True, blank=True)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE,null = True, blank=True)
+    semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    
+    title = models.CharField(max_length=100)
+    file = models.FileField(upload_to='e-notes')
+    note_category = models.CharField(max_length=50,choices = category,blank = True)
+    description = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    def __str__(self):
+            return self.title
 
 class Assignment(models.Model):
     assignment_category = (
@@ -87,6 +103,7 @@ class Routine(models.Model):
    		('SATURDAY','SATURDAY'),
 	)
     course_category = models.ForeignKey(CourseCategory, on_delete=models.CASCADE,null = True, blank=True)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE,null = True, blank=True)
     routine_file = models.FileField(_("Routine"), upload_to='College Routine')
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
     section = models.ForeignKey(Section, on_delete=models.CASCADE)
@@ -98,8 +115,9 @@ class Routine(models.Model):
     ending_time = models.TimeField(auto_now=False, auto_now_add=False,null=True, blank=True)
     room = models.CharField( max_length=100,null=True, blank=True)
     # course = models.ForeignKey(SectionSubject, on_delete=models.CASCADE)
-    course = models.ForeignKey(Section, on_delete=models.CASCADE, related_name= 'routine_course', null=True, blank=True)
-    
+    # course = models.ForeignKey(Section, on_delete=models.CASCADE, related_name= 'routine_course', null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     
     
     class Meta:
