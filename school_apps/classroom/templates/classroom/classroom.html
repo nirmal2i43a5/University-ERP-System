@@ -15,8 +15,80 @@
 <section class="content">
   <div class="container-fluid">
 
+	<div class="row">
+		<div class="col-12 col-sm-6 col-md-3">
+		  <div class="info-box border border-info">
+			<span class="info-box-icon elevation-1"  style="background-color: #743DB8;">
+			  <a href=""> <i class="fas fa-1x fa-user-graduate"></i></a>
+			</span>
+  
+			<div class="info-box-content">
+			  <span class="info-box-text">Active Students</span>
+			  <span class="info-box-number">
+				{{active_students_count}}
+			  </span>
+			</div>
+			<!-- /.info-box-content -->
+		  </div>
+		  <!-- /.info-box -->
+		</div>
+		<div class="col-12 col-sm-6 col-md-3">
+		  <div class="info-box border border-warning">
+			<span class="info-box-icon bg-warning elevation-1">
+			  <a href=""> <i class="fas fa-1x fa-user-graduate"></i></a>
+			</span>
+  
+			<div class="info-box-content">
+			  <span class="info-box-text">Inactive Students</span>
+			  <span class="info-box-number">
+				{{inactive_students_count}}
+			  </span>
+			</div>
+			<!-- /.info-box-content -->
+		  </div>
+		  <!-- /.info-box -->
+		</div>
+		<!-- /.col -->
+		<div class="col-12 col-sm-6 col-md-3">
+		  <div class="info-box mb-3 border border-success">
+			<span class="info-box-icon bg-success elevation-1">
+			  <a href="" class="text-white"> <i
+				  class="fas fa-1x fa-chalkboard-teacher"></i></a>
+			</span>
+  
+			<div class="info-box-content ">
+			  <span class="info-box-text">Teachers</span>
+			  <span class="info-box-number">{{teachers_count}}</span>
+			</div>
+			<!-- /.info-box-content -->
+		  </div>
+		  <!-- /.info-box -->
+		</div>
+		<!-- /.col -->
+  
+		<!-- fix for small devices only -->
+		<div class="clearfix hidden-md-up"></div>
+  
+		<div class="col-12 col-sm-6 col-md-3">
+		  <div class="info-box mb-3 border border-primary">
+			<span class="info-box-icon bg-primary elevation-1">
+			  <a href=""> <i class="fas fa-1x fa-book-open"></i></a>
+			</span>
+  
+			<div class="info-box-content">
+			  <span class="info-box-text">Courses</span>
+			  <span class="info-box-number">{{subjects_count}}</span>
+			</div>
+			<!-- /.info-box-content -->
+		  </div>
+		  <!-- /.info-box -->
+		</div>
+		<!-- /.col -->
+  
+		<!-- /.col -->
+	  </div>
 
-   {% include "includes/messages.html" %}
+
 
     <div class="row">
       <div class="col-md-12">

@@ -6,7 +6,7 @@ from school_apps.attendance.models import (AttendanceReport)
 from school_apps.academic.models import (Syllabus, Routine, Assignment, Grade,Enotes)
 from school_apps.academic import forms
 from django.urls import resolve
-from student_management_app.models import (Section,Semester,Subject)
+from student_management_app.models import (Section,Semester,Subject,Student,Staff)
 from django.contrib.auth.decorators import permission_required
 from .helpers import (
                         manage_assignment,
@@ -14,7 +14,6 @@ from .helpers import (
                       manage_routine,
                       manage_syllabus
                       )
-
 
 
 school_course_category = get_object_or_404(CourseCategory, course_name = 'School')
@@ -80,7 +79,14 @@ def classroom(request):
         for semester in school_class_list :
             semester_instance,students = total_students_chart_data(request,semester)
             class_student_dataset.append({'semester_name':semester_instance,'students':students})
-            
+        
+        
+        '''For data count'''
+        active_students = Student.objects.filter(course_category = school_course_category,student_user__is_active = True)
+        inactive_students = Student.objects.filter(course_category = school_course_category,student_user__is_active = False)
+        teachers = Staff.objects.filter(courses = school_course_category)
+        
+        
     '''--------------------------------------------For Plus Two Dashboard--------------------------------------------'''
     if url_name == 'plus-two-classroom':
         '''For attendance chart data'''
@@ -92,17 +98,23 @@ def classroom(request):
                                     'absent_informed_status_count':absent_informed_status_count,
                                     'absent_not_informed_status_count':absent_not_informed_status_count
                                     })
-    
+        
             
         '''For total students chart data'''
         for semester in plus_two_class_list :
             semester_instance,students = total_students_chart_data(request,semester)
             class_student_dataset.append({'semester_name':semester_instance,'students':students})
-            
-            
+        
+        
+        '''For data count'''
+        active_students = Student.objects.filter(course_category = plus_two_course_category,student_user__is_active = True)
+        inactive_students = Student.objects.filter(course_category = plus_two_course_category,student_user__is_active = False)
+        teachers = Staff.objects.filter(courses = plus_two_course_category)
+        
+        
         '''--------------------------------------------For Bachelor Dashboard--------------------------------------------'''
-        if url_name == 'bachelor-classroom':
-            '''For attendance chart data'''
+    if url_name == 'bachelor-classroom':
+        '''For attendance chart data'''
         for semester in bachelor_class_list:
             present_status_count,absent_informed_status_count,absent_not_informed_status_count = attendance_chart_data(request,semester)
             # Every eveery time function is called with respective semester
@@ -118,10 +130,16 @@ def classroom(request):
         for semester in bachelor_class_list :
             semester_instance,students = total_students_chart_data(request,semester)
             class_student_dataset.append({'semester_name':semester_instance,'students':students})
-
+        
+        
+        '''For data count'''
+        active_students = Student.objects.filter(course_category = bachelor_course_category,student_user__is_active = True)
+        inactive_students = Student.objects.filter(course_category = bachelor_course_category,student_user__is_active = False)
+        teachers = Staff.objects.filter(courses = bachelor_course_category)
+            
         '''--------------------------------------------For Master Dashboard--------------------------------------------'''
-        if url_name == 'master-classroom':
-            '''For attendance chart data'''
+    if url_name == 'master-classroom':
+        '''For attendance chart data'''
         for semester in master_class_list:
             present_status_count,absent_informed_status_count,absent_not_informed_status_count = attendance_chart_data(request,semester)
             # Every eveery time function is called with respective semester
@@ -136,8 +154,12 @@ def classroom(request):
         for semester in master_class_list :
             semester_instance,students = total_students_chart_data(request,semester)
             class_student_dataset.append({'semester_name':semester_instance,'students':students})
+        
+            '''For data count'''
+        active_students = Student.objects.filter(course_category = master_course_category,student_user__is_active = True)
+        inactive_students = Student.objects.filter(course_category = master_course_category,student_user__is_active = False)
+        teachers = Staff.objects.filter(courses = master_course_category)
             
-
     context = {
         'url_name':url_name,
         'title':'Class Room',
@@ -149,7 +171,12 @@ def classroom(request):
         
         # ---------------------------Chart Data-----------------------
         'class_student_dataset':class_student_dataset,
-        'student_attendance_dataset':student_attendance_dataset
+        'student_attendance_dataset':student_attendance_dataset,
+        
+        # -------For details count
+        'active_students_count':active_students.count(),
+         'inactive_students_count':inactive_students.count(),
+         'teachers_count':teachers.count()
                  }
     return render(request, 'classroom/classroom.html', context)
 
