@@ -21,9 +21,17 @@
         xAxis: {
             categories: [
           //  'Science students','Non-science studets'
+
+             {% if semester.course_name %}
+
             {% for semester in class_student_dataset %}'{{ semester.course_name }}( {{ semester.semester_name }} )'{% if not forloop.last %}, {% endif %}{% endfor %}
             ]
+            {% else %}
 
+            {% for semester in class_student_dataset %}'{{ semester.semester_name }}'{% if not forloop.last %}, {% endif %}{% endfor %}
+
+            {% endif %}
+]
         },
         series: [{
             name: 'Total Students',
