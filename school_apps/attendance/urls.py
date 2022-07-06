@@ -15,7 +15,7 @@ urlpatterns = [
     path('student_attendance/',get_students,name = 'student_attendance'),
     path('save_student_attendance/',save_student_attendance,name = 'save_student_attendance'),
     path('manage_student_attendance/',manage_student_attendance,name = 'manage_student_attendance'),
-    path('student_attendance_list/',student_attendance_list,name = 'student_attendance_list'),
+    path('fetch_student_attendance/',student_attendance_list,name = 'student_attendance_list'),
     path('edit_student_attendance/',edit_student_attendance,name = 'edit_student_attendance'),
     path('edit_save_student_attendance/',edit_save_student_attendance,name = 'edit_save_student_attendance'),
  

@@ -20,7 +20,7 @@ from student_management_app.models import (
 from school_apps.attendance.models import Attendance, AttendanceReport
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required, permission_required  
-from school_apps.academic.forms import ClassFormSearch
+from school_apps.academic.forms import ClassFormSearch,StudentSearch
 
 
 @permission_required('student_management_app.add_teacher', raise_exception=True)
@@ -326,32 +326,37 @@ def student_view_by_teacher(request):
     
     subjectteacher = SubjectTeacher.objects.filter(teacher = request.user.id)
     # -------
-    # search_form = StudentFormSearch(user = request.user)
-    semester_query = request.GET.get('semester')
+    search_form = StudentSearch(user = request.user)
+    semester_query = request.GET.get('filter_semester')
     section_query = request.GET.get('section')
-    group_query = request.GET.get('group')
+
+    
+
+    if semester_query and section_query:
+        search_students = Student.objects.filter(semester = semester_query,section = section_query,student_user__is_active = 1)
+        context = {'students': search_students,'form':search_form}
+        return render(request,'teachers/students/student_list.html', context)
+    
+    if semester_query:
+        search_students = Student.objects.filter(semester = semester_query,student_user__is_active = 1)
+        context = {'students': search_students,'form':search_form}
+        return render(request,'teachers/students/student_list.html', context)
+
+    else:
+        search_students = Student.objects.filter(semester = semester_query,student_user__is_active = 1)
+        context = {'students': Student.objects.filter(student_user__is_active = 1),'form':search_form}
+        return render(request,'teachers/students/student_list.html', context)
+    #     students = []
+    #     for item in subjectteacher:
+    #         students = Student.objects.filter(semester = item.semester,section = item.section)
+    
+    #     context = {
+    #     'title':'Student Details',
+    #         'form':search_form,
+    #     'students':students
+        
+    # }
+        # return render(request,'teachers/students/student_list.html', context)
     # ------------
     
-    students = []
-    # search_form = ClassFormSearch(user = request.user)
-    # semester_query = request.GET.get('semester')
-    # section_query = request.GET.get('section')
-
-    # if section_query:
-    #     for item in subjectteacher:
-            
-    #         search_students = Student.objects.filter(section = item.section)
-    #         context = {'students': search_students,'form':search_form}
-    #         return render(request,'teachers/students/student_list.html', context)
-        
-
-    for item in subjectteacher:
-        students = Student.objects.filter(section = item.section)
-    
-    context = {
-    'title':'Student Details',
-        # 'form':search_form,
-    'students':students
-    
-}
-    return render(request,'teachers/students/student_list.html', context)
+  

@@ -42,6 +42,12 @@ from django.core.mail import EmailMessage
 from student_management_app.models import Section, Semester, Staff, Student, Subject, SubjectTeacher
 from school_apps.courses.models import selectedcourses,application_form,studentgrades
 
+
+
+
+
+
+
 # this view is for adding and managing degree
 @permission_required(['student_management_app.view_course', 'student_management_app.add_course'], raise_exception=True)
 def add_manage_course(request):
@@ -1089,7 +1095,8 @@ def add_assignment(request):
 
     context = {
         'form': form,
-        'title': 'Assignment'
+        'title': 'Assignment',
+        
     }
     return render(request, "academic/assignments/add_assignment.html", context)
 

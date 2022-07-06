@@ -5,6 +5,7 @@ from school_apps.academic.views import (assignment_answer_upload,student_assignm
                                             manage_coursecategory,view_student_syllabus,add_enotes,edit_enotes)
 from student_management_system.views import academic_home
 from school_apps.academic import views as academic_views
+from school_apps.routine.views import *
 
 app_name = 'academic'
 
@@ -69,7 +70,13 @@ urlpatterns = [
       path('manage_syllabus/', academic_views.manage_syllabus, name="manage_syllabus"),
       path('edit_syllabus/<str:syllabus_id>/', academic_views.edit_syllabus, name="edit_syllabus"),
         path('delete_syllabus/<str:syllabus_id>/', academic_views.delete_syllabus, name="delete_syllabus"),
+      # routine
       
+            path('add_routine/', add_routine, name="add_routine"),
+      path('manage_routine/', manage_routine, name="manage_routine"),
+      path('edit_routine/<str:routine_id>/', edit_routine, name="edit_routine"),
+      path('delete_routine/<str:routine_id>/', delete_routine, name="delete_routine"),
+      path('routine/view/', view_student_routine, name="view_routine"),
 # e-notes
    path('add_enotes/', academic_views.add_enotes, name="add_enote"),
       path('edit_enotes/<str:pk>/', academic_views.edit_enotes, name="edit_enote"),

@@ -20,11 +20,11 @@ from django.contrib.auth.decorators import  permission_required
 def get_students(request):
     
     status_form = AttendanceStatusForm()
-    form  = AttendanceFormSearch()
+    form  = AttendanceFormSearch(user = request.user)
  
     
     if request.method == 'POST':
-        form  = AttendanceFormSearch(request.POST)
+        form  = AttendanceFormSearch(request.POST,user = request.user)
         course_category_id = request.POST.get('course_category')
         course_id = request.POST.get('filter_course')
         section = request.POST.get('section')
@@ -153,11 +153,11 @@ def save_student_attendance(request):
 @permission_required('attendance.change_attendancereport', raise_exception=True)
 def edit_student_attendance(request):
     
-    form  = AttendanceForm()
+    form  = AttendanceForm(user = request.user)
     
     if request.method == 'POST':
 
-        form  = AttendanceForm(request.POST)
+        form  = AttendanceForm(request.POST,user = request.user)
         semester_id = request.POST.get('filter_semester')
         course_category_id = request.POST.get('course_category')
         course_id = request.POST.get('filter_course')
@@ -274,14 +274,14 @@ def student_attendance_report(request):
 
 def student_daily_attendance(request):
     
-    datewise_attendance_form = AttendanceForm()
+    datewise_attendance_form = AttendanceForm(user = request.user)
     if request.method == 'POST':
         # attendance_details_search = AttendanceForm(request.POST, user = request.user)
         course_category_id = request.POST.get('course_category')
         course_category_instance = get_object_or_404(CourseCategory, pk = course_category_id)
         course_id = request.POST.get('filter_course')
         course_instance  = get_object_or_404(Course, pk = course_id) if course_id else None
-        attendance_details_search = AttendanceForm(request.POST)
+        attendance_details_search = AttendanceForm(request.POST,user = request.user)
         attendance_date = request.POST.get('attendance_date')
         semester_id = request.POST.get('filter_semester')
         semester = get_object_or_404(Semester , pk = semester_id)
@@ -322,7 +322,7 @@ def student_daily_attendance(request):
             'title':'Datewise attendance',
             'course_category':course_category_instance,'course':course_instance,
             'semester':semester,'section':section_instance,'subject':subject_instance,
-            'datewise_attendance_form':AttendanceForm(initial = {
+            'datewise_attendance_form':AttendanceForm(user = request.user,initial = {
                 
                 'course_category':course_category_instance,
                 'filter_course':course_instance, 'filter_semester':semester, 'section':section_instance,
@@ -342,7 +342,7 @@ def student_daily_attendance(request):
 
 def student_monthly_attendance(request):
     
-    monthly_filter_form = FilterMonthlyAttendance()
+    monthly_filter_form = FilterMonthlyAttendance(user = request.user)
     
     if request.method == 'POST':
         month = request.POST.get('month')
@@ -380,10 +380,10 @@ def student_monthly_attendance(request):
             student_monthly_attendances = AttendanceReport.objects.filter(attendance__in = attendance).order_by('attendance__id')
             
         context =  { 'student_monthly_attendances':student_monthly_attendances,
-                    'attendance_details_form_search':AttendanceForm(),
+                    'attendance_details_form_search':AttendanceForm(user = request.user),
                     'course_category':course_category_instance,'course':course_instance,
               'semester':semester,'section':section_instance,'subject':subject_instance,
-                    'monthly_filter_form':FilterMonthlyAttendance(initial = {
+                    'monthly_filter_form':FilterMonthlyAttendance(user = request.user,initial = {
                     'month':month,
                     'course_category':course_category_instance,
                     'filter_course':course_instance,
@@ -409,13 +409,13 @@ def student_monthly_attendance(request):
 def manage_student_attendance(request):
     
     # attendance_details_form_search = StudentAttendanceDetailsSearch(user = request.user)
-    attendance_details_form_search = AttendanceForm()
+    attendance_details_form_search = AttendanceForm(user = request.user)
     attendance_details_edit_form_search = StudentAttendanceEditDetailsSearch()
-    monthly_filter_form = FilterMonthlyAttendance()
+    monthly_filter_form = FilterMonthlyAttendance(user = request.user)
     
     if request.method == 'POST' and 'datewise_filter' in request.POST:
         # attendance_details_search = AttendanceForm(request.POST, user = request.user)
-        attendance_details_search = AttendanceForm(request.POST)
+        attendance_details_search = AttendanceForm(request.POST,user = request.user)
         attendance_date = request.POST.get('attendance_date')
         semester_id = request.POST.get('filter_semester')#from hidden input
         semester = get_object_or_404(Semester , pk = semester_id)
@@ -460,7 +460,7 @@ def manage_student_attendance(request):
         
         
         context =  { 'student_attendances':student_attendances,
-                    'attendance_details_form_search':AttendanceForm(initial = {
+                    'attendance_details_form_search':AttendanceForm(user = request.user,initial = {
                     'attendance_date':attendance_date,'semester':semester_id,'group':group,
                         # 'section':section_id,'subject':subject_id
                     }),
@@ -491,8 +491,8 @@ def manage_student_attendance(request):
         student_monthly_attendances = AttendanceReport.objects.filter(attendance__in = attendance).order_by('attendance__id')
         
         context =  { 'student_monthly_attendances':student_monthly_attendances,
-                     'attendance_details_form_search':AttendanceForm(),
-                    'monthly_filter_form':FilterMonthlyAttendance(initial = {
+                     'attendance_details_form_search':AttendanceForm(user = request.user),
+                    'monthly_filter_form':FilterMonthlyAttendance(user = request.user,initial = {
                     'month':month,'semester':semester_id,'group':group,
                     }),
                     'semester':semester,
@@ -509,39 +509,21 @@ def manage_student_attendance(request):
 
 
 def student_attendance_list(request):
-    a_level_course_category = get_object_or_404(CourseCategory,course_name = 'A-Level')
-    bachelor_course_category = get_object_or_404(CourseCategory,course_name = 'Bachelor')
-    master_course_category = get_object_or_404(CourseCategory,course_name = 'Master')
-    
-    students = Student.objects.filter(student_user__is_active = 1,course_category = request.user.adminuser.course_category)
-    
-    if request.user.adminuser.course_category == a_level_course_category:
-        search_form = StudentFormSearch(user = request.user)
-    if request.user.adminuser.course_category in [bachelor_course_category,master_course_category]:
-        search_form = StudentSearch(user = request.user)
 
-    semester_query = request.GET.get('semester')
+    
+    students = Student.objects.filter(student_user__is_active = 1)
+    search_form = StudentSearch(user = request.user)
+    semester_query = request.GET.get('filter_semester')
     section_query = request.GET.get('section')
-    group_query = request.GET.get('group')
 
     
-    if semester_query and section_query and group_query:
-        search_students = Student.objects.filter(semester = semester_query, section = section_query,faculty = group_query,student_user__is_active = 1)
+
+    if semester_query and section_query:
+        search_students = Student.objects.filter(semester = semester_query,section = section_query,student_user__is_active = 1)
         context = {'students': search_students,'form':search_form}
         return render(request, 'attendances/students/student_list.html', context)
-    
-    elif semester_query:
+    if semester_query:
         search_students = Student.objects.filter(semester = semester_query,student_user__is_active = 1)
-        context = {'students': search_students,'form':search_form}
-        return render(request, 'attendances/students/student_list.html', context)
-    
-    elif section_query:
-        search_students = Student.objects.filter(section = section_query,student_user__is_active = 1)
-        context = {'students': search_students,'form':search_form}
-        return render(request, 'attendances/students/student_list.html', context)
-    
-    elif group_query:
-        search_students = Student.objects.filter(faculty = group_query, student_user__is_active = 1)
         context = {'students': search_students,'form':search_form}
         return render(request, 'attendances/students/student_list.html', context)
 

@@ -30,7 +30,6 @@ plus_two_classes = Semester.objects.filter(course_category = plus_two_course_cat
 bachelor_classes = Semester.objects.filter(course_category = bachelor_course_category)
 master_classes = Semester.objects.filter(course_category = master_course_category)
 
-
 """Visit School Class"""
 
 
@@ -174,9 +173,7 @@ def classroom(request):
         'title':'Class Room',
           # ---------------------------Respective classes-----------------------
         'school_classes':school_classes,
-        'plus_two_classes':plus_two_classes,
-        'bachelor_classes':bachelor_classes,
-        'master_classes':master_classes,
+       
           'plus_two_courses':plus_two_courses,
          'bachelor_courses':bachelor_courses,
            'plus_two_courses':plus_two_courses,
@@ -207,9 +204,7 @@ def classroom_contents(request,pk):
     context = {
         
             'school_classes':school_classes,
-             'plus_two_classes':plus_two_classes,
-            'bachelor_classes':bachelor_classes,
-            'master_classes':master_classes,
+            
         
             'title':'Class Room',
             'url_name':url_name,

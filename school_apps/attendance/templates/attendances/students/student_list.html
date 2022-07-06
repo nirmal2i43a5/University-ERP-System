@@ -60,17 +60,12 @@
               <thead>
                 <tr>
                   <th></th>
-                  <th hidden></th>
                   <th>#</th>
                   <th>Image</th>
                   <th>Student Id</th>
                   <th>Full Name</th>
-                  <th>Group</th>
                   <th>Class</th>
                   <th>Section</th>
-                  <th>Parent Contact</th>
-                  <th>Student Contact</th>
-                  <th>User Name</th>
                   <th>Action</th>
 
                 </tr>
@@ -79,7 +74,6 @@
                 {% for student in students %}{% include 'students/delete.html' %}
                 <tr>
                   <td></td>
-                  <td id="student_id" hidden>{{student.pk}}</td>
                   <td>{{ forloop.counter }}</td>
                   <td>
 
@@ -94,33 +88,20 @@
                   </td>
                     <td>{{ student.stu_id }} </td>
                    <td>
-                      <a href="{% url 'admin_app:view_student' student.id %}">  {{ student.student_user.full_name }} </a>
+                  {{ student.student_user.full_name }}
                       </td>
-                      <td>{{ student.faculty }}</td>
                     <td>{{ student.semester }}</td>
                     <td>{{ student.section }}</td>
-               <td>
-                <a href="{% url 'admin_app:view_parent' student.guardian_id %}" style="cursor: pointer;">
-                  {{ student.guardian.father_phone }}
-                  <!-- {% if   student.guardian.father_phone == "('',)" %}
+             
 
-                  {% else %}
-                  {{ student.guardian.father_phone }}
-
-                    
-                  {% endif %} -->
-                </a>
-                </td>
-                  <td>{{ student.contact }}</td>
-
-                  <td>{{ student.student_user.username }}</td>
                  
+              
                   <td>
-
-                    <a class="btn btn-sm btn-info" href="{% url 'attendance_app:student_attendance_view' student.id %}"><strong>view attendance</strong></a>
-                  
-                  </td>
-
+                    <a href="{% url 'attendance_app:student_attendance_view' student.id %}" class="btn btn-xs"
+                     style="background-color: #743DB8;color:white;">
+                    <i class="fas fa-xs fa-eye"></i>  <strong>View Attendance</strong>
+                    </a>
+                   </td>
                
                 </tr>
                

@@ -6,12 +6,14 @@ from django.shortcuts import get_object_or_404
 from student_management_app.models import Semester, Section, Subject,CourseCategory,Course
 from .models import AttendanceReport
 
-
+from django.contrib.auth.models import Group
 faculty_choices = (
         ('', '-------Select Group-------'),
         ('Science','Science'),
         ('Non-Science','Non-Science')
     )
+
+
 #for taking attendance
 class AttendanceFormSearch(forms.Form):
 
@@ -28,49 +30,18 @@ class AttendanceFormSearch(forms.Form):
   
     
    
-    # subject = forms.ModelChoiceField(required = False, label= '',empty_label = 'Select Subject',widget=forms.Select(attrs={'class':''}),
-    #                                   queryset = Subject.objects.all()
-    #                                  )
+
     # https://medium.com/analytics-vidhya/django-how-to-pass-the-user-object-into-form-classes-ee322f02948c
-    # def __init__(self, *args, user=None, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     if user:
-    #         subject = self.fields['subject']
-    #         subject.queryset = subject.queryset.filter(staff_user=user)
-    #     if user.is_superuser:# or user|has_group:'Admin':
-    #         subject = self.fields['subject']
-    #         subject.queryset = Subject.objects.all()
+    def __init__(self, *args, user=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        if user.groups.filter(name='Teacher'):
+            course_category = self.fields['course_category']
+            course_category.queryset = user.staff.courses.all()
+        if user.is_superuser or  user.groups.filter(name='Super-Admin'):
+            course_category = self.fields['course_category']
+            course_category.queryset = CourseCategory.objects.all()
             
             
-    # def __init__(self, *args, user = None, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     a_level_course_category = get_object_or_404(CourseCategory,course_name = 'A-Level')
-    #     bachelor_course_category = get_object_or_404(CourseCategory,course_name = 'Bachelor')
-    #     master_course_category = get_object_or_404(CourseCategory,course_name = 'Master')
-        
-    #     if user.adminuser.course_category == a_level_course_category:
-    #         semester = self.fields['semester']
-    #         semester.queryset = semester.queryset.filter(course_category = a_level_course_category)
-    #         section = self.fields['section']
-    #         section.queryset = section.queryset.filter(course_category = a_level_course_category)
-    #         subject = self.fields['subject']
-    #         subject.queryset = subject.queryset.filter(course_category = a_level_course_category)
-            
-    #     if user.adminuser.course_category == bachelor_course_category:
-    #         semester = self.fields['semester']
-    #         semester.queryset = semester.queryset.filter(course_category = bachelor_course_category)
-    #         section = self.fields['section']
-    #         section.queryset = section.queryset.filter(course_category = bachelor_course_category)
-    #         subject = self.fields['subject']
-    #         subject.queryset = subject.queryset.filter(course_category = bachelor_course_category)
-            
-    #     if user.adminuser.course_category == master_course_category:
-    #         semester = self.fields['semester']
-    #         semester.queryset = semester.queryset.filter(course_category = master_course_category)
-    #         section = self.fields['section']
-    #         section.queryset = section.queryset.filter(course_category = master_course_category)
-    #         subject = self.fields['subject']
-    #         subject.queryset = subject.queryset.filter(course_category = master_course_category)
  
  
 class AttendanceForm(forms.Form):
@@ -86,14 +57,14 @@ class AttendanceForm(forms.Form):
     subject = forms.ModelChoiceField(required = False, label= '',empty_label = 'Choose Subject',widget=forms.Select(attrs = {'hidden':''}),
                                      queryset = Subject.objects.all())
  
-    # def __init__(self, *args, user=None, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     if user:
-    #         subject = self.fields['subject']
-    #         subject.queryset = subject.queryset.filter(staff_user=user)
-    #     if user.is_superuser:# or user|has_group:'Admin':
-    #         subject = self.fields['subject']
-    #         subject.queryset = Subject.objects.all()
+    def __init__(self, *args, user=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        if user.groups.filter(name='Teacher'):
+            course_category = self.fields['course_category']
+            course_category.queryset = user.staff.courses.all()
+        if user.is_superuser or  user.groups.filter(name='Super-Admin'):
+            course_category = self.fields['course_category']
+            course_category.queryset = CourseCategory.objects.all()
             
             
 #for managing details
@@ -151,6 +122,16 @@ class FilterMonthlyAttendance(forms.Form):
     group=forms.ChoiceField(required = False, label = '',choices=faculty_choices,
                           widget=forms.Select(attrs = {'hidden':''}))
     
+    
+    def __init__(self, *args, user=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        if user.groups.filter(name='Teacher'):
+            course_category = self.fields['course_category']
+            course_category.queryset = user.staff.courses.all()
+        if user.is_superuser or  user.groups.filter(name='Super-Admin'):
+            course_category = self.fields['course_category']
+            course_category.queryset = CourseCategory.objects.all()
+
 class AttendanceStatusForm(forms.ModelForm):
     class Meta:
         model = AttendanceReport

@@ -1,21 +1,23 @@
 <!-- Add icons to the links using the .nav-icon class
          with font-awesome or any other icon font library -->
-<li class="nav-item menu-close">
+
+         
+<!-- <li class="nav-item menu-close">
   <a href="#" class="nav-link">
     <i class="fas fa-xs fa-book-open"></i>
     <p>
       Exams
       <i class="right fas fa-angle-left"></i>
-    </p>
+    </p>manage_subject_teacher
   </a>
   <ul class="nav nav-treeview">
 
-    <!-- <li class="nav-item">
+    <li class="nav-item">
               <a href=" {% url 'teacher:studentlist'%}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Marks Entry by student</p>
               </a>
-            </li> -->
+            </li>
 
     <li class="nav-item">
       <a href=" {% url 'teacher:addscore' %}" class="nav-link ml-2">
@@ -72,7 +74,7 @@
     
   
   </ul>
-</li>
+</li> -->
 <!-- ------------------ -->
 <!-- <li class="nav-item has-treeview">
   <a href="{% url 'admin_app:manage_student' %}" class="nav-link">
@@ -86,22 +88,10 @@
 
 </li> -->
 <!-- ----------------- -->
-<li class="nav-item has-treeview">
-  <a href="#" class="nav-link">
-    <i class="fas fa-xs fa-clipboard"></i>
-    <p>
-      Attendence
 
-      <i class="fas fa-angle-left right"></i>
-
-
-    </p>
-  </a>
-
-  <ul class="nav nav-treeview">
-    <li class="nav-item ml-3">
+    <li class="nav-item">
       <a href="#" class="nav-link">
-        <i class="fas fa-xs fa-user-graduate"></i>
+        <i class="fas fa-xs fa-clipboard"></i>
         <p>
           Student Attendence
           <i class="fas fa-angle-left right"></i>
@@ -159,9 +149,7 @@
       </ul>
     </li>
 
-  </ul>
 
-</li>
 <!-- ------------------------------------------------academic------------------------------ -->
 <li class="nav-item has-treeview">
   <a href="#" class="nav-link">
@@ -198,6 +186,17 @@
     </li>
 
     <li class="nav-item ml-3">
+      <a href="{% url 'teacher:student_view_by_teacher' %}" class="nav-link">
+        <i class="fas  fa-file"></i>
+        <p>
+          My Students
+          
+
+        </p>
+      </a>
+    </li>
+    
+    <!-- <li class="nav-item ml-3">
       <a href="{% url 'teacher:checkstudents' %}" class="nav-link">
         <i class="fas  fa-file"></i>
         <p>
@@ -205,9 +204,10 @@
 
         </p>
       </a>
-    </li>
+    </li> -->
+
     <li class="nav-item ml-3">
-      <a href="{% url 'routine:manage_routine' %}" class="nav-link">
+      <a href="{% url 'academic:manage_routine' %}" class="nav-link">
         <i class="fas  fa-file"></i>
         <p>
           Routine
@@ -309,7 +309,7 @@
 
 
 
-<li class="nav-item">
+<!-- <li class="nav-item">
   <a href="https://accounts.google.com/signin/v2/identifier?service=mail&passive=true&rm=false&continue=https%3A%2F%2Fmail.google.com%2Fmail%2F&ss=1&scc=1&ltmpl=default&ltmplcache=2&emr=1&osid=1&flowName=GlifWebSignIn&flowEntry=ServiceLogin" class="nav-link">
     <i class="fas fa-envelope-open"></i>
     <p>
@@ -319,4 +319,4 @@
   </a>
 </li>
 
-
+ -->

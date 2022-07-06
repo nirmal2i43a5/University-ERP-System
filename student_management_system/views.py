@@ -344,7 +344,7 @@ def attendance_home(request):
     context = {
         'title':'Attendance Management',
                  }
-    return render(request, 'admin_templates/dashboard.html', context)
+    return render(request,'attendances/students/attendance_report.html', context)
 
 def library_home(request):
     context = {
