@@ -12,8 +12,7 @@
             [
             {% for semester in student_attendance_dataset %}
             
-
-                '{{ semester.semester_name }}'
+            '{{ semester.course_name }}( {{ semester.semester_name }} )'
                 
                 {% if not forloop.last %}, {% endif %}
 
