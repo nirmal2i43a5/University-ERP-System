@@ -24,9 +24,9 @@ from django.contrib.auth.decorators import  permission_required
 
 
 
-@login_required
-def admin_home(request):
-    return render(request,'admin_templates/admin_home.html')
+# @login_required
+# def admin_home(request):
+#     return render(request,'admin_templates/admin_home.html')
 
 
 class TeacherHome(View):

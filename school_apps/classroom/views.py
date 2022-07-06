@@ -3,151 +3,171 @@ from datetime import datetime
 from django.db.models import Count
 from student_management_app.models import CourseCategory, Semester
 from school_apps.attendance.models import (AttendanceReport)
-from school_apps.academic.models import (Syllabus, Routine, Assignment, Grade)
+from school_apps.academic.models import (Syllabus, Routine, Assignment, Grade,Enotes)
 from school_apps.academic import forms
-                    
+from django.urls import resolve
 from student_management_app.models import (Section,Semester,Subject)
 from django.contrib.auth.decorators import permission_required
+from .helpers import (
+                        manage_assignment,
+                      manage_enotes,
+                      manage_routine,
+                      manage_syllabus
+                      )
+
+
+
+school_course_category = get_object_or_404(CourseCategory, course_name = 'School')
+plus_two_course_category = get_object_or_404(CourseCategory, course_name = 'Plus-Two')
+bachelor_course_category = get_object_or_404(CourseCategory, course_name = 'Bachelor')
+master_course_category = get_object_or_404(CourseCategory, course_name = 'Master')
+
+school_classes = Semester.objects.filter(course_category = school_course_category)
+plus_two_classes = Semester.objects.filter(course_category = plus_two_course_category)
+bachelor_classes = Semester.objects.filter(course_category = bachelor_course_category)
+master_classes = Semester.objects.filter(course_category = master_course_category)
 
 
 """Visit School Class"""
 
-def school_class(request):
+
+
+def attendance_chart_data(request,semester):
+    semester_instance = get_object_or_404(Semester, pk = semester.pk)
+    present_status_count =  AttendanceReport.objects.filter(attendance__semester=semester_instance, status='Present',
+                                                                attendance__attendance_date = datetime.today())\
+                                                                .annotate(count=Count('status')).count()
+    absent_informed_status_count =  AttendanceReport.objects.filter(attendance__semester=semester_instance, status='Absent(Informed)',
+                                                                attendance__attendance_date = datetime.today())\
+                                                                .annotate(count=Count('status')).count()
+    absent_not_informed_status_count =  AttendanceReport.objects.filter(attendance__semester=semester_instance, status='Absent(Not Informed)',
+                                                                attendance__attendance_date = datetime.today())\
+                                                                .annotate(count=Count('status')).count()
+    return present_status_count,absent_informed_status_count,absent_not_informed_status_count
+
+
+def total_students_chart_data(request,semester):
+    semester_instance = get_object_or_404(Semester, pk = semester.pk)
+    students = semester_instance.student_set.all().count()
+    return semester_instance,students
+
+
     
-
-    '''For students chart dataset'''
-    class_student_dataset = []
-    course_category = get_object_or_404(CourseCategory, course_name = 'School')
-    for semester in Semester.objects.filter(course_category  = course_category ):
-        semester_instance = get_object_or_404(Semester, pk = semester.pk)
-        students = semester_instance.student_set.all().count()
-        class_student_dataset.append({'semester_name':semester,'students':students})
-
-    '''For attendance chart dataset'''
+def classroom(request):
+    
+    url_name = resolve(request.path).url_name
+    school_class_list = Semester.objects.filter(course_category  = school_course_category )
+    plus_two_class_list = Semester.objects.filter(course_category  = plus_two_course_category )
+    bachelor_class_list = Semester.objects.filter(course_category  = bachelor_course_category )
+    master_class_list = Semester.objects.filter(course_category  = master_course_category )
     student_attendance_dataset = []
-    course_category = get_object_or_404(CourseCategory, course_name = 'School')
-    for semester in Semester.objects.filter(course_category  = course_category ):
-        semester_instance = get_object_or_404(Semester, pk = semester.pk)
-        present_status_count =  AttendanceReport.objects.filter(attendance__semester=semester, status='Present',
-                                                                       attendance__attendance_date = datetime.today())\
-                                                                      .annotate(count=Count('status')).count()
-        absent_informed_status_count =  AttendanceReport.objects.filter(attendance__semester=semester, status='Absent(Informed)',
-                                                                       attendance__attendance_date = datetime.today())\
-                                                                      .annotate(count=Count('status')).count()
-        absent_not_informed_status_count =  AttendanceReport.objects.filter(attendance__semester=semester, status='Absent(Not Informed)',
-                                                                       attendance__attendance_date = datetime.today())\
-                                                                      .annotate(count=Count('status')).count()
-        student_attendance_dataset.append({'semester_name':semester,
-                                           'present_status_count':present_status_count,
-                                           'absent_informed_status_count':absent_informed_status_count,
-                                           'absent_not_informed_status_count':absent_not_informed_status_count
-                                           })
+    class_student_dataset = []
+    
+    '''--------------------------------------------For School Dashboard--------------------------------------------'''
+    if url_name == 'school-classroom':
+        '''For attendance chart data'''
+        for semester in school_class_list:
+            present_status_count,absent_informed_status_count,absent_not_informed_status_count = attendance_chart_data(request,semester)
+            # Every eveery time function is called with respective semester
+            student_attendance_dataset.append({'semester_name':semester,
+                                    'present_status_count':present_status_count,
+                                    'absent_informed_status_count':absent_informed_status_count,
+                                    'absent_not_informed_status_count':absent_not_informed_status_count
+                                    })
+    
             
+        '''For total students chart data'''
+        for semester in school_class_list :
+            semester_instance,students = total_students_chart_data(request,semester)
+            class_student_dataset.append({'semester_name':semester_instance,'students':students})
+            
+    '''--------------------------------------------For Plus Two Dashboard--------------------------------------------'''
+    if url_name == 'plus-two-classroom':
+        '''For attendance chart data'''
+        for semester in plus_two_class_list:
+            present_status_count,absent_informed_status_count,absent_not_informed_status_count = attendance_chart_data(request,semester)
+            # Every eveery time function is called with respective semester
+            student_attendance_dataset.append({'semester_name':semester,
+                                    'present_status_count':present_status_count,
+                                    'absent_informed_status_count':absent_informed_status_count,
+                                    'absent_not_informed_status_count':absent_not_informed_status_count
+                                    })
+    
+            
+        '''For total students chart data'''
+        for semester in plus_two_class_list :
+            semester_instance,students = total_students_chart_data(request,semester)
+            class_student_dataset.append({'semester_name':semester_instance,'students':students})
+            
+            
+        '''--------------------------------------------For Bachelor Dashboard--------------------------------------------'''
+        if url_name == 'bachelor-classroom':
+            '''For attendance chart data'''
+        for semester in bachelor_class_list:
+            present_status_count,absent_informed_status_count,absent_not_informed_status_count = attendance_chart_data(request,semester)
+            # Every eveery time function is called with respective semester
+            
+            student_attendance_dataset.append({'semester_name':semester,
+                                    'present_status_count':present_status_count,
+                                    'absent_informed_status_count':absent_informed_status_count,
+                                    'absent_not_informed_status_count':absent_not_informed_status_count
+                                    })
+    
+            
+        '''For total students chart data'''
+        for semester in bachelor_class_list :
+            semester_instance,students = total_students_chart_data(request,semester)
+            class_student_dataset.append({'semester_name':semester_instance,'students':students})
+
+        '''--------------------------------------------For Master Dashboard--------------------------------------------'''
+        if url_name == 'master-classroom':
+            '''For attendance chart data'''
+        for semester in master_class_list:
+            present_status_count,absent_informed_status_count,absent_not_informed_status_count = attendance_chart_data(request,semester)
+            # Every eveery time function is called with respective semester
+            student_attendance_dataset.append({'semester_name':semester,
+                                    'present_status_count':present_status_count,
+                                    'absent_informed_status_count':absent_informed_status_count,
+                                    'absent_not_informed_status_count':absent_not_informed_status_count
+                                    })
+    
+            
+        '''For total students chart data'''
+        for semester in master_class_list :
+            semester_instance,students = total_students_chart_data(request,semester)
+            class_student_dataset.append({'semester_name':semester_instance,'students':students})
+            
+
     context = {
+        'url_name':url_name,
         'title':'Class Room',
+          # ---------------------------Respective classes-----------------------
+        'school_classes':school_classes,
+        'plus_two_classes':plus_two_classes,
+        'bachelor_classes':bachelor_classes,
+        'master_classes':master_classes,
+        
+        # ---------------------------Chart Data-----------------------
         'class_student_dataset':class_student_dataset,
         'student_attendance_dataset':student_attendance_dataset
                  }
-    return render(request, 'classroom/school_classroom.html', context)
+    return render(request, 'classroom/classroom.html', context)
 
 
 
-def manage_assignment(request,semester_id):
-    semester_instance = get_object_or_404(Semester, pk = semester_id)
-    # assignments = Assignment.objects.filter(semester = semester_instance)
-    respective_teacher_assignments = Assignment.objects.filter(teacher_id=request.user.id, semester = semester_instance, draft=False)
-    draft_assignments = Assignment.objects.filter(teacher_id=request.user.id,semester = semester_instance, draft=True)
-    # for assignment in respective_teacher_assignments:
-        
-    # total_students = Student.objects.filter(section = '')
-    # ------
-    student = []
-    assignment = []
-    for submitted_assignment in Grade.objects.all():
-        student.append(submitted_assignment.student_id)
-        assignment.append(submitted_assignment.assignment_id)
-    # for student in student:
-    #     print(Student.objects.get(student_user = student).section)
-    # total_students = Assignment.objects.filter(student__in=student)
-    # submitted_assignment_no = CustomUser.objects.filter(Q(pk__in = student)&
-    #                                                     Q()).count()
-    # ---
-    # graded = Grade.objects.filter(status = True).count()
-    
-    
-    assignment_search_form = forms.ContentFilterForm(semester_id)
-    # semester_id = request.GET.get('semester')
-    section_id = request.GET.get('section')
-    subject_id = request.GET.get('subject')
-    start_date = request.GET.get('start_date')
-    end_date = request.GET.get('end_date')
-   
-    if  section_id and subject_id:
-        search_assignments = Assignment.objects.filter(
-                                                       section = get_object_or_404(Section, pk = section_id),
-                                                       Subject = get_object_or_404(Subject, pk = subject_id),
-                                                     )
-        return search_assignments,draft_assignments,assignment_search_form 
-    
-    if subject_id:
-        search_assignments = Assignment.objects.filter(
-                                                       Subject = get_object_or_404(Subject, pk = subject_id),
-                                                     )
-        return search_assignments,draft_assignments,assignment_search_form 
-    
-    if start_date and end_date:
-        start_data_parse = datetime.strptime(str(start_date), "%Y-%m-%d").date()
-        end_data_parse = datetime.strptime(str(end_date), "%Y-%m-%d").date()
-        search_assignments = Assignment.objects.filter(semester=get_object_or_404(Semester, pk = semester_id),
-                                                       section = get_object_or_404(Section, pk = section_id),
-                                                       Subject = get_object_or_404(Subject, pk = subject_id),
-                                                        #  created_at__range=(start_data_parse, end_data_parse)
-                                                       )
-        return search_assignments,draft_assignments,assignment_search_form 
-    search_assignments = None
-    return search_assignments,draft_assignments,assignment_search_form 
 
-
-
-@permission_required('academic.view_syllabus', raise_exception=True)
-def manage_syllabus(request,semester_id):
-    syllabus = Syllabus.objects.filter(semester=semester_id)
-    return  syllabus
-
-
-@permission_required('academic.view_routine', raise_exception=True)
-def manage_routine(request,semester_id):
-
-    routine_search_form = forms.RoutineSearchForm(semester_id)
-    semester_instance = get_object_or_404(Semester, pk =  semester_id)
-    search_routines = Routine.objects.filter(semester=semester_instance)
-    
-    
-    section_id = request.GET.get('section')
-    section_instance = get_object_or_404(Section , pk = section_id) if section_id else None
-
-    if section_instance:
-        search_routines = Routine.objects.filter(semester=semester_instance,section = section_instance)
-        return search_routines,routine_search_form 
-    
-    # if semester:
-    #     search_routines = Routine.objects.filter(semester=semester)
-    #     return search_routines,routine_search_form 
-
-  
-    return search_routines,routine_search_form 
-
-
-def classroom_contents(request,pk):
-    
+def school_classroom_contents(request,pk):
+    url_name = resolve(request.path).url_name
     school_classes = Semester.objects.filter(course_category = get_object_or_404(CourseCategory, course_name = 'School'))
     search_assignments,draft_assignments,assignment_search_form = manage_assignment(request,pk)
-    syllabus = manage_syllabus(request,pk)
+    search_syllabus,syllabus_search_form  = manage_syllabus(request,pk)
     search_routines,routine_search_form = manage_routine(request,pk)
+    search_enotes,enote_search_form = manage_enotes(request,pk)
     context = {
         
             'school_classes':school_classes,
             'title':'Class Room',
+            'url_name':url_name,
             
             '''-------------------Assignment context-------------------'''
             
@@ -156,9 +176,12 @@ def classroom_contents(request,pk):
             'draft_assignments': draft_assignments,
             # 'student_assignments':assignments.filter(),
             'assignment_form': assignment_search_form,
-               'syllabus':syllabus,
+               'syllabus':search_syllabus,
+                 'syllabus_form':syllabus_search_form,
                'search_routines':search_routines,
-               'routine_form':routine_search_form
+               'routine_form':routine_search_form,
+               'enote_search_form':enote_search_form,
+               'search_enotes':search_enotes
              # 'submitted_assignment_no':submitted_assignment_no,
             
       
@@ -168,9 +191,11 @@ def classroom_contents(request,pk):
 
 
 def plus_two_class(request):
+    school_url_name = resolve(request.path).url_name
     
     context = {
         'title':'Class Room',
+        
                  }
     return render(request, 'classroom/plus_two_classroom.html', context)
 

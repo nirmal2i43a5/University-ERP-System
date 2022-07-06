@@ -18,6 +18,19 @@
               <span>Manage Syllabus</span>
              
             </div>
+            <form class="float-right mb-2" role="search"  method="GET" style="height: 27px;margin:auto;position:relative;">
+              <div class="input-group">
+             
+          
+                {{ syllabus_form|crispy }} 
+            
+                <div class="input-group-btn ">
+                  <button type="submit" class="btn btn-primary">SEARCH <i class="fas fa-search"></i></button>
+    
+                </div>
+              </div>
+            </form>
+          
            
             <!-- /.card-header -->
             <div class="card-body table-responsive ">
@@ -42,6 +55,7 @@
                     <th>Course</th>
                     <th>Title</th>
                     <th>File</th>
+                    <th>Created</th>
                     <th>Description</th>
   
                     <th>Action</th>
@@ -61,6 +75,7 @@
                       </a>
                     
                     </td>
+                    <td>{{ enote.created_at }}</td>
                     <td>{{ syllabus.description }}</td>
   
                     <td>

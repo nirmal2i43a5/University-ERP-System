@@ -30,13 +30,12 @@
 		<li class="nav-item"><a class="nav-link" href="#routine" data-toggle="tab">Routine</a></li>
 		<li class="nav-item"><a class="nav-link" href="#e-notes" data-toggle="tab">E-Notes</a></li>
 
-		<li class="nav-item"><a class="nav-link" href="#lesson-plan" data-toggle="tab">Lesson Plan</a></li>
+		<!-- <li class="nav-item"><a class="nav-link" href="#lesson-plan" data-toggle="tab">Lesson Plan</a></li> -->
 			  </ul>
 			</div><!-- /.card-header -->
 			<div class="card-body">
 			  <div id="classroomContent" class="tab-content">
 				<div class="active tab-pane" id="assignment">
-		
 		
 				</div>
 				<!-- /.tab-pane -->
@@ -57,10 +56,10 @@
 		
 				</div>
 		
-				<div class="tab-pane" id="lesson-plan">
+				<!-- <div class="tab-pane" id="lesson-plan">
 		
 Lesson plan		
-				</div>
+				</div> -->
 		
 				
 		
@@ -120,31 +119,8 @@ Lesson plan
 {% endblock main_content %}
 
 {% block custom_js %}
-<script>
-	$(document).ready(function(){
-	  $('.page-loader').hide();
-	});
-  	
-	
-	
-	$("#id_semester").change(function(){
-	  var semester_id = $(this).val();
-	 // var course_category_id = $('#id_course_category').val();
-	  
-	  
-	  $.ajax({
-		  url:" {% url 'attendance_app:fill_subject_select' %}",
-		  data:{'semester':semester_id,
-		 // 'course_category':course_category_id
-		},
-		  success:function(data){
-			  $("#id_Subject").html(data);
-		  }
-	  })
-	})
-  </script>
+
 {% endblock custom_js %}
 
 
 
-{% include "classroom/includes/class_contents/assignment.html" %}

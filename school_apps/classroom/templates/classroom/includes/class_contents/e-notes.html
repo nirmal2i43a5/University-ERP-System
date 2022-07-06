@@ -1,82 +1,129 @@
+
 {% load static %}
 {% load auth_extras %}
 {% load crispy_forms_tags %}
-<!-- Main content -->
 <section class="content">
     <div class="container-fluid">
-    <!-- /.card-header -->
+      {% if request.user|has_group:'Student' %}
+      <div class="card" >
+            
+        <div class="card-header" style="background-color: #743DB8;color:white;">
+          
   
-    {% include "includes/messages.html" %}
+          <span><strong>View Routine</strong></span>
+  
+         
+                 {% if routine.routine_file %}
+  
+                    <img src="{{ routine.routine_file.url }}" alt="" style="width:100%;"/>
+  
+                    {% else %}
+                    {% endif %}
+  
+        </div>
+      {% endif %}
+      {% if request.user.is_superuser or request.user|has_group:'Teacher' %}
+  
+
     
+    {% include "includes/messages.html" %}
+  
       <div class="row">
         <div class="col-12">
   
   
-          <div class="card">
+          <div class="card" >
             
-            <div class="card-header" >
-              <span>Manage Syllabus</span>
-             
-            </div>
-           
-            <!-- /.card-header -->
-            <div class="card-body table-responsive ">
-              {% if  request.user|has_group:'Admin' or request.user.is_superuser or request.user|has_group:'Teacher'   %}   
-              {% url 'academic:add_enote' as button_url %}
+            <div class="card-header">
               
-           
-    <a href="{{ button_url }}" class="btn btn-xs float-right text-white mb-2 " style="background-color: #743DB8;"  >
-      <span><i class="fas fa-sm fa-plus">&nbsp;</i> <strong>Add E-Notes</strong></span>
-  </a>
-
-
-
-             
+  
+              <span><strong>Manage E-Note</strong></span>
+  
+              <form class="float-right mb-2" role="search"  method="GET" style="height: 27px;margin:auto;position:relative;">
+                <div class="input-group">
+               
+            
+                  {{ enote_search_form|crispy }} 
+              
+                  <div class="input-group-btn ">
+                    <button type="submit" class="btn btn-primary">SEARCH <i class="fas fa-search"></i></button>
+      
+                  </div>
+                </div>
+              </form>
+            
+  
+            </div>
+  
             {% endif %}
+  
+  
+  
+  
+            <!-- /.card-header -->
+            <div class="card-body table-responsive">
+              {% if request.user.is_superuser %}
+  
+  
+          
+  
+                {% url 'academic:add_enote' as button_url %}
+  
+                <a href="{{ button_url }}" class="btn btn-xs float-right text-white mb-2 " style="background-color: #743DB8;"  >
+                  <span><i class="fas fa-sm fa-plus">&nbsp;</i> <strong>Add enotes</strong></span>
+              </a>
+            
+  
+               
+             {% endif %}
+  
+  <table  class="table table-sm  table-striped table-bordered table-hover  text-nowrap  dataTable no-footer">
+    <thead>
+      <tr>
+        <th></th>
+        <th>ID</th>
+        <th>Course</th>
+        <th>Class</th>
+        <th>Section</th>
+        <th>Title</th>
+        <th>File</th>
+        <th>Created</th>
+        <th>Description</th>
+  
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for enote in search_enotes %}{% include 'academic/enotes/delete.html' %}
+      <tr>
+        <td></td>
+        <td>{{ enote.id }}</td>
+        <td><span class="badge badge-info">{{enote.course_category}}  </span>( <span class="badge badge-warning">{{enote.course}}</span> )</td>
+        <td>{{ enote.semester }}</td>
+        <td>{{enote.section}}</td>
+        <td>{{enote.title}}</td>
+  
+        <td>
+          <a href="{{ enote.enote_file.url }}" style="cursor: pointer;" class="btn btn-xs btn-info">
+             <i class="fas fa-xs fa-eye"></i> <strong>View File</strong>
+          </a>
+        
+        </td>
+        <td>{{ enote.created_at }}</td>
+        <td>{{ enote.description }}</td>
+  
+        <td>
+          <a href="{% url 'academic:edit_enote' enote.id %}" class="btn btn-xs btn-success"><i class="fas fa-xs fa-edit"></i></a>
          
-              <table class="table table-sm  table-striped table-bordered table-hover  text-nowrap mt-2 dataTable no-footer">
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Subject</th>
-                    <th>Class</th>
-                    <th>Course</th>
-                    <th>Title</th>
-                    <th>File</th>
-                    <th>Description</th>
+             
+          <button  class="btn btn-danger btn-xs"  data-target='#deleteenote-{{ enote.id }}' data-toggle="modal"><i
+            class="fas fa-sm fa-trash-alt"></i></button>
+        </td>
   
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for enote in enotes %}{% include 'academic/enote/delete.html' %}
-                  <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{enote.subject}}</td>
-                 <td>{{enote.semester}}</td>
-                 <td><span class="badge badge-info">{{enote.course_category}}  </span>( <span class="badge badge-warning">{{enote.course}}</span> )</td>
-  
-                    <td>{{ enote.title }}</td>
-                    <td>
-                      <a href="{{ enote.file.url }}" style="cursor: pointer;" class="btn btn-xs btn-info">
-                         <i class="fas fa-xs fa-eye"></i> <strong>View enote</strong>
-                      </a>
-                    
-                    </td>
-                    <td>{{ enote.description }}</td>
-  
-                    <td>
-                      <a href="{% url 'academic:edit_enote' enote.id %}" class="btn btn-xs btn-success"><i class="fas fa-xs fa-edit"></i></a>
-                     
-                         
-                      <button  class="btn btn-danger btn-xs"  data-target='#deleteenote-{{ enote.id }}' data-toggle="modal"><i
-                        class="fas fa-sm fa-trash-alt"></i></button>
-                    </td>
-  
-                  </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
             </div>
             <!-- /.card-body -->
           </div>
@@ -85,4 +132,3 @@
       </div>
     </div>
   </section>
-  <!-- /.content -->

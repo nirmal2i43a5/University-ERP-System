@@ -710,9 +710,7 @@ def inactive_students(request):
 
 @permission_required('student_management_app.view_student', raise_exception=True)
 def manage_student(request):
-    a_level_course_category = get_object_or_404(CourseCategory,course_name = 'A-Level')
-    bachelor_course_category = get_object_or_404(CourseCategory,course_name = 'Bachelor')
-    master_course_category = get_object_or_404(CourseCategory,course_name = 'Master')
+
     search_form = StudentSearch(user = request.user)
     students = Student.objects.filter(student_user__is_active = 1)
     

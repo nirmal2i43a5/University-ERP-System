@@ -21,7 +21,7 @@ from .forms import (
                     # MasterSemesterForm,
                     SectionForm,
                     SemesterSectionSearchForm,
-                    RoutineSearchForm,
+                    SectionWiseFilter,
                     SyllabusSearchForm
                     )
 
@@ -953,10 +953,10 @@ def add_enotes(request):
                 instance = form.save(commit = False)
                 instance.save()
                 messages.success(request, " E-Note is Added Successfully.")
-                return redirect('academic:add_enotes')
+                return redirect('academic:add_enote')
         except:
             messages.error(request, "Failed to Add E-Note.")
-            return redirect('academic:add_enotes')
+            return redirect('academic:add_enote')
 
     else:
         form = ENoteForm()

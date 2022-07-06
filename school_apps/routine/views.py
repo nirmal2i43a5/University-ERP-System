@@ -4,7 +4,7 @@ from django.utils import timezone
 
 from django.db.models import Q
 
-from school_apps.academic.forms import (RoutineSearchForm)
+from school_apps.academic.forms import (SectionWiseFilter)
 from school_apps.academic.forms import (RoutineForm)
 
 from school_apps.academic.models import (Routine)

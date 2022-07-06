@@ -85,8 +85,9 @@
         <th>Course</th>
         <th>Class</th>
         <th>Section</th>
-  
+        <th>Title</th>
         <th>File</th>
+        <th>Created</th>
         <th>Description</th>
   
         <th>Action</th>
@@ -100,6 +101,7 @@
         <td><span class="badge badge-info">{{routine.course_category}}  </span>( <span class="badge badge-warning">{{routine.course}}</span> )</td>
         <td>{{ routine.semester }}</td>
         <td>{{routine.section}}</td>
+        <td>{{routine.title}}</td>
   
         <td>
           <a href="{{ routine.routine_file.url }}" style="cursor: pointer;" class="btn btn-xs btn-info">
@@ -107,6 +109,7 @@
           </a>
         
         </td>
+        <td>{{ enote.created_at }}</td>
         <td>{{ routine.description }}</td>
   
         <td>

@@ -16,31 +16,37 @@ class Syllabus(models.Model):
     title = models.CharField(max_length=100)
     file = models.FileField(upload_to='syllabus')
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
 
     class Meta:
-        db_table = 'syllabus'
+        db_table = 'tbl_Syllabus'
         verbose_name_plural = 'Syllabus'
 
     def __str__(self):
         return self.title
 
 class Enotes(models.Model):
-    category = (('Subject','Subject'),('Extra','Extra'))
+    category = (('Subject Notes','Subject Notes'),('Extra Notes','Extra Notes'))
     course_category = models.ForeignKey(CourseCategory, on_delete=models.CASCADE,null = True, blank=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE,null = True, blank=True)
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    section = models.ForeignKey(Section, on_delete=models.CASCADE)
     
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     file = models.FileField(upload_to='e-notes')
-    note_category = models.CharField(max_length=50,choices = category,blank = True)
+    note_category = models.CharField(max_length=50,choices = category)
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table = 'tbl_Enotes'
+        verbose_name_plural = 'Syllabus'
     def __str__(self):
             return self.title
 
@@ -66,7 +72,7 @@ class Assignment(models.Model):
     
 
     class Meta:
-        db_table = 'assignment'
+        db_table = 'tbl_Assignment'
         verbose_name_plural = 'Assignment'
 
     def __str__(self):
@@ -125,6 +131,6 @@ class Routine(models.Model):
         verbose_name_plural = 'Routines'
     
     class Meta:
-        db_table = 'routine'
+        db_table = 'tbl_Routine'
         verbose_name_plural = 'Routines'
 

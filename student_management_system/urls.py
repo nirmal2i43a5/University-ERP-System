@@ -22,7 +22,7 @@ from django.contrib.staticfiles.storage import staticfiles_storage
 from django.views.generic.base import RedirectView
 from django.views.generic.base import RedirectView
 from django.views.i18n import JavaScriptCatalog
-from student_management_system.views import admin_home,get_user_by_role_ajax
+from student_management_system.views import get_user_by_role_ajax
 from student_management_system.views import home as main_home
 from student_management_system.views import (superuser_home,a_level_home,bachelor_home,master_home,
                                              mass_delete
@@ -37,8 +37,8 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     # path('api/', include(router.urls)) ,
-    path('',superuser_home, name ="main_home"),
-    path('home/', admin_home,name = 'admin-home'),
+    path('home/',superuser_home, name ="superuser_home"),
+    # path('home/', admin_home,name = 'admin-home'),
     
     
     path('api/v1/', include('student_management_system.api', namespace='api')),

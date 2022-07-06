@@ -43,15 +43,14 @@
         data-accordion="false"
       >
         <li class="nav-item">
-          <a href="{% url 'main_home'  %}" class="nav-link">
+          <a href="{% url 'superuser_home'  %}" class="nav-link">
             <i class="fas fa-home"></i>
             <p style="margin-left:3rem;"><strong>Home</strong></p>
           </a>
         </li>
        
-       
 
-        {% if school_classes %}
+        {% if url_name == 'school-classroom' or url_name == 'classroom-contents' %}
         {% for class in school_classes %}
         {% url 'classroom:classroom-contents' class.pk as school_classroom_url %}
         <li class="nav-item">
@@ -65,7 +64,7 @@
         
         {% endfor %}
 
-        {% elif plus_two_classes %}
+        {% elif url_name == 'plus-two-classroom' %}
         {% for class in plus_two_classes %}
         <li class="nav-item">
           <a href="" class="nav-link">
@@ -76,7 +75,7 @@
           </a>
         </li>
         {% endfor %}
-        {% elif bachelor_classes %}
+        {% elif url_name == 'bachelor-classroom' %}
         {% for class in bachelor_classes %}
         <li class="nav-item">
           <a href="" class="nav-link">
@@ -87,7 +86,7 @@
           </a>
         </li>
         {% endfor %}
-        {% elif master_classes %}
+        {% elif url_name == 'master-classroom' %}
         {% for class in master_classes %}
         <li class="nav-item">
           <a href="" class="nav-link">

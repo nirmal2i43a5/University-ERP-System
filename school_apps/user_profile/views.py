@@ -42,8 +42,8 @@ def loginView(request):
 			if request.user.groups.exists():
 				group = request.user.groups.all()[0].name
 
-			if group == 'Super-Admin':
-				return redirect('main_home')
+			if group == 'Super-Admin' or request.user.is_superuser:
+				return redirect('superuser_home')
 			elif group:
 				return redirect('home')
 			else:
