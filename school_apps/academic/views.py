@@ -21,7 +21,7 @@ from .forms import (
                     # MasterSemesterForm,
                     SectionForm,
                     SemesterSectionSearchForm,
-                    SectionWiseFilter,
+                    
                     SyllabusSearchForm
                     )
 
@@ -565,10 +565,11 @@ def deletesubjectteacher(request, pk):
 #subject to class#
 
 def subject_to_class(request):
-    section = Section.objects.filter(semester__course_category=request.user.adminuser.course_category)
-    subjects = SubjectTeacher.objects.filter(
-        section__semester__course_category=request.user.adminuser.course_category
-    )
+    section = Section.objects.all()
+    subjects = SubjectTeacher.objects.all()
+    # filter(
+    #     section__semester__course_category=request.user.adminuser.course_category
+    # )
 
     context = {'section':section,
                 'subjects': subjects}
@@ -614,6 +615,7 @@ def student_details(request):
             return render(request, 'courses/studentdetails.html')
     
         if (student):
+            print(student)
             courses = selectedcourses.objects.filter(student_id = student)
             
             context = {'courses':courses,
