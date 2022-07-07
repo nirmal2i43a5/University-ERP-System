@@ -25,6 +25,7 @@
   rel="stylesheet"
   href="{% static 'plugins/select2/css/select2.css' %}"
 />
+
 <link href="{% static 'main_dashboard/css/loader.css' %}" rel="stylesheet">
   <title> {% block title %} {% endblock %}</title>
   <!-- <link rel="icon" type="images/jpg" href="">  -->
@@ -169,9 +170,9 @@ src="{% static 'flipbook/pdfjs-flipbook/js/jquery.fancybox.min.js' %}"
   type="text/css"
   href="{% static 'flipbook/pdfjs-flipbook/css/jquery.fancybox.min.css' %}"
 />
-<link rel="stylesheet" href="{% static 'plugins/select2-bootstrap4-theme/select2-bootstrap4.css' %}">
-<link rel="stylesheet" href="{% static 'plugins/select2/css/select2.css' %}">
+
 <script src="{% static 'plugins/toastr/toastr.min.js' %}"></script>
+<script src="{% static 'plugins/select2/js/select2.min.js' %}"></script>
 <!-- <script src="{% static 'plugins/jquery-ui/jquery-ui.min.js' %}"></script> -->
 
 <script src="{% static 'plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js' %}"></script>
@@ -664,10 +665,13 @@ a,p,th,td,tr,h1,h2,h3,h4,h5,h6,div,span,i,li,ol,ul{
    }
    
  </style>
+ {% if messages %}
  {% for message in messages %}
- {% if message.tags %}
- toastr.{{message.tags}}('{{message}}');
- {% endif %}
+ <script type=text/javascript>
+   toastr.options.progressBar = true;
+   toastr.{{ message.tags }}('{{ message }}')
+ </script>
  {% endfor %}
+ {% endif %}
 
 </html>
