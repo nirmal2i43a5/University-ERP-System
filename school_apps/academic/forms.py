@@ -297,6 +297,17 @@ class SubjectSearchForm(forms.Form):
         subject = self.fields['subject']
         subject.queryset = subject.queryset.filter(staff_user__subject = request.user.student.subject)
         
+
+class RoutineSearchForm(forms.Form):
+    filter_semester = forms.ModelChoiceField(label = '',empty_label="Select Semester", queryset = Semester.objects.all())
+    section = forms.ModelChoiceField(label = '',empty_label="Select Section", queryset = Section.objects.none())
+   
+    def __init__(self, *args, user, **kwargs):
+        super().__init__(*args, **kwargs)
+        filter_semester = self.fields['filter_semester']
+        filter_semester.queryset = user.semester_set.all()
+        # filter_semester.queryset = user.semesterteacher_set.all()
+        
         
 class SubjectForm(forms.ModelForm):
     course_category = forms.ModelChoiceField(queryset = CourseCategory.objects.all(), widget=forms.RadioSelect())

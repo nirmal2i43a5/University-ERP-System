@@ -93,6 +93,7 @@
       <th></th>
       <th>ID</th>
       <th>Course</th>
+      <th>Semester</th>
       <th>Section</th>
 
       <th>File</th>
@@ -107,10 +108,16 @@
       <td></td>
       <td>{{ routine.id }}</td>
       <td>
-        <div class="badge badge-info">{{ routine.course_category }}</div>
+        <span class="badge badge-info">{{routine.course_category}} 
+        </span>
+        {% if routine.course %}
+        ( <span class="badge badge-warning">
+           {{routine.course}}</span> )
+       {% else %}
+       {% endif %}
       </td>
       <td>{{ routine.semester }}</td>
-
+      <td>{{ routine.section }}</td>
       <td>
         <a href="{{ routine.routine_file.url }}" style="cursor: pointer;" class="btn btn-xs btn-info">
            <i class="fas fa-xs fa-eye"></i> View routine
@@ -120,7 +127,7 @@
       <td>{{ routine.description }}</td>
 
       <td>
-        <a href="{% url 'routine:edit_routine' routine.id %}" class="btn btn-xs btn-success"><i class="fas fa-xs fa-edit"></i></a>
+        <a href="{% url 'academic:edit_routine' routine.id %}" class="btn btn-xs btn-success"><i class="fas fa-xs fa-edit"></i></a>
        
            
         <button  class="btn btn-danger btn-xs"  data-target='#deleteroutine-{{ routine.id }}' data-toggle="modal"><i

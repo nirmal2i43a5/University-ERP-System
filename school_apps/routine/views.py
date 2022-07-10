@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.db.models import Q
 
 from school_apps.academic.forms import (SectionWiseFilter)
-from school_apps.academic.forms import (RoutineForm)
+from school_apps.academic.forms import (RoutineForm,RoutineSearchForm)
 
 from school_apps.academic.models import (Routine)
 
@@ -27,7 +27,7 @@ def add_routine(request):
                 create_notification(request, post=f'Routine is added for {section}', notification_type=1, 
                                     created_by=request.user,type='routine')
                 messages.success(request, "Routine is Added Successfully.")
-                return redirect('admin_app:manage_routine')
+                return redirect('academic:manage_routine')
         except:
             messages.error(request, "Failed to Add Routine.")
             return redirect('routine:add_routine')
@@ -46,14 +46,14 @@ def add_routine(request):
 def manage_routine(request):
 
     routines = Routine.objects.all()
-    search_form = RoutineSearchForm()
-    semester = request.GET.get('semester')
+    search_form = RoutineSearchForm(user = request.user)
+    semester = request.GET.get('filter_semester')
     section = request.GET.get('section')
 
     if semester and section:
         search_routines = Routine.objects.filter(semester=semester,section = section)
         context = {'routines': search_routines,
-                   'form': RoutineSearchForm(initial = {'semester': semester}),#show selected instance in search form
+                   'form': RoutineSearchForm(user = request.user,initial = {'semester': semester}),#show selected instance in search form
                    'title': 'Routine'
                    }
 
@@ -69,7 +69,7 @@ def manage_routine(request):
         return render(request, 'academic/routines/manage_routine.html', context)
 
     context = {'form': search_form,
-               'routines': routines,
+            #    'routines': routines,
                'title': 'Routine'}
     return render(request, 'academic/routines/manage_routine.html', context)
 
@@ -92,10 +92,10 @@ def edit_routine(request, routine_id):
             if form.is_valid():
                 form.save()
                 messages.success(request, "Routine is Edited Successfully  .")
-                return redirect('admin_app:manage_routine')
+                return redirect('academic:manage_routine')
         except:
             messages.error(request, "Failed To  Edit routine.")
-            return redirect('admin_app:edit_Routine', routine_id)
+            return redirect('academic:edit_Routine', routine_id)
     context = {
         'form': form,
         'title': 'Routine'

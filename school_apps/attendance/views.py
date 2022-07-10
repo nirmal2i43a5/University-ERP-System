@@ -674,6 +674,7 @@ def fill_course_select(request):
 def fill_section_select(request):
     semester = Semester.objects.get(pk = request.GET['semester'])
     sections = Section.objects.filter(semester = semester)
+    print(sections)
     context = {'sections': sections}
     return render(request, "attendances/auto_fill_select/sections.html", context)
     

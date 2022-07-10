@@ -405,6 +405,12 @@ class SemesterTeacher(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        if self.semester.course:
+            return f'{self.semester.name} : ( {self.semester.course.course_name} )'
+        else:
+            return f'{self.semester.name}'
+
 class SubjectTeacher(models.Model):
     subject = models.ForeignKey(Subject, verbose_name=_("Subject"), on_delete=models.CASCADE)
     teacher = models.ForeignKey(CustomUser, on_delete = models.CASCADE)

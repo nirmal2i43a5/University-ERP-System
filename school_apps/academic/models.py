@@ -112,7 +112,7 @@ class Routine(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE,null = True, blank=True)
     routine_file = models.FileField(_("Routine"), upload_to='College Routine')
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
-    section = models.ForeignKey(Section, on_delete=models.CASCADE)
+    section = models.ForeignKey(Section, on_delete=models.CASCADE,blank=True,null=True)
     # subject = models.ForeignKey(Subject,related_name = 'routine_subject', on_delete=models.CASCADE)
     college_year = models.CharField(max_length=50, choices = year_choices, null=True, blank=True)
     day = models.CharField(max_length=100,choices = DAYS_OF_WEEK, null=True, blank=True)

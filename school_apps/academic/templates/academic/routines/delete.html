@@ -6,7 +6,7 @@
     <div class="modal-content">
 
       <div class="modal-body">
-            <form action="{% url 'routine:delete_routine' routine.id %}" method="post">
+            <form action="{% url 'academic:delete_routine' routine.id %}" method="post">
 
               {% csrf_token %}
               <p>Are you sure you want to delete routine detail?</p>

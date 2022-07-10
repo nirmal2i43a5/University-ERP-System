@@ -47,11 +47,12 @@
                 <tr>
                   <th></th>
                   <th>ID</th>
-                  <th>Course</th>
-                  <th>Semester</th>
-
                   <th>Title</th>
                   <th>File</th>
+                  <th>Course</th>
+                  <th>Semester</th>
+                  <th>Subject</th>
+                
                   <th>Description</th>
 
                   <th>Action</th>
@@ -62,11 +63,6 @@
                 <tr>
                   <td></td>
                   <td>{{ syllabus.id }}</td>
-                  <td>
-                    <div class="badge badge-info">{{ syllabus.course_category }}</div>
-                  </td>
-                  <td>{{ syllabus.semester }}</td>
-
                   <td>{{ syllabus.title }}</td>
                   <td>
                     <a href="{{ syllabus.file.url }}" style="cursor: pointer;" class="btn btn-xs btn-info">
@@ -74,6 +70,19 @@
                     </a>
                   
                   </td>
+                  <td>
+                    <span class="badge badge-info">{{syllabus.course_category}} 
+                    </span>
+                    {% if syllabus.course %}
+                    ( <span class="badge badge-warning">
+                       {{syllabus.course}}</span> )
+                   {% else %}
+                   {% endif %}
+                  </td>
+                  <td>{{ syllabus.semester }}</td>
+                  <td>{{ syllabus.subject }}</td>
+
+              
                   <td>{{ syllabus.description }}</td>
 
                   <td>

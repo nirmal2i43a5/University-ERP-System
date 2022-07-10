@@ -597,7 +597,6 @@ def class_to_teacher_Ajax(request):
         semester_instance = Semester.objects.filter(name = item).first()
         classes.append(Semester.objects.get(pk=semester_instance.pk))
   
-    
 
     try:
         for item in classes:
@@ -613,7 +612,7 @@ def class_to_teacher_Ajax(request):
                 teacher = teacher.staff_user
                 )
                 semester_teacher.save()
-                return JsonResponse({'message':'Class is successfully  assigned to teacher'}, status = 201)
+        return JsonResponse({'message':'Class is successfully  assigned to teacher'}, status = 201)
     except:
         return JsonResponse({'error_message':'Assignment failed. Please check if the subject is already assigned to the teacher'}, status = 500)
 
