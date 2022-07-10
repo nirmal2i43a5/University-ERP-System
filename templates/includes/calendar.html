@@ -4,7 +4,6 @@
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
-
 <div class="row">
     <div class="col-md-6">
 
@@ -21,7 +20,7 @@
 
             <li class="list-group-item active" style="background-color:#743DB8;"><strong>All Notices</strong>
                 {% if request.user|has_group:'Admin' or request.user.is_superuser or request.user|has_group:'Teacher' %}
-                <a href="{% url 'admin_app:manage_notice' %}" class="btn btn-sm  text-bold float-right"
+                <a href="{% url 'announcement:manage_notice' %}" class="btn btn-sm  text-bold float-right"
                     style="background-color: white;">
                     Manage Notice</a>
                     {% endif %}
@@ -43,7 +42,7 @@
           
             {% if request.user|has_group:'Admin' or request.user.is_superuser or request.user|has_group:'Teacher' %}
             <li>
-                <a href="{% url 'admin_app:manage_notice' %}" class=" list-group-item  dropdown-item dropdown-footer">
+                <a href="{% url 'announcement:manage_notice' %}" class=" list-group-item  dropdown-item dropdown-footer">
                     <strong> See All Notices</strong>
                 </a>
 
@@ -65,10 +64,12 @@
 
 </div>
 <hr>
+
+{% comment %} ----------------------------------------THIS ROW POPULATE CALENDAR--id = "calenda"--------------------------------- {% endcomment %}
 <div class="row">
     <div class="col-md-12 mr-2">
-        <div id='calendar' class="ml-3 mr-3"></div>
-        <!--calendar id is from full_scripts.html-->
+        <div id="calendar" class="ml-3 mr-3"></div>
+        <!------------------------------calendar id is from full_scripts.html--------------------------------->
     </div>
 
 </div>

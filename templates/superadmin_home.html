@@ -520,8 +520,9 @@
 
 	}
 </style>
-
+{% include "includes/calendar.html" %}
 {% endblock main_content %} {% block custom_js %}
+{% include "fullcalendar_script.html" %}
 <script>
     $(document).ready(function () {
         $("#myInput").on("keyup", function () {

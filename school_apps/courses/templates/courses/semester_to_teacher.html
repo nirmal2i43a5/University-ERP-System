@@ -1,0 +1,195 @@
+{% extends 'admin_templates/base_admin.html' %}
+
+{% block title %}
+{{title}}
+{% endblock title %}
+{% load crispy_forms_tags %}
+    
+{% block content %}
+<div style="margin-left: 25px; margin-right: 25px;">
+    <!-- <h4>Assign subjects to teacher</h4> -->
+    {% include 'override_table/header.html' with card_title='Add Class to teacher' %}
+    
+    <hr>
+</div>
+
+
+<div style="margin-left: 10px; margin-right: 10px;">
+    <div class="row" style="margin-left: 10px; margin-right: 10px;">
+       {{form|crispy}}
+    </div>
+    <hr>
+</div>
+
+<div class="row" style="margin-left: 25px; margin-right: 25px;">  
+    <div class="col-6">
+        <table class="table table-hover " id="teachers_table">
+            <thead class="thead" style="background-color: #743DB8;color:white;"> 
+                <tr>
+                    <th></th>
+                    <th hidden>Teacher ID</th>   
+                    <th>#</th>
+
+                    <th>Teacher Name</th>
+                    <th>Course</th>
+                </tr>
+            </thead>
+    
+            <tbody>
+    
+                {% for item in teachers%}
+                    <tr>
+                        <td></td>
+                        <td id="teacher_id" hidden>{{item.staff_user.pk}}</td>
+                        <td>{{forloop.counter}}</td>
+
+                        <td class="teacher_name">{{item.staff_user.full_name}}</td>
+                        <td>
+                            {% for course in item.courses.all  %}
+                      
+                            <div class="badge badge-info"> <strong>{{ course }}</strong></div>
+                               
+                             {% endfor %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-6">
+        <table class="table table-hover" id="semesters_table">
+            <thead class="thead" style="background-color: #743DB8;color:white;"> 
+                <tr>
+                    <th></th>
+                    <th>Name</th>   
+                    <th>Course</th>   
+                </tr>
+            </thead>
+    
+            <tbody>
+                {% for semester in classes %}
+                    <tr>
+                        <td style="width: max-content;"></td>
+                        
+                        <td>{{semester.name}}</td>
+                        <td>
+                            <span class="badge badge-info">{{semester.course_category}} 
+                             </span>
+                             {% if semester.course %}
+                             ( <span class="badge badge-warning">
+                                {{semester.course}}</span> )
+                            {% else %}
+                            {% endif %}
+
+                            
+                            </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-html5-1.7.0/b-print-1.7.0/sl-1.3.3/datatables.min.css"/>
+        
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-html5-1.7.0/b-print-1.7.0/sl-1.3.3/datatables.min.js"></script>
+    
+    <script>
+        var teacher, subject;
+        var teacher_datatable = $('#teachers_table').DataTable({
+            dom: 'fBrtip',
+            columnDefs: [ {
+                orderable: false,
+                className: 'select-checkbox',
+                targets:   0
+            } ],
+            select: {
+                style: 'single'
+            },
+           
+        })
+
+        var class_datatable = $('#semesters_table').DataTable({
+            dom: 'fBrtip',
+            columnDefs: [ {
+                orderable: false,
+                className: 'select-checkbox',
+                targets:   0
+            } ],
+            select: {
+                style: 'multi'
+            },
+            buttons:[
+            {
+                text: "SUBMIT TABLE DATA",
+                attr:{
+                    id:"add_teacher_btn",
+                    class:"btn btn-primary"
+                },
+                action: function(){
+                    var semsters;
+                    if ( teacher_datatable.rows( '.selected' ).any() ){teacher = teacher_datatable.rows( { selected: true } ).data()[0][1];} else {alert("Please select a student")}
+                    semester_count = class_datatable.rows('.selected').data().length
+                    if (semester_count==0){
+                        alert("Please select a class")
+                    }else{
+                        semesters = class_datatable.rows( { selected: true } ).data().pluck(1).toArray();
+                    }
+                    
+                    if (teacher && semester_count>0){
+                        $.ajax({
+                            url: "{% url 'academic:class_to_teacher_ajax' %}",
+                            data: {'teacher': teacher,
+                            'semesters[]': semesters,
+                                },
+                            statusCode:{
+                            
+                                201:function(data){
+                                    alert(data['message'])
+                                },
+                                202:function(data){
+                                    alert('Class is already assigned to teacher.You cannot reassign class.')
+                                },
+                                500:function(data){
+                                    alert(data['error_message'])
+                                },
+                             
+                               
+                            }
+
+                        })
+                        teacher_datatable.rows( { selected: true } ).deselect();
+                        class_datatable.rows( { selected: true } ).deselect();
+                    }
+                    else{
+                        
+                    }
+                }
+                
+            }]
+        })
+
+        $("#class_select").change(function(){
+            var class_id = $(this).val();
+            
+            $.ajax({
+                url:" {% url 'courses:fill_section_select'%}",
+                data:{'class':class_id},
+                success:function(data){
+                    $("#section_select").html(data);
+                }
+            })
+        })
+        
+
+    </script>
+<style>
+    
+</style>
+{% endblock%}

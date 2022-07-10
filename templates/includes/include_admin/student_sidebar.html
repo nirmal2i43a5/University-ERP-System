@@ -22,7 +22,7 @@
         </a>
       </li>
       <li class="nav-item ml-3">
-        <a href="{% url 'admin_app:student_assignment' %}" class="nav-link">
+        <a href="{% url 'academic:student_assignment' %}" class="nav-link">
           <i class="fas fa-xs fa-file"></i>
           <p>
             Assignment
@@ -31,7 +31,7 @@
         </a>
       </li>
       <li class="nav-item ml-3">
-        <a href="{% url 'routine:view_routine' %}" class="nav-link">
+        <a href="{% url 'academic:view_routine' %}" class="nav-link">
           <i class="fas fa-xs fa-chart-pie"></i>
           <p>
             Routine
@@ -114,7 +114,7 @@
           </a>
         </li>
         <!-- <li class="nav-item ml-3">
-          <a href="{% url 'admin_app:manage_holiday' %}" class="nav-link">
+          <a href="{% url 'announcement:manage_holiday' %}" class="nav-link">
             <i class="far fa-xs fa-circle"></i>
             <p>
               Nepali Calendar
@@ -132,7 +132,7 @@
 
 </li>
 
-<li class="nav-item">
+{% comment %} <li class="nav-item">
   <a href="https://library.gci.edu.np/" class="nav-link">
     <i class="fas  fa-book-open mr-1"></i>
     <p>
@@ -140,15 +140,15 @@
 
     </p>
   </a>
-</li>
+</li> {% endcomment %}
 
-<li class="nav-item">
+{% comment %} <li class="nav-item">
   <a href="https://accounts.google.com/signin/v2/identifier?service=mail&passive=true&rm=false&continue=https%3A%2F%2Fmail.google.com%2Fmail%2F&ss=1&scc=1&ltmpl=default&ltmplcache=2&emr=1&osid=1&flowName=GlifWebSignIn&flowEntry=ServiceLogin" class="nav-link">
     <i class="fas fa-envelope-open"></i>
     <p>
       E-mail
 
     </p>
-  </a>
+  </a> {% endcomment %}
 </li>
 

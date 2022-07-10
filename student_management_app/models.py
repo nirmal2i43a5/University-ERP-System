@@ -299,9 +299,7 @@ class Semester(models.Model):
     course_category = models.ForeignKey(CourseCategory, on_delete=models.CASCADE,null = True, blank=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE,null = True, blank=True)
     name = models.CharField(max_length=100)#for school classes
-    # level = models.CharField(max_length=20, choices=ALEVEL_CHOICES, default='AS',null = True,blank = True)
-    # bachelor_semester = models.CharField(_("Course Name"),max_length=100,null = True, blank = True)
-    # master_semester = models.CharField(_("Course Name"),max_length=100,null = True, blank = True)
+    staff_user = models.ManyToManyField(CustomUser, through='SemesterTeacher',  blank = True)
     semester_value = models.IntegerField(null=True, blank=True)
     # staff_user = models.ForeignKey(CustomUser, on_delete=models.CASCADE,null = True, blank = True)
     description = models.TextField(blank=True)
@@ -401,12 +399,19 @@ class Section(models.Model):
         return f'{self.semester} : {self.section_name}'
 
 
+class SemesterTeacher(models.Model):
+    teacher = models.ForeignKey(CustomUser, on_delete = models.CASCADE)
+    semester = models.ForeignKey(Semester, on_delete=models.CASCADE,null = True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 class SubjectTeacher(models.Model):
     subject = models.ForeignKey(Subject, verbose_name=_("Subject"), on_delete=models.CASCADE)
     teacher = models.ForeignKey(CustomUser, on_delete = models.CASCADE)
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE,null = True, blank=True)
     section = models.ForeignKey(Section, on_delete=models.CASCADE,null = True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         constraints = [
@@ -414,7 +419,10 @@ class SubjectTeacher(models.Model):
         ]
     
     def __str__(self):
-        return f'{self.subject.subject_name}:{self.teacher}'
+        if self.subject.course:
+            return f'{self.subject.subject_name} : ( {self.subject.course.course_name} )'
+        else:
+            return f'{self.subject.subject_name}'
     
     
 class OptionalSubject(models.Model):

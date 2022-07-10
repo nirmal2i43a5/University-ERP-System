@@ -22,15 +22,22 @@
             categories: [
           //  'Science students','Non-science studets'
 
-             {% if semester.course_name %}
+       
 
-            {% for semester in class_student_dataset %}'{{ semester.course_name }}( {{ semester.semester_name }} )'{% if not forloop.last %}, {% endif %}{% endfor %}
-            ]
+            {% for semester in class_student_dataset %}
+            {% if semester.course_name %}
+            
+            '{{ semester.course_name }}( {{ semester.semester_name }} )'
             {% else %}
-
-            {% for semester in class_student_dataset %}'{{ semester.semester_name }}'{% if not forloop.last %}, {% endif %}{% endfor %}
-
+            '{{ semester.semester_name }}'
             {% endif %}
+                
+                {% if not forloop.last %}, {% endif %}
+         
+
+            {% endfor %}
+
+   
 ]
         },
         series: [{

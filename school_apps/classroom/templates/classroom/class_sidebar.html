@@ -42,17 +42,19 @@
         role="menu"
         data-accordion="false"
       >
+       
+       
+
+        {% if url_name == 'school-classroom' or url_name == 'school-classroom-contents' %}
         <li class="nav-item">
-          <a href="{% url 'superuser_home'  %}" class="nav-link">
+          <a href="{% url 'classroom:school-classroom'  %}" class="nav-link">
             <i class="fas fa-home"></i>
             <p style="margin-left:3rem;"><strong>Home</strong></p>
           </a>
         </li>
-       
-
-        {% if url_name == 'school-classroom' or url_name == 'school-classroom-contents' %}
         {% for class in school_classes %}
         {% url 'classroom:school-classroom-contents' class.pk as school_classroom_url %}
+     
         <li class="nav-item">
           <a href="{% url 'classroom:school-classroom-contents' class.pk %}"  class=" nav-item nav-link {% if request.path == school_classroom_url %} active{% endif %}">
 
@@ -71,7 +73,12 @@
 
     
         {% elif url_name == 'plus-two-classroom' or  url_name == 'plus-two-classroom-contents' %}
-
+        <li class="nav-item">
+          <a href="{% url 'classroom:plus-two-classroom'  %}" class="nav-link">
+            <i class="fas fa-home"></i>
+            <p style="margin-left:3rem;"><strong>Home</strong></p>
+          </a>
+        </li>
         
         {% for course in plus_two_courses  %}
         <li class="nav-item">
@@ -106,6 +113,12 @@
     
 <!-- ----------------- -->
         {% elif url_name == 'bachelor-classroom' or url_name == 'bachelor-classroom-contents'  %}
+        <li class="nav-item">
+          <a href="{% url 'classroom:bachelor-classroom'  %}" class="nav-link">
+            <i class="fas fa-home"></i>
+            <p style="margin-left:3rem;"><strong>Home</strong></p>
+          </a>
+        </li>
         {% for course in bachelor_courses  %}
         <li class="nav-item">
           <a href="#" class="nav-link"  style="margin-left:4rem;">
@@ -137,6 +150,12 @@
 
 <!-- --------------- -->
         {% elif url_name == 'master-classroom' or url_name == 'master-classroom-contents' %}
+        <li class="nav-item">
+          <a href="{% url 'classroom:master-classroom'  %}" class="nav-link">
+            <i class="fas fa-home"></i>
+            <p style="margin-left:3rem;"><strong>Home</strong></p>
+          </a>
+        </li>
         {% for course in master_courses  %}
         <li class="nav-item">
           <a href="#" class="nav-link"  style="margin-left:4rem;">

@@ -46,7 +46,10 @@ urlpatterns = [
       path('delete_subject/<str:subject_id>/', academic_views.delete_subject, name="delete_subject"),
       #subject to teacher
     path('assign_subject_to_teacher/', academic_views.assign_subject_to_teacher, name='assign_subject_to_teacher'),
+      path('assign_class_to_teacher/', academic_views.assign_class_to_teacher, name='assign_class_to_teacher'),
     path('manage_subject_teacher/', academic_views.showsubjectteacherlist, name='showsubjectteacherlist'),
+        path('ajax/class_to_teacher/', academic_views.class_to_teacher_Ajax, name='class_to_teacher_ajax'),
+           path('manage_class_teacher/', academic_views.manage_class_teacher, name='manage_class_teacher'),
     path('edit_subject_teacher/', academic_views.editsubjectteacher, name='editsubjectteacher'),      #<str:exam_id>
     path('delete_subjectteacher/<str:pk>/', academic_views.deletesubjectteacher, name='deletesubjectteacher'),
     path('ajax/subject_to_teacher/', academic_views.subject_to_teacher_Ajax, name='subject_to_teacher_ajax'),

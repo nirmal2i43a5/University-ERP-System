@@ -4,7 +4,6 @@ from django import urls
 from django.shortcuts import render,redirect, get_object_or_404
 from django.db.models import Q
 from django.http import HttpResponse,JsonResponse
-from httplib2 import Http
 from student_management_app.models import( Student, Semester, Section, Subject,Staff,CourseCategory,Course,SubjectTeacher,
                                           ExtraUser)
 from .models import Attendance, AttendanceReport

@@ -57,7 +57,7 @@ def add_user(request):
             # #be careful whether u use integertype or other 
             user = CustomUser.objects.create_user(
                 username=test_username, password='password', email=email, 
-            full_name=full_name, user_type=group)
+            full_name=full_name)
             
             # user.extrauser.role = extra_user_form.cleaned_data['role']
             user.extrauser.address = extra_user_form.cleaned_data["address"]  
@@ -76,7 +76,7 @@ def add_user(request):
             user.save()
             user.extrauser.save()
             print("upto save")
-            user.groups.add(group)
+            # user.groups.add(group)
             print("upto group")
             messages.success(request, "Successfully Added User")
             return redirect('admin_app:manage_user')

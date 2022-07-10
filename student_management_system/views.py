@@ -89,6 +89,7 @@ class home(FullCalendarView, View):
     # ------------------------------------For Student attendance chart-------------------------------------------------
         total_present = AttendanceReport.objects.filter(student__student_user=request.user.id, status='Present')\
             .values('attendance__attendance_date__month').annotate(count=Count('status'))
+        print(total_present,"============================")
         total_absent_informed = AttendanceReport.objects.filter(student__student_user=request.user.id, status='Absent(Informed)')\
             .values('attendance__attendance_date__month').annotate(count=Count('status'))
         total_absent_not_informed = AttendanceReport.objects.filter(student__student_user=request.user.id, status='Absent(Not Informed)')\
@@ -184,7 +185,7 @@ class home(FullCalendarView, View):
             teachers_list_final = set(teachers_list)
             teachers_count = len(teachers_list_final)
         else:
-            teachers_count =  Staff.objects.filter(courses__course_name__contains=request.user.adminuser.course_category.course_name).count()
+            teachers_count =  Staff.objects.all().count()
 
         context = {
 
@@ -204,7 +205,7 @@ class home(FullCalendarView, View):
 
             # ----------------------For calendar slug akin to schedule view for fullcalendar.html----------------------------
             'events': Event.objects.filter(start__gte=datetime.today()),
-            'calendar_slug': 'gci',
+            'calendar_slug': 'event',
             # ------------------------------------------------------For Notice------------------------------------------------
             'notice': Notice.objects.filter(status=True),
             'notices': Notice.objects.all()[:4],
@@ -227,23 +228,23 @@ class home(FullCalendarView, View):
         return super().dispatch(*args, **kwargs)
 
 
-def a_level_home(request):
-    a_level = request.user.adminuser
-    a_level.course_category = get_object_or_404(CourseCategory, course_name = 'A-Level')
-    a_level.save()
-    return redirect('home')
+# def a_level_home(request):
+#     a_level = request.user.adminuser
+#     a_level.course_category = get_object_or_404(CourseCategory, course_name = 'A-Level')
+#     a_level.save()
+#     return redirect('home')
 
-def bachelor_home(request):
-    a_level = request.user.adminuser
-    a_level.course_category = get_object_or_404(CourseCategory, course_name = 'Bachelor')
-    a_level.save()
-    return redirect('home')
+# def bachelor_home(request):
+#     a_level = request.user.adminuser
+#     a_level.course_category = get_object_or_404(CourseCategory, course_name = 'Bachelor')
+#     a_level.save()
+#     return redirect('home')
 
-def master_home(request):
-    a_level = request.user.adminuser
-    a_level.course_category = get_object_or_404(CourseCategory, course_name = 'Master')
-    a_level.save()
-    return redirect('home')
+# def master_home(request):
+#     a_level = request.user.adminuser
+#     a_level.course_category = get_object_or_404(CourseCategory, course_name = 'Master')
+#     a_level.save()
+#     return redirect('home')
 
 def get_user_by_role_ajax(request):
     role = request.GET['role']

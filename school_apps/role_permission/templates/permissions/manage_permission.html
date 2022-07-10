@@ -67,6 +67,7 @@
             <!-- <br /><input type="checkbox" name="{{ p.id }}" id = "permission_id" >{{ p.name }} -->
             <!-- <br /><input type="checkbox" name="permission" value = "{{p.id}}"  >{{ p.name }} -->
           <!-- {% endfor %} -->
+          <input type="hidden" value="{{role}}"  name = "role">
             <div class="row ml-2">
               {{ permission_instance_form }}
             </div>

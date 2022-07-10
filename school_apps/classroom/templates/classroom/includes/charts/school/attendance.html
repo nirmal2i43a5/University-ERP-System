@@ -10,23 +10,22 @@
             
             categories: 
             [
-            {% if semester.course_name %}
+     
+            
             {% for semester in student_attendance_dataset %}
+                   {% if semester.course_name %}
             
             '{{ semester.course_name }}( {{ semester.semester_name }} )'
-                
-                {% if not forloop.last %}, {% endif %}
-
-            {% endfor %}
             {% else %}
-            {% for semester in student_attendance_dataset %}
-            
             '{{ semester.semester_name }}'
+            {% endif %}
                 
                 {% if not forloop.last %}, {% endif %}
 
             {% endfor %}
-            {% endif %}
+            
+           
+        
             
             ]
         },

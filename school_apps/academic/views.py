@@ -21,7 +21,8 @@ from .forms import (
                     # MasterSemesterForm,
                     SectionForm,
                     SemesterSectionSearchForm,
-                    
+                    TeacherSyllabusFilterForm,
+                    SemesterAssignFilterForm,
                     SyllabusSearchForm
                     )
 
@@ -39,7 +40,7 @@ from school_apps.notifications.utilities import create_notification
 from school_apps.courses.forms import CourseCategoryeForm, CourseForm, DepartmentForm
 from django.template.loader import get_template
 from django.core.mail import EmailMessage
-from student_management_app.models import Section, Semester, Staff, Student, Subject, SubjectTeacher
+from student_management_app.models import Section, Semester, Staff, Student, Subject, SubjectTeacher,SemesterTeacher
 from school_apps.courses.models import selectedcourses,application_form,studentgrades
 
 
@@ -566,6 +567,56 @@ def deletesubjectteacher(request, pk):
     return redirect('academic:showsubjectteacherlist')
 
 
+# -----------------
+def manage_class_teacher(request):
+    class_teacherlist = SemesterTeacher.objects.all()
+
+
+    context = {'class_teacherlist':class_teacherlist
+    }
+    return render (request, 'courses/manage_class_teacher.html', context)
+
+#----------------------------------------------------------------------------------------------------------------------
+def assign_class_to_teacher(request):
+    teachers = Staff.objects.all()
+    semesters = Semester.objects.all()
+    form = SemesterAssignFilterForm()
+
+    context = {'teachers':teachers,
+                'classes': semesters,
+                'form':form
+              
+    }
+    return render(request, 'courses/semester_to_teacher.html', context)
+
+def class_to_teacher_Ajax(request):
+    teacher = Staff.objects.get(staff_user__pk = request.GET['teacher'])
+    semester_id = request.GET.getlist('semesters[]')
+    classes = []
+    for item in semester_id:
+        semester_instance = Semester.objects.filter(name = item).first()
+        classes.append(Semester.objects.get(pk=semester_instance.pk))
+  
+    
+
+    try:
+        for item in classes:
+            class_teacher_filter = SemesterTeacher.objects.filter(
+                                                              teacher=teacher.staff_user, 
+                                                              semester = item,
+                                                              )
+            if class_teacher_filter.exists():
+                return JsonResponse({'warning_message':'Class is already assigned to teacher.You cannot reassign class.'}, status = 202)
+            else:
+                semester_teacher = SemesterTeacher.objects.create(
+                semester=item,
+                teacher = teacher.staff_user
+                )
+                semester_teacher.save()
+                return JsonResponse({'message':'Class is successfully  assigned to teacher'}, status = 201)
+    except:
+        return JsonResponse({'error_message':'Assignment failed. Please check if the subject is already assigned to the teacher'}, status = 500)
+
 #----------------------------------------------------------------------------------------------------------------------
 
 #subject to class#
@@ -893,7 +944,7 @@ def add_syllabus(request):
 @permission_required('academic.view_syllabus', raise_exception=True)
 def manage_syllabus(request):
     syllabus = Syllabus.objects.all()
-    search_form = SyllabusSearchForm()
+    search_form = TeacherSyllabusFilterForm(user = request.user)
     semester = request.GET.get('semester')
     
     if semester:
@@ -1219,7 +1270,7 @@ def delete_assignment(request, assignment_id):
 
 def student_assignment(request):
     
-    form = SubjectSearchForm(request=request)
+    form = SubjectSearchForm()
     # try:
     query = request.GET.get('subject')
 

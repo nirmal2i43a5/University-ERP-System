@@ -1,7 +1,7 @@
 from django import forms
 from django.shortcuts import get_object_or_404
 from school_apps.academic.models import Syllabus, Assignment, Routine,Section,Enotes
-from student_management_app.models import Semester, Subject,CourseCategory,Course,Staff
+from student_management_app.models import Semester, Subject,CourseCategory,Course,Staff, SubjectTeacher
 from django.contrib.admin.widgets import AdminSplitDateTime
 
 
@@ -172,6 +172,18 @@ class SubjectWiseFilter(forms.Form):
         semester = Semester.objects.get(pk = semester_id)
         self.fields['subject'].queryset = Subject.objects.filter(semester = get_object_or_404(Semester , pk = semester_id))
 
+
+
+class TeacherSyllabusFilterForm(forms.Form):
+    subject = forms.ModelChoiceField(required = False, label= '',empty_label = 'Choose Subject',
+                                     queryset = SubjectTeacher.objects.all())
+
+    def __init__(self, *args, user, **kwargs):
+        super().__init__(*args, **kwargs)
+        subject = self.fields['subject']
+        subject.queryset = user.subjectteacher_set.all()
+     
+
 class EnotesFilterForm(forms.Form):
        
     category_choices = (
@@ -217,6 +229,15 @@ class SubjectAssignFilterForm(forms.Form):
  
     # group=forms.ChoiceField(required = False, label = '',choices=faculty_choices,
     #                       widget=forms.Select(attrs = {'hidden':''}))
+class SemesterAssignFilterForm(forms.Form):
+    course_category = forms.ModelChoiceField(label= '',empty_label = 'Choose Course Category',
+                                      queryset = CourseCategory.objects.all())
+    
+    filter_course = forms.ModelChoiceField(label= '',empty_label = 'Choose Course',
+                                      queryset = Course.objects.all())
+    
+ 
+
 
 class SyllabusSearchForm(forms.Form):
     course_category = forms.ModelChoiceField(label= '',empty_label = 'Choose Course Category',
@@ -338,6 +359,7 @@ class SubjectSearchForm(forms.Form):
     filter_semester = forms.ModelChoiceField(label= '',
                                       empty_label = '---Filter Class---', 
                                       queryset = Semester.objects.none())
+                                      
 # class BachelorSemesterForm(forms.ModelForm):#for a-level
 #     description = forms.CharField(required=False, widget=forms.Textarea(
 #         attrs={'rows': 2, 'cols': 10, "placeholder": " Enter  Course Description", }))
@@ -436,7 +458,9 @@ class StudentFormSearch(FilterForm):
     section = forms.ModelChoiceField(required = False, label= '',empty_label = '---Click Here To  Filter section---', queryset = Section.objects.all()) 
     group=forms.ChoiceField(required = False, label = '',choices=faculty_choices)
     
-class StudentSearch(FilterForm):#For master and bachelor
+
+
+class StudentSearch(FilterForm):
     course_category = forms.ModelChoiceField(required = False,label= '',queryset = CourseCategory.objects.all(),empty_label = 'Select Course Category')
     filter_course = forms.ModelChoiceField(label= '',required = False, queryset = Course.objects.all(),empty_label = 'Select Course')
                    

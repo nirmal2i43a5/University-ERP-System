@@ -145,14 +145,14 @@ def user_permission_manage(request):
 
 def save_permission(request):
     
-    if request.method == 'POST' and 'role_id' in request.POST:
-        
-        role = request.POST.get('role_id')
+    if request.method == 'POST':
+        print(":::::::::::::Inside post::::::::::::::::::")
+        role = request.POST.get('role')
         group = get_object_or_404(Group,id = role)
         
         permission_instance_form = ShowRolePermission(instance = group, data = request.POST)#showing permission form instance 
         if permission_instance_form.is_valid():
-            
+            print(":::::::::::::Inside valid::::::::::::::::::")
             permission_instance_form.save()
             messages.success(request,"Permission is Successfully Modified ")
             
@@ -162,10 +162,9 @@ def save_permission(request):
                 'role':role,
                 'permission_instance_form':permission_instance_form,#this is form which shows all permissions after I filer role
                  }
-            return render(request, 'permissions/manage_permission.html', context)
-        else:
-            return HttpResponse("<h1>Something went wrong!</h1>")
-           
+            return redirect('role_app:manage_permission')
+    
+    return render(request, 'permissions/manage_permission.html')
         
  
 

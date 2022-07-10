@@ -89,7 +89,7 @@
 </li> -->
 <!-- ----------------- -->
 
-    <li class="nav-item">
+    <li class="nav-item menu-open">
       <a href="#" class="nav-link">
         <i class="fas fa-xs fa-clipboard"></i>
         <p>
@@ -100,7 +100,8 @@
       </a>
       <ul class="nav nav-treeview">
         <li class="nav-item ml-3">
-          <a href="{% url 'attendance_app:student_attendance' %}" class="nav-link">
+          {% url 'attendance_app:student_attendance' as attendance_url  %}
+          <a href="{% url 'attendance_app:student_attendance' %}" class=" nav-item nav-link {% if request.path == attendance_url %} active{% endif %}">
             <i class="far fa-xs fa-circle"></i>
             <p>
               Take Attendence
@@ -109,7 +110,8 @@
           </a>
         </li>
         <li class="nav-item ml-3">
-          <a href="{% url 'attendance_app:student_attendance_report' %}" class="nav-link">
+          {% url 'attendance_app:student_attendance_report' as attendance_report_url  %}
+          <a href="{% url 'attendance_app:student_attendance_report' %}" class=" nav-item nav-link {% if request.path == attendance_report_url %} active{% endif %}">
             <i class="far fa-xs fa-circle "></i>
             <p>
                Attendence report
@@ -118,7 +120,8 @@
           </a>
         </li>
         <li class="nav-item ml-3">
-          <a href="{% url 'attendance_app:edit_student_attendance' %}" class="nav-link">
+          {% url 'attendance_app:edit_student_attendance' as edit_attendance_url  %}
+          <a href="{% url 'attendance_app:edit_student_attendance' %}" class=" nav-item nav-link {% if request.path == edit_attendance_url %} active{% endif %}">
             <i class="far fa-xs fa-circle"></i>
             <p>
               Edit Attendence
@@ -128,7 +131,8 @@
         </li>
       
         <li class="nav-item ml-3">
-          <a href="{% url 'teacher:student_view_by_teacher' %}" class="nav-link">
+          {% url 'teacher:student_view_by_teacher' as student_url  %}
+          <a href="{% url 'teacher:student_view_by_teacher' %}" class=" nav-item nav-link {% if request.path == student_url %} active{% endif %}">
             <i class="far fa-xs fa-circle "></i>
             <p>
               Student List
@@ -151,7 +155,7 @@
 
 
 <!-- ------------------------------------------------academic------------------------------ -->
-<li class="nav-item has-treeview">
+<li class="nav-item menu-open has-treeview">
   <a href="#" class="nav-link">
     <i class="fas  fa-university"></i>
     <p>
@@ -162,10 +166,10 @@
   </a>
   <ul class="nav nav-treeview">
 
-
+    {% url 'academic:manage_assignment' as assignment_url  %}
     <li class="nav-item ml-3">
-      <a href="{% url 'academic:manage_assignment' %}" class="nav-link">
-         <i class="fas fa-xs fa-circle"></i>
+      <a href="{% url 'academic:manage_assignment' %}" class=" nav-item nav-link {% if request.path == assignment_url %} active{% endif %}">
+        <i class="far fa-xs fa-circle"></i>
         <p>
           Assignment
 
@@ -176,8 +180,9 @@
 
 
     <li class="nav-item ml-3">
-      <a href="{% url 'teacher:checksubjects' %}" class="nav-link">
-        <i class="fas  fa-file"></i>
+      {% url 'teacher:checksubjects' as my_subject_url  %}
+      <a href="{% url 'teacher:checksubjects' %}" class=" nav-item nav-link {% if request.path == my_subject_url %} active{% endif %}">
+             <i class="far fa-xs fa-circle"></i>
         <p>
           My Subjects
 
@@ -186,8 +191,9 @@
     </li>
 
     <li class="nav-item ml-3">
-      <a href="{% url 'teacher:student_view_by_teacher' %}" class="nav-link">
-        <i class="fas  fa-file"></i>
+      {% url 'teacher:student_view_by_teacher' as my_student_url  %}
+      <a href="{% url 'teacher:student_view_by_teacher' %}" class=" nav-item nav-link {% if request.path == my_student_url %} active{% endif %}">
+             <i class="far fa-xs fa-circle"></i>
         <p>
           My Students
           
@@ -198,7 +204,7 @@
     
     <!-- <li class="nav-item ml-3">
       <a href="{% url 'teacher:checkstudents' %}" class="nav-link">
-        <i class="fas  fa-file"></i>
+             <i class="far fa-xs fa-circle"></i>
         <p>
           Check student list
 
@@ -207,8 +213,9 @@
     </li> -->
 
     <li class="nav-item ml-3">
-      <a href="{% url 'academic:manage_routine' %}" class="nav-link">
-        <i class="fas  fa-file"></i>
+      {% url 'academic:manage_routine' as routine_url  %}
+      <a href="{% url 'academic:manage_routine' %}" class=" nav-item nav-link {% if request.path == routine_url %} active{% endif %}">
+             <i class="far fa-xs fa-circle"></i>
         <p>
           Routine
 
@@ -216,8 +223,9 @@
       </a>
     </li>
     <li class="nav-item ml-3">
-      <a href="{% url 'academic:manage_syllabus' %}" class="nav-link">
-        <i class="fas  fa-file"></i>
+      {% url 'academic:manage_syllabus' as syllabus_url  %}
+      <a href="{% url 'academic:manage_syllabus' %}" class=" nav-item nav-link {% if request.path == syllabus_url %} active{% endif %}">
+             <i class="far fa-xs fa-circle"></i>
         <p>
           Syllabus
 
@@ -259,9 +267,9 @@
 
 
       <ul class="nav nav-treeview">
-
+        {% url 'manage_event' as calendar_url  %}
         <li class="nav-item ml-3">
-          <a href="{% url 'manage_event' %}" class="nav-link">
+          <a href="{% url 'manage_event' %}" class=" nav-item nav-link {% if request.path == calendar_url %} active{% endif %}">
             <i class="far fa-xs fa-circle"></i>
             <p>
               English Calendar

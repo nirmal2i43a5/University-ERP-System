@@ -131,7 +131,7 @@ def classroom(request):
                                     'absent_informed_status_count':absent_informed_status_count,
                                     'absent_not_informed_status_count':absent_not_informed_status_count
                                     })
-    
+                
             
         '''For total students chart data'''
         for semester in bachelor_class_list :

@@ -29,10 +29,10 @@ SILKY_PYTHON_PROFILER_BINARY = True
 
 
 
-INTERNAL_IPS = [ "127.0.0.1"]
-# DEBUG_TOOLBAR_CONFIG = {
-#     'JQUERY_URL': '',
-# }
+# INTERNAL_IPS = [ "127.0.0.1"]
+# # DEBUG_TOOLBAR_CONFIG = {
+# #     'JQUERY_URL': '',
+# # }
 DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.history.HistoryPanel',
     'debug_toolbar.panels.versions.VersionsPanel',

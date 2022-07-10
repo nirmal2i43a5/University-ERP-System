@@ -35,7 +35,7 @@ $(document).ready(function() {
     function setModalProperties(type, event){
         if(type == 'edit'){
             var tYPE = '{% trans "Edit" %}';
-            var all_url = "{% url 'edit_event' calendar_slug 12345 %}".replace(/12345/, event.event_id);
+            {% comment %} var all_url = "{% url 'edit_event' calendar_slug 12345 %}".replace(/12345/, event.event_id); {% endcomment %}
             if (event.existed){
                 var this_url = "{% url 'edit_occurrence' 12345 6789 %}".replace(/12345/, event.event_id).replace(/6789/, event.id);
             }
@@ -136,7 +136,7 @@ $(document).ready(function() {
                 $('#modalTitle').html(event.title);
                 $('#modalCalendar').html(event.calendar);
 
-            var event_detail_url = "{% url 'event_detail' 12345  %}".replace(/12345/, event.id);//Using replace to get click event id for detail view
+            var event_detail_url = "{% url 'event_detail' 12345  %}".replace(/12345/, event.id - 1);//Using replace to get click event id for detail view
            $('#eventDetailUrl').attr('href',event_detail_url)
         
         }
