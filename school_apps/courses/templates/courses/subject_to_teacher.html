@@ -70,7 +70,15 @@
                         <td style="width: max-content;"></td>
                         <td>{{subject.subject_id}}</td>
                         <td>{{subject.subject_name}}()</td>
-                        <td><span class="badge badge-info">{{subject.course_category}}  </span>( <span class="badge badge-warning">{{subject.course}}</span> )</td>
+                        <td>
+                            <span class="badge badge-info">{{subject.course_category}} 
+                            </span>
+                            {% if subject.course %}
+                            ( <span class="badge badge-warning">
+                               {{subject.course}}</span> )
+                           {% else %}
+                           {% endif %}
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>

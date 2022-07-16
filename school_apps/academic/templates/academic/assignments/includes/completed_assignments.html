@@ -12,6 +12,7 @@
       <th>File</th>
       <th>Answer</th>
       <th>Points(/100)</th>
+      <th>Checked Date</th>
       <th>Feedback</th>
       {% if  request.user|has_group:'Admin' or request.user.is_superuser or request.user|has_group:'Teacher'   %}
       <th>Action</th>
@@ -68,6 +69,7 @@
       {% else %}
       <td>Not Graded Yet</td>
     {% endif %}
+    <td>{{grade.created_at}}</td>
   <td>{{grade.feedback}}</td>
       
   </tr>

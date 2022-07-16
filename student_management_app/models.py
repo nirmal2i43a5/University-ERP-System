@@ -314,7 +314,11 @@ class Semester(models.Model):
 
 
     def __str__(self):
-        return f'{self.name}'
+        if self.course:
+            return f'{self.name}({self.course})'
+        else:
+            return f'{self.name}'
+            
         
         # school_course_category = get_object_or_404(CourseCategory,course_name = 'School')
         # a_level_course_category = get_object_or_404(CourseCategory,course_name = 'A-Level')

@@ -78,21 +78,20 @@ class AssignmentForm(forms.ModelForm):
         fields = '__all__'
         exclude = ('created_by','student','teacher',)
         
-    # def __init__(self, *args, user=None, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     if user:
-    #         subject = self.fields['Subject']
-    #         subject.queryset = subject.queryset.filter(staff_user=user)
-            
-    #     if user.is_superuser:# or user|has_group:'Admin':#showing all subjects to superuser
-    #         subject = self.fields['Subject']
-    #         subject.queryset = Subject.objects.all()
+    def __init__(self, *args, user=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        if user.groups.filter(name='Teacher'):
+            course_category = self.fields['course_category']
+            course_category.queryset = user.staff.courses.all()
+        if user.is_superuser or  user.groups.filter(name='Super-Admin') or user.groups.filter(name='Admin'):
+            course_category = self.fields['course_category']
+            course_category.queryset = CourseCategory.objects.all()
 
 class SemesterSectionSearchForm(forms.Form):
-    course_category = forms.ModelChoiceField(empty_label = 'Choose Course Category',
-                                      queryset = CourseCategory.objects.all())
+    # course_category = forms.ModelChoiceField(empty_label = 'Choose Course Category',
+    #                                   queryset = CourseCategory.objects.all())
     
-    semester = forms.ModelChoiceField(empty_label = 'Choose Class',
+    filter_semester = forms.ModelChoiceField(label = 'Semester',empty_label = 'Choose Class',
                                       queryset = Semester.objects.none())
     section = forms.ModelChoiceField(required = False, empty_label = 'Choose Section',
                                      queryset = Section.objects.none())
@@ -103,7 +102,14 @@ class SemesterSectionSearchForm(forms.Form):
     # group=forms.ChoiceField(required = False, label = '',choices=faculty_choices,
     #                       widget=forms.Select(attrs = {'hidden':''}))
     
-
+    def __init__(self, *args, user, **kwargs):
+        super().__init__(*args, **kwargs)
+        subject = self.fields['subject']
+        filter_semester = self.fields['filter_semester']
+        # course_category = self.fields['course_category']
+        # course_category.queryset = user.staff.course.all()
+        filter_semester.queryset = user.semester_set.all()
+        subject.queryset = user.subject_set.all()
 
 class ContentFilterForm(forms.Form):
    

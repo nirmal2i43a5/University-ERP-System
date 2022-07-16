@@ -527,6 +527,7 @@ def subject_to_teacher_Ajax(request):
                                                               semester = semester,
                                                               section=section
                                                               )
+        print(subjectteacher_filter, "subjectteacher_filter")
         if subjectteacher_filter.exists():
             return JsonResponse({'warning_message':'Subject is already assigned to teacher.You cannot reassign subject.'}, status = 202)
         else:
@@ -1097,7 +1098,7 @@ def add_assignment(request):
   
     # ------
     if request.method == 'POST':
-        form = AssignmentForm(request.POST, request.FILES)
+        form = AssignmentForm(request.POST, request.FILES,user = request.user )
         semester = request.POST.get('semester')
         section = request.POST.get('section')
         # subject = request.POST.get('subject')
@@ -1130,7 +1131,7 @@ def add_assignment(request):
             # ---------------------Email service end--------------------
             title = form.cleaned_data['title']
             instance = form.save(commit=False)
-            instance.teacher_id = request.user.id
+            instance.teacher_id = request.user.id#from customer_user
             instance.save()
             user = request.user
             create_notification(request, post=title, notification_type=1, created_by=user,type='assignment')
@@ -1141,7 +1142,7 @@ def add_assignment(request):
         #     return redirect('academic:add_assignment')
 
     else:
-        form = AssignmentForm()  # passing user so as to restrict choice field for respective user
+        form = AssignmentForm(user = request.user)  # passing user so as to restrict choice field for respective user
 
     context = {
         'form': form,
@@ -1153,29 +1154,58 @@ def add_assignment(request):
 
 @permission_required('academic.view_assignment', raise_exception=True)
 def manage_assignment(request):
-
+    # for total turned in and review count 
+    
     assignments = Assignment.objects.all()
     respective_teacher_assignments = Assignment.objects.filter(teacher_id=request.user.id, draft=False)
     draft_assignments = Assignment.objects.filter(teacher_id=request.user.id, draft=True)
     # for assignment in respective_teacher_assignments:
         
     # total_students = Student.objects.filter(section = '')
-    # ------
-    student = []
-    assignment = []
-    for submitted_assignment in Grade.objects.all():
-        student.append(submitted_assignment.student_id)
-        assignment.append(submitted_assignment.assignment_id)
-    # for student in student:
-    #     print(Student.objects.get(student_user = student).section)
-    total_students = Assignment.objects.filter(student__in=student)
+    # ------For getting turned in count
+    assignment_submitted_status = []
+
+    for assignment in Assignment.objects.all():
+        assignment_submitted_by_student = Grade.objects.filter(
+            assignment_status = 'Completed',
+            assignment__semester = assignment.semester,
+            assignment__section = assignment.section,
+           assignment__Subject = assignment.Subject
+           ).count()
+        semester_instance = get_object_or_404(Semester, pk = assignment.semester.pk)
+        section_instance = get_object_or_404(Section, pk = assignment.section.pk)
+        total_students = Student.objects.filter(student_user__is_active = 1,semester = semester_instance, section = section_instance).count()
+        print(total_students)
+        assignment_reviewed_by_teacher = Grade.objects.filter(
+            grade_status = True,
+            assignment__semester = assignment.semester,
+            assignment__section = assignment.section,
+           assignment__Subject = assignment.Subject
+           ).count()
+        assignment_remained_to_check = Grade.objects.filter(
+            grade_status = False,
+            assignment__semester = assignment.semester,
+            assignment__section = assignment.section,
+           assignment__Subject = assignment.Subject
+           ).count()
+        assignment_submitted_status.append({'assignment_submitted_by_student':assignment_submitted_by_student,
+                                             'assignment_reviewed_by_teacher':assignment_reviewed_by_teacher,
+                                             'total_students':total_students,
+                                             'assignment_remained_to_check':assignment_remained_to_check})
+    print(assignment_submitted_status)
+    
+    # for submitted_assignment in Grade.objects.all():
+    #     student.append(submitted_assignment.student_id)
+    #     assignment.append(submitted_assignment.assignment_id)
+    # # for student in student:
+    # #     print(Student.objects.get(student_user = student).section)
+    # total_students = Assignment.objects.filter(student__in=student)
         
     # submitted_assignment_no = CustomUser.objects.filter(Q(pk__in = student)&
     #                                                     Q()).count()
     # ---
-    # graded = Grade.objects.filter(status = True).count()
-    search_form = SemesterSectionSearchForm()
-    semester_id = request.GET.get('semester')
+    search_form = SemesterSectionSearchForm(user = request.user)
+    semester_id = request.GET.get('filter_semester')
     section_id = request.GET.get('section')
     subject_id = request.GET.get('subject')
 
@@ -1187,6 +1217,7 @@ def manage_assignment(request):
             'assignments': search_assignments,
             'teacher_assignments': search_assignments,
             'draft_assignments': draft_assignments,
+              'assignment_submitted_status':zip(respective_teacher_assignments,assignment_submitted_status),
                     # 'total_reviewed':graded,
             'form': search_form,
                     'title': 'Assignment',
@@ -1200,7 +1231,8 @@ def manage_assignment(request):
         # 'student_assignments':assignments.filter(),
         'form': search_form,
         # 'submitted_assignment_no':submitted_assignment_no,
-        'title': 'Assignment'
+        'title': 'Assignment',
+        'assignment_submitted_status':zip(respective_teacher_assignments,assignment_submitted_status),
     }
 
     return render(request, 'academic/assignments/manage_assignment.html', context)

@@ -84,13 +84,15 @@ class Grade(models.Model):
     ('Assigned',"Assigned"),('Completed','Completed')
     )
     student = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    assignment_status = models.CharField(_("Assignment Category"),choices = assignment_status,  max_length=50, default = 'Assigned',null=True, blank=True)
+    assignment_status = models.CharField(_("Assignment Category"),choices = assignment_status, 
+     max_length=50, default = 'Assigned',null=True, blank=True)#For submitted status by the student
     assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
     grade = models.PositiveIntegerField(null = True,blank = True)
     grade_status = models.BooleanField(default=False)#for checking whether assignment is returned to student with points
     feedback = models.CharField(max_length=255, null=True, blank=True, default="No feedback")
     answer_upload = models.FileField(upload_to = 'Assignment_grades', null=True)
     date_submitted = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
     

@@ -48,7 +48,9 @@
 
 
           <div>
-            {{submitted_assignment_no}}/{{assignment.section.student}} turned in
+           Turned In <span class="badge badge-info">
+              {{student_submit_status.assignment_submitted_by_student}}/{{student_submit_status.total_students}}
+            </span>
           </div>
 
         </div>
@@ -59,9 +61,11 @@
 
           </div>
 
-
+        
           <div>
-            {{total_reviewed}} reviewed
+            Checked  <span class="badge badge-info">
+              {{student_submit_status.assignment_reviewed_by_teacher}}
+            </span>
           </div>
 
         </div>

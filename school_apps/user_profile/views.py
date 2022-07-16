@@ -20,7 +20,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from student_management_app.models import (Section,  ExtraUser, Student,Staff,CustomUser)
 from school_apps.parents.forms import ParentForm
 
-def logoutView(request):
+def logoutView(request): 	
 	logout(request)
 	# request.sesssion.flush
 	return redirect('login')

@@ -41,33 +41,16 @@
       </li>
     </ul>
   </li>
-  <ul class="nav nav-treeview">
-    <li class="nav-item ml-3">
-      <a href="#" class="nav-link">
-        <i class="fas fa-xs fa-user-graduate"></i>
-        <p>
-          Student Attendence
-          <i class="fas fa-angle-left right"></i>
 
-        </p>
-      </a>
-      <ul class="nav nav-treeview">
+  <li class="nav-item">
+    <a href="{% url 'academic:view_routine' %}" class="nav-link">
+      <i class="fas fa-xs fa-clipboard"></i>
+      <p>
+        View attendance
 
-        <li class="nav-item ml-3">
-          <a href="{% url 'attendance_app:manage_student_attendance' %}" class="nav-link">
-            <i class="far fa-xs fa-circle "></i>
-            <p>
-              Manage Attendence
-
-            </p>
-          </a>
-        </li>
-
-      </ul>
-    </li>
-
-  </ul>
-
+      </p>
+    </a>
+  </li>
   
 
 <li class="nav-item has-treeview">
@@ -151,4 +134,3 @@
     </p>
   </a> {% endcomment %}
 </li>
-
