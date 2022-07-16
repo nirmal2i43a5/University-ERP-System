@@ -54,6 +54,7 @@ class HistoryLogs(View):
 def superuser_home(request):
     return render(request, 'superadmin_home.html')
 
+
 class home(FullCalendarView, View):
 
     def get(self, request, *args, **kwargs):

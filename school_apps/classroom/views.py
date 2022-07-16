@@ -56,7 +56,7 @@ def total_students_chart_data(request,semester):
     return course,semester_instance,students
 
 
-    
+@permission_required('student_management_app.view_superadmin_home', raise_exception=True)
 def classroom(request):
     
     url_name = resolve(request.path).url_name
