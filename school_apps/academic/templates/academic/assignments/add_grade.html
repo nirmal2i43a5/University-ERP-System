@@ -44,14 +44,13 @@
                 <div class="card ">
                     {% include 'override_table/header.html' with card_title='Add Grade' %}
 
-
                     <form action="{% url 'academic:assignment_retured' %}" method="POST" class=" mx-2 my-4">
                         {% csrf_token %}
        
                         <input type="hidden" name = "assignment_id" value="{{assignment.pk}}">
                         <input type="hidden" name = "grade_id" value="{{assignment.pk}}">
        
-                       <input type="text" name="grade" placeholder="Enter Assignment Grade" required><br><br>
+                       <input type="text" name="grade_mark" placeholder="Enter Assignment Grade" required><br><br>
                        <textarea  name="feedback" rows="4" cols="25" placeholder="Enter Feedback"></textarea><br><br>
                        <input type="submit" name="" value="Return" style="background-color: #743DB8;color:white;">
                        

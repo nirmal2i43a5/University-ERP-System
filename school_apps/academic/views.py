@@ -157,6 +157,8 @@ def edit_department(request,pk):
         return render(request, 'academic/courses/add_department.html', {'form': form,'departments':departments,'instance':instance})
 
 
+
+
 def delete_department(request,pk):
     instance = get_object_or_404(Department, pk = pk)
     instance.delete()
@@ -1360,11 +1362,11 @@ def student_assignment_grade(request, assignment_id):
 
 
 def assignment_retured(request):
-    grade = request.POST.get('grade')
+    grade = request.POST.get('grade_mark')
     feedback = request.POST.get('feedback')
-    grade_id = request.POST.get('grade_id')
     assignment_id = request.POST.get('assignment_id')
-    assignment_grade = Grade.objects.get(pk=grade_id)
+    assignment_instance = get_object_or_404(Assignment,pk = assignment_id)
+    assignment_grade = Grade.objects.get(assignment=assignment_instance)
     assignment_grade.grade = grade
     assignment_grade.feedback = feedback
     assignment_grade.grade_status = True
