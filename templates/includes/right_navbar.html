@@ -137,9 +137,9 @@
           {% elif request.user|has_group:'Parent' %}
           <a href="{% url 'parent_profile_update' %}" class="btn btn-sm  btn-default btn-flat">Profile</a>
           <a href="{% url 'change_password' %}" class="btn btn-sm  ml-2  btn-default btn-flat">Reset Password</a>
-          {% elif request.user|has_group:'Admin' or request.user.is_superuser %}
+          <!-- {% elif request.user|has_group:'Admin' or request.user.is_superuser %}
           <a href="{% url 'admin_profile_update' %}" class="btn btn-sm  btn-default btn-flat">Profile</a>
-          <a href="{% url 'change_password' %}" class="btn btn-sm  ml-2  btn-default btn-flat">Reset Password</a>
+          <a href="{% url 'change_password' %}" class="btn btn-sm  ml-2  btn-default btn-flat">Reset Password</a> -->
 
           {% endif %}
         </div>

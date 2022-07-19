@@ -144,6 +144,14 @@
   {% block custom_css %}{% endblock custom_css %}
   {% block custom_js %}{% endblock custom_js %}
   {% block javascript %}{% endblock %}
+  <script src="{% static 'plugins/toastr/toastr.min.js' %}"></script>
+<script src="{% static 'plugins/select2/js/select2.min.js' %}"></script>
+<!-- <script src="{% static 'plugins/jquery-ui/jquery-ui.min.js' %}"></script> -->
+
+<script src="{% static 'plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js' %}"></script>
+<script src="{% static 'plugins/jquery-mousewheel/jquery.mousewheel.js' %}"></script>
+<script src="{% static 'plugins/raphael/raphael.min.js' %}"></script>
+<script src="{% static 'plugins/jquery-mapael/jquery.mapael.min.js' %}"></script>
 <script>
   $(document).ready(function(){
     $('.page-loader').hide();
@@ -166,5 +174,12 @@ a,p,th,td,tr,h1,h2,h3,h4,h5,h6,div,span,i,li,ol,ul{
 
 }
 </style>
-
+{% if messages %}
+{% for message in messages %}
+<script type=text/javascript>
+  toastr.options.progressBar = true;
+  toastr.{{ message.tags }}('{{ message }}')
+</script>
+{% endfor %}
+{% endif %}
 </html>

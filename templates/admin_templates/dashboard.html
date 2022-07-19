@@ -27,10 +27,10 @@ Dashboard
     {% if request.user|has_group:'Parent' %}
     <h3 style="text-align: center;"><strong>Parent Portal</strong> </h3>
     {% endif %}
-    {% if request.user.is_superuser %}
-    <h3 style="text-align: center;"><strong>{{request.user.adminuser.course_category}} Admin Portal</strong> </h3>
+    <!-- {% if request.user.is_superuser %}
+    <h3 style="text-align: center;"><strong>SuperAdmin Portal</strong> </h3>
       
-    {% endif %}
+    {% endif %} -->
       
 
   </div>       

@@ -38,7 +38,7 @@ class SettingForm(ModelForm):
             ),
            
             
-                   Submit('submit','Save Settings',css_class = 'btn text-bold btn-info')
+                   Submit('submit','Save Settings',css_class = 'btn text-bold btn-success')
            
         )
         

@@ -5,6 +5,7 @@ from django.views.generic import CreateView, UpdateView
 from .forms import SettingForm
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
+from django.contrib.auth.decorators import  permission_required
 
 
 class GeneralSettingCreate(SuccessMessageMixin, CreateView):
@@ -31,7 +32,7 @@ class GeneralSettingCreate(SuccessMessageMixin, CreateView):
 
 # 	# def get_success_url(self,**kwargs):
 # 	#     return reverse_lazy('setting_app:general_setting', kwargs = {'pk':self.object.pk})
-
+@permission_required('student_management_app.view_superadmin_home', raise_exception=True)
 def GeneralSettingUpdate(request):
 	setting_instance = get_object_or_404(MisSetting, id=1)
 	instance_form = SettingForm(instance = setting_instance)

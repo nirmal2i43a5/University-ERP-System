@@ -63,6 +63,7 @@ def loginView(request):
 
 
 @login_required
+@permission_required('student_management_app.view_superadmin_home', raise_exception=True)
 def change_other_password(request):
 	user_id = request.GET.get('user_id')
 	user_id = CustomUser.objects.filter(id = user_id)

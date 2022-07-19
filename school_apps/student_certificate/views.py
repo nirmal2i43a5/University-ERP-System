@@ -27,10 +27,10 @@ def add_certificate_template(request):
                 print("i am valid")
                 form.save()
                 messages.success(request, "Successfully Added Certificate Template.")
-                return redirect('admin_app:manage_certificate_template')
+                return redirect('certificate:manage_certificate_template')
         except:
             messages.error(request, "Failed To  Added Certificate Template.")
-            return redirect('admin_app:add_certificate_template')
+            return redirect('certificate:add_certificate_template')
 
     context = {'form': form,'title':'Certificate'  }
     return render(request, 'certificate_templates/add_certificate.html', context)
@@ -53,11 +53,11 @@ def edit_certificate_template(request, certificate_template_id):
             if form.is_valid():
                 form.save()
                 messages.success(request, "Successfully Update Template.")
-                return redirect('admin_app:manage_certificate_template')
+                return redirect('certificate:manage_certificate_template')
 
         except:
             messages.error(request, "Failed To  Update Template.")
-            return redirect('admin_app:edit_certificate_template', certificate_template_id)
+            return redirect('certificate:edit_certificate_template', certificate_template_id)
 
     context = {'form': form,'title':'Certificate'   }
     return render(request, 'certificate_templates/edit_certificate.html', context)
@@ -92,7 +92,7 @@ def delete_certificate_template(request, certificate_template_id):
             CertificateTemplate, id=certificate_template_id)
         certificate_template.delete()
         messages.success(request, f'Template is Deleted Successfully')
-        return redirect('admin_app:manage_certificate_template')
+        return redirect('certificate:manage_certificate_template')
     except:
         messages.error(request, 'Failed To Delete Template')
-        return redirect('admin_app:manage_certificate_template')
+        return redirect('certificate:manage_certificate_template')

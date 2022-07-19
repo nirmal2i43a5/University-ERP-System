@@ -50,7 +50,7 @@ class HistoryLogs(View):
 
 
 
-@permission_required('student_management_app.view_superadmin_home', raise_exception=True)
+# @permission_required('student_management_app.view_superadmin_home', raise_exception=True)
 def superuser_home(request):
     return render(request, 'superadmin_home.html')
 

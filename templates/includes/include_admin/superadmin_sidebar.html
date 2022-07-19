@@ -54,7 +54,7 @@
 
 
 
-        <li class="nav-item has-treeview">
+        <!-- <li class="nav-item has-treeview">
           <a href="#" class="nav-link">
             <i class="fas  fa-users"></i>
             <p>
@@ -88,6 +88,45 @@
             </li>
             {% endif %}
           </ul>
+        </li> -->
+        <li class="nav-item">
+          <a href="{% url 'admin_profile_update' %}" class="nav-link">
+            <i class="fas  fa-user"></i>
+
+            <p>
+             Profile
+            </p>
+
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'change_password' %}" class="nav-link">
+            <i class="fas  fa-key"></i>
+
+            <p>
+             Reset Password
+            </p>
+
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'setting_app:general_setting' %}" class="nav-link">
+            <i class="fas fa-xs fa-cogs"></i>
+            <p class="text-sm">
+              General Settings
+  
+            </p>
+          </a>
+        </li>
+  
+        <li class="nav-item">
+          <a href="{% url 'change_other_password' %}" class="nav-link">
+            <i class="fas  fa-key"></i>
+            <p>
+              Reset Other Password
+  
+            </p>
+          </a>
         </li>
         <li class="nav-item">
           <a href="{% url 'logout' %}" class="nav-link">

@@ -12,7 +12,7 @@
 						>
 						
 
-						<div class = "row">
+						<div id = "visit_container" class = "row">
 								<div class="col-md-7" style="margin-left:10rem;">
 									<h3 style="text-align: center">
 										<strong>Complete ERP Module</strong>
@@ -31,12 +31,12 @@
 					</div>
 
 					<!-- /.card-header -->
-					<input class="form-control"id="myInput" type="text" placeholder="Search components..">
+					<!-- <input class="form-control"id="myInput" type="text" placeholder="Search components.."> -->
 					<br>
 					<div id="filter_div">
-					<div class="row custom-icon ml-4 mb-4">
+					<div id="home_components" class="row custom-icon ml-4 mb-4">
 
-									<div class="col-md-2">
+									<div class="col-md-3">
 									<a href="{% url 'admin_app:user-management' %}">
 
 											<span>
@@ -50,7 +50,7 @@
 
 									</div>
 						
-						<div class="col-md-2">
+						<div class="col-md-3">
 
 							<a href="{% url 'role_app:permission-management' %}">
 
@@ -63,7 +63,7 @@
 							</span>
 						</a>
 						</div>
-						<div class="col-md-2">
+						<div class="col-md-3">
 
 							<a href="{% url 'academic:academic-management' %}">
 
@@ -76,7 +76,7 @@
 							</span>
 						</a>
 						</div>
-						<div class="col-md-2">
+						<div class="col-md-3">
 
 							<a href="{% url 'event-management' %}">
 
@@ -89,7 +89,7 @@
 							</span>
 						</a>
 						</div>
-						<div class="col-md-2">
+						<!-- <div class="col-md-2">
 
 							<a href="{% url 'routine:routine-management' %}">
 
@@ -101,11 +101,11 @@
 								</span>
 							</span>
 						</a>
-						</div>
+						</div> -->
 
 						
 					
-						<div class="col-md-2">
+						<div class="col-md-3">
 							<a href="{% url 'announcement:announcement-management' %}">
 							<span>
 								<i class="fas fa-clipboard-list"></i>
@@ -116,7 +116,7 @@
 							</span>
 						</a>
 						</div>
-						<div class="col-md-2">
+						<div class="col-md-3">
 							<a href="{% url 'attendance_app:attendance-management' %}">
 							<span>
 								<i class="fas fa-id-badge"></i>
@@ -183,7 +183,7 @@
 						</a>
 						</div>  {% endcomment %}
 					
-						<div class="col-md-2">
+						<!-- <div class="col-md-2">
 							<a href="{% url 'certificate:certificate-management' %}">
 							<span>
 								<img
@@ -196,7 +196,7 @@
 								</span>
 							</span>
 						</a>
-						</div>
+						</div> -->
 						{% comment %} <div class="col-md-2" style="background-color:#EBDBC2;">
 							<a href="https://github.com/su-haris/django-hms/tree/master/hms">
 							<span>
@@ -265,7 +265,7 @@
 								</span>
 							</span>
 						</div> {% endcomment %}
-						<div class="col-md-2">
+						<div class="col-md-3">
 							<a href="{% url 'email_sms:email-sms-management' %}">
 							<span>
 								<i class="fas fa-envelope"></i>
@@ -276,7 +276,7 @@
 							</span>
 						</a>
 						</div>
-						<div class="col-md-2">
+						<div class="col-md-3">
 							<a href="{% url 'user_history:log-history-management' %}">
 							<span>
 								<i class="fas fa-address-book"></i>
@@ -322,7 +322,7 @@
 							</span>
 						</a>
 						</div> {% endcomment %}
-						<div class="col-md-2">
+						<div class="col-md-3">
 							<a href="{% url 'transport:transport-management' %}">
 							<span>
 								<i class="fas fa-bus"></i>
@@ -365,7 +365,7 @@
 							</span>
 						</div> {% endcomment %}
 
-						<div class="col-md-2" style="background-color:#EBDBC2;">
+						<!-- <div class="col-md-2" style="background-color:#EBDBC2;">
 							<a href="">
 							<span>
 								<i class="fas fa-chart-line"></i>
@@ -375,7 +375,7 @@
 								</span>
 							</span>
 						</a>
-						</div>
+						</div> -->
 						{% comment %} <div class="col-md-2" style="background-color:#EBDBC2;">
 							<a href="">
 							<span>
@@ -398,7 +398,7 @@
 							</span>
 						</a>
 						</div> {% endcomment %}
-						<div class="col-md-2" style="background-color:#EBDBC2;">
+						<div class="col-md-3" style="background-color:#EBDBC2;">
 							<a href="">
 							<span>
 								<i class="fas fa-vote-yea"></i>
@@ -483,6 +483,8 @@
   </div>
 
 <style>
+	/* This is for classroom popup  */
+
 	#classroom>.col-md-2{
 		border-radius: 50rem;
 	    border: none;
@@ -491,10 +493,11 @@
 	    text-align: center;
 	    background: #fff;
 	 	 padding:3rem 0rem;
-	  	margin:10px 7px 0px 20px;
+	  	margin:10px 7px 0px 30px; 
 
 	}
-	.col-md-2{
+
+	#home_components>.col-md-3{
 		border-radius: 5px;
 	    border: none;
 	    -webkit-box-shadow: 0 0 15px 0 #ddd;
@@ -504,7 +507,8 @@
 	    background: #fff;
 	 	 padding-top:1rem;
 		  padding-bottom:1rem;
-	  	margin:10px 7px 0px 20px;
+	  	/* margin:10px 7px 0px 30px; */
+		  margin:10px 7px 0px 70px;
 
 	}
 
@@ -518,7 +522,6 @@
 		margin-bottom:0.7rem;
 	}
 
-	}
 </style>
 {% include "includes/calendar.html" %}
 {% endblock main_content %} {% block custom_js %}
