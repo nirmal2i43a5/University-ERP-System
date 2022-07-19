@@ -111,9 +111,9 @@ class home(FullCalendarView, View):
         # if request.user.groups.filter(name=alevel_group).exists() or request.user.groups.filter(name=bachelor_group).exists() or \
         # request.user.groups.filter(name=master_group).exists():
         try:
-            inactive_students = Student.objects.filter(course_category = request.user.adminuser.course_category, student_user__is_active = 0).count()
-            active_students = Student.objects.filter(course_category = request.user.adminuser.course_category, student_user__is_active = 1).count()
-            total_subjects = Subject.objects.filter(course_category = request.user.adminuser.course_category).count()
+            inactive_students = Student.objects.filter( student_user__is_active = 0).count()
+            active_students = Student.objects.filter( student_user__is_active = 1).count()
+            total_subjects = Subject.objects.count()
         except:
             try:
                 categories = request.user.staff.courses.all()
@@ -128,7 +128,7 @@ class home(FullCalendarView, View):
                 total_subjects = Subject.objects.filter(course_category = categories).count()
 
 
-        # active_students = Student.objects.filter(course_category = request.user.adminuser.course_category, student_user__is_active = 1).count()
+        # active_students = Student.objects.filter( student_user__is_active = 1).count()
         science_faculty = Student.objects.filter(faculty='Science').count()
         nonscience_faculty = Student.objects.filter(faculty='Non-Science').count()
         

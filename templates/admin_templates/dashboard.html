@@ -1,4 +1,4 @@
-{% extends 'admin_templates/base_admin.html' %}
+{% extends request.user.is_superuser|yesno:'admin_templates/superadmin_base.html,admin_templates/base_admin.html' %}
 {% load scheduletags i18n %}
 {% load static %}
 {% load auth_extras %}
@@ -27,25 +27,17 @@ Dashboard
     {% if request.user|has_group:'Parent' %}
     <h3 style="text-align: center;"><strong>Parent Portal</strong> </h3>
     {% endif %}
-    <!-- {% if request.user.is_superuser %}
+    {% if request.user.is_superuser %}
     <h3 style="text-align: center;"><strong>SuperAdmin Portal</strong> </h3>
       
-    {% endif %} -->
+    {% endif %}
       
 
   </div>       
 </div>
 
 
-{% if request.user.is_superuser and not request.user|has_group:'A-Level' and not request.user|has_group:'Bachelor' and not request.user|has_group:'Master'  %}
 
-
-
-{% include "main_home.html" %}
-
-
-  
-{% endif %}
 
 
 <!---------------------------------------------Admin dashboard start----------------------------------------------------------------->
@@ -68,7 +60,105 @@ type="text/javascript"
 src="{% static 'plugins/highcharts/modules/accessibility.js' %}"
 ></script>
 
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <!-- Small boxes (Stat box) -->
+    <div class="row">
+      <div class="col-12 col-sm-6 col-md-3">
+        <div class="info-box border border-success">
+          <span class="info-box-icon elevation-1" style="background-color: #743DB8;color:white;">
+            <a href="{% url 'admin_app:manage_student' %}"> <i class="fas fa-1x fa-user-graduate"></i></a>
+          </span>
 
+          <div class="info-box-content">
+            <span class="info-box-text">Active Students</span>
+            <span class="info-box-number">
+              {{students_count}}
+            </span>
+          </div>
+          <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+      </div>
+      <div class="col-12 col-sm-6 col-md-3">
+        <div class="info-box mb-3 border border-danger">
+          <span class="info-box-icon bg-danger elevation-1"> <i class="fas fa-1x fa-book-open"></i></span>
+
+          <div class="info-box-content">
+            <span class="info-box-text">Inactive students</span>
+            <span class="info-box-number">{{inactive_students_count}}</span>
+          </div>
+        </div>
+      </div>
+      <!-- /.col -->
+      <div class="col-12 col-sm-6 col-md-3">
+        <div class="info-box mb-3 border border-info">
+          <span class="info-box-icon bg-info elevation-1" >
+            <a href="{% url 'admin_app:manage_staff' %}" class="text-white"> <i class="fas fa-1x fa-chalkboard-teacher"></i></a>
+          </span>
+
+          <div class="info-box-content ">
+            <span class="info-box-text">Teachers</span>
+            <span class="info-box-number">{{teachers_count}}</span>
+          </div>
+          <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+      </div>
+      <!-- /.col -->
+
+      <!-- fix for small devices only -->
+      <div class="clearfix hidden-md-up"></div>
+
+      <div class="col-12 col-sm-6 col-md-3">
+        <div class="info-box mb-3 border border-primary">
+          <span class="info-box-icon bg-primary elevation-1">
+            <a href="{% url 'academic:manage_subject' %}"> <i class="fas fa-1x fa-book-open"></i></a>
+          </span>
+
+          <div class="info-box-content">
+            <span class="info-box-text">Subjects</span>
+            <span class="info-box-number">{{subjects_count}}</span>
+          </div>
+          <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+      </div>
+      <!-- /.col -->
+    
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+
+   
+    <!-- -------------------------------------------------------Hight chart start----------------------------------------------- -->
+    <div class="row">
+      <div class="col-md-6">
+        <figure class="users_total">
+          <div id="users_total-container"></div>
+          <!-- <p class="highcharts-description">
+          This pie chart shows the total number os students and teachers.
+      </p> -->
+        </figure>
+      </div>
+      <div class="col-md-6">
+        <figure class="year_subjects">
+          <div id="year_subjects-container"></div>
+          <!-- <p class="highcharts-description">
+          chart for subject and year
+
+      </p> -->
+        </figure>
+      </div>
+    </div>
+    {% include "includes/include_admin/charts/barchart/student_optional_subject/bar.html" %}
+
+    {% include "includes/include_admin/charts/piechart/users_total/pie_chart.html" %}
+    <!-- ------------------------------------------Hight chart end------------------------------------------------- -->
+    {% include "includes/calendar.html" %}
+
+</section>
 
 <!---------------------------------------------Admin dashboard end----------------------------------------------------------------->
 

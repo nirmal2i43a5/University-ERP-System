@@ -46,7 +46,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # path('logs/', HistoryLogs.as_view(), name ="history_log"),
     path('common/mass/delete/<app>/<model>/', mass_delete, name ="mass_delete"),
-    path('dashboard/', main_home.as_view(), name ="home"),
+    path('dashboard/', main_home.as_view(), name ="dashboard"),
    
     # path('a_level_home/',a_level_home,name = "a_level_home"),
     # path('bachelor_home/',bachelor_home,name = "bachelor_home"),

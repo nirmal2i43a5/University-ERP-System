@@ -109,7 +109,7 @@ def user_change_password(request):
              'reset_form': password_reset_form}
 	return render(request, 'user_reset_password/change_password.html',context)
 
-
+@login_required
 def password_change_form(request):
 	if request.method == 'POST' and 'change_pass_button' in request.POST:
     		# i dont see instance when changing password
@@ -123,7 +123,7 @@ def password_change_form(request):
 			return redirect('login')
 
 
-
+@login_required
 # @permission_required('student_management_app.change_student', raise_exception=True)
 def UpdateStudentProfile(request):
 
@@ -148,7 +148,7 @@ def UpdateStudentProfile(request):
 	return render(request, 'profile/edit_student_profile.html', {'custom_form': custom_form, 'student_form': student_form, 'PassForm': PassForm})
 
 
-
+@login_required
 def UpdateParentProfile(request):
 	custom_form = EditCustomUserForm(instance=request.user)
 	parent_form = ParentForm(instance=request.user.parent)
@@ -176,7 +176,7 @@ def UpdateParentProfile(request):
  
 	return render(request, 'profile/edit_parent_profile.html',context)
 
-
+@login_required
 # @permission_required('student_management_app.change_staff', raise_exception=True)
 def UpdateTeacherProfile(request):
 
@@ -204,7 +204,7 @@ def UpdateTeacherProfile(request):
 	}
 	return render(request, 'profile/edit_teacher_profile.html', context)
 
-
+@login_required
 @permission_required('student_management_app.change_adminuser', raise_exception=True)
 def UpdateAdminProfile(request):
 	course_category = request.user.adminuser.course_category

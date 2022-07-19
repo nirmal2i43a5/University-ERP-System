@@ -32,7 +32,11 @@
   
               <div class="card">
                 <div class="card-body">
-            {% if syllabus.file %}
+                  
+                  {% if syllabus %}
+                    
+                    
+                  {% if syllabus.file %}
 
                   <a href="{{syllabus.file.url}}">
             
@@ -54,6 +58,10 @@
                       
                    
                   </div>
+                  {% else %}
+            
+                  <h2>Not Added.</h2>
+                  {% endif %}
             
             
             
