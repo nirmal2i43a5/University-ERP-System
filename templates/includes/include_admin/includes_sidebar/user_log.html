@@ -1,7 +1,7 @@
 
-    
+       {% url 'user_history:log-history-management' as all_log_url  %}
               <li class="nav-item">
-                <a href="{% url 'user_history:user_log' %}" class="nav-link">
+                <a href="{% url 'user_history:log-history-management' %}" class=" nav-item nav-link {% if request.path == all_log_url %} active{% endif %}">
                   <i class="fas  fa-history"></i>
 
                   <p class="text-sm">
@@ -10,6 +10,7 @@
                   </p>
                 </a>
               </li>
+              {% url 'user_history:log-history-management' as all_log_url  %}
               <li class="nav-item">
                 <a href="" class="nav-link">
                   <i class="fas fa-xs fa-chalkboard-teacher"></i>
@@ -41,3 +42,5 @@
              
   
 
+
+              

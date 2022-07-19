@@ -98,7 +98,7 @@ class ParentForm(forms.ModelForm):
                           
              
                 Row(
-            HTML('<a class="btn btn-danger" href="{% url "home" %}">Back</a>'),
+            HTML('<a class="btn btn-danger" href="{% url "dashboard" %}">Back</a>'),
                          
             HTML('<button class="btn btn-success ml-2" type="submit" name = "parent_submit">Save</button>&nbsp;'),
     ) ,

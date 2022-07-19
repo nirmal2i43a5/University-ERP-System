@@ -1,24 +1,86 @@
 
 
+
+
+
+      <li class="nav-item menu-open">
+        <a href="#" class="nav-link">
+          <i class="fas  fa-book"></i>
+          <p>
+            Notice
+            <i class="right fas fa-angle-left"></i>
+          </p>
+        </a>
+  
+        <ul class="nav nav-treeview">
+          {% url 'announcement:announcement-management' as manage_announcement_url  %}
+   
+   
+          <li class="nav-item ml-3">
+             <a href="{% url 'announcement:announcement-management' %}" class=" nav-item nav-link {% if request.path == manage_announcement_url %} active{% endif %}">
+              <i class="far fa-xs fa-circle"></i>
+               <p>
+                Manage Notice
+       
+               </p>
+             </a>
+           </li>
+           {% url 'announcement:add_notice' as add_notice_url  %}
+           <li class="nav-item ml-3">
+            <a href="{% url 'announcement:add_notice' %}" class=" nav-item nav-link {% if request.path == add_notice_url %} active{% endif %}">
+              <i class="far fa-xs fa-circle"></i>
+              <p>
+               Add Notice
+      
+              </p>
+            </a>
+          </li>
+      
+  
+        </ul>
+      </li>
+   
+ 
+
+      <li class="nav-item menu-open">
+        <a href="#" class="nav-link">
+          <i class="fas  fa-child"></i>
+          <p>
+            Holiday
+            <i class="right fas fa-angle-left"></i>
+          </p>
+        </a>
+  
+        <ul class="nav nav-treeview">
+         
+
     
 
-    <li class="nav-item">
-      <a href="{% url 'announcement:manage_notice' %}" class="nav-link">
-        <i class="fas fa-calendar-alt"></i>
-        <p>
-          Notice
-
-        </p>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a href="{% url 'announcement:manage_holiday' %}" class="nav-link">
-        <i class="fas fa-child"></i>
+   
+ 
+    {% url 'announcement:manage_holiday' as manage_holiday_url  %}
+    <li class="nav-item ml-3">
+      <a href="{% url 'announcement:manage_holiday' %}" class=" nav-item nav-link {% if request.path == manage_holiday_url %} active{% endif %}">
+        <i class="far fa-xs fa-circle"></i>
       <p>
-      Holiday
+     Manage Holiday
       
       </p>
       </a>
       </li> 
+           {% url 'announcement:add_holiday' as add_holiday_url  %}
+           <li class="nav-item ml-3">
+            <a href="{% url 'announcement:add_holiday' %}" class=" nav-item nav-link {% if request.path == add_holiday_url %} active{% endif %}">
+              <i class="far fa-xs fa-circle"></i>
+              <p>
+               Add Notice
+      
+              </p>
+            </a>
+          </li>
+      
+  
+        </ul>
+      </li>
    
  

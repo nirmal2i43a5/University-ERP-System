@@ -1,0 +1,80 @@
+<div class="modal fade " id="classModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Choose Class Category</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="classroom" class="row  ml-4 mb-4">
+  
+          <div class="col-md-2">
+            <a href="{% url 'classroom:school-classroom' %}">
+    
+             
+              <span>
+                <strong>School Class </strong>
+              </span>
+            </a>
+    
+            </div>
+            <div class="col-md-2">
+            <a href="{% url 'classroom:plus-two-classroom' %}">
+    
+               
+                <span>
+                <strong>Plus-2 Class </strong>
+                </span>
+            </a>
+    
+            </div>
+            <div class="col-md-2">
+                      <a href="{% url 'classroom:bachelor-classroom' %}">
+    
+                          
+                            <span>
+                              <strong>Bachelor Class </strong>
+                            </span>
+                      </a>
+    
+                      </div>
+              <div class="col-md-2">
+              <a href="{% url 'classroom:master-classroom' %}">
+      
+                
+                  <span>
+                  <strong>Master Class </strong>
+                  </span>
+              </a>
+      
+              </div>
+           
+    
+    
+        </div>
+    
+      </div>
+      <div class="modal-footer">
+        <button type="button" class = "btn" style="background-color: #743DB8;color:white;" data-dismiss="modal">Close</button>
+      </div>
+      </div>
+    </div>
+    </div>
+
+
+    <style>
+        /* For classroom popup  */
+  	#classroom>.col-md-2{
+		border-radius: 50rem;
+	    border: none;
+	    -webkit-box-shadow: 0 0 15px 0 #ddd;
+	    box-shadow: 0 0 15px 0 #ddd;
+	    text-align: center;
+	    background: #fff;
+	 	 padding:3rem 0rem;
+	  	margin:10px 7px 0px 30px; 
+
+	}
+    </style>

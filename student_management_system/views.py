@@ -233,19 +233,19 @@ class home(FullCalendarView, View):
 #     a_level = request.user.adminuser
 #     a_level.course_category = get_object_or_404(CourseCategory, course_name = 'A-Level')
 #     a_level.save()
-#     return redirect('home')
+#     return redirect('dashboard')
 
 # def bachelor_home(request):
 #     a_level = request.user.adminuser
 #     a_level.course_category = get_object_or_404(CourseCategory, course_name = 'Bachelor')
 #     a_level.save()
-#     return redirect('home')
+#     return redirect('dashboard')
 
 # def master_home(request):
 #     a_level = request.user.adminuser
 #     a_level.course_category = get_object_or_404(CourseCategory, course_name = 'Master')
 #     a_level.save()
-#     return redirect('home')
+#     return redirect('dashboard')
 
 def get_user_by_role_ajax(request):
     role = request.GET['role']
@@ -320,7 +320,7 @@ def academic_home(request):
     context = {
         'title':'Academic Management',
                  }
-    return render(request, 'admin_templates/dashboard.html', context)
+    return render(request, 'userlog/academiclog.html', context)
 
 
 def event_home(request):
@@ -434,7 +434,7 @@ def log_history_home(request):
     context = {
         'title':'Log History Management',
                  }
-    return render(request, 'admin_templates/dashboard.html', context)
+    return render(request, 'userlog/userlog.html', context)
 
 def report_home(request):
     context = {

@@ -2,7 +2,18 @@
 {% load auth_extras %}
 
 <ul class="navbar-nav ml-auto">
+
+  
+  {% if request.user.is_superuser %}
+  <button type="button" data-toggle="modal" data-target="#erpComponetsModal" style="background-color: #743DB8;color:white;border-radius:10px;"
+  class = "btn btn-lg float-right  btn-light" ><strong> MIS COMPONENTS </strong></button>
+  <button type="button" data-toggle="modal" data-target="#classModal" class = "btn btn-lg float-right  btn-light" style="background-color: #743DB8;color:white;border-radius:10px;" 
+  ><strong>VISIT CLASSROOM</strong></button>
+  {% endif %}
+    
   <!-- Messages Dropdown Menu -->
+
+
   <li class="nav-item dropdown">
 
   </li>

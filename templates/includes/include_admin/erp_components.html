@@ -1,0 +1,422 @@
+<div class="modal fade " id="erpComponetsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content " style="margin-left:6rem;">
+      <div class="modal-header ">
+        <h1 class="modal-title" id="exampleModalLabel">ERP COMPONENTS</h1>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="home_components" class="row custom-icon ml-4 mb-4">
+
+          <div class="col-md-3">
+          <a href="{% url 'admin_app:user-management' %}">
+
+              <span>
+                <i class="fas fa-2x fa-users"></i>
+                <br />
+                <span>
+                  <strong>User Management </strong>
+                </span>
+              </span>
+          </a>
+
+          </div>
+    
+    <div class="col-md-3">
+
+      <a href="{% url 'role_app:permission-management' %}">
+
+      <span>
+        <i class="fas fa-2x fa-unlock-alt"></i>
+        <br />
+        <span>
+          <strong>Permission Management </strong>
+        </span>
+      </span>
+    </a>
+    </div>
+    <div class="col-md-3">
+
+      <a href="{% url 'academic:academic-management' %}">
+
+      <span>
+        <i class="fas fa-university"></i>
+        <br />
+        <span>
+          <strong>Academic Management </strong>
+        </span>
+      </span>
+    </a>
+    </div>
+    <div class="col-md-3">
+
+      <a href="{% url 'event-management' %}">
+
+      <span>
+        <i class="fas fa-2x fa-calendar"></i>
+        <br />
+        <span>
+          <strong>Event Management </strong>
+        </span>
+      </span>
+    </a>
+    </div>
+    <!-- <div class="col-md-2">
+
+      <a href="{% url 'routine:routine-management' %}">
+
+      <span>
+        <i class="fas fa-calendar-alt"></i>
+        <br />
+        <span>
+          <strong>Timetable Management </strong>
+        </span>
+      </span>
+    </a>
+    </div> -->
+
+    
+  
+    <div class="col-md-3">
+      <a href="{% url 'announcement:announcement-management' %}">
+      <span>
+        <i class="fas fa-clipboard-list"></i>
+        <br />
+        <span>
+          <strong>Announcement Management </strong>
+        </span>
+      </span>
+    </a>
+    </div>
+    <div class="col-md-3">
+      <a href="{% url 'attendance_app:attendance-management' %}">
+      <span>
+        <i class="fas fa-id-badge"></i>
+        <br />
+        <span>
+          <strong>Attendance Management </strong>
+        </span>
+      </span>
+    </a>
+    </div>
+    
+
+{% comment %} 					
+    <div class="col-md-2">
+      <a href="{% url 'library:library-management' %}">
+      <span>
+        <i class="fas fa-book"></i>
+        <br />
+        <span>
+          <strong>Library Management </strong>
+        </span>
+      </span>
+    </a>
+    </div>
+    <div class="col-md-2">
+      <span>
+        <i class="fas fa-file-alt"></i>
+        <br />
+        <span>
+          <strong>Material Management </strong>
+        </span>
+      </span>
+    </div>
+    <div class="col-md-2">
+      <a href="{% url 'inventory:asset-management' %}">
+      <span>
+        <i class="fas fa-book"></i>
+        <br />
+        <span>
+          <strong>Asset Management </strong>
+        </span>
+      </span>
+    </a>
+    </div>
+  <div class="col-md-2" style="background-color:#EBDBC2;">
+      <span>
+        <i class="fas fa-book-open"></i>
+        <br />
+        <span>
+          <strong>Learning Management </strong>
+        </span>
+      </span>
+    </div> 
+
+  <div class="col-md-2" style="background-color:#EBDBC2;">
+        <a href="">
+      <span>
+        <i class="fas fa-rupee-sign"></i>
+        <br />
+        <span>
+          <strong>Fee Management </strong>
+        </span>
+      </span>
+    </a>
+    </div>  {% endcomment %}
+  
+    <!-- <div class="col-md-2">
+      <a href="{% url 'certificate:certificate-management' %}">
+      <span>
+        <img
+          src="https://img.icons8.com/glyph-neue/64/000000/certificate.png"
+        />
+        {% comment %} <i class="fas fa-print"></i> {% endcomment %}
+        <br />
+        <span>
+          <strong>Certificate Generation </strong>
+        </span>
+      </span>
+    </a>
+    </div> -->
+    {% comment %} <div class="col-md-2" style="background-color:#EBDBC2;">
+      <a href="https://github.com/su-haris/django-hms/tree/master/hms">
+      <span>
+        <i class="fas fa-bed"></i>
+        <br />
+        <span>
+          <strong>Hostel Management </strong>
+        </span>
+      </span>
+    </a>
+    </div> {% endcomment %}
+    {% comment %} <div class="col-md-2">
+      <span>
+        <i class="fas fa-warehouse"></i>
+        <br />
+        <span>
+          <strong>Inventory Management </strong>
+        </span>
+      </span>
+    </div> {% endcomment %}
+
+    {% comment %} <div class="col-md-2" style="background-color:#EBDBC2;">
+      <span>
+        <i class="fas fa-star"></i>
+        <br />
+        <span>
+          <strong>Result Module </strong>
+        </span>
+      </span>
+    </div>
+    <div class="col-md-2" style="background-color:#EBDBC2;">
+      <span>
+        <i class="fas fa-file"></i>
+        <br />
+        <span>
+          <strong>Test and Paper </strong>
+        </span>
+      </span>
+    </div> {% endcomment %}
+    {% comment %}
+    <div class="col-md-2">
+      <span>
+        <i class="fas fa-bus"></i>
+        <br />
+        <span>
+          <strong>Exam Planner and Schedule </strong>
+        </span>
+      </span>
+    </div>
+    {% endcomment %}
+    {% comment %} <div class="col-md-2" style="background-color:#EBDBC2;">
+      <span>
+        <i class="fas fa-users"></i>
+        <br />
+        <span>
+          <strong>Human Resource Management </strong>
+        </span>
+      </span>
+    </div>
+    <div class="col-md-2">
+      <span>
+        <i class="fas fa-newspaper"></i>
+        <br />
+        <span>
+          <strong>NewsLetters </strong>
+        </span>
+      </span>
+    </div> {% endcomment %}
+    <div class="col-md-3">
+      <a href="{% url 'email_sms:email-sms-management' %}">
+      <span>
+        <i class="fas fa-envelope"></i>
+        <br />
+        <span>
+          <strong>Email/SMS Services </strong>
+        </span>
+      </span>
+    </a>
+    </div>
+    <div class="col-md-3">
+      <a href="{% url 'user_history:log-history-management' %}">
+      <span>
+        <i class="fas fa-address-book"></i>
+        <br />
+        <span>
+          <strong>User Logs </strong>
+        </span>
+      </span>
+    </a>
+    </div>
+
+
+    {% comment %} <div class="col-md-2">
+      <a href="{% url 'enquiry:enquiry-management' %}">
+      <span>
+        <i class="fas fa-info"></i>
+        <br />
+        <span>
+          <strong>Enquiry Management </strong>
+        </span>
+      </span>
+    </a>
+    </div> {% endcomment %}
+    {% comment %} <div class="col-md-2">
+      <a href="{% url 'complain:complain-management' %}">
+      <span>
+        <i class="fas  fa-comment-dots"></i>
+        <br />
+        <span>
+          <strong>Complain Management </strong>
+        </span>
+      </span>
+    </a>
+    </div> {% endcomment %}
+    {% comment %} <div class="col-md-2" style="background-color:#EBDBC2;">
+      <a href="">
+      <span>
+        <i class="fa fa-users"></i>
+        <br />
+        <span>
+          <strong> Council and Meeting</strong>
+        </span>
+      </span>
+    </a>
+    </div> {% endcomment %}
+    <!-- <div class="col-md-3">
+      <a href="{% url 'transport:transport-management' %}">
+      <span>
+        <i class="fas fa-bus"></i>
+        <br />
+        <span>
+          <strong>Transport Management </strong>
+        </span>
+      </span>
+    </a>
+    </div> -->
+    {% comment %} <div class="col-md-2" style="background-color:#EBDBC2;">
+      <a href="">
+      <span>
+        <i class="fas fa-dungeon"></i>
+        <br />
+        <span>
+          <strong>Admission Management </strong>
+        </span>
+      </span>
+    </a>
+    </div>
+    <div class="col-md-2" style="background-color:#EBDBC2;">
+      <a href="">
+      <span>
+        <i class="fas fa-globe"></i>
+        <br />
+        <span>
+          <strong>Free School websites </strong>
+        </span>
+      </span>
+    </a>
+    </div>
+    <div class="col-md-2" style="background-color:#EBDBC2;">
+      <span>
+        <i class="fas fa-cogs"></i>
+        <br />
+        <span>
+          <strong>Settings </strong>
+        </span>
+      </span>
+    </div> {% endcomment %}
+
+    <!-- <div class="col-md-2" style="background-color:#EBDBC2;">
+      <a href="">
+      <span>
+        <i class="fas fa-chart-line"></i>
+        <br />
+        <span>
+          <strong>Analysis and report </strong>
+        </span>
+      </span>
+    </a>
+    </div> -->
+    {% comment %} <div class="col-md-2" style="background-color:#EBDBC2;">
+      <a href="">
+      <span>
+        <i class="fas fa-calendar-alt"></i>
+        <br />
+        <span>
+          <strong>Nepali Calendar </strong>
+        </span>
+      </span>
+    </a>
+    </div> {% endcomment %}
+    {% comment %} <div class="col-md-2" style="background-color:#EBDBC2;">
+      <a href="">
+      <span>
+        <i class="fas fa-vote-yea"></i>
+        <br />
+        <span>
+          <strong>College Election </strong>
+        </span>
+      </span>
+    </a>
+    </div> {% endcomment %}
+    <div class="col-md-3" style="background-color:#EBDBC2;">
+      <a href="">
+      <span>
+        <i class="fas fa-vote-yea"></i>
+        <br />
+        <span>
+          <strong>Apply leave(Student only) </strong>
+        </span>
+      </span>
+    </a>
+    </div>
+  </div>
+    
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn" style="background-color: #743DB8;color:white;"  data-dismiss="modal">Close</button>
+      </div>
+      </div>
+    </div>
+    </div>
+
+    <style>
+        /* for Mis components */
+  #home_components>.col-md-3{
+		border-radius: 5px;
+	    border: none;
+	    -webkit-box-shadow: 0 0 15px 0 #ddd;
+	    box-shadow: 0 0 15px 0 #ddd;
+
+	    text-align: center;
+	    background: #fff;
+	 	 padding-top:1rem;
+		  padding-bottom:1rem;
+	  	/* margin:10px 7px 0px 30px; */
+		  margin:10px 7px 0px 70px;
+
+	}
+
+	.custom-icon i{
+	    padding: 20px;
+	    font-size: 50px;
+	    text-align: center;
+	    color: #115c8d;
+		padding-top:inherit;
+		padding-bottom: 1px;
+		margin-bottom:0.7rem;
+	}
+    </style>

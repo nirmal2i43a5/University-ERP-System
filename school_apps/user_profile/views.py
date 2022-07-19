@@ -43,9 +43,9 @@ def loginView(request):
 				group = request.user.groups.all()[0].name
 
 			if group == 'Super-Admin' or request.user.is_superuser:
-				return redirect('superuser_home')
+				return redirect('dashboard')
 			elif group:
-				return redirect('home')
+				return redirect('dashboard')
 			else:
 				# i case i choose wrong role based on username and password
 				messages.error(request, "Invalid User")

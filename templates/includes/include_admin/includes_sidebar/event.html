@@ -1,15 +1,7 @@
 
+{% url 'manage_event' as manage_event_url  %}
 <li class="nav-item">
-  <a href="/schedule/fullcalendar/event/" class="nav-link">
-    <i class="far  fa-circle"></i>
-    <p>
-      View Calendar
-
-    </p>
-  </a>
-</li>
-<li class="nav-item">
-    <a href="{% url 'manage_event'  %}" class="nav-link">
+    <a href="{% url 'manage_event'  %}" class=" nav-item nav-link {% if request.path == manage_event_url %} active{% endif %}">
       <i class="far  fa-circle"></i>
       <p>
         Manage Event
@@ -18,10 +10,12 @@
     </a>
   </li>
 
+
+
  
 
   <li class="nav-item">
-    <a href="" class="nav-link">
+    <a href="/schedule/create/event/" class=" nav-item nav-link {% if request.path == '/schedule/create/event/' %} active{% endif %}">
       <i class="far  fa-circle"></i>
       <p>
        Add Event
@@ -29,9 +23,17 @@
       </p>
     </a>
   </li>
-
+  <li class="nav-item">
+    <a href="/schedule/fullcalendar/event/" class=" nav-item nav-link {% if request.path == '/schedule/fullcalendar/event/' %} active{% endif %}">
+      <i class="far  fa-circle"></i>
+      <p>
+        View Calendar
+  
+      </p>
+    </a>
+  </li>
     <!-- <li class="nav-item ml-3">
-          <a href="{% url 'add_calendar_slug'  %}" class="nav-link">
+          <a href="{% url 'add_calendar_slug'  %}" class=" nav-item nav-link {% if request.path == assignment_url %} active{% endif %}">
             <i class="far  fa-circle"></i>
             <p>
               Add Calendar Slug

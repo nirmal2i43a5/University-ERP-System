@@ -129,7 +129,7 @@ class SystemAdminForm(forms.ModelForm):
             ),
                     Row(
                HTML(
-                   '<a class="btn btn-danger" href="{% url "home" %}">Back</a>'),
+                   '<a class="btn btn-danger" href="{% url "dashboard" %}">Back</a>'),
 
             HTML('<button class="btn btn-success ml-2" name = "admin_submit" type="submit">Save</button>&nbsp;'),
     ),

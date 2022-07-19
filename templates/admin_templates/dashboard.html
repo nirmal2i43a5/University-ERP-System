@@ -1,4 +1,7 @@
-{% extends request.user.is_superuser|yesno:'admin_templates/superadmin_base.html,admin_templates/base_admin.html' %}
+
+
+ 
+{% extends 'admin_templates/base_admin.html' %}
 {% load scheduletags i18n %}
 {% load static %}
 {% load auth_extras %}
@@ -13,7 +16,7 @@ Dashboard
 
 
 <div class="card mx-4">
-  <div class="card-body" style="background-color: #743DB8;color:white;">
+  <div class="card-body" style="background-color: #743DB8;color:white;border-radius:10px;">
 
     
     {% if request.user|has_group:'Teacher' %}
@@ -27,21 +30,36 @@ Dashboard
     {% if request.user|has_group:'Parent' %}
     <h3 style="text-align: center;"><strong>Parent Portal</strong> </h3>
     {% endif %}
+    {% if url_name == 'dashboard' %}
     {% if request.user.is_superuser %}
-    <h3 style="text-align: center;"><strong>SuperAdmin Portal</strong> </h3>
+   
+        <h3 class = "mt-1"style="text-align: center;"><strong>SUPERADMIN PORTAL</strong> </h3>
+
+     
+   
+
+   
+
+  
+  
+
+    
       
     {% endif %}
-      
+    {% endif %}
+
 
   </div>       
 </div>
 
+{% include "includes/include_admin/erp_components.html" %}
 
-
-
+{% include "includes/include_admin/classroom_popup.html" %}
 
 <!---------------------------------------------Admin dashboard start----------------------------------------------------------------->
 {% if request.user.is_superuser %}
+
+{% if url_name == 'dashboard' %}
 
 <script
 type="text/javascript"
@@ -159,6 +177,9 @@ src="{% static 'plugins/highcharts/modules/accessibility.js' %}"
     {% include "includes/calendar.html" %}
 
 </section>
+{% endif %}
+  
+
 
 <!---------------------------------------------Admin dashboard end----------------------------------------------------------------->
 

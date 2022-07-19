@@ -43,7 +43,15 @@
         data-accordion="false"
       >
        
-       
+      <li class="nav-item">
+        <a href="{% url 'dashboard'  %}" class="nav-link">
+          <i class="fas  fa-tachometer-alt"></i>
+          <p style="margin-left:3rem;">
+            Dashboard
+
+          </p>
+        </a>
+      </li>
 
         {% if url_name == 'school-classroom' or url_name == 'school-classroom-contents' %}
         <li class="nav-item">

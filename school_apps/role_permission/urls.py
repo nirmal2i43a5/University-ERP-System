@@ -13,5 +13,5 @@ urlpatterns = [
     # path('edit_permission/<str:pk>/',UserRoleUpdate.as_view(),name = 'edit_permission'),
       path('manage_permission/',user_permission_manage,name = 'manage_permission'),
          path('save_permission/',save_permission,name = 'save_permission'),
-            path('permission-management/', permission_home,name = 'permission-management'),
+            path('permission-management/', UserRoleMange.as_view(),name = 'permission-management'),
 ]

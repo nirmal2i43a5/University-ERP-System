@@ -78,7 +78,7 @@ urlpatterns = [
     
     # Event Urls
     
-    path('event/create/<calendar_slug>/',CreateEventView.as_view(),name="calendar_create_event"),
+    path('create/<calendar_slug>/',CreateEventView.as_view(),name="calendar_create_event"),
     path('manage_event/',ListEventView.as_view(),name = 'manage_event'),
     path('event_detail/<str:id>/',EventDetailView,name = 'event_detail'),
     url(

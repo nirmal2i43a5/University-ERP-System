@@ -24,6 +24,6 @@ urlpatterns=[
     path('event/log/', event_log, name = "event_log"),
     path('event/delete/log/', delete_event_log, name = "delete_event_log"),
     
-    path('announcement-management/', announcement_home,name = 'announcement-management'),#for dynamic sidebar
+    path('announcement-management/', manage_notice,name = 'announcement-management'),#for dynamic sidebar
 
 ]

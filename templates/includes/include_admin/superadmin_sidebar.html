@@ -35,9 +35,9 @@
 
     <nav class="mt-2">
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-       
+        {% url 'dashboard' as dashboard_url  %}
         <li class="nav-item">
-          <a href="{% url 'dashboard'  %}" class="nav-link">
+          <a href="{% url 'dashboard'  %}" class=" nav-item nav-link {% if request.path == dashboard_url %} active{% endif %}">
             <i class="fas  fa-tachometer-alt"></i>
             <p>
               Dashboard
@@ -45,15 +45,7 @@
             </p>
           </a>
         </li>
-        <li class="nav-item">
-          <a href="{% url 'superuser_home'  %}" class="nav-link">
-            <i class="fas  fa-home"></i>
-            <p>
-              Home
-
-            </p>
-          </a>
-        </li>
+     
     
 
         <!-----------------------------------User Sidebar------------------------------------------>
@@ -97,8 +89,9 @@
             {% endif %}
           </ul>
         </li> -->
+        {% url 'admin_profile_update' as admin_profile_url  %}
         <li class="nav-item">
-          <a href="{% url 'admin_profile_update' %}" class="nav-link">
+          <a href="{% url 'admin_profile_update' %}" class=" nav-item nav-link {% if request.path == admin_profile_url %} active{% endif %}">
             <i class="fas  fa-user"></i>
 
             <p>
@@ -107,8 +100,9 @@
 
           </a>
         </li>
+        {% url 'change_password' as change_password_url  %}
         <li class="nav-item">
-          <a href="{% url 'change_password' %}" class="nav-link">
+          <a href="{% url 'change_password' %}" class=" nav-item nav-link {% if request.path == change_password_url %} active{% endif %}">
             <i class="fas  fa-key"></i>
 
             <p>
@@ -117,19 +111,21 @@
 
           </a>
         </li>
+        {% url 'setting_app:general_setting' as setting_url  %}
         <li class="nav-item">
-          <a href="{% url 'setting_app:general_setting' %}" class="nav-link">
+          <a href="{% url 'setting_app:general_setting' %}" class=" nav-item nav-link {% if request.path == setting_url %} active{% endif %}">
             <i class="fas fa-xs fa-cogs"></i>
-            <p class="text-sm">
+            <p>
               General Settings
   
             </p>
           </a>
         </li>
+        {% url 'change_other_password' as other_password_change_url  %}
   
         <li class="nav-item">
-          <a href="{% url 'change_other_password' %}" class="nav-link">
-            <i class="fas  fa-key"></i>
+          <a href="{% url 'change_other_password' %}" class=" nav-item nav-link {% if request.path == other_password_change_url %} active{% endif %}">
+            <i class="fas fa-user-lock"></i>
             <p>
               Reset Other Password
   
@@ -150,7 +146,7 @@
 
 
 
-
+ 
 
 
 
