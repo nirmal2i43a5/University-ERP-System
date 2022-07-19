@@ -10,7 +10,7 @@
 <aside class="main-sidebar sidebar-light text-white elevation-4" style="background-color: #743DB8;border-radius:12px;">
   <!-- Brand Logo -->
   <a href="{% url 'dashboard'  %}">
-    <div class="user-panel ml-3 pb-1 mr-2 mt-1 d-flex">
+    <div class="user-panel ml-3 pb-1 mr-2 mt-2 d-flex">
       <img src="{% static 'image/easy-academy-1.png' %}"  style="width:300px;height:65px;"  class="img-rectangle ">
   <!-- <img src="" style = "width:150px;height:110px;" class="img-rectangle "> -->
 
@@ -22,7 +22,7 @@
 
   <div class="sidebar mx-2">
 
-    <div class="user-panel mt-1 pb-3 mb-1 d-flex">
+    <div class="user-panel mt-3 pb-3 mb-1 d-flex">
       <div class="image">
 
         <img src="{% static 'image/admin.png' %}" class="img-circle elevation-2" alt="User Image">
@@ -67,7 +67,7 @@
             </p>
           </a>
         </li>
-
+       
         {% if request.user.is_superuser %}
       
         {% url 'admin_app:user-management' as user_url %}
@@ -91,13 +91,15 @@
         {% url 'transport:transport-management' as transport_url %}
         {% url 'manage-report' as report_url %}
        
-
+     
         {% if request.path ==  user_url or request.path|has_namespace:'/user-management/,admin_app'  %}
+        
         {% include "includes/include_admin/includes_sidebar/users.html" %}
         {% elif request.path ==  dashboard_url  %}
         {% include "includes/include_admin/superadmin_sidebar.html" %}
 
         {% elif request.path ==  permission_url or request.path|has_namespace:'/permission-management/,role_app'  %}
+        
         {% include "includes/include_admin/includes_sidebar/role_permission.html" %}
 
         {% elif request.path ==  academic_url or request.path|has_namespace:'/academic-management/, admin_app'  %}

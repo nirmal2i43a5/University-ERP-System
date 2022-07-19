@@ -21,6 +21,7 @@ from django.http import HttpResponseRedirect,JsonResponse
 from django.contrib.contenttypes.models import ContentType
 from django.utils import timezone
 from django.contrib.auth.decorators import  permission_required
+from django.http import HttpResponse
 
 
 
@@ -50,9 +51,9 @@ class HistoryLogs(View):
 
 
 
-# @permission_required('student_management_app.view_superadmin_home', raise_exception=True)
-def superuser_home(request):
-    return render(request, 'superadmin_home.html')
+@login_required
+def redirect_home(request):
+    return HttpResponse('<script>window.location.href = "/dashboard/";</script>')
 
 
 class home(FullCalendarView, View):
@@ -307,7 +308,7 @@ def user_home(request):
     context = {
         'title':'User Management',
                  }
-    return render(request, 'admin_templates/dashboard.html', context)
+    return render(request, 'userlog/particular_user_log.html', context)
 
 
 def permission_home(request):

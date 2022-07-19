@@ -1,0 +1,96 @@
+{% extends 'admin_templates/base_admin.html' %}{% load static from static %}
+{% block title %}User Log{% endblock %}
+{% block content%}
+<style>
+    code {
+    color: #195da9;
+    font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+    font-size: .8rem;
+
+
+}
+
+</style>
+<div class="card mx-2">
+  {% include 'override_table/header.html' with card_title='User Logs' %}
+
+
+  <!-- /.card-header -->
+  <div class="card-body table-responsive">
+
+
+
+
+        <div class="table-responsive">
+          <table
+            id="table" 
+            data-ajax="/api/v1/particularuserlog/?format=datatables&id={{ request.GET.id | stringformat:'s' }}"
+            class="table table-bordered table-striped table-hover"
+          >
+            <thead>
+              <tr>
+                <th>#</th>
+                <th data-data = "username">User</th><!-- targets: 1-->
+                <th data-data="ip">IP</th>
+                {% comment %} <th data-data="app_name">App</th> {% endcomment %}
+                <th data-data="model_name">Model</th>
+                <th>Action</th>
+                {% comment %} <th>Fields</th> {% endcomment %}
+                <th data-data="created_at">Log Date Time</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+
+  </div>
+</div>
+
+
+{% endblock %} {% block javascript %}
+<script>
+  $(function () {
+    table = $("#table").DataTable({
+      dom: "B<'m-2 row d-flex justify-content-between'lf>rtip",
+      buttons: ["copy", "csv", "excel", "pdf", "print"],
+      columnDefs: [
+        {
+          targets: 0,
+          render: function (data, type, row, meta) {
+            return meta.row + 1;
+          },
+        },
+        {
+          targets: 1,
+          render: function (data, type, row, meta) {
+            if(row.user){
+              return row.user.full_name + '('+row.user.email+')';
+            }
+            return '('+row.user.email+')';
+          },
+        },
+       /*
+        {
+          targets: 6,//target to Fields in 
+          render: function (data, type, row, meta) {
+             return  `<code>${row.object_instance}</code>`;            
+          },
+        },*/
+        {
+          targets: 4,
+          render: function (data, type, row, meta) {
+              if(row.action == 1){
+                  return '<span class="badge badge-success">create</span>'
+              }else if(row.action == 2){
+                    return '<span class="badge badge-warning">update</span>'
+              }else{
+                    return '<span class="badge badge-danger">delete</span>'
+              }
+            return "";
+          },
+        },
+      ],
+    });
+  });
+</script>
+{% endblock %}
+

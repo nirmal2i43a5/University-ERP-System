@@ -21,16 +21,36 @@
   <!-- --------------------------------------------Sidebar ----------------------------------------------->
 
   <div class="sidebar">
-    <div class="user-panel mt-1 pb-3 mb-1 d-flex">
+ 
+    <div class="user-panel mt-3 pb-3 mb-1 d-flex">
       <div class="image">
-        <img
-          src="{% static 'image/admin.png' %}"
-          class="img-circle elevation-2"
-          alt="User Image"
-        />
+
+        <img src="{% static 'image/admin.png' %}" class="img-circle elevation-2" alt="User Image">
+
       </div>
 
-      <div class="info"></div>
+      <div class="info">
+
+        {% if request.user|has_group:'Teacher' %}
+
+        <a href="{% url 'teacher_profile_update' %}" class="d-block">{{ request.user.username }}</a>
+
+        {% elif request.user|has_group:'Student' %}
+
+        <a href="{% url 'student_profile_update' %}" class="d-block">{{ request.user.username }}</a>
+
+        {% elif request.user|has_group:'Parent' %}
+
+        <a href="{% url 'parent_profile_update' %}" class="d-block">{{ request.user.username }}</a>
+
+        {% elif request.user|has_group:'Admin' or request.user.is_superuser %}
+
+        <a href="{% url 'admin_profile_update' %}" class="d-block">{{ request.user.adminuser }}</a>
+        {% endif %}
+
+      </div>
+
+
     </div>
 
     <!-- -----------------------------------------------Sidebar Menu------------------------------------------------ -->
