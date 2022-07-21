@@ -18,6 +18,16 @@
 <!-- Main content -->
 <section class="content">
   <div class="container-fluid">
+    
+    {% if form.errors %}
+    <div class="alert alert-danger">
+      {% for field in form %}
+          {% if field.errors %}<li>{{ field.label }}: {{ field.errors|striptags }}</li>{% endif %}
+      {% endfor %}
+</div>
+    {% endif %}
+      
+
 
     {% include "includes/messages.html" %}
 

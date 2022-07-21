@@ -10,7 +10,8 @@ from django_countries.fields import CountryField
 from ckeditor.fields import RichTextField
 from django.contrib.auth.models import Group
 from school_apps.transports.models import Transport
-from simple_history.models import HistoricalRecords
+# from simple_history.models import HistoricalRecords
+from student_management_system.validators import (validate_file_extension, img_pdf_file_validate_file_extension, pdf_file_validate_file_extension,)
 
 # from PIL import Image
 # for qrcode
@@ -157,7 +158,7 @@ class AdminUser(models.Model):
     gender = models.CharField(
         max_length=20, choices=gender_choice, default='Male', blank=True)
     religion = models.CharField(max_length=100, blank=True)
-    contact = models.CharField(max_length=30, blank=True)
+    contact = models.CharField(max_length=30, blank=True,unique = True)
     address = models.CharField(max_length=255, blank=True)
     join_date = models.DateField(null=True,blank = True)
     image = models.ImageField(upload_to='admin_images', null=True, blank=True)
@@ -215,7 +216,7 @@ class Staff(models.Model):
     religion = models.CharField(max_length=100)
     department = models.ForeignKey(Department, on_delete=models.CASCADE, blank=True, null=True)
     address = models.CharField(max_length=255)
-    contact = models.CharField(max_length=30)
+    contact = models.CharField(max_length=30,unique = True)
     join_date = models.DateField(null=True,blank = True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -261,7 +262,7 @@ class ExtraUser(models.Model):  # this all other user like driver accountant and
     branch = models.ForeignKey(Branch, on_delete=models.CASCADE, blank=True, null=True)
     gender = models.CharField(max_length=20, choices=gender_choice, default='Male')
     religion = models.CharField(max_length=100, blank=True)
-    contact = models.CharField(max_length=30, blank=True)
+    contact = models.CharField(max_length=30, blank=True,unique = True)
     address = models.CharField(max_length=255, blank=True)
     join_date = models.DateField(null=True)
     image = models.ImageField(upload_to='user_images', null=True, blank=True)
@@ -557,7 +558,7 @@ class Student(models.Model):
     course_category = models.ForeignKey(CourseCategory, on_delete=models.CASCADE,null = True, blank=True)
     program = models.CharField(max_length=250, null=True,blank=True)
     status = models.CharField(max_length=50,choices = status_choices)
-    contact = models.CharField(max_length=30, blank=True)
+    contact = models.CharField(max_length=30, blank=True,unique = True)
     guardian = models.ForeignKey(Parent, on_delete=models.DO_NOTHING,null=True, blank=True)
     permanent_address = models.CharField(max_length=255, blank=True)
     temporary_address = models.CharField(max_length=255, blank=True)
@@ -661,7 +662,7 @@ class Student(models.Model):
 
 class DocumentFile(models.Model):
     title = models.CharField(max_length=100)
-    file = models.FileField(upload_to='document_files')
+    file = models.FileField(upload_to='document_files', max_length=500,validators=[img_pdf_file_validate_file_extension])
     student = models.ForeignKey(Student, on_delete=models.CASCADE, null=True)
     staff = models.ForeignKey(Staff, on_delete=models.CASCADE, null=True)
     parent = models.ForeignKey(Parent, on_delete=models.CASCADE, null=True)
@@ -685,9 +686,9 @@ class DocumentFile(models.Model):
 class Complain(models.Model):
     title = models.CharField(max_length=100)
     role = models.CharField(max_length=100)
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     description = RichTextField()
-    attachment = models.FileField(upload_to='Complain_attachment', blank=True)
+    attachment = models.FileField(upload_to='Complain_attachment', blank=True,max_length=500,validators=[validate_file_extension])
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
     

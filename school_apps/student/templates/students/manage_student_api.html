@@ -1,0 +1,184 @@
+
+
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+{% load static  %}
+
+{% block title %} Manage Student {% endblock %}
+
+{% block main_content %}
+
+<section class="content">
+  <div class="container-fluid">
+
+  {% include "includes/messages.html" %}
+
+    <div class="row">
+      <div class="col-12">
+
+        <div class="card" >
+          
+          <div class="card-header" style="background-color: #743DB8;color:white;" >
+            
+
+            <span>{{title}}</span>
+
+            <form class="float-right mb-2" role="search"  method="GET" style="height: 27px;margin:auto;position:relative;">
+              <div class="input-group">
+             
+          
+                {{ form|crispy }} 
+            
+                <div class="input-group-btn ">
+                  <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+    
+                </div>
+              </div>
+            </form>
+          
+
+          </div>
+
+          <!-- /.card-header -->
+          <div class="card-body table-responsive">
+       
+            <a href="{% url 'admin_app:student_bulk_photo_upload' %}" class="btn btn-xs float-right ml-2 mb-4 "  style="background-color: #743DB8;color:white;">
+              <i class="fas fa-xs fa-upload"></i> <strong> Bulk Photos Upload</strong></a>
+              <a href="{% url 'admin_app:student_file_upload' %}" class="btn btn-xs float-right ml-2 mb-4 "  style="background-color: #743DB8;color:white;">
+                <i class="fas fa-xs fa-upload"></i> <strong>Bulk Student Upload</strong></a>
+                <a href="{% url 'admin_app:inactive_students' %}" class="btn btn-xs float-right ml-2 mb-4 "  style="background-color: #743DB8;color:white;">
+                  <i class="fas fa-xs fa-eye"></i> <strong>View Inactive Students</strong></a>
+
+            {% url 'admin_app:add_student' as button_url %}
+
+            {% include 'override_table/header_button.html' with button_title='student' button_url=button_url %}
+
+            
+            <form action="{% url 'student:bulk_print_id_card' %}" id="printadmitcard_form" method="POST">
+              {% csrf_token %}
+              <div id="printadmitcard_form_div">    
+              </div>
+              <input type="text" name="count" value="0" id="application_count" readonly hidden>
+              
+             
+          
+              <input type="submit" id="printadmitcard_form_submit" hidden>
+          </form>
+          <div class="table-responsive">
+            <table
+               id ="student-table"
+              class="table  table-sm  table-striped table-bordered  text-nowrap  no-footer"
+              style="width: 100%"
+              data-server-side="true"
+              data-ajax="/api/v1/students/?format=datatables"
+            >
+              <thead>
+                <tr>
+                  <th data-data="select"><input id="checkBox" type="checkbox" /></th>
+                  <th data-data="id">id</th>
+                  <th data-data="id">#</th>
+                  <th data-data="image">Image</th>
+                  <th data-data="stu_id">Student Id</th>
+                  <th data-data="full_name">Full Name</th>
+                  <th data-data="semester">Class</th>
+                  <th data-data="section">Section</th>
+                  <th data-data="father_phone">Parent Contact</th>
+                  <th data-data="contact">Student Contact</th>
+                  <th data-data="username">Username</th>
+                  <th data-data="Action">Action</th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+        
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- /.content -->
+<!-- Button trigger modal -->
+
+{% endblock main_content %}
+
+{% block custom_js %}
+
+
+        
+    <script>
+      $("#id_semester").change(function(){
+        var class_id = $(this).val();
+        
+        $.ajax({
+            url:" {% url 'courses:fill_section_select'%}",
+            data:{'class':class_id},
+            success:function(data){
+                $("#id_section").html(data);
+            }
+        })
+    })
+    
+        $(document).ready(function(){
+         
+        /*
+
+        For ajax datatables with django rest api
+
+        */
+        $(function () {
+          table = $("#student-table").DataTable(getDataTableConfig({//call getDataTableConfig located in  base_admin.py
+           
+            table_id: '#student-table',
+            delete_id_key: 'id',
+            message_title: 'Student',
+            Model: 'Student',
+            app_name : 'student_management_app',
+            replace_app_name: 'student_management_app',
+            action_index: $("#student-table th").length - 1,
+           edit_url: '{% url "admin_app:edit_student"  "pk_val" %}',
+           delete_url: '', 
+           view_url:'{% url "admin_app:view_student"  "pk_val" %}',
+           make_inactive_url:'{% url "admin_app:make_student_inactive"  "pk_val" %}',
+           action : 'delete',
+        
+            additionalColumn: [{
+              targets: 3,
+              render: function (data, type, row, meta) {
+                if (row.image) {
+                  return ` <img src="${row.image}" alt="" style="width:35px;height:35px;" class="img-circle" />`;
+                } else {
+                  return ` <img src="{% static 'image/default_profile.png' %}" alt="" style="width:35px;height:35px;" class="img-circle" />`;
+                }
+      
+              },
+            },
+            
+            {
+              targets: 12,//number of field i want to show in datatables(from id(#) to Username = 9)
+              "visible": false,
+            },
+            ]
+          }));
+          table
+            .buttons()
+            .container()
+            .appendTo($(".col-sm-6:eq(0)", table.table().container()));
+      
+        
+          })
+      
+      
+        });
+       
+    </script>
+
+
+{% endblock custom_js %}
+
+
+

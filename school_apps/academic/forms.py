@@ -4,6 +4,21 @@ from school_apps.academic.models import Syllabus, Assignment, Routine,Section,En
 from student_management_app.models import Semester, Subject,CourseCategory,Course,Staff, SubjectTeacher
 from django.contrib.admin.widgets import AdminSplitDateTime
 
+from django.template.defaultfilters import filesizeformat
+from django.utils.translation import ugettext_lazy as _
+
+# 500kb = 524288
+# 1MB - 1048576
+# 2.5MB - 2621440
+# 5MB - 5242880
+# 10MB - 10485760
+# 20MB - 20971520
+# 50MB - 5242880
+# 100MB 104857600
+# 250MB - 214958080
+# 500MB - 429916160
+MAX_UPLOAD_SIZE = "1048576"
+
 
 
 
@@ -73,6 +88,18 @@ class AssignmentForm(forms.ModelForm):
     Subject = forms.ModelChoiceField(empty_label = 'Select Subject',
                                       queryset = Subject.objects.all()
                                      )
+
+    def clean(self):
+        self.check_file()
+        return self.cleaned_data
+
+    def check_file(self):
+        content = self.cleaned_data["file"]
+        content_type = content.content_type.split('/')[0]
+        if content.size > int(MAX_UPLOAD_SIZE):
+            raise forms.ValidationError(_("Please keep file size under %s. Current file size %s")%(filesizeformat(MAX_UPLOAD_SIZE), filesizeformat(content.size)))
+        return content
+    
     class Meta:
         model = Assignment
         fields = '__all__'
@@ -395,39 +422,40 @@ class SubjectSearchForm(forms.Form):
 #         model = Semester
 #         fields = ('master_semester','description','name')
         
-class SectionForm(forms.ModelForm):#for a-level
-    course_category = forms.ModelChoiceField(queryset = CourseCategory.objects.exclude(course_name__in = ['School']), widget=forms.RadioSelect())
-    name = forms.CharField(required = False, widget=forms.TextInput(
-        attrs={'placeholder': 'Enter Your Class Name'}))
-    # semester_value = forms.IntegerField(required = False, widget=forms.NumberInput(
-    #     attrs={'placeholder': 'Enter Semester Value'}))
-    description = forms.CharField(required=False, widget=forms.Textarea(
-        attrs={'rows': 2, 'cols': 10, "placeholder": " Enter  Course Description", }))
+# class SectionForm(forms.ModelForm):#for a-level
+#     course_category = forms.ModelChoiceField(queryset = CourseCategory.objects.exclude(course_name__in = ['School']), widget=forms.RadioSelect())
+#     name = forms.CharField(required = False, widget=forms.TextInput(
+#         attrs={'placeholder': 'Enter Your Class Name'}))
+#     # semester_value = forms.IntegerField(required = False, widget=forms.NumberInput(
+#     #     attrs={'placeholder': 'Enter Semester Value'}))
+#     description = forms.CharField(required=False, widget=forms.Textarea(
+#         attrs={'rows': 2, 'cols': 10, "placeholder": " Enter  Course Description", }))
 
    
-    class Meta:
-        model = Semester
-        fields = ('course_category','name','description')
+#     class Meta:
+#         model = Semester
+#         fields = ('course_category','name','description')
         
-class SectionForm(forms.ModelForm):#for a-level
-    course_category = forms.ModelChoiceField(queryset = CourseCategory.objects.all(), widget=forms.RadioSelect())
-    name = forms.CharField(required = False, widget=forms.TextInput(
-        attrs={'placeholder': 'Enter Your Class Name'}))
-    # semester_value = forms.IntegerField(required = False, widget=forms.NumberInput(
-    #     attrs={'placeholder': 'Enter Semester Value'}))
-    description = forms.CharField(required=False, widget=forms.Textarea(
-        attrs={'rows': 2, 'cols': 10, "placeholder": " Enter  Course Description", }))
+        
+# class SectionForm(forms.ModelForm):#for a-level
+#     course_category = forms.ModelChoiceField(queryset = CourseCategory.objects.all(), widget=forms.RadioSelect())
+#     name = forms.CharField(required = False, widget=forms.TextInput(
+#         attrs={'placeholder': 'Enter Your Class Name'}))
+#     # semester_value = forms.IntegerField(required = False, widget=forms.NumberInput(
+#     #     attrs={'placeholder': 'Enter Semester Value'}))
+#     description = forms.CharField(required=False, widget=forms.Textarea(
+#         attrs={'rows': 2, 'cols': 10, "placeholder": " Enter  Course Description", }))
 
    
-    class Meta:
-        model = Semester
-        fields = ('course_category','name','description')
+#     class Meta:
+#         model = Semester
+#         fields = ('course_category','name','description')
         
 class SectionForm(forms.ModelForm):
  
     course_category = forms.ModelChoiceField(queryset = CourseCategory.objects.all(), widget=forms.RadioSelect())
-    course = forms.ModelChoiceField(required = False, queryset = Course.objects.none())
-    semester = forms.ModelChoiceField(queryset = Semester.objects.none())
+    course = forms.ModelChoiceField(required = False, queryset = Course.objects.all())
+    semester = forms.ModelChoiceField(queryset = Semester.objects.all())
     # section_name = forms.CharField(label='Section Name', widget=forms.TextInput(
     #     attrs={"class": "form-control", "placeholder": " Enter Section Name", }))
     # capacity = forms.IntegerField(required = False, label='Capacity', widget=forms.NumberInput(

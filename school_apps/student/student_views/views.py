@@ -721,10 +721,10 @@ def manage_student(request):
 
     semester_query = request.GET.get('semester')
     section_query = request.GET.get('section')
-    group_query = request.GET.get('group')
+    # group_query = request.GET.get('group')
 
     
-    if semester_query and section_query and group_query:
+    if semester_query and section_query:
         search_students = Student.objects.filter(semester = semester_query, section = section_query,faculty = group_query,student_user__is_active = 1)
         context = {'students': search_students,'form':search_form}
         return render(request, 'students/manage_student.html', context)
@@ -739,10 +739,7 @@ def manage_student(request):
         context = {'students': search_students,'form':search_form}
         return render(request, 'students/manage_student.html', context)
     
-    elif group_query:
-        search_students = Student.objects.filter(faculty = group_query, student_user__is_active = 1)
-        context = {'students': search_students,'form':search_form}
-        return render(request, 'students/manage_student.html', context)
+
 
     else:
         context = {

@@ -13,8 +13,11 @@
 <!-- Main content -->
 <section class="content">
   <div class="container-fluid">
-
-    {% include "includes/messages.html" %}
+    <div class="p-2 flex-grow-1 bd-highlight">
+      <div class="alert alert-default-danger">
+        Please, Upload <strong>Image or Pdf</strong> files Only.
+      </div>
+    </div>
 
     <div class="row">
       <div class="col-md-12">
@@ -29,7 +32,7 @@
             {% csrf_token %}
 
 
-            <input type="file" class = "ml-2 form-control col-md-6" name="answer_upload">
+            <input type="file" id="file" class = "ml-2 form-control col-md-6" name="answer_upload">
             <button type="submit" class="btn btn-sm btn-success ml-2 mt-2 mb-2">Upload</button>
         </form>
         {% if error_status %}
@@ -46,3 +49,18 @@
 </section>
 <!-- /.content -->
 {% endblock main_content %}
+
+{% block custom_js %}
+<script>
+  
+var uploadField = document.getElementById("file");
+
+uploadField.onchange = function() {
+    if(this.files[0].size > 1048576){
+       alert("File is too big!Please choose a file less than 1MB.");
+       this.value = "";
+    };
+};
+</script>
+  
+{% endblock custom_js %}

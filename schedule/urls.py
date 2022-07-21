@@ -29,7 +29,7 @@ from student_management_system.views import event_home
 # app_name = 'calendar'
 
 urlpatterns = [
-     path('event-management/', event_home,name = 'event-management'),#for dynamic sidebar
+     path('event-management/', ListEventView.as_view(),name = 'event-management'),#for dynamic sidebar
        #calendar_slug_add
       path('calendar/add/',CalendarCreateView.as_view(),name="add_calendar_slug"),
     url(

@@ -19,8 +19,8 @@
 
         <div class="card" >
           
-          <div class="card-header" style="background-color: #743DB8;color:white;" >
-            
+          <div class="card-header" style="background-color: #7650B9;color:white;" >
+       
 
             <span>{{title}}</span>
 
@@ -65,33 +65,91 @@
           
               <input type="submit" id="printadmitcard_form_submit" hidden>
           </form>
-          <div class="table-responsive">
-            <table
-               id ="student-table"
-              class="table  table-sm  table-striped table-bordered  text-nowrap  no-footer"
-              style="width: 100%"
-              data-server-side="true"
-              data-ajax="/api/v1/students/?format=datatables"
-            >
+         
+            <table  id="dataTable" class="table table-sm  table-striped table-bordered table-hover text-nowrap  no-footer">
               <thead>
                 <tr>
-                  <th data-data="select"><input id="checkBox" type="checkbox" /></th>
-                  <th data-data="id">id</th>
-                  <th data-data="id">#</th>
-                  <th data-data="image">Image</th>
-                  <th data-data="stu_id">Student Id</th>
-                  <th data-data="full_name">Full Name</th>
-                  <th data-data="semester">Class</th>
-                  <th data-data="section">Section</th>
-                  <th data-data="father_phone">Parent Contact</th>
-                  <th data-data="contact">Student Contact</th>
-                  <th data-data="username">Username</th>
-                  <th data-data="Action">Action</th>
+                  <th></th>
+                  <!-- <th hidden></th> -->
+                  <th>#</th>
+                  <th>Image</th>
+                  <th>Student Id</th>
+                  <th>Full Name</th>
+                  <!-- <th>Class</th> -->
+                  <th>Section</th>
+                  <th>Parent Contact</th>
+                  <th>Student Contact</th>
+                  <th>User Name</th>
+                  <th>Action</th>
+
+                  <!-- <th>Id Card</th> -->
                 </tr>
               </thead>
+              <tbody>
+                {% for student in students %}{% include 'students/delete.html' %}
+                <tr>
+                  <td></td>
+                  <!-- <td id="student_id" hidden>{{student.pk}}</td> -->
+                  <td>{{ forloop.counter }}</td>
+                  <td>
+
+                    {% if student.image %}
+
+                 <a href="{{ student.image.url }}">   <img src="{{ student.image.url }}" alt="" style="width:35px;height:35px;" class="img-circle" /></a>
+
+                    {% else %}
+                    <img src="{% static 'image/default_profile.png' %}" alt="" style="width:35px;height:35px;" class="img-circle" />
+                    {% endif %}
+
+                  </td>
+                    <td>{{ student.stu_id }} </td>
+                   <td>
+                      <a href="{% url 'admin_app:view_student' student.id %}">  {{ student.student_user.full_name }} </a>
+                      </td>
+                    <!-- <td>{{ student.semester }}</td> -->
+                    <td>{{ student.section }}</td>
+               <td>
+                <a href="{% url 'admin_app:view_parent' student.guardian_id %}" style="cursor: pointer;">
+                  {{ student.guardian.father_phone }}
+                  <!-- {% if   student.guardian.father_phone == "('',)" %}
+
+                  {% else %}
+                  {{ student.guardian.father_phone }}
+
+                    
+                  {% endif %} -->
+                </a>
+                </td>
+                  <td>{{ student.contact }}</td>
+
+                  <td>{{ student.student_user.username }}</td>
+                 
+                  <td>
+
+                    <!-- Example single danger button -->
+<div class="btn-group">
+  <button type="button" class="btn btn-info dropdown-toggle" style="background-color: #7650B9;color:white;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <strong>Action</strong>
+  </button>
+  <div class="dropdown-menu">
+    <a class="dropdown-item" href="{% url 'admin_app:view_student' student.id %}">View Student Details</a>
+    <a class="dropdown-item" href="{% url 'admin_app:edit_student' student.id %}">Edit</a>
+    <a class="dropdown-item" data-target='#deleteStudent-{{ student.pk }}' data-toggle="modal">Delete</a>
+    <a class="dropdown-item" href="{% url 'admin_app:make_student_inactive' student.id %}">Make Inactive</a>
+  </div>
+</div>
+                  
+                  </td>
+                  <!-- <td>     <a href="{% url 'admin_app:student_id_card' student.id %}" class="btn btn-xs btn-success"><i class = "fas fa-print"></i> Print</a></td> -->
+
+               
+                </tr>
+               
+         
+
+                {% endfor %}
+              </tbody>
             </table>
-          </div>
-        
           </div>
           <!-- /.card-body -->
         </div>
@@ -100,85 +158,25 @@
     </div>
   </div>
 </section>
-
 <!-- /.content -->
-<!-- Button trigger modal -->
 
 {% endblock main_content %}
 
 {% block custom_js %}
-
-
-        
-    <script>
-      $("#id_semester").change(function(){
-        var class_id = $(this).val();
-        
-        $.ajax({
-            url:" {% url 'courses:fill_section_select'%}",
-            data:{'class':class_id},
-            success:function(data){
-                $("#id_section").html(data);
-            }
-        })
-    })
+<!-- <script>
+  $("#id_semester").change(function(){
+    var class_id = $(this).val();
     
-        $(document).ready(function(){
-         
-        /*
+    $.ajax({
+        url:" {% url 'courses:fill_section_select'%}",
+        data:{'class':class_id},
+        success:function(data){
+            $("#id_section").html(data);
+        }
+    })
+})
+</script> -->
 
-        For ajax datatables with django rest api
-
-        */
-        $(function () {
-          table = $("#student-table").DataTable(getDataTableConfig({//call getDataTableConfig located in  base_admin.py
-           
-            table_id: '#student-table',
-            delete_id_key: 'id',
-            message_title: 'Student',
-            Model: 'Student',
-            app_name : 'student_management_app',
-            replace_app_name: 'student_management_app',
-            action_index: $("#student-table th").length - 1,
-           edit_url: '{% url "admin_app:edit_student"  "pk_val" %}',
-           delete_url: '', 
-           view_url:'{% url "admin_app:view_student"  "pk_val" %}',
-           make_inactive_url:'{% url "admin_app:make_student_inactive"  "pk_val" %}',
-           action : 'delete',
-        
-            additionalColumn: [{
-              targets: 3,
-              render: function (data, type, row, meta) {
-                if (row.image) {
-                  return ` <img src="${row.image}" alt="" style="width:35px;height:35px;" class="img-circle" />`;
-                } else {
-                  return ` <img src="{% static 'image/default_profile.png' %}" alt="" style="width:35px;height:35px;" class="img-circle" />`;
-                }
-      
-              },
-            },
-            
-            {
-              targets: 12,//number of field i want to show in datatables(from id(#) to Username = 9)
-              "visible": false,
-            },
-            ]
-          }));
-          table
-            .buttons()
-            .container()
-            .appendTo($(".col-sm-6:eq(0)", table.table().container()));
-      
-        
-          })
-      
-      
-        });
-       
-    </script>
 
 
 {% endblock custom_js %}
-
-
-

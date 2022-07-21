@@ -1,3 +1,5 @@
+import os
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.utils import timezone
@@ -19,7 +21,6 @@ from .forms import (
                     SubjectSearchForm,
                     # BachelorSemesterForm,
                     # MasterSemesterForm,
-                    SectionForm,
                     SemesterSectionSearchForm,
                     TeacherSyllabusFilterForm,
                     SemesterAssignFilterForm,
@@ -402,12 +403,10 @@ def subject_to_student_Ajax(request):
     if 'Science' in groups:
         student.faculty = 'Science'
         student.save()
-        print(student.faculty, "faculty")
         group="Science"
     else:
         student.faculty = 'Non-Science'
         student.save()
-        print(student.faculty, "faculty")
         group="Non-Science"
     
     count = selectedcourses.objects.filter(student_id=student).count()
@@ -445,7 +444,6 @@ def deletesubjectstudent(request, pk):
     selected_object = selectedcourses.objects.get(pk=pk)
     selected_subject = selected_object.subject_id
     applications = application_form.objects.filter(term__is_published=False, student=selected_object.student_id)
-    print('applications', applications,'\n')
 
     exam_list = []
     for item in applications:
@@ -476,18 +474,15 @@ def deletesubjectstudent(request, pk):
     for item in selected_subjects:
         groups.append(item.subject_id.faculty)
     
-    # print(groups, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-    # print(student.faculty,"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+ 
     
     if '1' in groups:
         student.faculty = 'Science'
         student.save()
-        # print(student.faculty, "faculty")
         group="Science"
     else:
         student.faculty = 'Non-Science'
         student.save()
-        # print(student.faculty, "faculty")
         group="Non-Science"
 
     messages.success(request, "Delete successful. Student placed in {} group.".format(group))
@@ -529,7 +524,6 @@ def subject_to_teacher_Ajax(request):
                                                               semester = semester,
                                                               section=section
                                                               )
-        print(subjectteacher_filter, "subjectteacher_filter")
         if subjectteacher_filter.exists():
             return JsonResponse({'warning_message':'Subject is already assigned to teacher.You cannot reassign subject.'}, status = 202)
         else:
@@ -563,7 +557,6 @@ def editsubjectteacher(request):
 
 def deletesubjectteacher(request, pk):
     item = SubjectTeacher.objects.get(pk=pk)
-    print(item,"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
     item.delete()
 
     messages.success(request, "Delete successful.")
@@ -652,9 +645,6 @@ def subject_to_class_Ajax(request):
             selectedcourses.objects.create(student_id=student, subject_id=subject.subject, semester=student.semester)
 
     message = "Subject assignment to {successful} students complete. {errors} students have already selected {subject}".format(successful = student_count - len(errorlist), errors = len(errorlist), subject=subject.subject)
-    print (message)
-    # print(section, subject, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-    # print(students, student_count, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
     return JsonResponse({'message':message}, status=201)
 
@@ -674,7 +664,6 @@ def student_details(request):
             return render(request, 'courses/studentdetails.html')
     
         if (student):
-            print(student)
             courses = selectedcourses.objects.filter(student_id = student)
             
             context = {'courses':courses,
@@ -1177,7 +1166,6 @@ def manage_assignment(request):
         semester_instance = get_object_or_404(Semester, pk = assignment.semester.pk)
         section_instance = get_object_or_404(Section, pk = assignment.section.pk)
         total_students = Student.objects.filter(student_user__is_active = 1,semester = semester_instance, section = section_instance).count()
-        print(total_students)
         assignment_reviewed_by_teacher = Grade.objects.filter(
             grade_status = True,
             assignment__semester = assignment.semester,
@@ -1337,16 +1325,24 @@ def assignment_answer_upload(request, assignment_id, student_id):
     if request.method == 'POST':
 
         upload_answer_file = request.FILES['answer_upload']
-        grade = Grade(assignment_id=assignment_id, student_id = request.user.id, answer_upload = upload_answer_file)
-        grade.save()
+        name, extension = os.path.splitext(upload_answer_file.name)
+        
+        if extension in ['.pdf','.img','.jpg','.png','.jpeg']:
+            grade = Grade(assignment_id=assignment_id, student_id = request.user.id, answer_upload = upload_answer_file)
+            grade.save()
+           
+            '''When particular student submit assignment then make its assignment_status to Completed '''
+            student_grade = Grade.objects.filter(pk=grade.id).first()
+            student_grade.assignment_status = 'Completed'
+            student_grade.save()
+            # # assignment.student.set([request.user.id])
+            messages.success(request, 'Your Answer is submitted successully.')
+            return redirect('academic:student_assignment')
+        else:
+            messages.error(request, 'Invalid File Format.Please,Upload Pdf and Image Only.')
+            return redirect('academic:assignment_answer_upload', assignment_id, student_id)
 
-        '''When particular student submit assignment then make its assignment_status to Completed '''
-        student_grade = Grade.objects.filter(pk=grade.id).first()
-        student_grade.assignment_status = 'Completed'
-        student_grade.save()
-        # # assignment.student.set([request.user.id])
-        messages.success(request, 'Your Answer is submitted successully.')
-        return redirect('academic:student_assignment')
+        
 
     return render(request, 'academic/assignments/upload_answer.html')
 

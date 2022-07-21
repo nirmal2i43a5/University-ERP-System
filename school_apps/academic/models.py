@@ -9,13 +9,15 @@ from ckeditor.fields import RichTextField
 from student_management_app.models import CustomUser
 # from school_apps.courses.models import Semester, Section, Subject
 from student_management_app.models import Section, Semester, Subject, Student,CourseCategory,Course
+from student_management_system.validators import (validate_file_extension, img_pdf_file_validate_file_extension,img_pdf_doc_validator, pdf_file_validate_file_extension,)
+
 
 class Syllabus(models.Model):
     course_category = models.ForeignKey(CourseCategory, on_delete=models.CASCADE,null = True, blank=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE,null = True, blank=True)
     title = models.CharField(max_length=100)
-    file = models.FileField(upload_to='syllabus')
-    semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
+    file = models.FileField(upload_to='syllabus',max_length=500,validators=[img_pdf_file_validate_file_extension])
+    semester = models.ForeignKey(Semester, on_delete=models.CASCADE,null = True)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -38,7 +40,7 @@ class Enotes(models.Model):
     
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
-    file = models.FileField(upload_to='e-notes')
+    file = models.FileField(upload_to='e-notes',max_length=500,validators=[validate_file_extension])
     note_category = models.CharField(max_length=50,choices = category)
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -63,7 +65,7 @@ class Assignment(models.Model):
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
     section = models.ForeignKey(Section, on_delete=models.CASCADE,null = True, blank=True)
     Subject = models.ForeignKey(Subject, on_delete=models.CASCADE,null = True)
-    file = models.FileField(upload_to='Assignment_section', blank=True, null=True)
+    file = models.FileField(upload_to='Assignment_section', blank=True, null=True,max_length=500,validators=[validate_file_extension])
     student = models.ManyToManyField(CustomUser,through = 'Grade')
     teacher = models.ForeignKey(CustomUser, on_delete=models.CASCADE,null = True,blank=True,related_name='teacher_assignment')
     draft = models.BooleanField(_('Save as Draft'),default=False)
@@ -90,7 +92,7 @@ class Grade(models.Model):
     grade = models.PositiveIntegerField(null = True,blank = True)
     grade_status = models.BooleanField(default=False)#for checking whether assignment is returned to student with points
     feedback = models.CharField(max_length=255, null=True, blank=True, default="No feedback")
-    answer_upload = models.FileField(upload_to = 'Assignment_grades', null=True)
+    answer_upload = models.FileField(upload_to = 'Assignment_grades', null=True,max_length=500,validators=[img_pdf_file_validate_file_extension])
     date_submitted = models.DateTimeField(auto_now_add=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -112,7 +114,7 @@ class Routine(models.Model):
 	)
     course_category = models.ForeignKey(CourseCategory, on_delete=models.CASCADE,null = True, blank=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE,null = True, blank=True)
-    routine_file = models.FileField(_("Routine"), upload_to='College Routine')
+    routine_file = models.FileField(_("Routine"), upload_to='College Routine',max_length=500,validators=[img_pdf_doc_validator])
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
     section = models.ForeignKey(Section, on_delete=models.CASCADE,blank=True,null=True)
     # subject = models.ForeignKey(Subject,related_name = 'routine_subject', on_delete=models.CASCADE)
