@@ -1320,27 +1320,35 @@ def student_assignment(request):
     return render(request, 'academic/assignments/student_assignment.html', context)
 
 
-def assignment_answer_upload(request, assignment_id, student_id):
+def assignment_answer_upload(request, assignment_id):
 
     if request.method == 'POST':
 
         upload_answer_file = request.FILES['answer_upload']
         name, extension = os.path.splitext(upload_answer_file.name)
-        
-        if extension in ['.pdf','.img','.jpg','.png','.jpeg']:
-            grade = Grade(assignment_id=assignment_id, student_id = request.user.id, answer_upload = upload_answer_file)
-            grade.save()
-           
-            '''When particular student submit assignment then make its assignment_status to Completed '''
-            student_grade = Grade.objects.filter(pk=grade.id).first()
-            student_grade.assignment_status = 'Completed'
-            student_grade.save()
-            # # assignment.student.set([request.user.id])
-            messages.success(request, 'Your Answer is submitted successully.')
-            return redirect('academic:student_assignment')
+        check_existing_upload = Grade.objects.filter(student=request.user.id, assignment=assignment_id).first()
+
+
+        if check_existing_upload:#Student cannot reupload the answer for the same assignment
+            print("Already uploaded")
+            messages.error(request, 'You have already uploaded an answer for this assignment!Cannot reupload.')
+            return redirect('academic:assignment_answer_upload', assignment_id)
         else:
-            messages.error(request, 'Invalid File Format.Please,Upload Pdf and Image Only.')
-            return redirect('academic:assignment_answer_upload', assignment_id, student_id)
+        
+            if extension in ['.pdf','.img','.jpg','.png','.jpeg']:
+                grade = Grade(assignment_id=assignment_id, student_id = request.user.id, answer_upload = upload_answer_file)
+                grade.save()
+            
+                '''When particular student submit assignment then make its assignment_status to Completed '''
+                student_grade = Grade.objects.filter(pk=grade.id).first()
+                student_grade.assignment_status = 'Completed'
+                student_grade.save()
+                # # assignment.student.set([request.user.id])
+                messages.success(request, 'Your Answer is submitted successully.')
+                return redirect('academic:student_assignment')
+            else:
+                messages.error(request, 'Invalid File Format.Please,Upload Pdf and Image Only.')
+                return redirect('academic:assignment_answer_upload', assignment_id)
 
         
 

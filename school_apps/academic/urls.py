@@ -11,7 +11,7 @@ app_name = 'academic'
 
 
 urlpatterns = [
-    path('assignment/answer/<str:assignment_id>/<str:student_id>/', assignment_answer_upload, name = 'assignment_answer_upload'),
+    path('assignment/answer/<str:assignment_id>/', assignment_answer_upload, name = 'assignment_answer_upload'),
     path('student/assignments/<str:assignment_id>/',student_assignment_grade,name = 'student_assignment_grade'),
     path('add_assignment_grade/<str:pk>/',add_assignment_grade,name = 'add_assignment_grade'),
     path('draft_publish_unpublish/<str:pk>/',draft_publish_unpublish,name = 'draft_publish_unpublish'),
