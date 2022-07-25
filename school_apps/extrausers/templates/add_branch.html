@@ -1,0 +1,71 @@
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block custom_js %}
+<script type="text/javascript" src="{% static 'administrator/user_role.js' %}"></script>
+{% endblock custom_js %}
+
+
+{% block title %}
+  {{title}}
+{% endblock title %}
+  
+  
+{% block main_content %}
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    
+
+      
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Add Group</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            
+            <div class="modal-body">
+                <form action="#" method="post" name="titlemodel" enctype="multipart/form-data" novalidate="novalidate">
+                    {% csrf_token %} 
+                    {{branchmodalform|crispy}}
+                    <div>
+                        <button id="payment-button" type="submit" name="groupmodel" class="btn btn-lg btn-info btn-block">
+                            <span id="payment-button-amount">Create Branch</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+          </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="card card-info">
+          {% include 'override_table/header.html' with card_title='Add Complain' %}
+          <!-- /.card-header -->
+          
+          <!-- form start -->
+          {% include 'admin_templates/form.html' with messages=messages form=form  button_text="Add Complaint" %}
+
+        <!-- /.card -->
+
+
+
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+{% endblock main_content %}
+
+

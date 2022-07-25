@@ -15,25 +15,29 @@
 
 
 {% block main_content %}
-{% if  request.user|has_group:'Admin' or request.user.is_superuser   %}
+<!-- {% if  request.user|has_group:'Admin' or request.user.is_superuser   %}
     <a class="btn btn-sm text-white text-bold float-right mr-4 mt-4 " style="  background-color:#173281; " href="{% url 'calendar_create_event' calendar_slug %}">
         <span class='glyphicon glyphicon-plus'></span>
         {% trans "Add New Event" %}
     </a>
-{% endif %}
+{% endif %} -->
     <br>
     <br>
 
     <div class="row">
-        <div class="col-md-8">
-            <div id='calendar' class="ml-3 mr-3"></div><!--calendar id is from full_scripts.html-->
+        <div class="col-md-7 ml-3"   style="background-color: #743DB8;border-radius: 10px;">
+            <div id='calendar'></div><!--calendar id is from full_scripts.html-->
         </div>
-        <div class="col-md-4" style = "margin-top: 75px;">
+        <div class="col-md-4">
             {% include "schedule/event_list.html" %}
         </div>
     </div>
 
-
+<style>
+    .fc-center{
+        color: white;
+    }
+</style>
     {% include "fullcalendar_modal.html" %}
   
 {% endblock %}

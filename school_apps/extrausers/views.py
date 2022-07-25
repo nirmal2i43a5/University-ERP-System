@@ -5,6 +5,8 @@ from django.http import Http404
 from django.contrib import messages
 from django.http import HttpResponse,JsonResponse
 from django.db.models import Q
+from django.contrib.messages.views import SuccessMessageMixin
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.decorators.csrf import csrf_exempt
 from student_management_app.django_forms.forms import (
                                           AddCustomUserForm,ExtraUserForm, DocumentFileForm, EditCustomUserForm
@@ -242,3 +244,4 @@ def delete_log(request):
     messages.success(request,"User logs are deleted successfully.")
     return redirect('extrauser:user_log')
     
+

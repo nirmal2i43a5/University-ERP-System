@@ -30,6 +30,8 @@ from django.http import HttpResponse
 #     return render(request,'admin_templates/admin_home.html')
 
 
+
+
 class TeacherHome(View):
     def get(self, request, *args, **kwargs):
         particular_student_assign = Student.objects.filter(

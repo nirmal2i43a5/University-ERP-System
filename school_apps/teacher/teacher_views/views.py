@@ -211,30 +211,30 @@ def attendance_filter_form(request):
     
     
 #attendance details of particular student 
-def attendance_view(request):
+# def attendance_view(request):
     
-    if request.method == 'POST' and 'attendance_submit' in request.POST:
+#     if request.method == 'POST' and 'attendance_submit' in request.POST:
         
-        attendance_form  = AttendanceDateFilterForm(request.POST)
+#         attendance_form  = AttendanceDateFilterForm(request.POST)
         
-        start_date = request.POST.get('start_date')
-        end_date = request.POST.get('end_date')
-        start_data_parse=datetime.datetime.strptime(start_date,"%Y-%m-%d").date()
-        end_data_parse=datetime.datetime.strptime(end_date,"%Y-%m-%d").date()
+#         start_date = request.POST.get('start_date')
+#         end_date = request.POST.get('end_date')
+#         start_data_parse=datetime.datetime.strptime(start_date,"%Y-%m-%d").date()
+#         end_data_parse=datetime.datetime.strptime(end_date,"%Y-%m-%d").date()
         
-        teacher_id = request.POST.get('teacher')#froom hidden input
-        teacher = get_object_or_404(Staff , id = teacher_id)
+#         teacher_id = request.POST.get('teacher')#froom hidden input
+#         teacher = get_object_or_404(Staff , id = teacher_id)
         
-        attendance = Attendance.objects.filter(
-            attendance_date__range = (start_data_parse,end_data_parse),
+#         attendance = Attendance.objects.filter(
+#             attendance_date__range = (start_data_parse,end_data_parse),
           
-            )
+#             )
         
      
-        teacher_attendance = AttendanceReport.objects.\
-        filter(staff = teacher_id, attendance__in = attendance)# or filter(student = student_id, attendance__attendance_date = month)
+#         teacher_attendance = AttendanceReport.objects.\
+#         filter(staff = teacher_id, attendance__in = attendance)# or filter(student = student_id, attendance__attendance_date = month)
         
-        return teacher_attendance#return to view_student
+#         return teacher_attendance#return to view_student
     
     
 # logic for student_profile and add_submit data with modal form
@@ -253,7 +253,40 @@ def view_teacher(request, teacher_id):
     
     #this is for adding document form that is in view_student
     form = DocumentFileForm()
-  
+
+    if request.method == 'POST':
+        print("inside:::::---------------:::::")
+        
+        attendance_form  = AttendanceDateFilterForm(request.POST)
+        
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+        start_data_parse=datetime.datetime.strptime(start_date,"%Y-%m-%d").date()
+        end_data_parse=datetime.datetime.strptime(end_date,"%Y-%m-%d").date()
+        
+        teacher_id = request.POST.get('teacher')
+        teacher = get_object_or_404(Staff , id = teacher_id)
+        
+        attendance = Attendance.objects.filter(
+            attendance_date__range = (start_data_parse,end_data_parse),
+          
+            )
+        
+     
+        teacher_attendance = AttendanceReport.objects.\
+        filter(staff = teacher_id, attendance__in = attendance)
+        context = {
+                 'title':'View Teacher Details',
+                'teacher':teacher,
+               'subjects':subjects,
+               'teacher_files':teacher_files,
+               'form':form,
+               
+               #for attendance
+               'attendance_form':attendance_filter_form(request),
+               'attendance_reports':teacher_attendance
+               }
+        return render(request, 'teachers/views/main_view.html',context)
     context = {
                  'title':'View Teacher Details',
                 'teacher':teacher,
@@ -263,7 +296,6 @@ def view_teacher(request, teacher_id):
                
                #for attendance
                'attendance_form':attendance_filter_form(request),
-               'attendance_reports':attendance_view(request)
                }
     return render(request, 'teachers/views/main_view.html',context)
 

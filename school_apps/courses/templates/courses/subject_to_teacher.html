@@ -14,12 +14,12 @@
 </div>
 
 
-<div style="margin-left: 10px; margin-right: 10px;">
+<!-- <div style="margin-left: 10px; margin-right: 10px;">
     <div class="row" style="margin-left: 10px; margin-right: 10px;">
        {{form|crispy}}
     </div>
     <hr>
-</div>
+</div> -->
 
 <div class="row" style="margin-left: 25px; margin-right: 25px;">  
     <div class="col-6">
@@ -118,7 +118,7 @@
                 targets:   0
             } ],
             select: {
-                style: 'multi'
+                style: 'single'
             },
             buttons:[
             {
@@ -128,20 +128,22 @@
                     class:"btn btn-primary"
                 },
                 action: function(){
-                    var semester = $('#id_filter_semester').val();
-                    var section = $('#id_section').val();
+                    // var semester = $('#id_filter_semester').val();
+                    // var section = $('#id_section').val();
                     if ( teacher_datatable.rows( '.selected' ).any() ){teacher = teacher_datatable.rows( { selected: true } ).data()[0][1];} else {alert("Please select a teacher")}
                     if ( subject_datatable.rows( '.selected' ).any() ){subject = subject_datatable.rows( { selected: true } ).data()[0][1];} else {alert("Please select a subject")}
                   //  if (section ==""){alert("Please choose a class and a section")}
 
                     
-                    if (teacher && subject && semester!=""){
+                    // if (teacher && subject && semester!=""){
+                    if (teacher && subject){
+
                         $.ajax({
                             url: "{% url 'academic:subject_to_teacher_ajax' %}",
                             data: {'teacher': teacher,
                                     'subject':subject,
-                                    'section':section,
-                                    'semester':semester
+                                    // 'section':section,
+                                    // 'semester':semester
                                 },
                             statusCode:{
                             

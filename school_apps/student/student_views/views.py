@@ -439,12 +439,9 @@ def view_student(request, student_id):
     except:
         return render(request, '404.html')
     
-    #retrieve DocumentFile upload for particualr student using foreign key    
     student_files =  student.documentfile_set.all()
-    
     courses = selectedcourses.objects.filter(student_id = student)
     
-    # student_attendance = attendance_view(request)
     if request.method == 'POST' and 'attendance_submit' in request.POST:
         attendance_form = StudentAttendanceDateFilterForm(request.POST)
         start_date = request.POST.get('start_date')

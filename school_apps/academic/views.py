@@ -513,21 +513,22 @@ def assign_subject_to_teacher(request):
 def subject_to_teacher_Ajax(request):
     teacher = Staff.objects.get(staff_user__pk = request.GET['teacher'])
     subject = Subject.objects.get(pk = request.GET['subject'])
-    semester = Semester.objects.get(pk = request.GET['semester'])
-    section_id = request.GET['section']
-    section = Section.objects.get(pk = section_id) if section_id else None
+    print(subject.semester)
+    # semester = Semester.objects.get(pk = request.GET['semester'])
+    # section_id = request.GET['section']
+    # section = Section.objects.get(pk = section_id) if section_id else None
 
     try:
         subjectteacher_filter = SubjectTeacher.objects.filter(
                                                                subject=subject, 
                                                               teacher=teacher.staff_user, 
-                                                              semester = semester,
-                                                              section=section
+                                                              semester = subject.semester,
+                                                            #   section=subject.semester.section
                                                               )
         if subjectteacher_filter.exists():
             return JsonResponse({'warning_message':'Subject is already assigned to teacher.You cannot reassign subject.'}, status = 202)
         else:
-            SubjectTeacher.objects.create(subject=subject, teacher=teacher.staff_user, semester = semester,section=section)
+            SubjectTeacher.objects.create(subject=subject, teacher=teacher.staff_user, semester =subject.semester)
             return JsonResponse({'message':'Subject assigned to teacher successfully'}, status = 201)
     except:
         return JsonResponse({'error_message':'Assignment failed. Please check if the subject is already assigned to the teacher'}, status = 500)

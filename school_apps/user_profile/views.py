@@ -34,6 +34,8 @@ def loginView(request):
 		username = request.POST.get("username")
 		password = request.POST.get("password")
 		user = authenticate(request, username=username, password=password)
+		username_exists = CustomUser.objects.filter(username=username).exists()
+		password_exists = CustomUser.objects.filter(password=password).exists()
 
 		if user is not None:
 			login(request, user)
@@ -50,10 +52,15 @@ def loginView(request):
 				# i case i choose wrong role based on username and password
 				messages.error(request, "Invalid User")
 				return redirect('login')
-
+		elif not username_exists and password_exists:
+			messages.error(request, "Invalid Username")
+			return redirect('login')
+		elif not password_exists and username_exists:
+			messages.error(request, "Invalid Password")
+			return redirect('login')
 		else:
 			# in case of username and password error
-			messages.error(request, "Invalid Login Details")
+			messages.error(request, "Invalid Username and Password")
 			return redirect('login')
 
 	return render(request, 'profile/login.html', {'form': form})

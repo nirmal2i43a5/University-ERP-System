@@ -221,6 +221,9 @@ class ExtraUserForm(forms.ModelForm):
         self.helper.layout = Layout(
             Row(
                 Column('branch', css_class='form-group col-md-6 mb-0'),
+                  Row(
+            #  Column(HTML('<button type="button" class="btn btn-primary" style="margin-top: 30px;" data-toggle="modal" data-target="#exampleModal">+</button>')),
+        ),
                     Column('dob', css_class='form-group col-md-6 mb-0'),
 
                 css_class='form-row'
