@@ -240,14 +240,19 @@ class EnotesFilterForm(forms.Form):
     end_date = forms.DateField(required = False,label = 'To',widget=forms.DateInput(attrs = {'type':'date','class':''}))
 
     
-    def __init__(self, user, *args, **kwargs):
+    def __init__(self,semester = None, user = None, *args, **kwargs):
         super(EnotesFilterForm,self).__init__(*args, **kwargs)
         
         subject = kwargs.pop('subject', None)
+     
         if user.groups.filter(name='Teacher'):
+            print("satecher:::")
             self.fields['subject'].queryset = user.subjectteacher_set.all()
         if user.groups.filter(name='Student'):
             self.fields['subject'].queryset = Subject.objects.filter(semester =  user.student.semester)
+        if user.groups.filter(name='Super-Admin') or user.is_superuser:
+            self.fields['subject'].subject = Subject.objects.filter(semester =  get_object_or_404(Semester , pk = semester))
+    
          
 
          

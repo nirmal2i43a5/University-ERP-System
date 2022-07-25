@@ -113,7 +113,7 @@ def manage_routine(request,semester_id):
 @permission_required('academic.view_enotes', raise_exception=True)
 def manage_enotes(request,semester_id):
 
-    enote_search_form = forms.EnotesFilterForm(semester_id)
+    enote_search_form = forms.EnotesFilterForm(semester_id,request.user)
     
     
     subject_id = request.GET.get('subject')
@@ -123,5 +123,6 @@ def manage_enotes(request,semester_id):
     if subject_instance:
         search_enotes = Enotes.objects.filter(subject=subject_instance,note_category = category)
         return search_enotes,enote_search_form 
+        
     search_enotes = None
     return search_enotes,enote_search_form 

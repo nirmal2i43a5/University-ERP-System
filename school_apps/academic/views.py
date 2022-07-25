@@ -3,7 +3,7 @@ import os
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.utils import timezone
-
+from datetime import datetime
 from django.http import HttpResponse,JsonResponse
 from django.db.models import Q
 from student_management_app.django_forms.forms import (
@@ -1383,12 +1383,12 @@ def assignment_retured(request):
 
 def manage_enotes(request):
     enotes = Enotes.objects.all()
-    form = EnotesFilterForm(request.user)
+    
 
     subject_id = request.GET.get('subject')
     category_name = request.GET.get('category')
 
-    # teacher_id = request.GET.get('teacher')
+    teacher_id = request.GET.get('teacher')
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
    
@@ -1413,9 +1413,12 @@ def manage_enotes(request):
 
                                                     #    teacher = teacher_instance
                                                        )
+    semester = None
     context = {
        
-        'enotes_form': form,
+        'enotes_form': EnotesFilterForm(semester,request.user,initial = {
+            'subject': subject_id,'category': category_name,'teacher': teacher_id,'start_date': start_date,'end_date': end_date
+        }),
        'enotes':enotes,
         'title': 'E-Notes'
     }
