@@ -1388,27 +1388,29 @@ def manage_enotes(request):
     subject_id = request.GET.get('subject')
     category_name = request.GET.get('category')
 
-    teacher_id = request.GET.get('teacher')
+  
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
-   
+    
     if   subject_id or category_name or start_date or end_date :
-        subjectteacher_instance  = get_object_or_404(SubjectTeacher, pk = subject_id)
-        print(subjectteacher_instance.subject.pk)
-        # teacher_instance  = get_object_or_404(Staff, pk = teacher_id) if teacher_id else None
+        if request.user.groups.filter(name='Student'):
+            subject_instance = get_object_or_404(Subject, pk = subject_id)
+        if request.user.groups.filter(name='Teacher'):
+            subject_instance  = get_object_or_404(SubjectTeacher, pk = subject_id).subject.pk
+
 
         if start_date and end_date:
             start_data_parse = datetime.strptime(str(start_date), "%Y-%m-%d").date()
             end_data_parse = datetime.strptime(str(end_date), "%Y-%m-%d").date()
      
             enotes = Enotes.objects.filter(
-                                                        subject = subjectteacher_instance.subject.pk,
+                                                        subject = subject_instance,
                                                          note_category = category_name,
                                                          created_at__range=(start_data_parse, end_data_parse)
                                                        )
         else:
             enotes = Enotes.objects.filter(
-                                                       subject = subjectteacher_instance.subject.pk,
+                                                       subject = subject_instance,
                                                        note_category = category_name,
 
                                                     #    teacher = teacher_instance
@@ -1417,7 +1419,7 @@ def manage_enotes(request):
     context = {
        
         'enotes_form': EnotesFilterForm(semester,request.user,initial = {
-            'subject': subject_id,'category': category_name,'teacher': teacher_id,'start_date': start_date,'end_date': end_date
+            'subject': subject_id,'category': category_name,'start_date': start_date,'end_date': end_date
         }),
        'enotes':enotes,
         'title': 'E-Notes'

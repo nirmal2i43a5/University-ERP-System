@@ -115,14 +115,44 @@ def manage_enotes(request,semester_id):
 
     enote_search_form = forms.EnotesFilterForm(semester_id,request.user)
     
+           
     
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
     subject_id = request.GET.get('subject')
-    category = request.GET.get('category')
+    category_name = request.GET.get('category')
     subject_instance = get_object_or_404(Subject , pk = subject_id) if subject_id else None
 
-    if subject_instance:
-        search_enotes = Enotes.objects.filter(subject=subject_instance,note_category = category)
+    if   subject_id or category or start_date or end_date :
+       
+
+        if start_date and end_date:
+            start_data_parse = datetime.strptime(str(start_date), "%Y-%m-%d").date()
+            end_data_parse = datetime.strptime(str(end_date), "%Y-%m-%d").date()
+     
+            search_enotes = Enotes.objects.filter(
+                                                        subject = subject_instance,
+                                                         note_category = category_name,
+                                                         created_at__range=(start_data_parse, end_data_parse)
+                                                       )
+        else:
+            search_enotes = Enotes.objects.filter(
+                                                       subject = subject_instance,
+                                                       note_category = category_name,
+
+                                                    #    teacher = teacher_instance
+                                                       )
+        enote_search_form = forms.EnotesFilterForm(semester_id,request.user,initial = {
+         'subject': subject_id,'category': category_name,'start_date': start_date,'end_date': end_date
+                                         })
+    
         return search_enotes,enote_search_form 
         
     search_enotes = None
     return search_enotes,enote_search_form 
+
+
+
+
+   
+ 

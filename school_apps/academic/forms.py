@@ -232,8 +232,7 @@ class EnotesFilterForm(forms.Form):
 
     subject = forms.ModelChoiceField(empty_label = 'Choose Subject',
                                      queryset = Subject.objects.none())
-    teacher = forms.ModelChoiceField(required = False,empty_label = 'Choose Teacher',
-                                     queryset = Staff.objects.all())
+
     category=forms.ChoiceField(choices=category_choices,
                         )
     start_date = forms.DateField(required = False, label = 'From', widget=forms.DateInput(attrs = {'type':'date','class':''}))
@@ -244,14 +243,13 @@ class EnotesFilterForm(forms.Form):
         super(EnotesFilterForm,self).__init__(*args, **kwargs)
         
         subject = kwargs.pop('subject', None)
-     
         if user.groups.filter(name='Teacher'):
             print("satecher:::")
             self.fields['subject'].queryset = user.subjectteacher_set.all()
         if user.groups.filter(name='Student'):
             self.fields['subject'].queryset = Subject.objects.filter(semester =  user.student.semester)
         if user.groups.filter(name='Super-Admin') or user.is_superuser:
-            self.fields['subject'].subject = Subject.objects.filter(semester =  get_object_or_404(Semester , pk = semester))
+            self.fields['subject'].queryset = Subject.objects.filter(semester =  get_object_or_404(Semester , pk = semester))
     
          
 
