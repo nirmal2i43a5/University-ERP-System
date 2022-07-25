@@ -14,34 +14,35 @@
   
           <div class="card">
             
-            <div class="card-header" >
-              <span>Manage Syllabus</span>
-             
-            </div>
-            <form class="float-right mb-2" role="search"  method="GET" style="height: 27px;margin:auto;position:relative;">
-              <div class="input-group">
-             
-          
-                {{ syllabus_form|crispy }} 
+            <div class="card-header">
+              
+  
+              <span><strong>Manage Syllabus</strong></span>
+  
+              <form class="float-right mb-2" role="search"  method="GET" style="height: 27px;margin:auto;position:relative;">
+                <div class="input-group">
+               
             
-                <div class="input-group-btn ">
-                  <button type="submit" class="btn btn-primary">SEARCH <i class="fas fa-search"></i></button>
-    
+                  {{ syllabus_form|crispy }} 
+              
+                  <div class="input-group-btn ">
+                    <button type="submit" class="btn btn-primary">SEARCH <i class="fas fa-search"></i></button>
+      
+                  </div>
                 </div>
-              </div>
-            </form>
+              </form>
+            
+  
+            </div>
           
            
             <!-- /.card-header -->
             <div class="card-body table-responsive ">
-              {% if  request.user|has_group:'Admin' or request.user.is_superuser or request.user|has_group:'Teacher'   %}   
-              {% url 'academic:add_syllabus' as button_url %}
+              <!-- {% if  request.user|has_group:'Admin' or request.user.is_superuser or request.user|has_group:'Teacher'   %}   
+              {% url 'academic:add_syllabus' as button_url %} -->
               
            
-    <!-- <a href="{{ button_url }}" class="btn btn-xs float-right text-white mb-2 " style="background-color: #743DB8;"  >
-      <span><i class="fas fa-sm fa-plus">&nbsp;</i> <strong>Add syllabus</strong></span>
-  </a>
- -->
+ 
 
 
              

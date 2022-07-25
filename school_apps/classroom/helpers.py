@@ -37,28 +37,39 @@ def manage_assignment(request,semester_id):
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
    
-    if  section_id and subject_id:
-        search_assignments = Assignment.objects.filter(
-                                                       section = get_object_or_404(Section, pk = section_id),
-                                                       Subject = get_object_or_404(Subject, pk = subject_id),
-                                                     )
-        return search_assignments,draft_assignments,assignment_search_form 
-    
-    if subject_id:
-        search_assignments = Assignment.objects.filter(
-                                                       Subject = get_object_or_404(Subject, pk = subject_id),
-                                                     )
-        return search_assignments,draft_assignments,assignment_search_form 
-    
-    if start_date and end_date:
-        start_data_parse = datetime.strptime(str(start_date), "%Y-%m-%d").date()
-        end_data_parse = datetime.strptime(str(end_date), "%Y-%m-%d").date()
-        search_assignments = Assignment.objects.filter(semester=get_object_or_404(Semester, pk = semester_id),
-                                                       section = get_object_or_404(Section, pk = section_id),
-                                                       Subject = get_object_or_404(Subject, pk = subject_id),
-                                                        #  created_at__range=(start_data_parse, end_data_parse)
+    if  section_id or subject_id or start_date or end_date :
+        subject_instance  = get_object_or_404(Subject, pk = subject_id)
+
+        if start_date and end_date:
+            start_data_parse = datetime.strptime(str(start_date), "%Y-%m-%d").date()
+            end_data_parse = datetime.strptime(str(end_date), "%Y-%m-%d").date()
+     
+            search_assignments = Assignment.objects.filter(
+                                                       Subject = subject_instance,
+                                                         created_at__range=(start_data_parse, end_data_parse)
+                                                       )
+        else:
+            search_assignments = Assignment.objects.filter(
+                                                       Subject = subject_instance,
                                                        )
         return search_assignments,draft_assignments,assignment_search_form 
+    
+    # if subject_id:
+    #     print("Inside;::;")
+    #     search_assignments = Assignment.objects.filter(
+    #                                                    Subject = get_object_or_404(Subject, pk = subject_id),
+    #                                                  )
+    #     return search_assignments,draft_assignments,assignment_search_form 
+    
+    # if subject_id and start_date and end_date:
+    #     start_data_parse = datetime.strptime(str(start_date), "%Y-%m-%d").date()
+    #     end_data_parse = datetime.strptime(str(end_date), "%Y-%m-%d").date()
+    #     search_assignments = Assignment.objects.filter(semester=get_object_or_404(Semester, pk = semester_id),
+    #                                                    section = get_object_or_404(Section, pk = section_id),
+    #                                                    Subject = get_object_or_404(Subject, pk = subject_id),
+    #                                                      created_at__range=(start_data_parse, end_data_parse)
+    #                                                    )
+        # return search_assignments,draft_assignments,assignment_search_form 
     search_assignments = None
     return search_assignments,draft_assignments,assignment_search_form 
 

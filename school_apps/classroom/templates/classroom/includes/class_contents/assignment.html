@@ -1,133 +1,70 @@
 {% load static %}
 {% load auth_extras %}
 {% load crispy_forms_tags %}
-
+<!-- Main content -->
 <section class="content">
-  <div class="container-fluid">
-  <!-- /.card-header -->
-  {% include "includes/messages.html" %}
+    <div class="container-fluid">
+    <!-- /.card-header -->
   
-    <div class="row">
-      <div class="col-12">
-
-
-        <div class="card " style="background-color: rgb(247, 245, 245);">
-          
-          <div class="card-header">
-
-            <ul class="nav nav-tabs nav-custom p-0">
-              
-              <li class="nav-item"><a class="nav-link active" href="#assigned" data-toggle="tab">Assigned</a></li>
-              <li class="nav-item"><a class="nav-link" href="#draft" data-toggle="tab">Draft</a></li>
-<hr>
-              
-                <li>
-                  <form class="float-right" role="search"  method="GET" >
-                    <div class="input-group">
-                   
-                
-                      {{ assignment_form|crispy }} 
-                  
-                      <div class="input-group-btn ml-1" style="margin-top:2rem;">
-                        <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> SEARCH</button>
-          
-                      </div>
-                    </div>
-                  </form>
-                </li>
-            <li>
-
-
-              {% if request.user.is_superuser or request.user|has_group:'Teacher'   %}
-              <div class="d-flex justify-content-end mb-4">
-
-                <div class="text-link">
-
-                  <!-- <a href="{% url 'academic:add_assignment' %}" class="add-link btn btn-xs ml-1" style="margin-top:2.5rem;background-color: #743DB8;color:white;">
-                    <i class="fas fa-xs fa-plus"></i> <strong>Add assignment</strong></a> -->
-                  
-                </div>
-
-                <div> 
-                 
-                </div>
-                
-             
-            </div>
-            {% endif %}
-            </li>
-              
-            </ul>
-        
-          </div>
-         
-          <!-- /.card-header -->
-          <div class="card-body table-responsive">
-            <div id = "myAssignment" class="tab-content">
-
-              <div class="active tab-pane" id="assigned">
-                
-                {% for assignment in teacher_assignments %}
-
-                {% include "academic/assignments/delete.html" %}
+    {% include "includes/messages.html" %}
     
-                 {% include "academic/assignments/includes/assignment_list.html" %}
-                   </div>
-                   {% empty %}
-                  
-                   <h3> No Assignments Found!</h3>
-                {% endfor %}
-    
-    
-                </div>
-
-              <div class="tab-pane" id="draft">
-                {% for assignment in draft_assignments %}
-
-                {% include "academic/assignments/delete.html" %}
-    
-                 {% include "academic/assignments/includes/draft_assignment.html" %}
-                   </div>
-                   {% empty %}
-                  
-                   <h3> No Assignments Found in Drafts!</h3>
-                {% endfor %}
-                  
-               </div>
-            </div>
-
-
-           
-          
-          
-            </div>
-           
-          
+      <div class="row">
+        <div class="col-12">
+  
+  
+          <div class="card">
             
+            <div class="card-header">
+              
+  
+              <span><strong>Manage Assignment</strong></span>
+  
+              <form class="float-right mb-4" role="search"  method="GET" style="height: 40px;margin:auto;position:relative;">
+                <div class="input-group">
+               
+            
+                  {{ assignment_form|crispy }} 
+              
+                  <div class="input-group-btn ">
+                    <button type="submit" class="btn btn-primary" style="margin-top:2rem;">SEARCH <i class="fas fa-search"></i></button>
+      
+                  </div>
+                </div>
+              </form>
+            
+  
+            </div>
+          
            
+            <!-- /.card-header -->
+            <div class="card-body table-responsive ">
+              <!-- {% if  request.user|has_group:'Admin' or request.user.is_superuser or request.user|has_group:'Teacher'   %}   
+              {% url 'academic:add_syllabus' as button_url %} -->
+              
+           
+ 
+
+
+             
+            {% endif %}
+         
+            {% for assignment in teacher_assignments %}
+
+            {% include "academic/assignments/delete.html" %}
+
+             {% include "academic/assignments/includes/assignment_list.html" %}
+               </div>
+               {% empty %}
+              
+               <h3> No Assignments Found!</h3>
+            {% endfor %}
+
+            </div>
+            <!-- /.card-body -->
           </div>
-          <!-- /.card-body -->
+          <!-- /.card -->
         </div>
-        <!-- /.card -->
       </div>
     </div>
-  </div>
-  
-</section>
-<!-- /.content -->
-
-<style>
-  .nav-custom > li > a:hover{
-    color:black;
-  }
-  .nav-custom > li > a{
-    
-    font-weight: 600;
-    color:white;
-    padding: 8px 10px 8px 10px;
-    background-color:#743DB8;
-    
-
-  }
-</style>
-
+  </section>
+  <!-- /.content -->
