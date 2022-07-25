@@ -115,6 +115,14 @@ class CustomUser(AbstractUser):  # use this for extending deafult django auth sy
         verbose_name_plural = _("customusers")
         permissions = (
                ("view_superadmin_home ","Can View  Superadmin Home"),
+                  ("view_academic_sidebar ","Can View  Academic Sidebar"),
+                  ("view_permission_sidebar ","Can View  Permission Sidebar"),
+                        ("view_event_sidebar ","Can View  Event Sidebar"),
+                  ("view_user_sidebar ","Can View  User Sidebar"),
+                      ("view_attendance_sidebar ","Can View  Attendance Sidebar"),
+                      ("view_announcement_sidebar ","Can View  Announcement Sidebar"),
+
+
            
          
         )

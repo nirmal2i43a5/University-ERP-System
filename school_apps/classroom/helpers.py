@@ -4,7 +4,7 @@ from student_management_app.models import  Semester
 from school_apps.academic.models import (Syllabus, Routine, Assignment, Grade,Enotes)
 from school_apps.academic import forms
 from django.urls import resolve
-from student_management_app.models import (Section,Semester,Subject)
+from student_management_app.models import (Section,Semester,Subject,Staff,CustomUser)
 from django.contrib.auth.decorators import permission_required
 
 def manage_assignment(request,semester_id):
@@ -31,14 +31,14 @@ def manage_assignment(request,semester_id):
     
     
     assignment_search_form = forms.ContentFilterForm(semester_id)
-    # semester_id = request.GET.get('semester')
-    section_id = request.GET.get('section')
     subject_id = request.GET.get('subject')
+    # teacher_id = request.GET.get('teacher')
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
    
-    if  section_id or subject_id or start_date or end_date :
+    if   subject_id or start_date or end_date :
         subject_instance  = get_object_or_404(Subject, pk = subject_id)
+        # teacher_instance  = get_object_or_404(Staff, pk = teacher_id) if teacher_id else None
 
         if start_date and end_date:
             start_data_parse = datetime.strptime(str(start_date), "%Y-%m-%d").date()
@@ -51,6 +51,7 @@ def manage_assignment(request,semester_id):
         else:
             search_assignments = Assignment.objects.filter(
                                                        Subject = subject_instance,
+                                                    #    teacher = teacher_instance
                                                        )
         return search_assignments,draft_assignments,assignment_search_form 
     

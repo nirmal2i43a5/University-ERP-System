@@ -24,7 +24,8 @@ from .forms import (
                     SemesterSectionSearchForm,
                     TeacherSyllabusFilterForm,
                     SemesterAssignFilterForm,
-                    SyllabusSearchForm
+                    SyllabusSearchForm,
+                    EnotesFilterForm
                     )
 
 from school_apps.academic.forms import ClassFormSearch
@@ -34,7 +35,7 @@ from student_management_app.models import (
     Course, CourseCategory, CustomUser, Subject,
     Semester, Section,   Department, Student
 )
-from school_apps.academic.models import (Enotes, Syllabus, Routine, Assignment, Grade)
+from school_apps.academic.models import (Enotes, Syllabus, Routine, Assignment, Grade,Enotes)
 
 from django.contrib.auth.decorators import permission_required
 from school_apps.notifications.utilities import create_notification
@@ -1380,3 +1381,44 @@ def assignment_retured(request):
     return redirect('academic:student_assignment_grade', assignment_id)
 
 
+def manage_enotes(request):
+    enotes = Enotes.objects.all()
+    form = EnotesFilterForm(request.user)
+
+    subject_id = request.GET.get('subject')
+    category_name = request.GET.get('category')
+
+    # teacher_id = request.GET.get('teacher')
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+   
+    if   subject_id or category_name or start_date or end_date :
+        subjectteacher_instance  = get_object_or_404(SubjectTeacher, pk = subject_id)
+        print(subjectteacher_instance.subject.pk)
+        # teacher_instance  = get_object_or_404(Staff, pk = teacher_id) if teacher_id else None
+
+        if start_date and end_date:
+            start_data_parse = datetime.strptime(str(start_date), "%Y-%m-%d").date()
+            end_data_parse = datetime.strptime(str(end_date), "%Y-%m-%d").date()
+     
+            enotes = Enotes.objects.filter(
+                                                        subject = subjectteacher_instance.subject.pk,
+                                                         note_category = category_name,
+                                                         created_at__range=(start_data_parse, end_data_parse)
+                                                       )
+        else:
+            enotes = Enotes.objects.filter(
+                                                       subject = subjectteacher_instance.subject.pk,
+                                                       note_category = category_name,
+
+                                                    #    teacher = teacher_instance
+                                                       )
+    context = {
+       
+        'enotes_form': form,
+       'enotes':enotes,
+        'title': 'E-Notes'
+    }
+
+    return render(request, 'academic/enotes/manage_enotes.html', context)
+    

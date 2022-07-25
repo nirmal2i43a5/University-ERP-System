@@ -232,6 +232,16 @@
         </p>
       </a>
     </li>
+    <li class="nav-item ml-3">
+      {% url 'academic:manage_enote' as enote_url  %}
+      <a href="{% url 'academic:manage_enote' %}" class=" nav-item nav-link {% if request.path == enote_url %} active{% endif %}">
+             <i class="far fa-xs fa-circle"></i>
+        <p>
+          E-Notes
+
+        </p>
+      </a>
+    </li>
 
   </ul>
 </li>

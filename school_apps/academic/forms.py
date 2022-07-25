@@ -1,7 +1,7 @@
 from django import forms
 from django.shortcuts import get_object_or_404
 from school_apps.academic.models import Syllabus, Assignment, Routine,Section,Enotes
-from student_management_app.models import Semester, Subject,CourseCategory,Course,Staff, SubjectTeacher
+from student_management_app.models import Semester, Subject,CourseCategory,Course,Staff, SubjectTeacher,SemesterTeacher
 from django.contrib.admin.widgets import AdminSplitDateTime
 
 from django.template.defaultfilters import filesizeformat
@@ -171,6 +171,7 @@ class ContentFilterForm(forms.Form):
         self.fields['course'].queryset = Course.objects.filter(semester = get_object_or_404(Semester , pk = semester_id))
         self.fields['section'].queryset = Section.objects.filter(semester = get_object_or_404(Semester , pk = semester_id))
         self.fields['subject'].queryset = Subject.objects.filter(semester =  get_object_or_404(Semester , pk = semester_id))
+        # self.fields['teacher'].queryset = SemesterTeacher.objects.filter(semester =  get_object_or_404(Semester , pk = semester_id))
          
 
 class SectionWiseFilter(forms.Form):
@@ -225,27 +226,30 @@ class EnotesFilterForm(forms.Form):
         ('Extra Notes','Extra Notes'))
 
 
-    section = forms.ModelChoiceField(required = False,label = '', empty_label = 'Choose Section',
-                                     queryset = Section.objects.all())
+    # section = forms.ModelChoiceField(required = False,label = '', empty_label = 'Choose Section',
+    #                                  queryset = Section.objects.all())
     
 
-    subject = forms.ModelChoiceField(label = '',empty_label = 'Choose Subject',
+    subject = forms.ModelChoiceField(empty_label = 'Choose Subject',
                                      queryset = Subject.objects.none())
-    teacher = forms.ModelChoiceField(label = '',required = False,empty_label = 'Choose Teacher',
+    teacher = forms.ModelChoiceField(required = False,empty_label = 'Choose Teacher',
                                      queryset = Staff.objects.all())
-    category=forms.ChoiceField(label = '',choices=category_choices,
+    category=forms.ChoiceField(choices=category_choices,
                         )
+    start_date = forms.DateField(required = False, label = 'From', widget=forms.DateInput(attrs = {'type':'date','class':''}))
+    end_date = forms.DateField(required = False,label = 'To',widget=forms.DateInput(attrs = {'type':'date','class':''}))
 
     
-    def __init__(self, semester_id, *args, **kwargs):
+    def __init__(self, user, *args, **kwargs):
         super(EnotesFilterForm,self).__init__(*args, **kwargs)
         
-        section = kwargs.pop('section', None)
         subject = kwargs.pop('subject', None)
-        semester = Semester.objects.get(pk = semester_id)
-     
-        self.fields['section'].queryset = Section.objects.filter(semester = get_object_or_404(Semester , pk = semester_id))
-        self.fields['subject'].queryset = Subject.objects.filter(semester =  get_object_or_404(Semester , pk = semester_id))
+        if user.groups.filter(name='Teacher'):
+            self.fields['subject'].queryset = user.subjectteacher_set.all()
+        if user.groups.filter(name='Student'):
+            self.fields['subject'].queryset = Subject.objects.filter(semester =  user.student.semester)
+         
+
          
 
 class SubjectAssignFilterForm(forms.Form):

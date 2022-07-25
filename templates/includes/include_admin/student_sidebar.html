@@ -116,6 +116,15 @@
         </a>
       </li>
       <li class="nav-item ml-3">
+        <a href="{% url 'academic:manage_enote' %}" class="nav-link">
+          <i class="fas fa-xs fa-file"></i>
+          <p>
+            E-Notes
+
+          </p>
+        </a>
+      </li>
+      <li class="nav-item ml-3">
         <a href="{% url 'academic:view_routine' %}" class="nav-link">
           <i class="fas fa-xs fa-chart-pie"></i>
           <p>
@@ -128,7 +137,7 @@
   </li>
 
   <li class="nav-item">
-    <a href="{% url 'academic:view_routine' %}" class="nav-link">
+    <a href="{% url 'attendance_app:student_view_own_attendance' %}" class="nav-link">
       <i class="fas fa-xs fa-clipboard"></i>
       <p>
         View attendance

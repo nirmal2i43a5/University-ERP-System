@@ -36,7 +36,7 @@ class Enotes(models.Model):
     course_category = models.ForeignKey(CourseCategory, on_delete=models.CASCADE,null = True, blank=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE,null = True, blank=True)
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
-    section = models.ForeignKey(Section, on_delete=models.CASCADE)
+    section = models.ForeignKey(Section, on_delete=models.CASCADE,blank = True,null = True)
     
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)

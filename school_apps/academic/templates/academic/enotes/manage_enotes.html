@@ -1,0 +1,256 @@
+{% extends 'admin_templates/base_admin.html' %}
+{% load static %}
+{% load auth_extras %}
+{% load crispy_forms_tags %}
+{% block title %}
+  {{title}}
+{% endblock title %}
+{% block main_content %}
+
+<section class="content">
+    <div class="container-fluid">
+    <!-- /.card-header -->
+  
+    {% include "includes/messages.html" %}
+    
+      <div class="row">
+        <div class="col-12">
+  
+  
+          <div class="card">
+            
+            <div class="card-header">
+              
+  
+              <span><strong>E-Notes</strong></span>
+  
+              <form class="float-right mb-4" role="search"  method="GET" style="height: 40px;margin:auto;position:relative;">
+                <div class="input-group">
+               
+            
+                  {{ enotes_form|crispy }} 
+              
+                  <div class="input-group-btn ">
+                    <button type="submit" class="btn btn-primary" style="margin-top:2rem;">SEARCH <i class="fas fa-search"></i></button>
+      
+                  </div>
+                </div>
+              </form>
+            
+  
+            </div>
+          
+           
+            <!-- /.card-header -->
+            <div class="card-body table-responsive ">
+              {% if  request.user|has_group:'Admin' or request.user.is_superuser or request.user|has_group:'Teacher'   %}   
+              {% url 'academic:add_enotes' as button_url %}
+              
+           
+ 
+
+
+             
+            {% endif %}
+            {% for enote in enotes %}
+
+            {% include "academic/enotes/delete.html" %}
+
+
+            <div class="row">
+              <div class="col-md-0 mt-2 mb-1">
+                <span>
+            
+            
+                  {% if enote.file %}
+                  <a href="{{ enote.file.url }}">
+                    <img src="{% static 'image/enotes.png' %}" alt="" style="width:70px;height:70px;" class="img-rectangle" />
+            
+                  </a>
+                  {% else %}
+            
+                  <a href="">
+                    <img src="{% static 'image/enote.png' %}" alt="" style="width:70px;height:70px;" class="img-rectangle" />
+            
+                  </a>
+                  {% endif %}
+            
+            
+                </span>
+            
+              </div>
+              <div class="col-md-10">
+            
+            
+                <div class="card" style="border-radius:10px;">
+            
+                  <div class="card-body ">
+            
+            
+                    <div class="d-flex justify-content-between">
+            
+                      <div>
+                        {% if enote.file %}
+                        <a href="{{ enote.file.url }}" class="text-capitalize">
+                          <strong> {{ enote.title }}</strong>
+            
+                        </a>
+                        {% else %}
+                        <a href="" class="text-capitalize">
+                          <strong> {{ enote.title }}</strong>
+            
+                        </a>
+                        {% endif %}
+                      </div>
+            
+            
+                      <div>
+                       <strong>Category</strong> : <span class="badge badge-primary">
+                         {{enote.note_category}}
+                        </span>
+                      </div>
+            
+                    </div>
+                    <div class="d-flex justify-content-between">
+
+                      
+                      {% if enote.section %}
+                      <div>
+                        <strong> {{ enote.subject }}</strong>, {{ enote.section }} ,
+                      
+            
+                      </div>
+                      {% else %}
+                      <div>
+                        <strong> {{ enote.subject }}</strong>, {{ enote.semester }} ,
+                      
+            
+                      </div>
+                        
+                      {% endif %}
+                        
+                  
+            
+                    
+                      <div>
+                        <span class="text-sm">
+                        <strong>Uploaded on:</strong> 
+                          {{enote.created_at}}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            
+              </div>
+            
+
+              
+              {% if request.user.staff or request.user.is_superuser %}
+              <div class="col-md-0 mt-4" >
+                <div class="btn-group" role="group">
+                  <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false" style="background-color: #743DB8;color:white;">
+                    Action
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                    <a class="dropdown-item" href="">Edit</a>
+                    <button class="dropdown-item" data-target='#deleteenote-{{ enote.id}}'
+                      data-toggle="modal">Delete
+                    </button>
+                  </div>
+                </div>
+                <div class="d-flex flex-column mt-1">
+                  
+            
+                </div>
+              </div>
+               </div>
+                
+              {% endif %}
+                
+            
+         
+               {% empty %}
+              
+               <h3> No E-Notes Found!</h3>
+            {% endfor %}
+
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- /.content -->
+
+<style>
+  .nav-custom > li > a:hover{
+    color:black;
+  }
+  .nav-custom > li > a{
+    
+    font-weight: 600;
+    color:white;
+    padding: 8px 10px 8px 10px;
+    background-color:#743DB8;
+    
+
+  }
+</style>
+{% endblock main_content %}
+
+{% block custom_js %}
+
+<script>
+  
+  $(document).ready(function () {
+
+    $("#id_course_category").change(function(){
+      var course_category_id = $(this).val();
+      
+      $.ajax({
+          url:" {% url 'attendance_app:fill_semester_select' %}",
+          data:{'course_category':course_category_id},
+          success:function(data){
+              $("#id_semester").html(data);
+          }
+      })
+  })
+  
+  
+  $("#id_semester").change(function(){
+    var semester_id = $(this).val();
+    
+    
+    $.ajax({
+        url:" {% url 'attendance_app:fill_section_select' %}",
+        data:{'semester':semester_id},
+        success:function(data){
+            $("#id_section").html(data);
+        }
+    })
+  })
+  
+  
+  $("#id_semester").change(function(){
+    var semester_id = $(this).val();
+    var course_category_id = $('#id_course_category').val();
+    
+    
+    $.ajax({
+        url:" {% url 'attendance_app:fill_subject_select' %}",
+        data:{'semester':semester_id,'course_category':course_category_id},
+        success:function(data){
+            $("#id_subject").html(data);
+        }
+    })
+  })
+ 
+  });
+</script>
+
+{% endblock custom_js %}
+

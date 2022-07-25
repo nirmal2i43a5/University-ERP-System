@@ -559,6 +559,47 @@ def student_attendance_view(request, student_id):
     return render(request,'students/attendance/attendance_view.html', context)
 
 
+
+def student_view_own_attendance(request):
+        
+    # student_attendance, total_present,total_absent = attendance_view(request)
+    if request.method == 'POST':
+        attendance_form = StudentAttendanceDateFilterForm(request.POST)
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+        start_data_parse = datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
+        end_data_parse = datetime.datetime.strptime(end_date, "%Y-%m-%d").date()
+
+ 
+        
+        attendance = Attendance.objects.filter(attendance_date__range=(start_data_parse, end_data_parse)
+                                            #    , subject = subject_id
+                                               )
+
+        # i add course in student  so access subject for student based on course in the collge only.
+        student_attendance = AttendanceReport.objects.filter(student=request.user.student.pk, attendance__in = attendance)  # or filter(student = student_id, attendance__attendance_date = month)
+        total_present=AttendanceReport.objects.filter(student=request.user.student.pk, attendance__in = attendance,status = 'Present').count()
+        total_absent=AttendanceReport.objects.filter(student=request.user.student.pk, attendance__in = attendance,status__in = ['Absent(Not Informed)','Absent(Informed)']).count()
+        context = {
+        'title':'Attendance Details',
+        'attendance_reports': student_attendance,
+        'attendance_form':  StudentAttendanceDateFilterForm(initial = {
+            # 'subject':subject,
+                                                                          'start_date':start_data_parse,
+                                                                          'end_date':end_data_parse}),#for report list after post request
+        'total_present':total_present,
+        'total_absent':total_absent
+        
+    }
+        return render(request,'students/attendance/attendance_view.html', context)
+    
+    context = {
+        'title':'Student Details',
+        'attendance_form':  StudentAttendanceDateFilterForm(),
+        
+    }
+    return render(request,'students/attendance/attendance_view.html', context)
+
 # this is for edit student document(for edit it also goes to else part in add)
 @csrf_exempt
 @permission_required('student_management_app.edit_student_document', raise_exception=True)

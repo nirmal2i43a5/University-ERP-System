@@ -305,7 +305,7 @@ def mass_delete(request,app,model):
     
     
     
-    
+@permission_required('student_management_app:view_user_sidebar', raise_exception=True)
 def user_home(request):
     context = {
         'title':'User Management',
@@ -313,12 +313,17 @@ def user_home(request):
     return render(request, 'userlog/particular_user_log.html', context)
 
 
+
+@permission_required('student_management_app:view_permission_sidebar', raise_exception=True)
 def permission_home(request):
     context = {
         'title':'Permission Management',
                  }
     return render(request, 'admin_templates/dashboard.html', context)
 
+
+
+@permission_required('student_management_app:view_academic_sidebar', raise_exception=True)
 def academic_home(request):
     context = {
         'title':'Academic Management',
@@ -326,6 +331,7 @@ def academic_home(request):
     return render(request, 'userlog/academiclog.html', context)
 
 
+@permission_required('student_management_app:view_event_sidebar', raise_exception=True)
 def event_home(request):
     context = {
         'title':'Event Management',
@@ -339,12 +345,16 @@ def routine_home(request):
                  }
     return render(request, 'admin_templates/dashboard.html', context)
 
+
+@permission_required('student_management_app:view_announcement_sidebar', raise_exception=True)
 def announcement_home(request):
     context = {
         'title':'Notice Management',
                  }
     return render(request, 'admin_templates/dashboard.html', context)
 
+
+@permission_required('student_management_app:view_attendance_sidebar', raise_exception=True)
 def attendance_home(request):
     context = {
         'title':'Attendance Management',
