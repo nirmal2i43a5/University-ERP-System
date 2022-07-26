@@ -16,7 +16,7 @@ Dashboard
 
 
 <div class="card mx-4">
-  <div class="card-body" style="background-color: #743DB8;color:white;border-radius:10px;">
+  <div class="card-body" style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);color:white;border-radius:10px;">
 
     
     {% if request.user|has_group:'Teacher' %}
@@ -85,7 +85,7 @@ src="{% static 'plugins/highcharts/modules/accessibility.js' %}"
     <div class="row">
       <div class="col-12 col-sm-6 col-md-3">
         <div class="info-box border border-success">
-          <span class="info-box-icon elevation-1" style="background-color: #743DB8;color:white;">
+          <span class="info-box-icon elevation-1" style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);color:white;">
             <a href="{% url 'admin_app:manage_student' %}"> <i class="fas fa-1x fa-user-graduate"></i></a>
           </span>
 

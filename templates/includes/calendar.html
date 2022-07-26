@@ -18,7 +18,7 @@
           
             {% if request.user|has_group:'Admin' or request.user.is_superuser or request.user|has_group:'Teacher' or request.user|has_group:'Parent' %}
 
-            <li class="list-group-item active" style="background-color:#743DB8;"><strong>All Notices</strong>
+            <li class="list-group-item active" style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);"><strong>All Notices</strong>
                 {% if request.user|has_group:'Admin' or request.user.is_superuser or request.user|has_group:'Teacher' %}
                 <a href="{% url 'announcement:manage_notice' %}" class="btn btn-sm  text-bold float-right"
                     style="background-color: white;">
@@ -28,7 +28,7 @@
                     <a href="">
                         <li class="list-group-item">{{ notice.title }} <span class="float-right">
         
-                                <a href="{{notice.file.url}}" style="cursor: pointer;background-color:#743DB8;color:white"
+                                <a href="{{notice.file.url}}" style="cursor: pointer;background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);color:white"
                                     class="btn btn-xs float-right">
                                     <strong>View</strong>
                                 </a>
@@ -67,7 +67,7 @@
 
 {% comment %} ----------------------------------------THIS ROW POPULATE CALENDAR--id = "calenda"--------------------------------- {% endcomment %}
 <div class="row">
-    <div class="col-md-12 ml-2" style="background-color: #743DB8;border-radius: 10px;">
+    <div class="col-md-12 ml-2" style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);border-radius: 10px;">
         <div id="calendar"></div>
         <!------------------------------calendar id is from full_scripts.html--------------------------------->
     </div>

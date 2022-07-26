@@ -1,7 +1,7 @@
 .selector > .selector-chosen > h2,
 .selector > .selector-available > h2{
   padding:15px;
-  background-color: #743DB8;
+  background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);
   color:white;
 }
 .help help-tooltip help-icon{

@@ -120,7 +120,7 @@ def manage_enotes(request,semester_id):
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
     subject_id = request.GET.get('subject')
-    category_name = request.GET.get('category')
+    category = request.GET.get('category')
     subject_instance = get_object_or_404(Subject , pk = subject_id) if subject_id else None
 
     if   subject_id or category or start_date or end_date :
@@ -132,13 +132,13 @@ def manage_enotes(request,semester_id):
      
             search_enotes = Enotes.objects.filter(
                                                         subject = subject_instance,
-                                                         note_category = category_name,
+                                                         note_category = category,
                                                          created_at__range=(start_data_parse, end_data_parse)
                                                        )
         else:
             search_enotes = Enotes.objects.filter(
                                                        subject = subject_instance,
-                                                       note_category = category_name,
+                                                       note_category = category,
 
                                                     #    teacher = teacher_instance
                                                        )
