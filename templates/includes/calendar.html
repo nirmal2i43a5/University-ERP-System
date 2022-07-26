@@ -13,7 +13,7 @@
 
        {% endif %}
 
-        <ul class="list-group">
+        <ul class="list-group ml-2">
 
           
             {% if request.user|has_group:'Admin' or request.user.is_superuser or request.user|has_group:'Teacher' or request.user|has_group:'Parent' %}
@@ -28,7 +28,7 @@
                     <a href="">
                         <li class="list-group-item">{{ notice.title }} <span class="float-right">
         
-                                <a href="{{notice.file.url}}" style="cursor: pointer;background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);color:white"
+                                <a href="{{notice.file.url}}" style="cursor: pointer;background:-webkit-linear-gradient(left, #1f12d3, #6b75e0)color:white"
                                     class="btn btn-xs float-right">
                                     <strong>View</strong>
                                 </a>
@@ -66,8 +66,8 @@
 <hr>
 
 {% comment %} ----------------------------------------THIS ROW POPULATE CALENDAR--id = "calenda"--------------------------------- {% endcomment %}
-<div class="row">
-    <div class="col-md-12 ml-2" style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);border-radius: 10px;">
+<div class="row  mx-2">
+    <div class="col-md-12" style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);border-radius: 10px;">
         <div id="calendar"></div>
         <!------------------------------calendar id is from full_scripts.html--------------------------------->
     </div>
