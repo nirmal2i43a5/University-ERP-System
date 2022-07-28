@@ -449,6 +449,7 @@ def log_history_home(request):
                  }
     return render(request, 'userlog/userlog.html', context)
 
+
 def report_home(request):
     context = {
         'title':'Report Management',

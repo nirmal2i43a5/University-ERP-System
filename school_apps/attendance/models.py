@@ -22,7 +22,10 @@ class Attendance(models.Model):
     updated_at=models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return f'{self.attendance_date}:{self.semester}:{self.section}:{self.subject}'
+        if self.semester:
+            return f'{self.attendance_date}:{self.semester}:{self.section}:{self.subject}'
+        else:
+            return f'{self.attendance_date}'
     # class Meta:
     #     default_permissions = ()
     
@@ -47,6 +50,6 @@ class AttendanceReport(models.Model):
     updated_at=models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.student}'
+        return f'{self.staff}::{self.attendance.attendance_date}'
 
 

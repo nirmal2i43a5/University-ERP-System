@@ -10,9 +10,9 @@
                   </p>
                 </a>
               </li>
-              {% url 'user_history:log-history-management' as all_log_url  %}
+              {% url 'user_history:academic-log' as academic_log  %}
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="{% url 'user_history:academic-log' %}"  class=" nav-item nav-link {% if request.path == academic_log %} active{% endif %}">
                   <i class="fas fa-xs fa-chalkboard-teacher"></i>
                   <p class="text-sm">
                     Academic Logs
@@ -20,18 +20,19 @@
                   </p>
                 </a>
               </li>
-             
+              {% url 'user_history:attendance-log' as attendance_log  %}
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="{% url 'user_history:attendance-log' %}"  class=" nav-item nav-link {% if request.path == attendance_log %} active{% endif %}">
                   <i class="fas fa-xs fa-chalkboard-teacher"></i>
                   <p class="text-sm">
-                    Permissions Log
+                    Attendance Log
   
                   </p>
                 </a>
               </li>
+              {% url 'user_history:announcement-log' as announcement_log  %}
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="{% url 'user_history:announcement-log' %}"  class=" nav-item nav-link {% if request.path == announcement_log %} active{% endif %}">
                   <i class="fas fa-xs fa-chalkboard-teacher"></i>
                   <p class="text-sm">
                     Announcement Log
