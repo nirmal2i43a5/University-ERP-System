@@ -616,7 +616,7 @@ class Student(models.Model):
         )
 
     def __str__(self):
-        return f'{self.student_user.full_name} : (Student Id : {self.stu_id}) : ( Roll No : {self.roll_no})'
+        return f'{self.student_user.full_name} : (Student Id : {self.stu_id})'
 
     
     def student_barcode(self,first_place,  *args, **kwargs):

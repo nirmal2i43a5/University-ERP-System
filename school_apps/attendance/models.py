@@ -13,7 +13,7 @@ class Attendance(models.Model):
     semester=models.ForeignKey(Semester,on_delete=models.DO_NOTHING, null=True)
     section=models.ForeignKey(Section,on_delete=models.DO_NOTHING, null=True)
     subject=models.ForeignKey(Subject,on_delete=models.DO_NOTHING, null=True)
-    attendance_date=models.DateField(null=True)
+    attendance_date=models.DateField()
     created_at=models.DateTimeField(auto_now_add=True)
     session_year=models.ForeignKey(SessionYear,on_delete=models.CASCADE,null=True)
     # student=models.ForeignKey(Student,on_delete=models.DO_NOTHING)
@@ -21,10 +21,10 @@ class Attendance(models.Model):
     # status = models.BooleanField(default=True)
     updated_at=models.DateTimeField(auto_now=True)
     
-    # def __str__(self):
-    #     return self.attendance_date
-    class Meta:
-        default_permissions = ()
+    def __str__(self):
+        return f'{self.attendance_date}:{self.semester}:{self.section}:{self.subject}'
+    # class Meta:
+    #     default_permissions = ()
     
 
 

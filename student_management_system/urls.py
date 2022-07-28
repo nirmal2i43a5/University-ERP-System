@@ -29,7 +29,10 @@ from student_management_system.views import (redirect_home,
                                              mass_delete
                                             )
 from django.contrib.auth import views as auth_views
+from django.contrib import admin
 
+admin.autodiscover()
+admin.site.enable_nav_sidebar = False
 
 # from rest_framework import routers
 # from school_apps.formapi import views
