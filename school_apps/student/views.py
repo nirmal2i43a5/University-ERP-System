@@ -326,8 +326,6 @@ def student_application(request):
     app_obj = application_form(application_id=app_id, student=student, term=term, semester=student.semester)
 
     if (application_form.objects.filter(application_id=app_id).exists()):
-        print("in if")
-        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
         while(i<count):
             exams.append(get_object_or_404(Exams, pk=request.POST[str(i)]))
@@ -429,6 +427,7 @@ def parent_checkscore(request):
 
     if request.method == "GET":
         context = {'student': student,
+        
                     }
         return render(request, 'parent/checkscore.html', context)
     else:

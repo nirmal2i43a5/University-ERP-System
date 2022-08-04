@@ -29,7 +29,7 @@ def add_user(request):
             full_name = custom_form.cleaned_data["full_name"]
             
             date_of_birth = str(request.POST.get('dob')) 
-            if date_of_birth:#using this does not give error when u save empty date
+            if date_of_birth:
                 dob =  datetime.datetime.strptime(date_of_birth, "%Y-%m-%d").date()
             else:
                 dob = None
@@ -55,12 +55,9 @@ def add_user(request):
             fname = full_name.split()[0]
             extra_username = fname.lower()
             test_username = full_name.lower().replace(" ","_")
-            print(test_username,"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
-            # #be careful whether u use integertype or other 
             user = CustomUser.objects.create_user(
                 username=test_username, password='password', email=email, 
             full_name=full_name)
-            
             # user.extrauser.role = extra_user_form.cleaned_data['role']
             user.extrauser.address = extra_user_form.cleaned_data["address"]  
             user.extrauser.contact = extra_user_form.cleaned_data['contact']
@@ -68,21 +65,14 @@ def add_user(request):
             user.extrauser.religion = extra_user_form.cleaned_data['religion']
             user.extrauser.dob = dob  
             user.extrauser.join_date = join_date
-            print("upto old")
             user.extrauser.branch = branch
-            print("upto branch")
-
             if image_url != None:
                 user.extrauser.image = image_url
-
             user.save()
             user.extrauser.save()
-            print("upto save")
             # user.groups.add(group)
-            print("upto group")
             messages.success(request, "Successfully Added User")
             return redirect('admin_app:manage_user')
-
             # except:
             #     messages.error(request, "Failed to Add User")
             #     return redirect('admin_app:add_user')
@@ -99,7 +89,7 @@ def add_user(request):
 
 @permission_required('student_management_app.view_extrauser', raise_exception=True)
 def manage_user(request):
-    user = ExtraUser.objects.all()
+    user = ExtraUser.objects.exclude(extra_user__is_superuser = True)
     context = {'users': user, 'title':'Manage Extra User'}
     return render(request, 'users/manage_user.html', context)
 

@@ -404,7 +404,7 @@ class SubjectSearchForm(forms.Form):
     course_category = forms.ModelChoiceField(label= '',
                                       empty_label = '---Filter Course Category---', 
                                       queryset = CourseCategory.objects.all())
-    filter_course = forms.ModelChoiceField(label= '',
+    filter_course = forms.ModelChoiceField(label= '',required = False,
                                       empty_label = '--- Filter Course---', 
                                       queryset = Course.objects.none())
     filter_semester = forms.ModelChoiceField(label= '',

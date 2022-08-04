@@ -312,7 +312,8 @@ def student_daily_attendance(request):
                                             # subject = subject_id
                 )
       
-            
+            total_present=AttendanceReport.objects.filter( attendance__in = attendance,status = 'Present').count()
+            total_absent=AttendanceReport.objects.filter( attendance__in = attendance,status__in = ['Absent(Not Informed)','Absent(Informed)']).count()
             student_attendances = AttendanceReport.objects.filter(attendance__in = attendance)
 
         
@@ -320,12 +321,15 @@ def student_daily_attendance(request):
             'student_attendances':student_attendances,
             'title':'Datewise attendance',
             'course_category':course_category_instance,'course':course_instance,
+                'total_present':total_present,
+                'total_absent':total_absent,
             'semester':semester,'section':section_instance,'subject':subject_instance,
             'datewise_attendance_form':AttendanceForm(user = request.user,initial = {
                 
                 'course_category':course_category_instance,
                 'filter_course':course_instance, 'filter_semester':semester, 'section':section_instance,
-                'subject':subject_instance
+                'subject':subject_instance,
+                
             })
         }
         return render(request,'attendances/students/datewise_attendance.html', context)

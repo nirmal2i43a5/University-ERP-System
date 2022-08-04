@@ -17,7 +17,21 @@
           {% include 'override_table/header_button.html' with button_title='attendance' button_url=button_url %}
 
         <table id="dataTable" class="datewise_attendance table table-sm  table-striped table-bordered table-hover text-nowrap dataTable no-footer">
-         
+          <thead>
+            <tr>
+            
+              <th></th>
+              <th></th>
+               <th></th>
+               <th><span class="badge badge-success">Total Present : {{total_present}} days </span></th>
+              <th class="pull-right"><span class="badge badge-danger">Total Absent : {{total_absent}} days</span> </th>
+
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+          </thead>
         
           <thead>
            

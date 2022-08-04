@@ -22,12 +22,11 @@
         </thead>
     
         <tbody>
-            {% for class in class_teacherlist%}
+            {% for class in class_teacherlist %}
                 <tr>
                   <td></td>
                     <td hidden>{{class.teacher.pk}}</td>
                     <td>{{class.teacher.full_name}}</td>
-
                     <td>{{class.semester}}</td>
                     <td>
                         <span class="badge badge-info">{{class.semester.course_category}} 

@@ -515,7 +515,7 @@ def student_attendance_view(request, student_id):
         return render(request, '404.html')
     
     # student_attendance, total_present,total_absent = attendance_view(request)
-    if request.method == 'POST' and 'attendance_submit' in request.POST:
+    if request.method == 'POST':
         attendance_form = StudentAttendanceDateFilterForm(request.POST)
         start_date = request.POST.get('start_date')
         end_date = request.POST.get('end_date')
@@ -531,7 +531,7 @@ def student_attendance_view(request, student_id):
         attendance = Attendance.objects.filter(attendance_date__range=(start_data_parse, end_data_parse)
                                             #    , subject = subject_id
                                                )
-
+        print(attendance,':::::::::::::::::::::::::')
         # i add course in student  so access subject for student based on course in the collge only.
         student_attendance = AttendanceReport.objects.filter(student=student_id, attendance__in = attendance)  # or filter(student = student_id, attendance__attendance_date = month)
         total_present=AttendanceReport.objects.filter(student=student_id, attendance__in = attendance,status = 'Present').count()
@@ -758,12 +758,16 @@ def manage_student(request):
     #     search_form = StudentSearch(user = request.user)
 
     semester_query = request.GET.get('semester')
+    course_category_query = request.GET.get('course_category')
     section_query = request.GET.get('section')
     # group_query = request.GET.get('group')
 
-    
-    if semester_query and section_query:
-        search_students = Student.objects.filter(semester = semester_query, section = section_query,faculty = group_query,student_user__is_active = 1)
+    if course_category_query:
+        search_students = Student.objects.filter(course_category = course_category_query,student_user__is_active = 1)
+        context = {'students': search_students,'form':search_form}
+        return render(request, 'students/manage_student.html', context)
+    elif semester_query and section_query:
+        search_students = Student.objects.filter(semester = semester_query, section = section_query,student_user__is_active = 1)
         context = {'students': search_students,'form':search_form}
         return render(request, 'students/manage_student.html', context)
     
@@ -783,7 +787,8 @@ def manage_student(request):
         context = {
             'title':'Manage Student',
             'students': students,
-                'form':search_form,'status':True
+                'form':search_form,
+                'status':True
                 }
         return render(request, 'students/manage_student.html', context)
     
