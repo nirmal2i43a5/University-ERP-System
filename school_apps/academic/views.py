@@ -1029,18 +1029,18 @@ def edit_enotes(request,pk):
                 instance = form.save(commit = False)
                 instance.save()
                 messages.success(request, " E-Note is Added Successfully.")
-                return redirect('academic:add_enotes')
+                return redirect('academic:edit_enote',pk)
         except:
             messages.error(request, "Failed to Add E-Note.")
-            return redirect('academic:add_enotes')
+            return redirect('academic:edit_enote',pk)
 
     else:
         form = ENoteForm(instance = enote_instance)
 
     context = {'form': form,
+               'enote_instance':enote_instance,
                'title': 'E-Note'}
-    return render(request, "academic/syllabus/add_syllabus.html", context)
-
+    return render(request, "academic/enotes/add.html", context)
 
 
 
@@ -1253,24 +1253,24 @@ def add_assignment_grade(request,pk):
 @permission_required('academic.change_assignment', raise_exception=True)
 def edit_assignment(request, assignment_id):
     assignment = get_object_or_404(Assignment, pk=assignment_id)
-    form = AssignmentForm(instance=assignment)
+    form = AssignmentForm(instance=assignment,user = request.user)
     if request.method == 'POST':
         form = AssignmentForm(request.POST,
                               request.FILES,
-                              instance=assignment)
-        try:
-            if form.is_valid():
-                title = form.cleaned_data['title']
-                form.save()
-                user = request.user
-                create_notification(
-                    request, post=title, notification_type=2, created_by=user, type='assignment')
-                messages.success(
-                    request, "Assignment is Edited Successfully  .")
-                return redirect('academic:manage_assignment')
-        except:
-            messages.error(request, "Failed To  Edit Assignment.")
-            return redirect('academic:edit_assignment', assignment_id)
+                              instance=assignment,user = request.user)
+        # try:
+        if form.is_valid():
+            title = form.cleaned_data['title']
+            form.save()
+            user = request.user
+            create_notification(
+                request, post=title, notification_type=2, created_by=user, type='assignment')
+            messages.success(
+                request, "Assignment is Edited Successfully  .")
+            return redirect('academic:manage_assignment')
+        # except:
+        #     messages.error(request, "Failed To  Edit Assignment.")
+        #     return redirect('academic:edit_assignment', assignment_id)
     context = {
         'form': form,
         'title': 'Assignment'

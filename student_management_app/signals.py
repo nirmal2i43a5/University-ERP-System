@@ -72,7 +72,7 @@ def create_user_profile(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=CustomUser)
 def save_user_profile(sender, instance, **kwargs):
-    extra_user_role = instance.user_type
+    # extra_user_role = instance.user_type
     group = populate_models(sender)
     if instance.user_type in [group[0],group[1],group[2]]:
         instance.adminuser.save()
@@ -82,8 +82,8 @@ def save_user_profile(sender, instance, **kwargs):
         instance.student.save()
     if instance.user_type == group[5]:
         instance.parent.save()
-    if instance.user_type == extra_user_role:
-        instance.extrauser.save()
+    # if instance.user_type == extra_user_role:
+    #     instance.extrauser.save()
 
 
 

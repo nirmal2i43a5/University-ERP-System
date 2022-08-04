@@ -46,7 +46,11 @@ def add_routine(request):
 def manage_routine(request):
 
     routines = Routine.objects.all()
+    # if request.user.is_superuser:
     search_form = RoutineSearchForm(user = request.user)
+
+    # else:
+    #     search_form = RoutineSearchForm(user = request.user)
     semester = request.GET.get('filter_semester')
     section = request.GET.get('section')
 

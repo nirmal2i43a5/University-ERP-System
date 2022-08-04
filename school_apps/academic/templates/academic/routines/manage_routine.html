@@ -99,7 +99,12 @@
       <th>File</th>
       <th>Description</th>
 
-      <th>Action</th>
+{% if request.user.is_superuser %}
+<th>Action</th>
+
+  
+{% endif %}
+  
     </tr>
   </thead>
   <tbody>
@@ -125,7 +130,7 @@
       
       </td>
       <td>{{ routine.description }}</td>
-
+      {% if request.user.is_superuser %}
       <td>
         <a href="{% url 'academic:edit_routine' routine.id %}" class="btn btn-xs btn-success"><i class="fas fa-xs fa-edit"></i></a>
        
@@ -133,6 +138,7 @@
         <button  class="btn btn-danger btn-xs"  data-target='#deleteroutine-{{ routine.id }}' data-toggle="modal"><i
           class="fas fa-sm fa-trash-alt"></i></button>
       </td>
+      {% endif %}
 
     </tr>
     {% endfor %}

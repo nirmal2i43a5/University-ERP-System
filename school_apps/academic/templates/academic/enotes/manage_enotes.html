@@ -44,7 +44,7 @@
             <!-- /.card-header -->
             <div class="card-body table-responsive ">
               {% if  request.user|has_group:'Admin' or request.user.is_superuser or request.user|has_group:'Teacher'   %}   
-              {% url 'academic:add_enotes' as button_url %}
+              {% url 'academic:add_enote' as button_url %}
               
            
  

@@ -40,10 +40,10 @@
      {% if assignment.file %}
 
      <a href="{{ assignment.file.url }}" style="cursor: pointer;" class="btn btn-xs btn-success">
-      View Assignment
+      <strong>View Assignment</strong>
     </a>
     <a href="{% url 'academic:assignment_answer_upload' assignment.id  %}" style="cursor: pointer;" class="btn btn-xs btn-success">
-      Upload
+      <strong>Upload answer</strong>
     </a>
 
   {% else %}

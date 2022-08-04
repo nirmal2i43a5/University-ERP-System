@@ -339,6 +339,8 @@ class SubjectSearchForm(forms.Form):
         
 
 class RoutineSearchForm(forms.Form):
+    # course_category = forms.ModelChoiceField(label = '',empty_label="Course Category",queryset = CourseCategory.objects.all())
+    # filter_course = forms.ModelChoiceField(label = '',empty_label="Course",required = False, queryset = Course.objects.all())
     filter_semester = forms.ModelChoiceField(label = '',empty_label="Select Semester", queryset = Semester.objects.all())
     section = forms.ModelChoiceField(label = '',empty_label="Select Section", queryset = Section.objects.none())
    
@@ -347,6 +349,14 @@ class RoutineSearchForm(forms.Form):
         filter_semester = self.fields['filter_semester']
         filter_semester.queryset = user.semester_set.all()
         # filter_semester.queryset = user.semesterteacher_set.all()
+# class AdminRoutineSearchForm(forms.Form):
+#     course_category = forms.ModelChoiceField(label = '',empty_label="Course Category",queryset = CourseCategory.objects.all())
+#     filter_course = forms.ModelChoiceField(label = '',empty_label="Course",required = False, queryset = Course.objects.all())
+#     filter_semester = forms.ModelChoiceField(label = '',empty_label="Select Semester", queryset = Semester.objects.all())
+#     section = forms.ModelChoiceField(label = '',empty_label="Select Section", queryset = Section.objects.none())
+    
+   
+   
         
         
 class SubjectForm(forms.ModelForm):

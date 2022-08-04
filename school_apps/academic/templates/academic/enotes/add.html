@@ -1,5 +1,7 @@
 {% extends 'admin_templates/base_admin.html' %}
-
+{% block title %}
+  {{title}}
+{% endblock title %}
 {% load crispy_forms_tags %}
 
 
@@ -20,7 +22,15 @@
       <div class="col-md-12">
         <!-- general form elements -->
         <div class="card card-info">
-          {% include 'override_table/header.html' with card_title='Add E-Note' %}
+          
+          {% if enote_instance %}
+          {% include 'override_table/header.html' with card_title='Edit E-Note' %}
+{% else %}
+{% include 'override_table/header.html' with card_title='Add E-Note' %}
+
+            
+          {% endif %}
+            
           <!-- /.card-header -->
           {% url 'academic:manage_syllabus' as url %}
           <!-- form start -->

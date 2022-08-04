@@ -7,6 +7,8 @@ from django.urls import resolve
 from student_management_app.models import (Section,Semester,Subject,Staff,CustomUser)
 from django.contrib.auth.decorators import permission_required
 
+
+
 def manage_assignment(request,semester_id):
     semester_instance = get_object_or_404(Semester, pk = semester_id)
     # assignments = Assignment.objects.filter(semester = semester_instance)
@@ -143,7 +145,7 @@ def manage_enotes(request,semester_id):
                                                     #    teacher = teacher_instance
                                                        )
         enote_search_form = forms.EnotesFilterForm(semester_id,request.user,initial = {
-         'subject': subject_id,'category': category_name,'start_date': start_date,'end_date': end_date
+         'subject': subject_id,'category': category,'start_date': start_date,'end_date': end_date
                                          })
     
         return search_enotes,enote_search_form 
