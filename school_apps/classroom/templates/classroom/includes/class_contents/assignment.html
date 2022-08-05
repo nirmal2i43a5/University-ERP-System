@@ -48,7 +48,7 @@
              
             {% endif %}
          
-            {% for assignment in teacher_assignments %}
+            {% for assignment,student_submit_status in assignment_submitted_status %}
 
             {% include "academic/assignments/delete.html" %}
 

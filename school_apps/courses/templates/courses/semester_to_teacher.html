@@ -62,8 +62,10 @@
             <thead class="thead" style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);color:white;"> 
                 <tr>
                     <th></th>
+                    <th></th>
                     <th>Name</th>   
                     <th>Course</th>   
+                    
                 </tr>
             </thead>
     
@@ -71,7 +73,7 @@
                 {% for semester in classes %}
                     <tr>
                         <td style="width: max-content;"></td>
-                        
+                        <td id="{{semester.pk}}">{{semester.pk}}</td>
                         <td>{{semester.name}}</td>
                         <td>
                             <span class="badge badge-info">{{semester.course_category}} 

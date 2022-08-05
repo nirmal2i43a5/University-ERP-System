@@ -27,7 +27,7 @@ from .forms import (
                     SyllabusSearchForm,
                     EnotesFilterForm
                     )
-
+from school_apps.classroom.helpers import assignment_handed_status
 from school_apps.academic.forms import ClassFormSearch
 from school_apps.academic.forms import (
     SyllabusForm, AssignmentForm, RoutineForm, SubjectSearchForm)
@@ -513,6 +513,7 @@ def assign_subject_to_teacher(request):
 
 def subject_to_teacher_Ajax(request):
     teacher = Staff.objects.get(staff_user__pk = request.GET['teacher'])
+    print(request.GET['subject'],"------------------------------------------------------")
     subject = Subject.objects.get(pk = request.GET['subject'])
     print(subject.semester)
     # semester = Semester.objects.get(pk = request.GET['semester'])
@@ -590,10 +591,11 @@ def assign_class_to_teacher(request):
 def class_to_teacher_Ajax(request):
     teacher = Staff.objects.get(staff_user__pk = request.GET['teacher'])
     semester_id = request.GET.getlist('semesters[]')
+    print(semester_id)
     classes = []
-    for item in semester_id:
-        semester_instance = Semester.objects.filter(name = item).first()
-        classes.append(Semester.objects.get(pk=semester_instance.pk))
+    for item_id in semester_id:
+        # semester_instance = Semester.objects.filter(name = item).first()
+        classes.append(Semester.objects.get(pk=item_id))
   
 
     try:
@@ -1150,42 +1152,11 @@ def manage_assignment(request):
     # for total turned in and review count 
     
     assignments = Assignment.objects.all()
-    respective_teacher_assignments = Assignment.objects.filter(teacher_id=request.user.id, draft=False)
-    draft_assignments = Assignment.objects.filter(teacher_id=request.user.id, draft=True)
-    # for assignment in respective_teacher_assignments:
-        
-    # total_students = Student.objects.filter(section = '')
-    # ------For getting turned in count
-    assignment_submitted_status = []
+    # respective_teacher_assignments = Assignment.objects.filter(teacher_id=request.user.id, draft=False)
 
-    for assignment in Assignment.objects.all():
-        assignment_submitted_by_student = Grade.objects.filter(
-            assignment_status = 'Completed',
-            assignment__semester = assignment.semester,
-            assignment__section = assignment.section,
-           assignment__Subject = assignment.Subject
-           ).count()
-        semester_instance = get_object_or_404(Semester, pk = assignment.semester.pk)
-        section_instance = get_object_or_404(Section, pk = assignment.section.pk)
-        total_students = Student.objects.filter(student_user__is_active = 1,semester = semester_instance, section = section_instance).count()
-        assignment_reviewed_by_teacher = Grade.objects.filter(
-            grade_status = True,
-            assignment__semester = assignment.semester,
-            assignment__section = assignment.section,
-           assignment__Subject = assignment.Subject
-           ).count()
-        assignment_remained_to_check = Grade.objects.filter(
-            grade_status = False,
-            assignment__semester = assignment.semester,
-            assignment__section = assignment.section,
-           assignment__Subject = assignment.Subject
-           ).count()
-        assignment_submitted_status.append({'assignment_submitted_by_student':assignment_submitted_by_student,
-                                             'assignment_reviewed_by_teacher':assignment_reviewed_by_teacher,
-                                             'total_students':total_students,
-                                             'assignment_remained_to_check':assignment_remained_to_check})
-    print(assignment_submitted_status)
-    
+    draft_assignments = Assignment.objects.filter(teacher_id=request.user.id, draft=True)
+    assignment_submitted_status = assignment_handed_status(request)
+
     # for submitted_assignment in Grade.objects.all():
     #     student.append(submitted_assignment.student_id)
     #     assignment.append(submitted_assignment.assignment_id)
@@ -1196,20 +1167,43 @@ def manage_assignment(request):
     # submitted_assignment_no = CustomUser.objects.filter(Q(pk__in = student)&
     #                                                     Q()).count()
     # ---
-    search_form = SemesterSectionSearchForm(user = request.user)
+   
     semester_id = request.GET.get('filter_semester')
     section_id = request.GET.get('section')
     subject_id = request.GET.get('subject')
+    section_instance = get_object_or_404(Section, pk = section_id) if section_id else None
+    semester_instance = get_object_or_404(Semester, pk = semester_id) if semester_id else None
+    subject_instance = get_object_or_404(Subject, pk = subject_id) if subject_id else None
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+    search_form = SemesterSectionSearchForm(user = request.user,initial = {
+        'filter_semester':semester_instance,
+        'section':section_instance,'subject':subject_instance,'start_date':start_date,'end_date':end_date
+    })
+  
+   
+    if  subject_id or start_date or end_date :
+        subject_instance  = get_object_or_404(Subject, pk = subject_id)
+        # teacher_instance  = get_object_or_404(Staff, pk = teacher_id) if teacher_id else None
 
-    if semester_id and section_id and subject_id:
-        search_assignments = Assignment.objects.filter(semester=get_object_or_404(Semester, pk = semester_id),
-                                                       section = get_object_or_404(Section, pk = section_id),
-                                                       Subject = get_object_or_404(Subject, pk = subject_id))
+        if start_date and end_date:
+            start_data_parse = datetime.strptime(str(start_date), "%Y-%m-%d").date()
+            end_data_parse = datetime.strptime(str(end_date), "%Y-%m-%d").date()
+     
+            search_assignments = Assignment.objects.filter(
+                                                       Subject = subject_instance,
+                                                         created_at__range=(start_data_parse, end_data_parse)
+                                                       )
+        else:
+            search_assignments = Assignment.objects.filter(
+                                                       Subject = subject_instance,
+                                                    #    teacher = teacher_instance
+                                                       )
         context = {
             'assignments': search_assignments,
             'teacher_assignments': search_assignments,
             'draft_assignments': draft_assignments,
-              'assignment_submitted_status':zip(respective_teacher_assignments,assignment_submitted_status),
+              'assignment_submitted_status':zip(search_assignments,assignment_submitted_status),
                     # 'total_reviewed':graded,
             'form': search_form,
                     'title': 'Assignment',
@@ -1218,13 +1212,13 @@ def manage_assignment(request):
 
     context = {
         'assignments': assignments,
-        'teacher_assignments': respective_teacher_assignments,
+        # 'teacher_assignments': search_assignments,
         'draft_assignments': draft_assignments,
         # 'student_assignments':assignments.filter(),
         'form': search_form,
         # 'submitted_assignment_no':submitted_assignment_no,
         'title': 'Assignment',
-        'assignment_submitted_status':zip(respective_teacher_assignments,assignment_submitted_status),
+        # 'assignment_submitted_status':zip(search_assignments,assignment_submitted_status),
     }
 
     return render(request, 'academic/assignments/manage_assignment.html', context)
@@ -1255,10 +1249,13 @@ def edit_assignment(request, assignment_id):
     assignment = get_object_or_404(Assignment, pk=assignment_id)
     form = AssignmentForm(instance=assignment,user = request.user)
     if request.method == 'POST':
+        
         form = AssignmentForm(request.POST,
                               request.FILES,
-                              instance=assignment,user = request.user)
+                              instance=assignment,
+                              user = request.user)
         # try:
+        print(form,"----------------------")
         if form.is_valid():
             title = form.cleaned_data['title']
             form.save()
@@ -1267,7 +1264,7 @@ def edit_assignment(request, assignment_id):
                 request, post=title, notification_type=2, created_by=user, type='assignment')
             messages.success(
                 request, "Assignment is Edited Successfully  .")
-            return redirect('academic:manage_assignment')
+            return redirect('academic:edit_assignment', assignment_id)
         # except:
         #     messages.error(request, "Failed To  Edit Assignment.")
         #     return redirect('academic:edit_assignment', assignment_id)

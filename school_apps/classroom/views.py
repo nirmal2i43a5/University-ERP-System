@@ -196,11 +196,12 @@ def classroom(request):
 
 def classroom_contents(request,pk):
     url_name = resolve(request.path).url_name
-    print(url_name)
-    search_assignments,draft_assignments,assignment_search_form = manage_assignment(request,pk)
+    search_assignments,draft_assignments,assignment_search_form,assignment_submitted_status = manage_assignment(request,pk)
+    # respective_teacher_assignments = Assignment.objects.filter(teacher_id=request.user.id, draft=False)
     search_syllabus,syllabus_search_form  = manage_syllabus(request,pk)
     search_routines,routine_search_form = manage_routine(request,pk)
     search_enotes,enote_search_form = manage_enotes(request,pk)
+    assignment_zip_file = zip(search_assignments,assignment_submitted_status) if search_assignments else None
     context = {
         
             'school_classes':school_classes,
@@ -225,7 +226,9 @@ def classroom_contents(request,pk):
                'search_routines':search_routines,
                'routine_form':routine_search_form,
                'enote_search_form':enote_search_form,
-               'search_enotes':search_enotes
+               'search_enotes':search_enotes,
+                'assignment_submitted_status':assignment_zip_file,
+                #    'teacher_assignments': respective_teacher_assignments,
              # 'submitted_assignment_no':submitted_assignment_no,
             
       

@@ -91,9 +91,11 @@ class AssignmentForm(forms.ModelForm):
 
     def clean(self):
         self.check_file()
+        print(":::I am inside clead------------")
         return self.cleaned_data
 
     def check_file(self):
+        print("I am inside file check--------------------------")
         content = self.cleaned_data["file"]
         content_type = content.content_type.split('/')[0]
         if content.size > int(MAX_UPLOAD_SIZE):
@@ -119,11 +121,11 @@ class SemesterSectionSearchForm(forms.Form):
     #                                   queryset = CourseCategory.objects.all())
     
     filter_semester = forms.ModelChoiceField(label = 'Semester',empty_label = 'Choose Class',
-                                      queryset = Semester.objects.none())
+                                      queryset = Semester.objects.all())
     section = forms.ModelChoiceField(required = False, empty_label = 'Choose Section',
-                                     queryset = Section.objects.none())
+                                     queryset = Section.objects.all())
     subject = forms.ModelChoiceField(required = False, empty_label = 'Choose Subject',
-                                     queryset = Subject.objects.none())
+                                     queryset = Subject.objects.all())
     start_date = forms.DateField(required = False, label = 'From', widget=forms.DateInput(attrs = {'type':'date','class':''}))
     end_date = forms.DateField(required = False,label = 'To',widget=forms.DateInput(attrs = {'type':'date','class':''}))
     # group=forms.ChoiceField(required = False, label = '',choices=faculty_choices,

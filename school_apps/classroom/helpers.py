@@ -6,14 +6,49 @@ from school_apps.academic import forms
 from django.urls import resolve
 from student_management_app.models import (Section,Semester,Subject,Staff,CustomUser)
 from django.contrib.auth.decorators import permission_required
+from student_management_app.models import Student
+
+def assignment_handed_status(request):
+    assignment_submitted_status = []
+
+    for assignment in Assignment.objects.all():
+        assignment_submitted_by_student = Grade.objects.filter(
+            assignment_status = 'Completed',
+            assignment__semester = assignment.semester,
+            assignment__section = assignment.section,
+           assignment__Subject = assignment.Subject
+           ).count()
+        semester_instance = get_object_or_404(Semester, pk = assignment.semester.pk)
+        section_instance = get_object_or_404(Section, pk = assignment.section.pk) if assignment.section else None
+        total_students = Student.objects.filter(student_user__is_active = 1,
+                                                semester = semester_instance, 
+                                                section = section_instance).count()
+        assignment_reviewed_by_teacher = Grade.objects.filter(
+            grade_status = True,
+            assignment__semester = assignment.semester,
+            assignment__section = assignment.section,
+           assignment__Subject = assignment.Subject
+           ).count()
+        assignment_remained_to_check = Grade.objects.filter(
+            grade_status = False,
+            assignment__semester = assignment.semester,
+            assignment__section = assignment.section,
+           assignment__Subject = assignment.Subject
+           ).count()
+        assignment_submitted_status.append({'assignment_submitted_by_student':assignment_submitted_by_student,
+                                             'assignment_reviewed_by_teacher':assignment_reviewed_by_teacher,
+                                             'total_students':total_students,
+                                             'assignment_remained_to_check':assignment_remained_to_check})
+    return assignment_submitted_status
+
 
 
 
 def manage_assignment(request,semester_id):
     semester_instance = get_object_or_404(Semester, pk = semester_id)
     # assignments = Assignment.objects.filter(semester = semester_instance)
-    respective_teacher_assignments = Assignment.objects.filter(teacher_id=request.user.id, semester = semester_instance, draft=False)
     draft_assignments = Assignment.objects.filter(teacher_id=request.user.id,semester = semester_instance, draft=True)
+    assignment_submitted_status = assignment_handed_status(request)
     # for assignment in respective_teacher_assignments:
         
     # total_students = Student.objects.filter(section = '')
@@ -23,22 +58,14 @@ def manage_assignment(request,semester_id):
     for submitted_assignment in Grade.objects.all():
         student.append(submitted_assignment.student_id)
         assignment.append(submitted_assignment.assignment_id)
-    # for student in student:
-    #     print(Student.objects.get(student_user = student).section)
-    # total_students = Assignment.objects.filter(student__in=student)
-    # submitted_assignment_no = CustomUser.objects.filter(Q(pk__in = student)&
-    #                                                     Q()).count()
-    # ---
-    # graded = Grade.objects.filter(status = True).count()
-    
-    
+ 
     assignment_search_form = forms.ContentFilterForm(semester_id)
     subject_id = request.GET.get('subject')
     # teacher_id = request.GET.get('teacher')
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
    
-    if   subject_id or start_date or end_date :
+    if  subject_id or start_date or end_date :
         subject_instance  = get_object_or_404(Subject, pk = subject_id)
         # teacher_instance  = get_object_or_404(Staff, pk = teacher_id) if teacher_id else None
 
@@ -55,7 +82,7 @@ def manage_assignment(request,semester_id):
                                                        Subject = subject_instance,
                                                     #    teacher = teacher_instance
                                                        )
-        return search_assignments,draft_assignments,assignment_search_form 
+        return search_assignments,draft_assignments,assignment_search_form,assignment_submitted_status
     
     # if subject_id:
     #     print("Inside;::;")
@@ -74,7 +101,7 @@ def manage_assignment(request,semester_id):
     #                                                    )
         # return search_assignments,draft_assignments,assignment_search_form 
     search_assignments = None
-    return search_assignments,draft_assignments,assignment_search_form 
+    return search_assignments,draft_assignments,assignment_search_form,assignment_submitted_status
 
 
 
