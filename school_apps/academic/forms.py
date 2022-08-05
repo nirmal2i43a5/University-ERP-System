@@ -120,7 +120,7 @@ class SemesterSectionSearchForm(forms.Form):
     # course_category = forms.ModelChoiceField(empty_label = 'Choose Course Category',
     #                                   queryset = CourseCategory.objects.all())
     
-    filter_semester = forms.ModelChoiceField(label = 'Semester',empty_label = 'Choose Class',
+    semester = forms.ModelChoiceField(required = False, label = 'Semester',empty_label = 'Choose Class',
                                       queryset = Semester.objects.all())
     section = forms.ModelChoiceField(required = False, empty_label = 'Choose Section',
                                      queryset = Section.objects.all())
@@ -134,7 +134,7 @@ class SemesterSectionSearchForm(forms.Form):
     def __init__(self, *args, user, **kwargs):
         super().__init__(*args, **kwargs)
         subject = self.fields['subject']
-        filter_semester = self.fields['filter_semester']
+        filter_semester = self.fields['semester']
         # course_category = self.fields['course_category']
         # course_category.queryset = user.staff.course.all()
         filter_semester.queryset = user.semester_set.all()

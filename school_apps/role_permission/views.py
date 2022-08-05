@@ -141,18 +141,15 @@ def user_permission_manage(request):
 
 
 
-# Updating permission 
 
 def save_permission(request):
     
     if request.method == 'POST':
-        print(":::::::::::::Inside post::::::::::::::::::")
         role = request.POST.get('role')
         group = get_object_or_404(Group,id = role)
         
         permission_instance_form = ShowRolePermission(instance = group, data = request.POST)#showing permission form instance 
         if permission_instance_form.is_valid():
-            print(":::::::::::::Inside valid::::::::::::::::::")
             permission_instance_form.save()
             messages.success(request,"Permission is Successfully Modified ")
             

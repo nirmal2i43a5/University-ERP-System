@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from datetime import datetime
+from datetime import datetime,timedelta
 from student_management_app.models import  Semester
 from school_apps.academic.models import (Syllabus, Routine, Assignment, Grade,Enotes)
 from school_apps.academic import forms
@@ -39,6 +39,7 @@ def assignment_handed_status(request):
                                              'assignment_reviewed_by_teacher':assignment_reviewed_by_teacher,
                                              'total_students':total_students,
                                              'assignment_remained_to_check':assignment_remained_to_check})
+    
     return assignment_submitted_status
 
 
@@ -59,29 +60,39 @@ def manage_assignment(request,semester_id):
         student.append(submitted_assignment.student_id)
         assignment.append(submitted_assignment.assignment_id)
  
-    assignment_search_form = forms.ContentFilterForm(semester_id)
+    # assignment_search_form = forms.ContentFilterForm(semester_id)
+  
     subject_id = request.GET.get('subject')
+    subject_instance  = get_object_or_404(Subject, pk = subject_id) if subject_id else None
+    section_id = request.GET.get('section')
+    section_instance  = get_object_or_404(Section, pk = section_id) if section_id else None
     # teacher_id = request.GET.get('teacher')
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
-   
-    if  subject_id or start_date or end_date :
-        subject_instance  = get_object_or_404(Subject, pk = subject_id)
-        # teacher_instance  = get_object_or_404(Staff, pk = teacher_id) if teacher_id else None
+    assignment_search_form = forms.ContentFilterForm(semester_id,initial = {
+       
+        'section':section_instance,'subject':subject_instance,'start_date':start_date,'end_date':end_date
+    })
+ 
 
-        if start_date and end_date:
-            start_data_parse = datetime.strptime(str(start_date), "%Y-%m-%d").date()
-            end_data_parse = datetime.strptime(str(end_date), "%Y-%m-%d").date()
-     
-            search_assignments = Assignment.objects.filter(
-                                                       Subject = subject_instance,
-                                                         created_at__range=(start_data_parse, end_data_parse)
-                                                       )
-        else:
-            search_assignments = Assignment.objects.filter(
-                                                       Subject = subject_instance,
-                                                    #    teacher = teacher_instance
-                                                       )
+    if subject_id and start_date  and end_date:
+        
+        start_date_parse = datetime.strptime(str(start_date), "%Y-%m-%d").date()
+        end_date_parse = datetime.strptime(str(end_date), "%Y-%m-%d").date()
+    
+        search_assignments = Assignment.objects.filter(
+                                                    Subject = subject_instance,
+                                                        created_at__range=(
+                                                            start_date_parse, 
+                                                            end_date_parse + timedelta(days=1)
+                                                            )
+                                                    )
+        return search_assignments,draft_assignments,assignment_search_form,assignment_submitted_status
+    if subject_id:
+        search_assignments = Assignment.objects.filter(
+                                                    Subject = subject_instance,
+                                                #    teacher = teacher_instance
+                                                    )
         return search_assignments,draft_assignments,assignment_search_form,assignment_submitted_status
     
     # if subject_id:
@@ -162,7 +173,9 @@ def manage_enotes(request,semester_id):
             search_enotes = Enotes.objects.filter(
                                                         subject = subject_instance,
                                                          note_category = category,
-                                                         created_at__range=(start_data_parse, end_data_parse)
+                                                         created_at__range=(start_data_parse,
+                                                                            end_data_parse+ timedelta(days=1)
+                                                                            )
                                                        )
         else:
             search_enotes = Enotes.objects.filter(

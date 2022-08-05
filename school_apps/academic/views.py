@@ -3,7 +3,7 @@ import os
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.utils import timezone
-from datetime import datetime
+from datetime import datetime,timedelta
 from django.http import HttpResponse,JsonResponse
 from django.db.models import Q
 from student_management_app.django_forms.forms import (
@@ -160,7 +160,7 @@ def edit_department(request,pk):
 
 
 
-
+@permission_required('student_management_app.delete_department', raise_exception=True)
 def delete_department(request,pk):
     instance = get_object_or_404(Department, pk = pk)
     instance.delete()
@@ -440,6 +440,7 @@ def return_student_subject(request):
 
     return render (request, 'courses/student_subjectlist.html' ,context,status=201)
 
+
 def deletesubjectstudent(request, pk):
     group=""
     selected_object = selectedcourses.objects.get(pk=pk)
@@ -558,6 +559,7 @@ def editsubjectteacher(request):
     subject = Subject.objects.get(pk = request.GET['subject'])
     pass
 
+@permission_required('student_management_app.delete_subjectteacher', raise_exception=True)
 def deletesubjectteacher(request, pk):
     item = SubjectTeacher.objects.get(pk=pk)
     item.delete()
@@ -1149,9 +1151,7 @@ def add_assignment(request):
 
 @permission_required('academic.view_assignment', raise_exception=True)
 def manage_assignment(request):
-    # for total turned in and review count 
     
-    assignments = Assignment.objects.all()
     # respective_teacher_assignments = Assignment.objects.filter(teacher_id=request.user.id, draft=False)
 
     draft_assignments = Assignment.objects.filter(teacher_id=request.user.id, draft=True)
@@ -1168,7 +1168,7 @@ def manage_assignment(request):
     #                                                     Q()).count()
     # ---
    
-    semester_id = request.GET.get('filter_semester')
+    semester_id = request.GET.get('semester')
     section_id = request.GET.get('section')
     subject_id = request.GET.get('subject')
     section_instance = get_object_or_404(Section, pk = section_id) if section_id else None
@@ -1177,31 +1177,41 @@ def manage_assignment(request):
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
     search_form = SemesterSectionSearchForm(user = request.user,initial = {
-        'filter_semester':semester_instance,
+        'semester':semester_instance,
         'section':section_instance,'subject':subject_instance,'start_date':start_date,'end_date':end_date
     })
   
    
-    if  subject_id or start_date or end_date :
-        subject_instance  = get_object_or_404(Subject, pk = subject_id)
-        # teacher_instance  = get_object_or_404(Staff, pk = teacher_id) if teacher_id else None
 
-        if start_date and end_date:
-            start_data_parse = datetime.strptime(str(start_date), "%Y-%m-%d").date()
-            end_data_parse = datetime.strptime(str(end_date), "%Y-%m-%d").date()
-     
-            search_assignments = Assignment.objects.filter(
-                                                       Subject = subject_instance,
-                                                         created_at__range=(start_data_parse, end_data_parse)
-                                                       )
-        else:
-            search_assignments = Assignment.objects.filter(
-                                                       Subject = subject_instance,
-                                                    #    teacher = teacher_instance
-                                                       )
+    if subject_id and start_date  and end_date:
+        print('if--------------------')
+    
+        start_date_parse = datetime.strptime(str(start_date), "%Y-%m-%d").date()
+        end_date_parse = datetime.strptime(str(end_date), "%Y-%m-%d").date()
+    
+        search_assignments = Assignment.objects.filter(
+                                                    Subject = subject_instance,
+                                                        created_at__range=(
+                                                            start_date_parse, 
+                                                            end_date_parse + timedelta(days=1))
+                                                    )
         context = {
-            'assignments': search_assignments,
-            'teacher_assignments': search_assignments,
+     
+            'draft_assignments': draft_assignments,
+              'assignment_submitted_status':zip(search_assignments,assignment_submitted_status),
+            'form': search_form,
+                    'title': 'Assignment',
+        }
+        return render(request, 'academic/assignments/manage_assignment.html', context)
+    
+    if subject_id:
+        print("Inside subject-----------------")
+        search_assignments = Assignment.objects.filter(
+                                                    Subject = subject_instance,
+                                                #    teacher = teacher_instance
+                                                    )
+        context = {
+       
             'draft_assignments': draft_assignments,
               'assignment_submitted_status':zip(search_assignments,assignment_submitted_status),
                     # 'total_reviewed':graded,
@@ -1211,8 +1221,6 @@ def manage_assignment(request):
         return render(request, 'academic/assignments/manage_assignment.html', context)
 
     context = {
-        'assignments': assignments,
-        # 'teacher_assignments': search_assignments,
         'draft_assignments': draft_assignments,
         # 'student_assignments':assignments.filter(),
         'form': search_form,
