@@ -100,7 +100,6 @@ def save_student_attendance(request):
         if attendance_date.strftime('%Y-%m-%d') < today_date or attendance_date.strftime('%Y-%m-%d') > today_date:
             return JsonResponse({'status': 'False Date Select', 'message': 'Sorry, You cannot take attendance for past and future date.'}, safe=False)
 
-            # print("Please choose today date")
         if attendance_instance.exists():
             return JsonResponse({'status': 'Attendance Already Exists', 'message': 'Attendance is already created for this date.Please select another date. Please select today date.'}, safe=False)
         else:
@@ -120,7 +119,6 @@ def save_student_attendance(request):
            
         section = Section.objects.get(pk=section)
         subject = Subject.objects.get(pk=subject)
-            # print(attendance_date,"::::::::------------------------------------::::::::::::;;")
             
         attendance_instance = Attendance.objects.filter(semester=semester,
                                                         section=section, 
@@ -129,7 +127,6 @@ def save_student_attendance(request):
         if attendance_date.strftime('%Y-%m-%d') < datetime.datetime.today().strftime('%Y-%m-%d') or attendance_date.strftime('%Y-%m-%d') > datetime.datetime.today().strftime('%Y-%m-%d'):
             return JsonResponse({'status': 'False Date Select', 'message': 'Sorry, You cannot take attendance for past and future date.'}, safe=False)
 
-            # print("Please choose today date")
         if attendance_instance.exists():
             return JsonResponse({'status': 'Attendance Already Exists', 'message': 'Attendance is already created for this date.Please select another date. Please select today date.'}, safe=False)
         else:
@@ -144,7 +141,6 @@ def save_student_attendance(request):
                 student=Student.objects.get(student_user=stud['id'])
                 attendance_report=AttendanceReport(student = student, attendance = attendance, status=stud['status'])   
                 attendance_report.save()
-                print("Attendance is successfully saved.")
             return JsonResponse({'status': 'Save Success', 'message': 'Attendance is successfully saved.'}, safe=False)
   
     
@@ -175,6 +171,8 @@ def edit_student_attendance(request):
         #                                     #    subject=subject_id 
         #                                     faculty = group
         #                                        )
+        # if  attendance_date.strftime('%Y-%m-%d') > datetime.datetime.today().strftime('%Y-%m-%d'):
+        #     return JsonResponse({'status': 'False Date Select', 'message': 'Attendance was not created for this future data.'}, safe=False)
         
         if course_category_instance == get_object_or_404(CourseCategory, course_name = 'School'):
             students = Student.objects.filter(
@@ -252,9 +250,9 @@ def edit_save_student_attendance(request):
         attendance=Attendance(semester=semester,
                                 section = section_instance,
                             attendance_date=attendance_date)
+        
         attendance.save()
         for stud in json_student:
-            print(stud,"Inside json data:::------------")
             student=Student.objects.get(student_user=stud['id'])
             each_attendance_report = get_object_or_404(AttendanceReport, pk = stud['attendance_report_id'])
             each_attendance_report.status = stud['status']
@@ -677,9 +675,7 @@ def fill_course_select(request):
 
 def fill_section_select(request):
     semester = Semester.objects.get(pk = request.GET['semester'])
-    print(semester)
     sections = Section.objects.filter(semester = semester)
-    print(sections)
     context = {'sections': sections}
     return render(request, "attendances/auto_fill_select/sections.html", context)
     
@@ -704,24 +700,18 @@ def fill_teacher_select(request):
 #     semester_id = request.POST.get('semester_id')
 #     semester = get_object_or_404(Semester, id = semester_id)
     
-#     # print(semester,"semester id")
 #     section = request.POST.get('section_id')
 #     # section = get_object_or_404(Section, id = section)
     
 #     section = semester.section_set.get(id = section )
-#     print(section)
 #     student = section.student_set.all()
-#     print(student)
 #     return HttpResponse("Reponse")
              
 # def student_attendance(request):
 #     search_form = AttendanceFormSearch()
 #     semester = request.GET.get('semester')
-#     print(semester)
 #     section = request.GET.get('section')
-#     print(section)
 #     subject = request.GET.get('subject')
-#     print(subject)
     
 #     if semester and section:# and subject:
 #         filter_students = Student.objects.filter(Q(semester = semester) &

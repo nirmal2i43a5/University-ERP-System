@@ -1002,7 +1002,7 @@ def delete_syllabus(request, syllabus_id):
 @permission_required('academic.add_enotes', raise_exception=True)
 def add_enotes(request):
     if request.method == 'POST':
-        form = ENoteForm(request.POST, request.FILES)
+        form = ENoteForm(request.POST, request.FILES,user = request.user)
 
         try:
             if form.is_valid():
@@ -1015,7 +1015,7 @@ def add_enotes(request):
             return redirect('academic:add_enote')
 
     else:
-        form = ENoteForm()
+        form = ENoteForm(user = request.user)
 
     context = {'form': form,
                'title': 'E-Note'}
@@ -1026,7 +1026,7 @@ def edit_enotes(request,pk):
     enote_instance = get_object_or_404(Enotes,pk = pk)
     
     if request.method == 'POST':
-        form = ENoteForm(request.POST, request.FILES,instance=enote_instance)
+        form = ENoteForm(request.POST, request.FILES,instance=enote_instance,user = request.user)
 
         try:
             if form.is_valid():
@@ -1039,14 +1039,19 @@ def edit_enotes(request,pk):
             return redirect('academic:edit_enote',pk)
 
     else:
-        form = ENoteForm(instance = enote_instance)
+        form = ENoteForm(instance = enote_instance,user = request.user)
 
     context = {'form': form,
                'enote_instance':enote_instance,
                'title': 'E-Note'}
     return render(request, "academic/enotes/add.html", context)
 
-
+@permission_required('academic.delete_enotes', raise_exception=True)
+def delete_enote(request,pk):
+    instance = get_object_or_404(Enotes, pk = pk)
+    instance.delete()
+    messages.success(request, 'Enote info deleted.')
+    return redirect(('academic:manage_enote'))
 
 def student_send_bulk_email(request):
     student_bulk_email = []
@@ -1411,7 +1416,9 @@ def manage_enotes(request):
             enotes = Enotes.objects.filter(
                                                         subject = subject_instance,
                                                          note_category = category_name,
-                                                         created_at__range=(start_data_parse, end_data_parse)
+                                                         created_at__range=(start_data_parse,
+                                                                            end_data_parse + timedelta(days=1)
+                                                                            )
                                                        )
         else:
             enotes = Enotes.objects.filter(

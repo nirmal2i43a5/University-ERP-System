@@ -68,6 +68,15 @@ class ENoteForm(forms.ModelForm):
     class Meta:
         model = Enotes
         fields = '__all__'
+        
+    def __init__(self, *args, user=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        if user.groups.filter(name='Teacher'):
+            course_category = self.fields['course_category']
+            course_category.queryset = user.staff.courses.all()
+        if user.is_superuser or  user.groups.filter(name='Super-Admin') or user.groups.filter(name='Admin'):
+            course_category = self.fields['course_category']
+            course_category.queryset = CourseCategory.objects.all()
 
 
 class AssignmentForm(forms.ModelForm):

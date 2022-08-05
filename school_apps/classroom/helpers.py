@@ -13,8 +13,9 @@ def assignment_handed_status(request):
 
     for assignment in Assignment.objects.all():
         assignment_submitted_by_student = Grade.objects.filter(
-            assignment_status = 'Completed',
+            assignment_status = 'Completed',#For submitted status by the student
             assignment__semester = assignment.semester,
+            # assignment__pk = assignment.pk,
             assignment__section = assignment.section,
            assignment__Subject = assignment.Subject
            ).count()
@@ -47,20 +48,15 @@ def assignment_handed_status(request):
 
 def manage_assignment(request,semester_id):
     semester_instance = get_object_or_404(Semester, pk = semester_id)
-    # assignments = Assignment.objects.filter(semester = semester_instance)
     draft_assignments = Assignment.objects.filter(teacher_id=request.user.id,semester = semester_instance, draft=True)
     assignment_submitted_status = assignment_handed_status(request)
-    # for assignment in respective_teacher_assignments:
-        
-    # total_students = Student.objects.filter(section = '')
-    # ------
+
     student = []
     assignment = []
     for submitted_assignment in Grade.objects.all():
         student.append(submitted_assignment.student_id)
         assignment.append(submitted_assignment.assignment_id)
  
-    # assignment_search_form = forms.ContentFilterForm(semester_id)
   
     subject_id = request.GET.get('subject')
     subject_instance  = get_object_or_404(Subject, pk = subject_id) if subject_id else None
@@ -95,22 +91,7 @@ def manage_assignment(request,semester_id):
                                                     )
         return search_assignments,draft_assignments,assignment_search_form,assignment_submitted_status
     
-    # if subject_id:
-    #     print("Inside;::;")
-    #     search_assignments = Assignment.objects.filter(
-    #                                                    Subject = get_object_or_404(Subject, pk = subject_id),
-    #                                                  )
-    #     return search_assignments,draft_assignments,assignment_search_form 
-    
-    # if subject_id and start_date and end_date:
-    #     start_data_parse = datetime.strptime(str(start_date), "%Y-%m-%d").date()
-    #     end_data_parse = datetime.strptime(str(end_date), "%Y-%m-%d").date()
-    #     search_assignments = Assignment.objects.filter(semester=get_object_or_404(Semester, pk = semester_id),
-    #                                                    section = get_object_or_404(Section, pk = section_id),
-    #                                                    Subject = get_object_or_404(Subject, pk = subject_id),
-    #                                                      created_at__range=(start_data_parse, end_data_parse)
-    #                                                    )
-        # return search_assignments,draft_assignments,assignment_search_form 
+
     search_assignments = None
     return search_assignments,draft_assignments,assignment_search_form,assignment_submitted_status
 

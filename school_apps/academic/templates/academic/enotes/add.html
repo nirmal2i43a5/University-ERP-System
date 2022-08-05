@@ -32,9 +32,9 @@
           {% endif %}
             
           <!-- /.card-header -->
-          {% url 'academic:manage_syllabus' as url %}
+          {% url 'academic:manage_enote' as back_url %}
           <!-- form start -->
-          {% include 'admin_templates/form.html' with messages=messages form=form back_url=url  button_text="Save" %}
+          {% include 'admin_templates/form.html' with messages=messages form=form back_url=back_url  button_text="Save" %}
 
         <!-- /.card -->
 

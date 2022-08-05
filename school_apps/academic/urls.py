@@ -2,7 +2,7 @@ from django.urls import path
 from school_apps.academic.log_views import * 
 from school_apps.academic.views import (assignment_answer_upload,student_assignment_grade,
                                         assignment_retured,draft_publish_unpublish,add_assignment_grade,
-                                            manage_coursecategory,view_student_syllabus,add_enotes,edit_enotes,manage_enotes)
+                                            manage_coursecategory,view_student_syllabus,add_enotes,edit_enotes,manage_enotes,delete_enote)
 from student_management_system.views import academic_home
 from school_apps.academic import views as academic_views
 from school_apps.routine.views import *
@@ -84,6 +84,7 @@ urlpatterns = [
    path('add_enotes/', academic_views.add_enotes, name="add_enote"),
       path('edit_enotes/<str:pk>/', academic_views.edit_enotes, name="edit_enote"),
        path('enotes/', academic_views.manage_enotes, name="manage_enote"),
+           path('delete_enote/<str:pk>/', delete_enote, name="delete_enote"),
       #for assignment
       path('add_assignment/', academic_views.add_assignment, name="add_assignment"),
       path('manage_assignment/', academic_views.manage_assignment, name="manage_assignment"),

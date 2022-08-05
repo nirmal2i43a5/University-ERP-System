@@ -749,7 +749,6 @@ def inactive_students(request):
 @permission_required('student_management_app.view_student', raise_exception=True)
 def manage_student(request):
 
-    search_form = StudentSearch(user = request.user)
     students = Student.objects.filter(student_user__is_active = 1)
     
     # if request.user.adminuser.course_category == a_level_course_category:
@@ -757,41 +756,44 @@ def manage_student(request):
     # if request.user.adminuser.course_category in [bachelor_course_category,master_course_category]:
     #     search_form = StudentSearch(user = request.user)
 
-    semester_query = request.GET.get('semester')
+    semester_query = request.GET.get('filter_semester')
+    course_query = request.GET.get('filter_course')
     course_category_query = request.GET.get('course_category')
     section_query = request.GET.get('section')
+    search_form = StudentSearch(user = request.user,initial = {
+        'course_category':course_category_query,'filter_course':course_query,
+        'filter_semester':semester_query,'section':section_query})
+    
     # group_query = request.GET.get('group')
 
-    if course_category_query:
-        search_students = Student.objects.filter(course_category = course_category_query,student_user__is_active = 1)
-        context = {'students': search_students,'form':search_form}
-        return render(request, 'students/manage_student.html', context)
-    elif semester_query and section_query:
+    # if course_category_query:
+    #     search_students = Student.objects.filter(course_category = course_category_query,student_user__is_active = 1)
+    #     context = {'students': search_students,'form':search_form}
+    #     return render(request, 'students/manage_student.html', context)
+    # elif course_category_query and semester_query:
+    #     search_students = Student.objects.filter(course_category = course_category_query,semester = semester_query,student_user__is_active = 1)
+    #     context = {'students': search_students,'form':search_form}
+    #     return render(request, 'students/manage_student.html', context)
+    if semester_query and section_query:
         search_students = Student.objects.filter(semester = semester_query, section = section_query,student_user__is_active = 1)
         context = {'students': search_students,'form':search_form}
         return render(request, 'students/manage_student.html', context)
     
-    elif semester_query:
+    if semester_query:
         search_students = Student.objects.filter(semester = semester_query,student_user__is_active = 1)
         context = {'students': search_students,'form':search_form}
         return render(request, 'students/manage_student.html', context)
     
-    elif section_query:
-        search_students = Student.objects.filter(section = section_query,student_user__is_active = 1)
-        context = {'students': search_students,'form':search_form}
-        return render(request, 'students/manage_student.html', context)
-    
+  
+    # else:
+    context = {
+        'title':'Manage Student',
+        'students': students,
+            'form':search_form,
+            'status':True
+            }
+    return render(request, 'students/manage_student.html', context)
 
-
-    else:
-        context = {
-            'title':'Manage Student',
-            'students': students,
-                'form':search_form,
-                'status':True
-                }
-        return render(request, 'students/manage_student.html', context)
-    
 
 
 

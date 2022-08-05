@@ -20,38 +20,47 @@
           <div class="card">
             
             <div class="card-header">
-              
-  
-              <span><strong>E-Notes</strong></span>
-  
-              <form class="float-right mb-4" role="search"  method="GET" style="height: 40px;margin:auto;position:relative;">
-                <div class="input-group">
-               
-            
-                  {{ enotes_form|crispy }} 
-              
-                  <div class="input-group-btn ">
-                    <button type="submit" class="btn btn-primary" style="margin-top:2rem;">SEARCH <i class="fas fa-search"></i></button>
-      
-                  </div>
-                </div>
-              </form>
-            
-  
-            </div>
+              <div class="d-flex bd-highlight">
+                <div class="p-2 flex-fill bd-highlight"><strong>E-Notes</strong></div>
+                <div class="p-2 flex-fill bd-highlight">
+                  <form class="float-right" role="search"  method="GET" style="height: 40px;margin:auto;position:relative;margin-bottom:2rem;">
+                    <div class="input-group">
+                   
+                
+                      {{ enotes_form|crispy }} 
+                  
+                      <div class="input-group-btn ">
+                        <button type="submit" class="btn btn-primary" style="margin-top:2rem;">SEARCH <i class="fas fa-search"></i></button>
           
-           
-            <!-- /.card-header -->
-            <div class="card-body table-responsive ">
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="p-2 flex-fill bd-highlight">
+                         
               {% if  request.user|has_group:'Admin' or request.user.is_superuser or request.user|has_group:'Teacher'   %}   
               {% url 'academic:add_enote' as button_url %}
-              
+                {% include 'override_table/header_button.html' with button_title='enote' button_url=button_url %}
+
            
  
 
 
              
             {% endif %}
+                </div>
+              </div>
+  
+       
+  
+     
+  
+            </div>
+          
+           
+            <!-- /.card-header -->
+            <div class="card-body table-responsive ">
+        
             {% for enote in enotes %}
 
             {% include "academic/enotes/delete.html" %}
@@ -154,8 +163,8 @@
                     Action
                   </button>
                   <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                    <a class="dropdown-item" href="">Edit</a>
-                    <button class="dropdown-item" data-target='#deleteenote-{{ enote.id}}'
+                    <a class="dropdown-item" href="{% url 'academic:edit_enote' enote.pk %}">Edit</a>
+                    <button class="dropdown-item" data-target='#deleteenote-{{ enote.pk }}'
                       data-toggle="modal">Delete
                     </button>
                   </div>

@@ -15,7 +15,7 @@ from student_management_app.django_forms.forms import (
 # from school_apps.academic.forms import StudentFormSearch
 from school_apps.attendance.forms import AttendanceDateFilterForm
 from student_management_app.models import (
-                                        CustomUser, Staff, Student, DocumentFile,SubjectTeacher
+                                        CustomUser, Staff, Student, DocumentFile,SubjectTeacher,Section ,Semester
                                            )
 from school_apps.attendance.models import Attendance, AttendanceReport
 from django.contrib.auth.models import Group
@@ -358,24 +358,28 @@ def student_view_by_teacher(request):
     
     subjectteacher = SubjectTeacher.objects.filter(teacher = request.user.id)
     # -------
-    search_form = StudentSearch(user = request.user)
+    # search_form = StudentSearch(user = request.user)
     semester_query = request.GET.get('filter_semester')
+    course_query = request.GET.get('filter_course')
+    course_category_query = request.GET.get('course_category')
     section_query = request.GET.get('section')
-
-    
-
+    semester_instance = Semester.objects.get(pk = semester_query) if semester_query else None
+    section_instance = Section.objects.get(pk = section_query) if section_query else None
+    search_form = StudentSearch(user = request.user,initial = {
+        'course_category':course_category_query,'filter_course':course_query,
+        'filter_semester':semester_query,'section':section_query})
     if semester_query and section_query:
-        search_students = Student.objects.filter(semester = semester_query,section = section_query,student_user__is_active = 1)
+        search_students = Student.objects.filter(semester = semester_instance,section = section_instance,student_user__is_active = 1)
         context = {'students': search_students,'form':search_form}
         return render(request,'teachers/students/student_list.html', context)
     
     if semester_query:
-        search_students = Student.objects.filter(semester = semester_query,student_user__is_active = 1)
+        search_students = Student.objects.filter(semester = semester_instance,student_user__is_active = 1)
         context = {'students': search_students,'form':search_form}
         return render(request,'teachers/students/student_list.html', context)
 
     else:
-        search_students = Student.objects.filter(semester = semester_query,student_user__is_active = 1)
+        search_students = Student.objects.filter(semester = semester_instance,student_user__is_active = 1)
         context = {'students': Student.objects.filter(student_user__is_active = 1),'form':search_form}
         return render(request,'teachers/students/student_list.html', context)
     #     students = []
