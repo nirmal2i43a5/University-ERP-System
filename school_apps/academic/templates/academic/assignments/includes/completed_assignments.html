@@ -65,12 +65,12 @@
      </td>
  
     {% if grade.grade %}
-   <td>{{grade.grade}}</td>
+   <td>{{grade.grade.grade_mark}}</td>
       {% else %}
       <td>Not Graded Yet</td>
     {% endif %}
     <td>{{grade.created_at}}</td>
-  <td>{{grade.feedback}}</td>
+  <td>{{grade.grade.feedback}}</td>
       
   </tr>
    </div>

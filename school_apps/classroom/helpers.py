@@ -40,13 +40,13 @@ def assignment_handed_status(request):
     #     total_students = Student.objects.filter(student_user__is_active = 1,
     #                                             semester = semester_instance, 
     #                                             section = section_instance).count()
-        assignment_reviewed_by_teacher = Grade.objects.filter(
-            grade_status = True,
-            assignment__semester = assignment.semester,
-            assignment__section = assignment.section,
-           assignment__Subject = assignment.Subject,
-           assignment__pk = assignment.pk
-           ).count()
+        # assignment_reviewed_by_teacher = Grade.objects.filter(
+        #     grade_status = True,
+        #     assignment__semester = assignment.semester,
+        #     assignment__section = assignment.section,
+        #    assignment__Subject = assignment.Subject,
+        #    assignment__pk = assignment.pk
+        #    ).count()
     #     assignment_remained_to_check = Grade.objects.filter(
     #         grade_status = False,
     #         assignment__semester = assignment.semester,
@@ -55,7 +55,7 @@ def assignment_handed_status(request):
     #        ).count()
         assignment_submitted_status.append({
             # 'assignment':grade.assignment,
-                                                'assignment_submitted_by_student':assignment_submitted_by_student,
+                                                # 'assignment_submitted_by_student':assignment_submitted_by_student,
                                             #  'assignment_reviewed_by_teacher':assignment_reviewed_by_teacher,
                                             #  'total_students':total_students,
                                             #  'assignment_remained_to_check':assignment_remained_to_check

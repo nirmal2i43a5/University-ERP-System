@@ -35,7 +35,7 @@ from student_management_app.models import (
     Course, CourseCategory, CustomUser, Subject,
     Semester, Section,   Department, Student
 )
-from school_apps.academic.models import (Enotes, Syllabus, Routine, Assignment, Grade,Enotes)
+from school_apps.academic.models import (Enotes, Syllabus, Routine, Assignment, Grade,Enotes,AssignmentReturn)
 
 from django.contrib.auth.decorators import permission_required
 from school_apps.notifications.utilities import create_notification
@@ -1367,7 +1367,7 @@ def assignment_answer_upload(request, assignment_id):
 
 
 def student_assignment_grade(request, assignment_id):
-    student_assignments = Grade.objects.filter(assignment=assignment_id).exclude(grade_status = True)
+    student_assignments = Grade.objects.filter(assignment=assignment_id)#.exclude(grade_status = True)
 
     context = {
         'title': 'Check Assignment',
@@ -1377,15 +1377,17 @@ def student_assignment_grade(request, assignment_id):
 
 
 def assignment_retured(request):
-    grade = request.POST.get('grade_mark')
+    grade_mark = request.POST.get('grade_mark')
     feedback = request.POST.get('feedback')
     assignment_id = request.POST.get('assignment_id')
     assignment_instance = get_object_or_404(Assignment,pk = assignment_id)
-    assignment_grade = Grade.objects.get(assignment=assignment_instance)
-    assignment_grade.grade = grade
-    assignment_grade.feedback = feedback
-    assignment_grade.grade_status = True
-    assignment_grade.save(update_fields=['grade', 'grade_status','feedback'])
+    assignment_grade = Grade.objects.filter(assignment=assignment_instance).first()
+    assignment_return = AssignmentReturn(assignment = assignment_instance, grade=assignment_grade, grade_mark=grade_mark, feedback=feedback,grade_status = True)
+    assignment_return.save()
+    # assignment_grade.grade = grade
+    # assignment_grade.feedback = feedback
+    # assignment_grade.grade_status = True
+    # assignment_grade.save(update_fields=['grade', 'grade_status','feedback'])
     messages.success(request, 'Assignment is returned successfully')
     return redirect('academic:student_assignment_grade', assignment_id)
 

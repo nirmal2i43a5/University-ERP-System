@@ -89,23 +89,23 @@ class Grade(models.Model):
     assignment_status = models.CharField(_("Assignment Category"),choices = assignment_status, 
      max_length=50, default = 'Assigned',null=True, blank=True)#For submitted status by the student
     assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
-    grade = models.PositiveIntegerField(null = True,blank = True)
-    grade_status = models.BooleanField(default=False)#for checking whether assignment is returned to student with points
-    feedback = models.CharField(max_length=255, null=True, blank=True, default="No feedback")
+    # grade = models.PositiveIntegerField(null = True,blank = True)
+    # grade_status = models.BooleanField(default=False)#for checking whether assignment is returned to student with points
+    # feedback = models.CharField(max_length=255, null=True, blank=True, default="No feedback")
     answer_upload = models.FileField(upload_to = 'Assignment_grades', null=True,max_length=500,validators=[img_pdf_file_validate_file_extension])
     date_submitted = models.DateTimeField(auto_now_add=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
     
-# class AssignmentReturn(models.Model):
-#     assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE,related_name='assignment_return')
-#     grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
-#     grade_mark = models.PositiveIntegerField(null = True,blank = True)
-#     feedback = models.CharField(max_length=255, null=True, blank=True, default="No feedback")
-#     grade_status = models.BooleanField(default=False)#for checking whether assignment is returned to student with points
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     updated_at = models.DateTimeField(auto_now=True)
+class AssignmentReturn(models.Model):
+    assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE,related_name='assignment_return')
+    grade = models.OneToOneField(Grade, on_delete=models.CASCADE,related_name='grade')
+    grade_mark = models.PositiveIntegerField(null = True,blank = True)
+    feedback = models.CharField(max_length=255, null=True, blank=True, default="No feedback")
+    grade_status = models.BooleanField(default=False)#for checking whether assignment is returned to student with points
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     
     
 class Routine(models.Model):
