@@ -98,6 +98,16 @@ class Grade(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
     
+# class AssignmentReturn(models.Model):
+#     assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE,related_name='assignment_return')
+#     grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
+#     grade_mark = models.PositiveIntegerField(null = True,blank = True)
+#     feedback = models.CharField(max_length=255, null=True, blank=True, default="No feedback")
+#     grade_status = models.BooleanField(default=False)#for checking whether assignment is returned to student with points
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
+    
+    
 class Routine(models.Model):
     year_choices = (
 		('2021','2021'),('2022','2022'),('2021','2021'),('2021','2021'),

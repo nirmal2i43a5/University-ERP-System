@@ -1348,7 +1348,8 @@ def assignment_answer_upload(request, assignment_id):
         else:
         
             if extension in ['.pdf','.img','.jpg','.png','.jpeg']:
-                grade = Grade(assignment_id=assignment_id, student_id = request.user.id, answer_upload = upload_answer_file)
+                assignment_instance = Assignment.objects.get(pk=assignment_id)
+                grade = Grade(assignment=assignment_instance, student = request.user, answer_upload = upload_answer_file)
                 grade.save()
             
                 '''When particular student submit assignment then make its assignment_status to Completed '''
@@ -1361,8 +1362,6 @@ def assignment_answer_upload(request, assignment_id):
             else:
                 messages.error(request, 'Invalid File Format.Please,Upload Pdf and Image Only.')
                 return redirect('academic:assignment_answer_upload', assignment_id)
-
-        
 
     return render(request, 'academic/assignments/upload_answer.html')
 
