@@ -9,66 +9,12 @@ from django.contrib.auth.decorators import permission_required
 from student_management_app.models import Student
 from django.db.models import Q
 
-def assignment_handed_status(request):
-    assignment_submitted_status = []
-
-    for assignment in Assignment.objects.all():
-        assignment_submitted_by_student = assignment.grade_set.all()#filter(assignment_status = 'Completed').count()
-        # print(assignment_submitted_by_student)
-        # for grade in assignment_grades:
-        #     if grade.submitted:
-        #         assignment_submitted_status.append(assignment.id)
-                
-        # print(grade.assignment_id)
-        # grade_instance = get_object_or_404(Grade,pk = grade.pk)
-        # assignment_submitted_by_student = Grade.objects.filter(
-        #     Q(assignment_status = 'Completed')
-        #     &Q(assignment_id = grade.assignment_id)
-        #     ).count()
-        # print(grade_count)
-        
-    
-    #     assignment_submitted_by_student = Grade.objects.filter(
-    #         assignment_status = 'Completed',#For submitted status by the student
-    #         # assignment__semester = assignment.semester,
-    #         # student__pk =  assignment.student,   
-    #     #     assignment__section = assignment.section,
-    #     #    assignment__Subject = assignment.Subject
-    #        ).count()
-    #     semester_instance = get_object_or_404(Semester, pk = assignment.semester.pk)
-    #     section_instance = get_object_or_404(Section, pk = assignment.section.pk) if assignment.section else None
-    #     total_students = Student.objects.filter(student_user__is_active = 1,
-    #                                             semester = semester_instance, 
-    #                                             section = section_instance).count()
-        # assignment_reviewed_by_teacher = Grade.objects.filter(
-        #     grade_status = True,
-        #     assignment__semester = assignment.semester,
-        #     assignment__section = assignment.section,
-        #    assignment__Subject = assignment.Subject,
-        #    assignment__pk = assignment.pk
-        #    ).count()
-    #     assignment_remained_to_check = Grade.objects.filter(
-    #         grade_status = False,
-    #         assignment__semester = assignment.semester,
-    #         assignment__section = assignment.section,
-    #        assignment__Subject = assignment.Subject
-    #        ).count()
-        assignment_submitted_status.append({
-            # 'assignment':grade.assignment,
-                                                # 'assignment_submitted_by_student':assignment_submitted_by_student,
-                                            #  'assignment_reviewed_by_teacher':assignment_reviewed_by_teacher,
-                                            #  'total_students':total_students,
-                                            #  'assignment_remained_to_check':assignment_remained_to_check
-                                             })
-    print(assignment_submitted_status)
-    return assignment_submitted_status
 
 
 
 def manage_assignment(request,semester_id):
     semester_instance = get_object_or_404(Semester, pk = semester_id)
     draft_assignments = Assignment.objects.filter(teacher_id=request.user.id,semester = semester_instance, draft=True)
-    assignment_submitted_status = assignment_handed_status(request)
 
     student = []
     assignment = []
@@ -102,17 +48,17 @@ def manage_assignment(request,semester_id):
                                                             end_date_parse + timedelta(days=1)
                                                             )
                                                     )
-        return search_assignments,draft_assignments,assignment_search_form,assignment_submitted_status
+        return search_assignments,draft_assignments,assignment_search_form
     if subject_id:
         search_assignments = Assignment.objects.filter(
                                                     Subject = subject_instance,
                                                 #    teacher = teacher_instance
                                                     )
-        return search_assignments,draft_assignments,assignment_search_form,assignment_submitted_status
+        return search_assignments,draft_assignments,assignment_search_form
     
 
     search_assignments = None
-    return search_assignments,draft_assignments,assignment_search_form,assignment_submitted_status
+    return search_assignments,draft_assignments,assignment_search_form
 
 
 

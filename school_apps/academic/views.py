@@ -27,7 +27,6 @@ from .forms import (
                     SyllabusSearchForm,
                     EnotesFilterForm
                     )
-from school_apps.classroom.helpers import assignment_handed_status
 from school_apps.academic.forms import ClassFormSearch
 from school_apps.academic.forms import (
     SyllabusForm, AssignmentForm, RoutineForm, SubjectSearchForm)
@@ -1160,7 +1159,7 @@ def manage_assignment(request):
     # respective_teacher_assignments = Assignment.objects.filter(teacher_id=request.user.id, draft=False)
 
     draft_assignments = Assignment.objects.filter(teacher_id=request.user.id, draft=True)
-    assignment_submitted_status = assignment_handed_status(request)
+   
 
     # for submitted_assignment in Grade.objects.all():
     #     student.append(submitted_assignment.student_id)
@@ -1203,7 +1202,7 @@ def manage_assignment(request):
         context = {
      
             'draft_assignments': draft_assignments,
-              'assignment_submitted_status':zip(search_assignments,assignment_submitted_status),
+              'search_assignments':search_assignments,
             'form': search_form,
                     'title': 'Assignment',
         }
@@ -1218,7 +1217,7 @@ def manage_assignment(request):
         context = {
        
             'draft_assignments': draft_assignments,
-              'assignment_submitted_status':zip(search_assignments,assignment_submitted_status),
+              'search_assignments':search_assignments,
                     # 'total_reviewed':graded,
             'form': search_form,
                     'title': 'Assignment',
