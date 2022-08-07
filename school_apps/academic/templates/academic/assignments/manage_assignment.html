@@ -14,20 +14,27 @@
   {% include "includes/messages.html" %}
   
     <div class="row">
-      <div class="col-12">
+      <div class="col-md-12">
 
 
         <div class="card " style="background-color: rgb(247, 245, 245);">
           
           <div class="card-header">
 
-            <ul class="nav nav-tabs nav-custom p-0">
-              <li class="nav-item"><a class="nav-link active" href="#assigned" data-toggle="tab">Assigned</a></li>
-              <li class="nav-item"><a class="nav-link" href="#draft" data-toggle="tab">Draft</a></li>
+          
+            
 
-              
-                <li>
-                  <form class="float-right" style="margin-left: 10rem;" role="search"  method="GET" >
+         
+                  <ul class="nav nav-tabs nav-custom">
+                    <li class="nav-item"><a class="nav-link active" href="#assigned" data-toggle="tab">Assigned</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#draft" data-toggle="tab">Draft</a></li>
+      
+                    
+                  </ul>
+             
+              <div class="d-flex bd-highlight mb-3">
+                <div class="p-2 bd-highlight">
+                  <form  role="search"  method="GET" >
                     <div class="input-group">
                    
                 
@@ -39,30 +46,29 @@
                       </div>
                     </div>
                   </form>
-                </li>
-            <li>
-
-
-              {% if request.user.is_superuser or request.user|has_group:'Teacher'   %}
-              <div class="d-flex justify-content-end mb-4">
-
-                <div class="text-link">
-
-                  <a href="{% url 'academic:add_assignment' %}" class="add-link btn btn-xs ml-1" style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);color:white;margin-top: 2.5rem;">
-                    <i class="fas fa-xs fa-plus"></i> <strong>Add assignment</strong></a>
-                  
                 </div>
-
-                <div>
+                <div class="ml-auto bd-highlight">
+                  {% if request.user.is_superuser or request.user|has_group:'Teacher'   %}
+                  <div class="d-flex justify-content-end mb-4">
+    
+                    <div class="text-link">
+    
+                      <a href="{% url 'academic:add_assignment' %}" class="add-link btn btn-xs ml-1" 
+                      style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);color:white;margin-top:3rem;"">
+                        <i class="fas fa-xs fa-plus"></i> <strong>Add assignment</strong></a>
+                      
+                    </div>
+    
+                    <div>
+                     
+                    </div>
+                    
                  
                 </div>
-                
+                {% endif %}
+                </div>
+              </div>
              
-            </div>
-            {% endif %}
-            </li>
-              
-            </ul>
 
         
           </div>

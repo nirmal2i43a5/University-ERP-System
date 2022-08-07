@@ -36,7 +36,7 @@
                     </div>
                   </form>
                 </div>
-                <div class="p-2 flex-fill bd-highlight">
+                <div class="p-2 flex-fill bd-highlight" style="margin-top:2.5rem;"">
                          
               {% if  request.user|has_group:'Admin' or request.user.is_superuser or request.user|has_group:'Teacher'   %}   
               {% url 'academic:add_enote' as button_url %}
