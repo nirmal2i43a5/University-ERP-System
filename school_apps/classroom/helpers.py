@@ -8,7 +8,9 @@ from student_management_app.models import (Section,Semester,Subject,Staff,Custom
 from django.contrib.auth.decorators import permission_required
 from student_management_app.models import Student
 from django.db.models import Q
-
+from django.core.paginator import Paginator
+from django.core.paginator import EmptyPage
+from django.core.paginator import PageNotAnInteger
 
 
 
@@ -35,7 +37,7 @@ def manage_assignment(request,semester_id):
         'section':section_instance,'subject':subject_instance,'start_date':start_date,'end_date':end_date
     })
  
-
+    
     if subject_id and start_date  and end_date:
         
         start_date_parse = datetime.strptime(str(start_date), "%Y-%m-%d").date()
@@ -54,10 +56,22 @@ def manage_assignment(request,semester_id):
                                                     Subject = subject_instance,
                                                 #    teacher = teacher_instance
                                                     )
+    
         return search_assignments,draft_assignments,assignment_search_form
     
-
-    search_assignments = None
+    search_assignments = Assignment.objects.filter(
+                                                    semester = semester_instance,
+                                                #    teacher = teacher_instance
+                                                    )
+    # search_assignments = None
+    page = request.GET.get('page', 1)
+    paginator = Paginator(search_assignments, 10)
+    try:    
+        search_assignments = paginator.page(page)
+    except PageNotAnInteger:
+        search_assignments = paginator.page(10)
+    except EmptyPage:
+        search_assignments = paginator.page(paginator.num_pages)
     return search_assignments,draft_assignments,assignment_search_form
 
 
@@ -135,8 +149,18 @@ def manage_enotes(request,semester_id):
                                          })
     
         return search_enotes,enote_search_form 
+    
+    search_enotes = Enotes.objects.all()
+    
+    page = request.GET.get('page', 1)
+    paginator = Paginator(search_enotes, 10)
+    try:    
+        search_enotes = paginator.page(page)
+    except PageNotAnInteger:
+        search_enotes = paginator.page(10)
+    except EmptyPage:
+        search_enotes = paginator.page(paginator.num_pages)
         
-    search_enotes = None
     return search_enotes,enote_search_form 
 
 

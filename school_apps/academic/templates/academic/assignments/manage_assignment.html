@@ -63,6 +63,7 @@
             </li>
               
             </ul>
+
         
           </div>
          
@@ -82,9 +83,11 @@
                   
                    <h3> No Assignments Found!</h3>
                 {% endfor %}
+                {% include 'academic/assignments/includes/assignments_pagination.html' %}
     
     
                 </div>
+
 
               <div class="tab-pane" id="draft">
                 {% for assignment in draft_assignments %}
@@ -101,14 +104,16 @@
                </div>
             </div>
 
+            
 
+              
            
           
           
             </div>
            
           
-            
+             {# Pagination for article post #}
            
           </div>
           <!-- /.card-body -->
@@ -117,7 +122,7 @@
       </div>
     </div>
   </div>
-  
+      
 </section>
 <!-- /.content -->
 
@@ -134,6 +139,8 @@
     
 
   }
+   
+
 </style>
 {% endblock main_content %}
 

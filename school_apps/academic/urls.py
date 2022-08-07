@@ -19,8 +19,8 @@ urlpatterns = [
     path('manage_coursecategory/', manage_coursecategory, name="manage_coursecategory"),
     path('syllabus/view/', view_student_syllabus, name="view_syllabus"),
        #for course
-      path('add_manage_course/', academic_views.add_manage_course, name="add_manage_course"),
-        path('add_department/', academic_views.add_department, name="add_department"),
+    path('add_manage_course/', academic_views.add_manage_course, name="add_manage_course"),
+    path('add_department/', academic_views.add_department, name="add_department"),
           path('edit_department/<str:pk>/', academic_views.edit_department, name="edit_department"),
                path('delete_department/<str:pk>/', academic_views.delete_department, name="delete_department"),
       path('edit_course/<str:course_id>/', academic_views.edit_course, name="edit_course"),

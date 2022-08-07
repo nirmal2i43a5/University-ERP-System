@@ -34,6 +34,7 @@
 			  <div id="classroomContent" class="tab-content">
 				<div class="active tab-pane" id="assignment">
 					{% include "classroom/includes/class_contents/assignment.html" %}
+					{% include 'academic/assignments/includes/assignments_pagination.html' %}
 		
 				</div>
 				<!-- /.tab-pane -->
@@ -49,6 +50,7 @@
 		
 				<div class="tab-pane" id="e-notes">
 					{% include "classroom/includes/class_contents/e-notes.html" %}
+					{% include 'academic/enotes/enotes_pagination.html' %}
 		
 		
 				</div>

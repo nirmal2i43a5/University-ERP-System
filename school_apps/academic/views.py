@@ -44,7 +44,9 @@ from django.core.mail import EmailMessage
 from student_management_app.models import Section, Semester, Staff, Student, Subject, SubjectTeacher,SemesterTeacher
 from school_apps.courses.models import selectedcourses,application_form,studentgrades
 
-
+from django.core.paginator import Paginator
+from django.core.paginator import EmptyPage
+from django.core.paginator import PageNotAnInteger
 
 
 
@@ -1156,22 +1158,10 @@ def add_assignment(request):
 @permission_required('academic.view_assignment', raise_exception=True)
 def manage_assignment(request):
     
-    # respective_teacher_assignments = Assignment.objects.filter(teacher_id=request.user.id, draft=False)
+    search_assignments = Assignment.objects.filter(teacher_id=request.user.id, draft=False)
+    print(search_assignments)
 
-    draft_assignments = Assignment.objects.filter(teacher_id=request.user.id, draft=True)
-   
-
-    # for submitted_assignment in Grade.objects.all():
-    #     student.append(submitted_assignment.student_id)
-    #     assignment.append(submitted_assignment.assignment_id)
-    # # for student in student:
-    # #     print(Student.objects.get(student_user = student).section)
-    # total_students = Assignment.objects.filter(student__in=student)
-        
-    # submitted_assignment_no = CustomUser.objects.filter(Q(pk__in = student)&
-    #                                                     Q()).count()
-    # ---
-   
+    draft_assignments = Assignment.objects.filter(teacher_id=request.user.id, draft=True)   
     semester_id = request.GET.get('semester')
     section_id = request.GET.get('section')
     subject_id = request.GET.get('subject')
@@ -1186,9 +1176,21 @@ def manage_assignment(request):
     })
   
    
-
+    if semester_id:
+        search_assignments = Assignment.objects.filter(
+                                                    semester = semester_instance,
+                                                #    teacher = teacher_instance
+                                                    )
+        context = {
+       
+            'draft_assignments': draft_assignments,
+              'search_assignments':search_assignments,
+            'form': search_form,
+                    'title': 'Assignment',
+        }
+        
+        return render(request, 'academic/assignments/manage_assignment.html', context)
     if subject_id and start_date  and end_date:
-        print('if--------------------')
     
         start_date_parse = datetime.strptime(str(start_date), "%Y-%m-%d").date()
         end_date_parse = datetime.strptime(str(end_date), "%Y-%m-%d").date()
@@ -1208,8 +1210,8 @@ def manage_assignment(request):
         }
         return render(request, 'academic/assignments/manage_assignment.html', context)
     
+    
     if subject_id:
-        print("Inside subject-----------------")
         search_assignments = Assignment.objects.filter(
                                                     Subject = subject_instance,
                                                 #    teacher = teacher_instance
@@ -1218,19 +1220,24 @@ def manage_assignment(request):
        
             'draft_assignments': draft_assignments,
               'search_assignments':search_assignments,
-                    # 'total_reviewed':graded,
             'form': search_form,
                     'title': 'Assignment',
         }
         return render(request, 'academic/assignments/manage_assignment.html', context)
-
+    
+    page = request.GET.get('page', 1)
+    paginator = Paginator(search_assignments, 10)
+    try:    
+        search_assignments = paginator.page(page)
+    except PageNotAnInteger:
+        search_assignments = paginator.page(10)
+    except EmptyPage:
+        search_assignments = paginator.page(paginator.num_pages)
     context = {
         'draft_assignments': draft_assignments,
-        # 'student_assignments':assignments.filter(),
+        'search_assignments':search_assignments,
         'form': search_form,
-        # 'submitted_assignment_no':submitted_assignment_no,
         'title': 'Assignment',
-        # 'assignment_submitted_status':zip(search_assignments,assignment_submitted_status),
     }
 
     return render(request, 'academic/assignments/manage_assignment.html', context)

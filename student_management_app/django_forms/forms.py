@@ -257,6 +257,7 @@ class ExtraUserForm(forms.ModelForm):
         )
 
 
+
 class StaffForm(forms.ModelForm):
     # courses_choices = (
     #     ('A-Level','A-Level'),('Bachelor','Bachelor'),('Master','Master')
