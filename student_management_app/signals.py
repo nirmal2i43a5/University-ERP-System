@@ -56,6 +56,7 @@ def populate_models(sender, **kwargs):
         pass
     else:
         SemesterModel.objects.bulk_create([
+            # Using list comprehension to create SemesterModel objects
             SemesterModel(
                 name = semester
             )

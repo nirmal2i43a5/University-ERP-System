@@ -23,6 +23,7 @@ MAX_UPLOAD_SIZE = "1048576"
 year_semester_check_choices= [
     ('Has Year', 'Has Year'),
     ('Has Semester', 'Has Semester'),
+      ('No Semester/Year', 'No Semester/Year'),
 ]
 ALEVEL_CHOICES = [
         ('AS', 'Advanced Subsidiary (AS)'),
@@ -420,10 +421,7 @@ class SubjectForm(forms.ModelForm):
 
 
 class SemesterForm(forms.ModelForm):#for a-level
-    year_semester_check_choices= [
-    ('Has Year', 'Has Year'),
-    ('Has Semester', 'Has Semester'),
-]
+
     course_category = forms.ModelChoiceField(label  = "Category",queryset = CourseCategory.objects.exclude(course_name__in = ['School']), widget=forms.RadioSelect())
     year_semester_check = forms.ChoiceField(label = 'Has Semester/Year',required = False, choices = year_semester_check_choices,
                                              widget=forms.RadioSelect(

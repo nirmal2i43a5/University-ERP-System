@@ -78,7 +78,10 @@
             <tr>
               <td></td>
               <td>{{ forloop.counter }}</td>
-                <td>{{ semester.name }}</td>
+                <td>
+                  
+                  {{ semester.name }}
+                </td>
              
                 <td>  <div class="badge badge-info"> <strong>{{ semester.course_category }} </strong></div></td>
                 <td>  <div class="badge badge-info"> <strong>{{ semester.course }} </strong></div></td>
@@ -125,9 +128,8 @@
 {% block custom_js %}
 <script>
 $('document').ready(function(){
-  $('#div_id_semester_choices').hide();
-  $('#div_id_year_choices').hide();
-  $('#div_id_name').hide();
+/*
+
   $("#div_id_course_category").attr("id","div_semester_id_course_category");
   $("#div_semester_id_course_category input:radio").change(function(){
     console.log("Inside radio")
@@ -143,19 +145,32 @@ $('document').ready(function(){
 
     }
 
-  })
+  })*/
+  $('#div_id_name').hide();
+
+  $('#div_id_semester_choices').hide();
+  $('#div_id_year_choices').hide();
   $("#div_id_year_semester_check input:radio").change(function(){
       var semester_year_check =$(this).val()
  //  console.log(semester_year_check)
       if(semester_year_check ==  'Has Semester'){
         $('#div_id_semester_choices').show()
-        $('#div_id_year_choices').hide()
+        $('#div_id_year_choices').hide();
+        $('#div_id_name').hide();
 
       }
     
       if(semester_year_check ==  'Has Year'){
         $('#div_id_year_choices').show();
         $('#div_id_semester_choices').hide()
+        $('#div_id_name').hide();
+
+     
+      }
+      if(semester_year_check ==  'No Semester/Year'){
+        $('#div_id_year_choices').hide();
+        $('#div_id_semester_choices').hide()
+        $('#div_id_name').show();
 
      
       }

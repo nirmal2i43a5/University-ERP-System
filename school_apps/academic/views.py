@@ -1,3 +1,4 @@
+from dataclasses import fields
 import os
 
 from django.shortcuts import render, redirect, get_object_or_404
@@ -265,11 +266,11 @@ def manage_subject(request):
     #     search_subjects = Subject.objects.filter(faculty=query)
     #     context = {'subjects': search_subjects, 'search_form': search_form}
     #     return render(request, 'academic/subjects/manage_subject.html', context)
-    subjects = Subject.objects.all()
+    # subjects = Subject.objects.all()
     context = {'form': form,
               'subject_search_form':subject_search_form,
                'title': 'Subject',
-               'subjects':subjects
+            #    'subjects':subjects
          
                }
 
@@ -300,7 +301,8 @@ def edit_subject(request, subject_id):  # keep subject_id hidden field in edit_s
 
     context = {'form': form,
                'title': 'Subject',
-               'subject_instance':subject_instance
+               'subject_instance':subject_instance,
+               
                }
     return render(request, 'academic/subjects/manage_subject.html', context)
 
@@ -739,42 +741,50 @@ def manage_class(request):
         course_instance = get_object_or_404(Course, pk = course_id) if course_id else None
         description = request.POST['description']
         year_semester_check = request.POST['year_semester_check']
-          
+        year_choices = request.POST.getlist('year_choices')
+        
         semester_choices = request.POST.getlist('semester_choices')
         
-        # if form.is_valid():
-        #     form.save()
-        #     messages.success(request, "Class created successfully.")
-        #     return redirect('academic:manage_class')
-        
-        year_choices = request.POST.getlist('year_choices')
-        if semester_choices:
-            Semester.objects.bulk_create(
-                [
-                Semester(
-                    name = SemesterModel.objects.get(pk = semester),
-                        description = description, 
-                course_category = course_category_instance,
-                course = course_instance,
-                year_semester_check = year_semester_check,
-                # semester_choices = semester_choices,
+        if form.is_valid():
+            form.save()
+            # if year_choices:
+            #     form.save(fields = ['year_choices'])
+            # if semester_choices:
+            #     form.save(fields = ['semester_choices'])
                 
-                )
-                for semester in semester_choices
-            ])
-        if year_choices:
-            Semester.objects.bulk_create(
-                [
-                Semester(
-                    name = YearModel.objects.get(pk = year),
-                        description = description, 
-                course_category = course_category_instance,
-                course = course_instance,
-                   year_semester_check = year_semester_check,
-                #    year_choices=year_choices,
-                )
-                for year in year_choices
-            ])
+        
+        
+            if semester_choices:
+                year_semester_check.related_set.set(semester_choices) 
+                
+                Semester.objects.bulk_create(
+                    # Using list comprehension to create Semester instances from the form data
+                    [
+                    Semester(
+                        name = SemesterModel.objects.get(pk = semester),
+                    description = description, 
+                    course_category = course_category_instance,
+                    course = course_instance,
+                    
+                    )
+                    for semester in semester_choices
+                ]
+                    )
+            if year_choices:
+                Semester.objects.bulk_create(
+                    [
+                    Semester(
+                        name = YearModel.objects.get(pk = year),
+                            description = description, 
+                    course_category = course_category_instance,
+                    course = course_instance,
+                    year_semester_check = year_semester_check,
+                    #    year_choices=year_choices,
+                    )
+                    for year in year_choices
+                ])
+            messages.success(request, "Class created successfully.")
+            return redirect('academic:manage_class')
                                         
                                                     
 

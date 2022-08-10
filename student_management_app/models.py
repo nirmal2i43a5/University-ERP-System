@@ -59,6 +59,7 @@ school_classes_choices = (
 year_semester_check_choices= [
     ('Has Year', 'Has Year'),
     ('Has Semester', 'Has Semester'),
+      ('No Semester/Year', 'No Semester/Year'),
 ]
 ALEVEL_CHOICES = [
         ('AS', 'Advanced Subsidiary (AS)'),
