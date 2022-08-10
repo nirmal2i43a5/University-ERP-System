@@ -1,14 +1,15 @@
-{% extends 'student_base.html' %}
+{% extends 'admin_templates/base_admin.html' %}
 {% block content %}
     <h4>Choose Exam:</h4>
-    <form action="{% url 'courses:examtoppers' %}" method="POST">
+    <form class = "ml-4" action="{% url 'courses:examtoppers' %}" method="POST">
         {% csrf_token %}
-        <select name = "exam_id" required>
+        <select class = " form-control col-md-6" name = "exam_id" required>
+            <option value="">Select Exam</option>
             {% for exam in exams%}
             <option name="sub" value="{{exam.exam_id}}">{{exam.exam_title}}</option>
             {% endfor %}
         </select>
-        <input type="submit" value="Select">
+        <input class="btn btn-success mt-4" type="submit" value="Select">
     </form>
     <hr>
 

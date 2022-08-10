@@ -1,4 +1,4 @@
-{% extends 'student_base.html'%}
+{% extends 'admin_templates/base_admin.html'%}
 {% block content %}
 <section class="content">
   <div class="container-fluid">
@@ -15,13 +15,13 @@
           <!-- form start -->
           <form action="{% url 'courses:examresults' %}" method='POST' class="mt-4 ml-2 mb-2 ">
             {% csrf_token%}
-            <select name='exam'>
+            <select class="form-control col-md-4" name='exam' required>
               <option>Select Exam Term</option>
               {% for exams in exams%}
               <option name='option' value='{{ exams.exam_id}}'>{{ exams.exam_title}}</option>
               {% endfor%}
             </select>
-            <input type='submit' class="btn btn-xs btn-success">
+            <input type='submit' class="mt-2 btn  btn-success">
           </form>
 
         </div>
@@ -31,9 +31,10 @@
         {% if results %}
         <h4>Here are the results for {{selectdexam.exam_title}}</h4>
         <hr>
-        <table class="table table-hover">
-          <thead class="thead-dark">
+        <table id = "dataTable" class="table table-hover">
+          <thead >
             <tr style=" text-align: center">
+              <th></th>
               <th>Student Name</th>
               <th>Marks</th>
               <th>Rank</th>
@@ -41,6 +42,7 @@
           </thead>
             {% for result in results%}
             <tr>
+              <td></td>
               <td style="width: 50%; text-align: center">{{result.application_id.student.student_user.full_name}}</td>
               <td style="width: 25%; text-align: center">{{result.marks}}</td>
               <td style="width: 25%; text-align: center">{{result.rank}}</td>
@@ -48,7 +50,7 @@
             </tr>
             {% endfor%}
           </table>
-        <div>Students with -1 marks are not graded yet.</div>
+        <strong>Students with -1 marks are not graded yet.</strong>
         {% else %}
         {% if selectdexam %}
         No results for {{selectdexam}}

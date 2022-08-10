@@ -34,7 +34,7 @@ def addterm(request):
         print(formdata)
         if formdata.is_valid():
             formdata.save(commit=False)
-            formdata.course_category = request.user.adminuser.course_category
+            # formdata.course_category = request.user.adminuser.course_category
             formdata.save()
             messages.success(request, 'Term info added.')
             return HttpResponseRedirect(reverse('courses:addterm'))
@@ -122,11 +122,11 @@ def viewresults(request):
     return render(request, 'courses/results.html', {'results':results, 'exam':selectedexam})
 
 def publishresults(request):
-    terms = Term.objects.filter(course_category=request.user.adminuser.course_category)
+    terms = Term.objects.all()#filter(course_category=request.user.adminuser.course_category)
     return render(request, 'courses/publishtermresults.html', {'terms':terms})
 
 def toggle_results(request,pk):
-    terms = Term.objects.filter(course_category=request.user.adminuser.course_category)
+    terms = Term.objects.all()#filter(course_category=request.user.adminuser.course_category)
     selected_term = Term.objects.get(pk=pk)
 
     if(selected_term.is_published):
@@ -140,7 +140,9 @@ def toggle_results(request,pk):
 
 def examtoppers(request):
     today = datetime.date.today()
-    exams = Exams.objects.filter(date__lte=today, term__course_category=request.user.adminuser.course_category)
+    exams = Exams.objects.filter(date__lte=today, 
+                                #  term__course_category=request.user.adminuser.course_category
+                                 )
     if request.method=='GET':
         return render(request,'courses/examtoppers.html', {'exams':exams})
     else:
@@ -148,6 +150,8 @@ def examtoppers(request):
         studentrecords = studentgrades.objects.filter(exam_id=selected_exam).exclude(marks=-1).order_by('-marks')[0:3]
         selected_object = request.POST['exam_id']
         return render(request, 'courses/examtoppers.html', {'students':studentrecords, 'exams':exams, 'selected_exam':selected_exam})
+
+
 
 def addstudentmarks(request):
     return render(request, 'courses/addstudentmarks.html')
@@ -168,7 +172,8 @@ def studentsmarksentry(request, id):
     student = get_object_or_404(Student, student_user__username = id)
     today = datetime.date.today()
     exams = studentgrades.objects.filter(Q(application_id__student = student)& Q(exam_id__date__lte=today) 
-                                            &Q(exam_id__term__course_category=request.user.adminuser.course_category))
+                                            # &Q(exam_id__term__course_category=request.user.adminuser.course_category)
+                                            )
     return render(request, 'courses/studentmarksentry.html', {'student': student, 'exams':exams})
 
 
@@ -283,7 +288,7 @@ def printadmitcards(request):
 #bulk print results#
 
 def bulkprintresults(request):
-    terms = Term.objects.filter(course_category=request.user.adminuser.course_category)
+    terms = Term.objects.all()#filter(course_category=request.user.adminuser.course_category)
     semester = Semester.objects.all()
     applications = application_form.objects.none()
 
@@ -476,8 +481,8 @@ def addexammarks(request):
     return render(request, 'courses/addexamgrades.html', context)
 
 def addremarks(request):
-    terms = Term.objects.filter(course_category=request.user.adminuser.course_category)
-    semester = Semester.objects.filter(course_category=request.user.adminuser.course_category)
+    terms = Term.objects.all()#filter(course_category=request.user.adminuser.course_category)
+    semester = Semester.objects.all()#filter(course_category=request.user.adminuser.course_category)
 
     faculty = Student._meta.get_field('faculty').choices
     faculty_choices = []
@@ -495,7 +500,9 @@ def addremarks(request):
         term = Term.objects.get(pk=request.POST['term'])
         semester = Semester.objects.get(pk=request.POST['semester'])
 
-        applications = application_form.objects.filter(term=term, student__semester=semester, student__faculty=request.POST['group'])
+        applications = application_form.objects.filter(term=term, student__semester=semester,
+                                                    #    student__faculty=request.POST['group']
+                                                       )
         context['applications']=applications
 
     return render(request, 'courses/addremarks.html', context)

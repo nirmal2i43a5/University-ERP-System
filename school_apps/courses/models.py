@@ -150,6 +150,8 @@ class term_ranking(models.Model):
     student=models.ForeignKey(Student, on_delete=models.CASCADE)
     total_marks = models.IntegerField(default=0)
     rank= models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class selectedcourses(models.Model):

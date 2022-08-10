@@ -1,4 +1,4 @@
-{% extends 'student_base.html' %}
+{% extends 'admin_templates/base_admin.html' %}
 
 {% block headextra %}
 <style>
@@ -16,17 +16,18 @@
     <div style="margin-left: 10px; margin-right: 10px; margin-top: 15px;">
         <form id="exam_form"> 
             <label for="term_select">Select term: </label>
-            <select name="term_select" id="term_select">
+            <select class = "form-control" name="term_select" id="term_select">
                 <option value="">Select Term</option>
                 {% for item in terms %}
-                    <option value="{{item.pk}}">{{ item }}</option>
+                    <option  value="{{item.pk}}">{{ item }}</option>
                 {% endfor %}
             </select>
             <br>
             <label for="exam_select">Select exam: </label>
-            <select name="exam_select" id="exam_select">
+            <select class = "form-control" name="exam_select" id="exam_select">
                 <option value="">Select Examination</option>
             </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <br>
             <button type="submit" class="btn btn-primary">Confirm</button>
         </form>
         <hr>

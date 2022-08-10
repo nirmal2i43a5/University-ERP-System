@@ -617,7 +617,8 @@ def all_answer_upload(request):
             if (application.status):
                 valid_students.append(item.application_id.student)
         
-        return render(request,  'exam/admin/all_answer_upload.html', {'students':valid_students, 'terms': Term.objects.all(),
+        return render(request,  'exam/admin/all_answer_upload.html', {'students':valid_students, 
+                                                                      'terms': Term.objects.all(),
                                                                         'exam':exam})
         # form = StudentDetailsSearch(request.POST, user=request.user)
 
@@ -661,9 +662,8 @@ def all_answer_upload(request):
         category = staff_user.courses.all()
         terms = Term.objects.filter(course_category__in = category)
     except:
-        category=request.user.adminuser.course_category
-        print(category)
-        terms = Term.objects.filter(course_category = category)
+        # category=request.user.adminuser.course_category
+        terms = Term.objects.all()#filter(course_category = category)
     
 
     context = {
@@ -677,7 +677,6 @@ def all_answer_upload(request):
 def fill_exam_select_ajax(request):
     term = Term.objects.get(pk=request.GET['term'])
     exams = Exams.objects.filter(term=term)
-    print(exams, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
     context = {'exams':exams}
 
