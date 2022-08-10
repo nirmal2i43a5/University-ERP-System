@@ -123,4 +123,47 @@
 {% endblock content %}
 
 {% block custom_js %}
+<script>
+$('document').ready(function(){
+  $('#div_id_semester_choices').hide();
+  $('#div_id_year_choices').hide();
+  $('#div_id_name').hide();
+  $("#div_id_course_category").attr("id","div_semester_id_course_category");
+  $("#div_semester_id_course_category input:radio").change(function(){
+    console.log("Inside radio")
+    var course_category =$(this).parent().text();
+    console.log(course_category)
+    if(course_category == 'Plus-Two'||course_category == 'A-Level' || course_category == 'Diploma'){
+      alert("skldskla")
+      $('#div_id_name').show();
+      $('#div_id_year_choices').hide()
+      $('#div_id_semester_choices').hide()
+      $('#div_id_year_semester_check').hide()
+
+
+    }
+
+  })
+  $("#div_id_year_semester_check input:radio").change(function(){
+      var semester_year_check =$(this).val()
+ //  console.log(semester_year_check)
+      if(semester_year_check ==  'Has Semester'){
+        $('#div_id_semester_choices').show()
+        $('#div_id_year_choices').hide()
+
+      }
+    
+      if(semester_year_check ==  'Has Year'){
+        $('#div_id_year_choices').show();
+        $('#div_id_semester_choices').hide()
+
+     
+      }
+      
+    })
+})
+</script>
+<style>
+  .hidden{display: none !important;}
+</style>
 {% endblock custom_js %}

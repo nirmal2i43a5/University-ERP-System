@@ -12,7 +12,7 @@ from django.contrib.auth.models import Group
 from school_apps.transports.models import Transport
 # from simple_history.models import HistoricalRecords
 from student_management_system.validators import (validate_file_extension, img_pdf_file_validate_file_extension, pdf_file_validate_file_extension,)
-
+from school_apps.classroom.models import (SemesterModel, YearModel)
 # from PIL import Image
 # for qrcode
 import qrcode
@@ -56,29 +56,22 @@ school_classes_choices = (
 #         ('AL', 'Advanced Level (AL)'),
 #         ('PA', 'Passed out')
 #         ]
-
+year_semester_check_choices= [
+    ('Has Year', 'Has Year'),
+    ('Has Semester', 'Has Semester'),
+]
 ALEVEL_CHOICES = [
         ('AS', 'Advanced Subsidiary (AS)'),
         ('AL', 'Advanced Level (AL)'),
         ('PA', 'Passed out')
         ]
 
-bachelor_semester_choices = (
-        ('First','First'),
-        ('Second','Second'),
-        ('Third','Third'),
-        ('Fourth','Fourth'),
-        ('Fifth','Fifth'),
-        ('Sixth','Sixth'),
-        ('Seventh','Seventh'),
-        ('Eight','Eight'),
-    )
-master_semester_choices = (
-        ('First','First'),
-        ('Second','Second'),
-        ('Third','Third'),
-        ('Fourth','Fourth'),
-    )
+plus_two_choices = [
+    ('Eleven', 'Eleven'),
+    ('Twelve', 'Twelve'),
+]
+
+
 
 
 YEAR_CHOICES = []
@@ -89,14 +82,14 @@ for r in range(2010, (datetime.datetime.now().year+1)):
 class Department(models.Model):
     name = models.CharField(_("Department Name"), max_length=50)
     # description = models.TextField(blank=True)
-    # created_at = models.DateTimeField(auto_now_add=True)
-    # updated_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
         return self.name
 
 class Branch(models.Model):
-    name = models.CharField(verbose_name="Branch name:", max_length=50)
+    name = models.CharField(verbose_name="Branch name", max_length=50)
 
     def __str__(self):
         return self.name
@@ -128,7 +121,7 @@ class CustomUser(AbstractUser):  # use this for extending deafult django auth sy
         )
 
     def __str__(self):
-        return self.full_name
+        return f'{self.email}(Username : {self.username})'
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -156,6 +149,9 @@ class CourseCategory(models.Model):  # i also want to see subject for particular
     def __str__(self):
         return self.course_name
     
+
+
+
 
     
 class AdminUser(models.Model):
@@ -307,10 +303,20 @@ class Semester(models.Model):
  
     course_category = models.ForeignKey(CourseCategory, on_delete=models.CASCADE,null = True, blank=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE,null = True, blank=True)
-    name = models.CharField(max_length=100)#for school classes
+    name = models.CharField(max_length=100,null = True, blank = True)#for school classes
     staff_user = models.ManyToManyField(CustomUser, through='SemesterTeacher',  blank = True)
     semester_value = models.IntegerField(null=True, blank=True)
     # staff_user = models.ForeignKey(CustomUser, on_delete=models.CASCADE,null = True, blank = True)
+    year_semester_check = models.CharField(verbose_name='Has Semester/Year',max_length=100, choices=year_semester_check_choices,null = True, blank=True)
+    
+    # semester_choices =  forms.ModelMultipleChoiceField(queryset = SemesterModel.objects.all(), widget=forms.CheckboxSelectMultiple)
+    # year_choices = models.CharField(max_length=100, choices=year_choices,null = True,blank=True)
+    semester_choices = models.ManyToManyField(SemesterModel, blank=True)
+    
+    year_choices = models.ManyToManyField(YearModel, blank=True)
+    
+    # plus_two_choices = models.CharField(max_length=100, choices=plus_two_choices)
+    
     description = models.TextField(blank=True)
     status = models.BooleanField(default=True)
     

@@ -6,6 +6,7 @@ from django.utils import timezone
 from datetime import datetime,timedelta
 from django.http import HttpResponse,JsonResponse
 from django.db.models import Q
+from school_apps.classroom.models import SemesterModel, YearModel
 from student_management_app.django_forms.forms import (
     CourseForm
 )
@@ -190,16 +191,34 @@ def delete_course(request, course_id):
 def manage_subject(request):
 
     form = SubjectForm()
-    subject_search_form = SubjectSearchForm()
     
     course_category = request.GET.get('course_category')
     course = request.GET.get('course')
     semester = request.GET.get('filter_semester')
+    course_category_instance = get_object_or_404(CourseCategory, pk = course_category) if course_category else None
+    course_instance = get_object_or_404(Course, pk = course) if course else None
+    semester_instance = get_object_or_404(Semester, pk = semester) if semester else None
+    subject_search_form = SubjectSearchForm(initial = {
+        'course_category': course_category_instance,
+        'filter_course': course_instance,
+        
+        'filter_semester': semester_instance,
+    })
+    
+    if course_category:        
+        subjects = Subject.objects.filter(course_category = course_category_instance,                          
+                                                                                           )
+        context = {
+            'form':form,
+               'subject_search_form':subject_search_form,
+               'title': 'Subject',
+               'subjects':subjects, 
+           
+               }
+        return render(request, "academic/subjects/manage_subject.html", context)
+    
    
     if course_category and course and semester:        
-        course_category_instance = get_object_or_404(CourseCategory, pk = course_category)
-        course_instance = get_object_or_404(Course, pk = course)
-        semester_instance = get_object_or_404(Semester, pk = semester)
         subjects = Subject.objects.filter(course_category = course_category_instance,course = course_instance,
                                           semester = semester_instance,
                                           
@@ -214,8 +233,6 @@ def manage_subject(request):
         return render(request, "academic/subjects/manage_subject.html", context)
     
     if course_category and semester:        
-        course_category_instance = get_object_or_404(CourseCategory, pk = course_category)
-        semester_instance = get_object_or_404(Semester, pk = semester)
         subjects = Subject.objects.filter(course_category = course_category_instance,
                                           semester = semester_instance,
                                           
@@ -248,10 +265,11 @@ def manage_subject(request):
     #     search_subjects = Subject.objects.filter(faculty=query)
     #     context = {'subjects': search_subjects, 'search_form': search_form}
     #     return render(request, 'academic/subjects/manage_subject.html', context)
-    
+    subjects = Subject.objects.all()
     context = {'form': form,
               'subject_search_form':subject_search_form,
                'title': 'Subject',
+               'subjects':subjects
          
                }
 
@@ -685,7 +703,7 @@ def manage_class(request):
     form = SemesterForm()
     class_search_form = ClassSearchForm()
     
-    course_category_id = request.GET.get('course_category')
+    course_category_id = request.GET.get('semester_course_category')
     course_id = request.GET.get('filter_course')
     if course_category_id and course_id:        
         classes = Semester.objects.filter(course_category = get_object_or_404(CourseCategory, pk = course_category_id),
@@ -714,30 +732,60 @@ def manage_class(request):
     
 
     if request.method == 'POST':
+        form = SemesterForm(request.POST)
         course_category_id = request.POST['course_category']
+        course_category_instance  = get_object_or_404(CourseCategory, pk = course_category_id) if course_category_id else None
         course_id = request.POST['course']
-        name = request.POST['name']
+        course_instance = get_object_or_404(Course, pk = course_id) if course_id else None
         description = request.POST['description']
-     
-        try:
-            semester = Semester.objects.create(name = name,
-                                               description = description, 
-                                               course_category = get_object_or_404(
-                                                CourseCategory,pk = course_category_id),
-                                               course = get_object_or_404(Course, pk = course_id)
-                                               )
-            
-            messages.success(request, "Class is Added Successfully.")
-            return redirect('academic:manage_class')
-        except:
-            messages.error(request, "Failed To Add Class.")
-            return redirect('academic:manage_class')
+        year_semester_check = request.POST['year_semester_check']
+          
+        semester_choices = request.POST.getlist('semester_choices')
         
+        # if form.is_valid():
+        #     form.save()
+        #     messages.success(request, "Class created successfully.")
+        #     return redirect('academic:manage_class')
+        
+        year_choices = request.POST.getlist('year_choices')
+        if semester_choices:
+            Semester.objects.bulk_create(
+                [
+                Semester(
+                    name = SemesterModel.objects.get(pk = semester),
+                        description = description, 
+                course_category = course_category_instance,
+                course = course_instance,
+                year_semester_check = year_semester_check,
+                # semester_choices = semester_choices,
+                
+                )
+                for semester in semester_choices
+            ])
+        if year_choices:
+            Semester.objects.bulk_create(
+                [
+                Semester(
+                    name = YearModel.objects.get(pk = year),
+                        description = description, 
+                course_category = course_category_instance,
+                course = course_instance,
+                   year_semester_check = year_semester_check,
+                #    year_choices=year_choices,
+                )
+                for year in year_choices
+            ])
+                                        
+                                                    
+
+        
+    classes = Semester.objects.all()
 
     context = {'form': form,
                'title': 'Class',
                'class_search_form':class_search_form,
                'title': 'Class',
+               'classes':classes,
                
            
                }
@@ -768,6 +816,7 @@ def edit_class(request, class_id):
     context = {'form': form,
                'class_search_form':class_search_form,
                'title': 'Class',
+               'classes':Semester.objects.all()
               
                }
     return render(request, "academic/classes/manage_class.html", context)
