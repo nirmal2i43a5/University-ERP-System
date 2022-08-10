@@ -82,6 +82,7 @@ def registerexam(request):
 
 
 def examapplication(request):
+    print("Inside examappliation:::::::::::::::::::::::")
     student = get_object_or_404(Student, student_user = request.user.id)
     today = datetime.date.today()
     # latest_term = Term.objects.none
@@ -95,14 +96,16 @@ def examapplication(request):
     current_application=application_form.objects.none()
     print(latest_term, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~latest term~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
-    
+    # for 0 to 15 days available for application
     if (datetime.timedelta(0)<=latest_term.start_date-today<=datetime.timedelta(15)):
+        print("Inside ::::")
         try:
             current_application = application_form.objects.get(student=student, term=latest_term) 
+            print(current_application,":::::Current application")
         except:
             print("Application not found.")
             selected_subjects= selectedcourses.objects.filter(Q(student_id=student)&Q(semester=student.semester))
-            print(selected_subjects)
+            # print(selected_subjects)
             exams=[]
 
             for subject in selected_subjects:
@@ -110,15 +113,15 @@ def examapplication(request):
                     exams.append(Exams.objects.get(Q(term=latest_term)&Q(subject_id=subject.subject_id)))
                 except:
                     print(subject.__str__() + " exam not found")
-            print(exams)
+            # print(exams)
             return render(request, 'student/examapplication.html', {'student':student, 'term':latest_term, 'exams':exams})         
         
         if (current_application):
-            print("in try")
+            # print("in try")
             selected_subjects= selectedcourses.objects.filter(Q(student_id=student)&Q(semester=student.semester))
             current_exams=current_application.exam.all()
-            print("selected subjects", selected_subjects)
-            print("current_exams=" + str(current_exams))
+            # print("selected subjects", selected_subjects)
+            # print("current_exams=" + str(current_exams))
             exams=[]
 
             for subject in selected_subjects:
@@ -442,6 +445,8 @@ def parent_checkscore(request):
                 'remaining':remaining}
 
         return render(request, 'parent/checkscore.html', context)
+    
+    
 
 def returnExamslist(request):
     student = Student.objects.get(student_user__username = request.GET['student'])

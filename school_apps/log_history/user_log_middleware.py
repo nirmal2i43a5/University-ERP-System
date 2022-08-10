@@ -53,7 +53,7 @@ class UserLoggingMiddleware(object):
             )
 
     def _save_to_log(self, instance, action, user):
-        print("----------------------------------")
+        # print("----------------------------------")
         # pass
         content_type = ContentType.objects.get_for_model(instance)
         if content_type.app_label != 'user_log' and user:

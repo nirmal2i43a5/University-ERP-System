@@ -1,13 +1,4 @@
-<li class="nav-item menu-close">
-    <a href="#" class="nav-link">
-      <i class="fas  fa-book-open mr-1"></i>
-      <p>
-       Exams
-    
-      </p>
-      <i class="right fas fa-angle-left"></i>
-    </a>
-    <ul class="nav nav-treeview">
+
   
       <li class="nav-item">
         <a href="{% url 'courses:addterm' %}" class="nav-link">
@@ -127,9 +118,8 @@
            </a>
          </li>
          <li class="nav-item">
-          <a href=" {% url 'exam:student-answer-upload' %}" class="nav-link">
+          <a href=" {% url 'courses:student-answer-upload' %}" class="nav-link">
             <i class="far fa-xs fa-circle"></i>
             <p>Upload Exam Answer</p>
           </a>
         </li>
-  </ul>

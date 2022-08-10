@@ -1235,10 +1235,24 @@ def manage_assignment(request):
     })
   
    
-    if semester_id:
+    if semester_id and not section_id:
         search_assignments = Assignment.objects.filter(
                                                     semester = semester_instance,
                                                 #    teacher = teacher_instance
+                                                    )
+        context = {
+       
+            'draft_assignments': draft_assignments,
+              'search_assignments':search_assignments,
+            'form': search_form,
+                    'title': 'Assignment',
+        }
+        
+        return render(request, 'academic/assignments/manage_assignment.html', context)
+    if semester_id and section_id:
+        search_assignments = Assignment.objects.filter(
+                                                    semester = semester_instance,
+                                                    section = section_instance,
                                                     )
         context = {
        

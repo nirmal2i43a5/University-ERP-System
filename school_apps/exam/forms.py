@@ -11,7 +11,7 @@ class QuestionPaperUploadForm(forms.ModelForm):
         model = QuestionPaper
         fields = '__all__'
     
-    exam = forms.ModelChoiceField(required = False, label= '',empty_label = 'Choose Subject',
+    exam = forms.ModelChoiceField(required = False, empty_label = 'Choose Exams',
                                      queryset = Exams.objects.all())
 
     def __init__(self, *args, user=None, **kwargs):

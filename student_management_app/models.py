@@ -243,7 +243,7 @@ class Staff(models.Model):
         )
 
     def __str__(self):
-        return self.staff_user.full_name
+        return f'{self.staff_user.full_name}(Username : {self.staff_user.username})'
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

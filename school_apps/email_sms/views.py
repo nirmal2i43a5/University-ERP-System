@@ -91,6 +91,7 @@ def teacher_send_bulk_email(request):
 
 
 
+
 def particular_user_email(request):
 
 	if request.method == 'POST':

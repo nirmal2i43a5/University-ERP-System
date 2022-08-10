@@ -29,7 +29,9 @@ def manage_assignment(request,semester_id):
     subject_instance  = get_object_or_404(Subject, pk = subject_id) if subject_id else None
     section_id = request.GET.get('section')
     section_instance  = get_object_or_404(Section, pk = section_id) if section_id else None
-    # teacher_id = request.GET.get('teacher')
+    teacher_id = request.GET.get('teacher')
+    print(teacher_id,":::::::::::==================")
+    teacher_instance  = CustomUser.objects.get(pk = teacher_id) if teacher_id else None
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
     assignment_search_form = forms.ContentFilterForm(semester_id,initial = {
@@ -37,7 +39,12 @@ def manage_assignment(request,semester_id):
         'section':section_instance,'subject':subject_instance,'start_date':start_date,'end_date':end_date
     })
  
+    if section_id and not subject_id and not teacher_id:
+        search_assignments = Assignment.objects.filter(
+                                                    section = section_instance,
+                                                    )
     
+        return search_assignments,draft_assignments,assignment_search_form
     if subject_id and start_date  and end_date:
         
         start_date_parse = datetime.strptime(str(start_date), "%Y-%m-%d").date()
@@ -51,7 +58,7 @@ def manage_assignment(request,semester_id):
                                                             )
                                                     )
         return search_assignments,draft_assignments,assignment_search_form
-    if subject_id:
+    if subject_id and not teacher_id:
         search_assignments = Assignment.objects.filter(
                                                     Subject = subject_instance,
                                                 #    teacher = teacher_instance
@@ -59,11 +66,19 @@ def manage_assignment(request,semester_id):
     
         return search_assignments,draft_assignments,assignment_search_form
     
+   
+    if subject_id and teacher_id:
+        print("Inside ")
+        search_assignments = Assignment.objects.filter(
+                                                    Subject = subject_instance,
+                                                    teacher = teacher_instance
+                                                    )
+    
+        return search_assignments,draft_assignments,assignment_search_form
+        
     search_assignments = Assignment.objects.filter(
                                                     semester = semester_instance,
-                                                #    teacher = teacher_instance
                                                     )
-    # search_assignments = None
     page = request.GET.get('page', 1)
     paginator = Paginator(search_assignments, 10)
     try:    

@@ -74,7 +74,7 @@ class Exams(models.Model):
 
 class application_form(models.Model):
     application_id = models.CharField( max_length=255,primary_key=True)
-    status = models.BooleanField(max_length=3, default=True)  #False = pending
+    status = models.BooleanField(max_length=3, default=False)  #False = pending
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     term = models.ForeignKey(Term, on_delete=models.CASCADE)
     exam = models.ManyToManyField(Exams, through='studentgrades')

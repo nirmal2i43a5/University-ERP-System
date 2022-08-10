@@ -23,16 +23,41 @@
             <span><strong> Exam Application </strong></span>
             <form class="float-right mb-2" action=" {% url 'courses:massexamapplication' %}" id="term_form" method="post" style="height: 27px;margin:auto;position:relative;">
                 {% csrf_token %}
-              <div class="input-group">              
-                    <select name="term_id" id="term_select">
+              <div class="input-group">    
+                <select name="course_category" id="id_course_category">
+                  <option value="">Select Course Category</option>
+                      {% for item in course_category %}
+                        <option value="{{item.pk}}">
+                            {{item}}
+                        </option>
+                      {% endfor %}
+                </select>    
+                <select name="course" id="id_filter_course">
+                  <option value="">Select Course</option>
+                      {% for item in courses %}
+                        <option value="{{item.pk}}">
+                            {{item}}
+                        </option>
+                      {% endfor %}
+                </select>      
+                    <select name="term_id" id="term_select" required>
+                      <option value="">Select Term</option>
                           {% for item in terms %}
                             <option value="{{item.pk}}">
                                 {{item.term_name}}
                             </option>
                           {% endfor %}
                     </select>
-
-                    <select name="section_id" id="select_select">
+                    <select name="class_id" id="id_filter_semester">
+                      <option value="">Select Class</option>
+                        {% for item in classes %}
+                            <option value="{{item.pk}}">
+                                {{item}}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <select name="section_id" id="id_section">
+                      <option value="">Select Section</option>
                         {% for item in section %}
                             <option value="{{item.pk}}">
                                 {{item}}
@@ -40,13 +65,13 @@
                         {% endfor %}
                     </select>
 
-                    <select name="group" id="group_select">
+                    <!-- <select name="group" id="group_select">
                         {% for item in faculty %}
                             <option>
                                 {{item}}
                             </option>
                         {% endfor %}
-                    </select>
+                    </select> -->
             
                 <div class="input-group-btn ">
                   <button type="submit" class="btn btn-primary">Search or Generate</button>
@@ -86,9 +111,14 @@
                   <td> {{item.exam.count}}</td>
                   <td> 
                     {% if item.status%}
-                      Accepted
+                  
+                    <button class = "btn btn-xs btn-success">
+                      <strong>Accepted</strong>
+                    </button>
                     {% else %}
-                      Declined
+                    <button class = "btn btn-xs btn-danger">
+                      <strong>Declined</strong>
+                    </button>
                     {% endif %} 
                   </td>
                   <td><a href="{% url 'courses:toggle_application' item.pk %} " class="btn btn-primary btn-xs">Toggle</a></td>

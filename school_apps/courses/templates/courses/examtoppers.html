@@ -3,7 +3,7 @@
     <h4>Choose Exam:</h4>
     <form action="{% url 'courses:examtoppers' %}" method="POST">
         {% csrf_token %}
-        <select name = "exam_id">
+        <select name = "exam_id" required>
             {% for exam in exams%}
             <option name="sub" value="{{exam.exam_id}}">{{exam.exam_title}}</option>
             {% endfor %}

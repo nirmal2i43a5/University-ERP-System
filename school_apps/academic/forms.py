@@ -2,7 +2,7 @@ from django import forms
 from django.shortcuts import get_object_or_404
 from school_apps.academic.models import Syllabus, Assignment, Routine,Section,Enotes
 from school_apps.classroom.models import SemesterModel, YearModel
-from student_management_app.models import Semester, Subject,CourseCategory,Course,Staff, SubjectTeacher,SemesterTeacher
+from student_management_app.models import CustomUser, Semester, Subject,CourseCategory,Course,Staff, SubjectTeacher,SemesterTeacher
 from django.contrib.admin.widgets import AdminSplitDateTime
 
 from django.template.defaultfilters import filesizeformat
@@ -197,10 +197,10 @@ class ContentFilterForm(forms.Form):
                                       queryset = Semester.objects.all(),widget=forms.Select(attrs = {'hidden':''}))
     section = forms.ModelChoiceField(required = False, empty_label = 'Choose Section',
                                      queryset = Section.objects.all())
-    subject = forms.ModelChoiceField(empty_label = 'Choose Subject',
+    subject = forms.ModelChoiceField(required = False,empty_label = 'Choose Subject',
                                      queryset = Subject.objects.none())
     teacher = forms.ModelChoiceField(required = False,empty_label = 'Choose Teacher',
-                                     queryset = Staff.objects.all())
+                                     queryset = CustomUser.objects.filter(groups__name='Teacher'))
     start_date = forms.DateField(required = False, label = 'From', widget=forms.DateInput(attrs = {'type':'date','class':''}))
     end_date = forms.DateField(required = False,label = 'To',widget=forms.DateInput(attrs = {'type':'date','class':''}))
     

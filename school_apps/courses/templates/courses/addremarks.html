@@ -12,7 +12,7 @@
             <form name="" method="POST">
                 {% csrf_token %}
                 <label for="term_id">Select Term</label>
-                <select name="term" id="term_id">
+                <select name="term" id="term_id" required>
                     {% for item in terms %}
                         <option value="{{item.pk}}">
                             {{item.term_name}}
@@ -23,7 +23,7 @@
 
         <div class="col-3">
             <label for="term_id">Select Class</label>
-            <select name="semester" id="term_id">
+            <select name="semester" id="term_id" required>
                 {% for item in semester %}
                     <option value="{{item.pk}}">
                         {{item}}
@@ -34,7 +34,7 @@
 
         <div class="col-3">
             <label for="term_id">Select Group</label>
-            <select name="group" id="term_id">
+            <select name="group" id="term_id" required>
                 {% for item in faculty %}
                     <option value="{{item}}">
                         {{item}}

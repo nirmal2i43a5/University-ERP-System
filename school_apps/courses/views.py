@@ -5,7 +5,7 @@ from django.db.models import Q
 from django.http.response import HttpResponse, JsonResponse
 from django.contrib import messages 
 from django.shortcuts import redirect, render, get_object_or_404
-from student_management_app.models import Section, Semester, Staff, Student, Subject, SubjectTeacher
+from student_management_app.models import Course, CourseCategory, Section, Semester, Staff, Student, Subject, SubjectTeacher
 from .models import  Term, application_form, selectedcourses, studentgrades, term_ranking
 from .models import Exams
 from school_apps.academic.forms import StudentFormSearch
@@ -214,8 +214,12 @@ def confirmexamapplication(request):
 
 def confirmAjax(request):
     form_id = request.GET.get('form_id')
-    form = application_form.objects.filter(Q(application_id__icontains=form_id),Q(status=False),Q(term__course_category=request.user.adminuser.course_category))
-    print(form,"-----------------")
+    
+    form = application_form.objects.filter(Q(application_id__icontains=form_id),
+                                        #    Q(status=False),
+                                        #    Q(term__course_category=request.user.adminuser.course_category)
+                                           )
+    print(form,"-------Form----------")
     return render(request, 'courses/examapplication.html', {'form':form})
 
 
@@ -465,7 +469,7 @@ def printexamreport(request, pk):
 
 def addexammarks(request):
     print(request.user)
-    terms = Term.objects.filter(course_category=request.user.adminuser.course_category)
+    terms = Term.objects.all()#filter(course_category=request.user.adminuser.course_category)
 
     context = {'terms':terms}
 
@@ -539,8 +543,9 @@ def examsAjax(request):
 
 
 def massexamapplication(request):
-    terms = Term.objects.filter(course_category=request.user.adminuser.course_category)
+    terms = Term.objects.all()#filter(course_category=request.user.adminuser.course_category)
     section = Section.objects.all()
+    classes = Semester.objects.all()
     faculty = Student._meta.get_field('faculty').choices
     faculty_choices = []
 
@@ -548,6 +553,7 @@ def massexamapplication(request):
         content_type='text/csv',
         headers={'Content-Disposition': 'attachment; filename="somefilename.csv"'},
     )
+
 
     writer = csv.writer(response)
     writer.writerow(['First row', 'Foo', 'Bar', 'Baz'])
@@ -557,16 +563,24 @@ def massexamapplication(request):
         faculty_choices.append(item[0])
 
     if request.method == 'POST':
-        selected_term = Term.objects.get(pk = request.POST['term_id'])
-        selected_section = Section.objects.get(pk = request.POST['section_id'])
+        term_id = request.POST['term_id']
+        section_id = request.POST['section_id']
+        selected_term = Term.objects.get(pk =term_id ) if term_id else None
+        selected_section = Section.objects.get(pk = section_id) if section_id else None
         forms = []
 
-        students = Student.objects.filter(section=selected_section, faculty = request.POST['group'], course_category=request.user.adminuser.course_category )
+        students = Student.objects.filter(section=selected_section, 
+        #  faculty = request.POST['group'], 
+        #  course_category=request.user.adminuser.course_category
+         )
         
         for item in students:
             application_id_str = selected_term.term_id + "." + item.student_user.username
-            obj, created = application_form.objects.get_or_create(student=item, term=selected_term, application_id= application_id_str
-                            ,semester=item.semester)
+            obj, created = application_form.objects.get_or_create(student=item,
+                                                                  term=selected_term, 
+                                                                  application_id= application_id_str
+                            ,semester=item.semester
+                            )
             selected_subjects = selectedcourses.objects.filter(student_id=item)
             selected_exams = []
             for sub_item in selected_subjects:
@@ -578,16 +592,23 @@ def massexamapplication(request):
             
             for exam in selected_exams:
                 obj.exam.add(exam, through_defaults={'exam_type':True, 'passed':False})
-            
+            obj.status = True
             obj.save()
         
-        forms = application_form.objects.filter(term=selected_term, student__faculty=request.POST['group'], student__section = selected_section, student__course_category=request.user.adminuser.course_category)
+        forms = application_form.objects.filter(term=selected_term, 
+                                                # student__faculty=request.POST['group'], 
+                                                student__section = selected_section, 
+                                                # student__course_category=request.user.adminuser.course_category
+                                                )
         print("testforms: ", forms, forms.count(),"\n\n")
         
         context = {'terms':terms,
                 'section':section,
                 'faculty': faculty_choices,
-                'forms':forms
+                'forms':forms,
+                'classes':classes,
+                'course_category':CourseCategory.objects.all(),
+                 'courses':Course.objects.all()
                 }
         # return response
         return render (request, 'courses/massexamapplication.html', context=context)
@@ -595,7 +616,12 @@ def massexamapplication(request):
 
     context = {'terms':terms,
                 'section':section,
-                'faculty': faculty_choices}
+                'faculty': faculty_choices,
+                'classes':classes,
+                 'course_category':CourseCategory.objects.all(),
+                 'courses':Course.objects.all()
+                
+                }
     return render (request, 'courses/massexamapplication.html', context=context)
 
 

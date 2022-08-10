@@ -1,4 +1,5 @@
 <option value="">Select Teacher</option>
 {% for item in teachers %}
-    <option value={{item.teacher}}>{{item}}</option>
+
+    <option value={{item.teacher.pk}}>{{item.teacher.staff}}</option>
 {% endfor %}

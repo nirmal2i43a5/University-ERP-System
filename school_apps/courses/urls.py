@@ -1,5 +1,8 @@
 from django.urls import path
+from school_apps.exam.views import all_answer_upload
+
 from . import views
+from student_management_system.views import exam_home
 
 app_name = 'courses'
 
@@ -50,12 +53,17 @@ urlpatterns=[
     path('addstudentremarks/<str:pk>',views.addstudentremarks, name='addstudentremarks'),
     path('ajax/fill_exam_select/', views.fill_exam_select, name='fill_exam_select'),
     path('ajax/examsAjax/', views.examsAjax, name='examsAjax'),
+    
+    #examanswer
+   path('answer/upload/',all_answer_upload ,name = 'student-answer-upload'),
+    
 
     #mass exam application
     path('massexamapplication', views.massexamapplication, name="massexamapplication"),
     path('toggle_application/<str:pk>', views.toggle_application, name="toggle_application"),
     path('gci_printresults/', views.gci_printresults, name="gci_printresults"),
     
+    path('exam-management/',exam_home,name = 'exam-management'),
     
     
 ]
