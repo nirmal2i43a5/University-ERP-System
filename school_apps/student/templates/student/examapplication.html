@@ -2,97 +2,115 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-    {% if term %}
-      {% if exams|length == 0 %}
-      <h4>No exams available</h4>
-      {% else %}
-        <h4 class="ml-4">You can apply for {{term}}</h4>
-        <hr>
 
-<span class="ml-4">        Subjects available this term:</span>
-        <form  action=" {% url 'student:viewform' %}" method="POST">
-            {%csrf_token%}
-              <table class="table table-hover ml-4">
-                  <thead class="thead" style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);color:white;">
-                      <tr>
-                          <th>Exam code</th>
-                          <th>Exam</th>
-                          <th>Exam date</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                    <input type="text" readonly value="{{term.pk}}" hidden name='term'>
-                    <input type="text" readonly value="{{exams|length}}" hidden name='count'>
-                      {% for exam in exams %}
-                          <tr class="subject" data-id="{{ exam.exam_id }}" data-title= "{{ exam.exam_title }}">                        
-                              <input type="text" readonly value="{{exam.exam_id}}" hidden name="{{forloop.counter0}}">
-                              <td>{{exam.exam_id}}</td>
-                              <td>{{exam.exam_title}}</td>
-                              <td>{{exam.date}}</td>
-                              <!-- <td>{{forloop.counter0}}</td> -->
+<section class="content">
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-12">
+
+        <div class="card" >
+
+          {% if term %}
+          {% if exams|length == 0 %}
+          <h4 class="ml-4 alert alert-default-primary mt-2">No Exams Available.</h4>
+          {% else %}
+            <h4 class="ml-4">You can apply for {{term}}</h4>
+            <hr>
+      
+      <span class="ml-4">        Subjects available this term:</span>
+            <form  action=" {% url 'student:viewform' %}" method="POST">
+                {%csrf_token%}
+                  <table id="dataTable" class="table table-hover ml-4">
+                      <thead class="thead" style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);color:white;">
+                          <tr>
+                              <th>Exam code</th>
+                              <th>Exam</th>
+                              <th>Exam date</th>
                           </tr>
-                      {% endfor %}
-                      <tr>
-                        <td colspan="4" align="right"><button type="button" class="btn btn-primary mr-4" id="open-ApplyDialog" data-toggle="modal" data-target = "#apply-modal">
-                          Apply
-                        </button></td>
-                      </tr>
-                  </tbody>
-              </table>
-      {% endif %}
-            
-      {% if already_selected %}
-        <hr>
-          <h4>Exams already applied this term:</h4>
-          <table class="table table-hover">
-            <thead class="thead" style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);color:white;">
-                <tr>
-                    <th>Exam code</th>
-                    <th>Exam</th>
-                    <th>Exam date</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for exam in already_selected %}
-                    <tr class="subject">                        
-                        <td>{{exam.exam_id}}</td>
-                        <td>{{exam.exam_title}}</td>
-                        <td>{{exam.date}}</td>
-                        <!-- <td>{{forloop.counter0}}</td> -->
+                      </thead>
+                      <tbody>
+                        <input type="text" readonly value="{{term.pk}}" hidden name='term'>
+                        <input type="text" readonly value="{{exams|length}}" hidden name='count'>
+                          {% for exam in exams %}
+                              <tr class="subject" data-id="{{ exam.exam_id }}" data-title= "{{ exam.exam_title }}">                        
+                                  <input type="text" readonly value="{{exam.exam_id}}" hidden name="{{forloop.counter0}}">
+                                  <td>{{exam.exam_id}}</td>
+                                  <td>{{exam.exam_title}}</td>
+                                  <td>{{exam.date}}</td>
+                                  <!-- <td>{{forloop.counter0}}</td> -->
+                              </tr>
+                          {% endfor %}
+                          <tr>
+                            <td colspan="4" align="right"><button type="button" class="btn btn-primary mr-4" id="open-ApplyDialog" data-toggle="modal" data-target = "#apply-modal">
+                              Apply
+                            </button></td>
+                          </tr>
+                      </tbody>
+                  </table>
+          {% endif %}
+                
+          {% if already_selected %}
+            <hr>
+              <!-- <h4 class="ml-4">Exams already applied this term:</h4> -->
+              <br>
+              <table id="dataTable" class="table table-hover">
+                <thead class="thead" style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);color:white;">
+                    <tr>
+                      <th></th>
+                        <th>Exam code</th>
+                        <th>Exam</th>
+                        <th>Exam date</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-      {% endif %}
-  
-        <div class="modal fade" id="apply-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Exam Application</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <div id="Application">
-                  {{exams|length}} exam(s) selected for {{term}}. Confirm to view exam application.
+                </thead>
+                <tbody>
+                    {% for exam in already_selected %}
+                        <tr class="subject">    
+                          <td>{{forloop.counter}}</td>                    
+                            <td>{{exam.exam_id}}</td>
+                            <td>{{exam.exam_title}}</td>
+                            <td>{{exam.date}}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+          {% endif %}
+      
+            <div class="modal fade" id="apply-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Exam Application</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div id="Application">
+                      {{exams|length}} exam(s) selected for {{term}}. Confirm to view exam application.
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" id="firstmodal_close_button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <input type="submit" class="btn btn-primary" value="Confirm">
+                  </div>
                 </div>
               </div>
-              <div class="modal-footer">
-                <button type="button" id="firstmodal_close_button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <input type="submit" class="btn btn-primary" value="Confirm">
-              </div>
             </div>
-          </div>
+          </form>
+        {% else %}
+            <h4>There is no exam session open for registration.</h4>
+        {% endif %}
+      
+        <hr>
         </div>
-      </form>
-    {% else %}
-        <h4>There is no exam session open for registration.</h4>
-    {% endif %}
-
-    <hr>
-    
+      </div>
+      </div>
+   
+  
+  </div>
+</section>
+  
 {% endblock %}
 
 <!-- {% block javascript %}

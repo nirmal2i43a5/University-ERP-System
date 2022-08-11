@@ -154,13 +154,13 @@ div.signature{
                     <strong>Course:</strong>
                 </div>
                 <div class = "col-6">
-                    A-Level
+                   {{form.student.course}}
                 </div>
                 <div class = "col-2">
                     <strong>Shift:</strong>
                 </div>
                 <div class = "col-2">
-                    Day
+                   {{form.student.shift}}
                 </div>
             </div>
 
@@ -169,7 +169,7 @@ div.signature{
                     <strong>Level:</strong>
                 </div>
                 <div class = "col-6">
-                    {{form.student.semester.level}}
+                    {{form.student.course_category}}
                 </div>
                 <div class = "col-2">
                     <strong>Section:</strong>
@@ -372,14 +372,13 @@ div.signature{
                 </div>
 
                 <div class="col-4 signature">
-                    <img src="{% static 'image/gci_signature_1.png'%}" width="180" height="80"><br>
+                    <img src="" width="180" height="80"><br>
                     <strong>_____________________</strong><br>
                     <strong> Program Co-ordinator</strong>
                 </div>
 
                 <div class="col-4 signature">
-                    <!-- <img src="{% static 'parent_images/django.jpeg'%}"><br> -->
-                    <img src = "/static/image/gci-signature.png"><br>
+                    <img src = ""><br>
                     <strong>_______________________</strong><br>
                     <strong> Principal</strong>
                 </div>

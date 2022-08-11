@@ -17,6 +17,7 @@ from school_apps.attendance.models import Attendance, AttendanceReport
 import datetime
 from datetime import datetime as dtime
 import csv
+import pandas as pd
 
 # # Create your views here.
 
@@ -85,6 +86,14 @@ def addexam(request):
 
 def editexam(request):
     pass
+
+
+def viewexam(request):
+    exams = Exams.objects.all()
+
+    context = {'exams':exams}
+    return render(request, 'courses/viewexam.html', context )
+
 
 def addexam_marks_ajax(request):
     term = Term.objects.get(pk=request.GET['term'])

@@ -82,7 +82,6 @@ def registerexam(request):
 
 
 def examapplication(request):
-    print("Inside examappliation:::::::::::::::::::::::")
     student = get_object_or_404(Student, student_user = request.user.id)
     today = datetime.date.today()
     # latest_term = Term.objects.none
@@ -105,7 +104,6 @@ def examapplication(request):
         except:
             print("Application not found.")
             selected_subjects= selectedcourses.objects.filter(Q(student_id=student)&Q(semester=student.semester))
-            # print(selected_subjects)
             exams=[]
 
             for subject in selected_subjects:
@@ -298,7 +296,8 @@ def login(request):
 
 def viewform(request):
     student = get_object_or_404(Student, student_user = request.user.id)
-    term = get_object_or_404(Term, pk=request.POST['term'])
+    term = request.POST['term']
+    term = get_object_or_404(Term, pk=term) if term else None
     count = int(request.POST['count'])
     exams=[]
     i=0

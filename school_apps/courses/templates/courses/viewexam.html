@@ -1,0 +1,47 @@
+{% extends 'admin_templates/base_admin.html'%}
+
+{% block content %}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-info">
+                {% include 'override_table/header.html' with card_title='View Terms' %}
+                </div>
+                <div>
+                    <table class="table table-hover">
+                        <thead style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);color:white;">
+                            <tr>
+                                <th>Id</th>
+                                <th>Term</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <tbody class>
+                            {% for item in exams %}
+                                <tr>
+                                    <td>{{forloop.counter}}</td>
+                                    <td>{{item.term_name}}</td>
+                                    <td>{{item.start_date}}</td>
+                                    <td>{{item.end_date}}</td>
+                                    <td><a href = "{% url 'courses:checkterm_exams' item.pk %}" 
+                                        class="btn btn-sm btn-info">
+                                    
+                                        
+                                        Check Exams</a></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+  </section>
+
+
+{% endblock %}

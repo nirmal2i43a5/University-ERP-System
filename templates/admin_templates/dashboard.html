@@ -127,12 +127,27 @@ src="{% static 'plugins/highcharts/modules/accessibility.js' %}"
         <!-- /.info-box -->
       </div>
       <!-- /.col -->
+      <div class="col-12 col-sm-6 col-md-3">
+        <div class="info-box mb-3 border border-info">
+          <span class="info-box-icon elevation-1" style="background-color:#091caf;" >
+            <a href="{% url 'admin_app:manage_user' %}" class="text-white"> <i class="fas fa-1x fa-users"></i></a>
+          </span>
+
+          <div class="info-box-content ">
+            <span class="info-box-text">Users</span>
+            <span class="info-box-number">{{extrauser_count}}</span>
+          </div>
+          <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+      </div>
+      <!-- /.col -->
 
       <!-- fix for small devices only -->
       <div class="clearfix hidden-md-up"></div>
       <div class="col-12 col-sm-6 col-md-3">
         <div class="info-box mb-3 border border-primary">
-          <span class="info-box-icon bg-primary elevation-1">
+          <span class="info-box-icon bg-success elevation-1">
             <a href="{% url 'academic:add_manage_course' %}"> <i class="fas fa-1x fa-book-open"></i></a>
           </span>
 
@@ -160,6 +175,21 @@ src="{% static 'plugins/highcharts/modules/accessibility.js' %}"
         <!-- /.info-box -->
       </div>
       <!-- /.col -->
+
+      <div class="col-12 col-sm-6 col-md-3">
+        <div class="info-box mb-3 border border-info">
+          <span class="info-box-icon elevation-1" style="background: #0f52ba;">
+            <a href="{% url 'academic:add_department' %}" class="text-white"> <i class="fas fa-1x fa-building"></i></a>
+          </span>
+
+          <div class="info-box-content ">
+            <span class="info-box-text">Department</span>
+            <span class="info-box-number">{{department_count}}</span>
+          </div>
+          <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+      </div>
     
       <!-- /.col -->
     </div>

@@ -7,12 +7,17 @@
       
           <div class="row">
             <div class="col-md-12">
+                
               <!-- general form elements -->
               <div class="card card-info">
                 {% include 'override_table/header.html' with card_title='Check Grades' %}
                 <!-- /.card-header -->
+<br>
+                <div class="alert alert-default-warning mx-3">Select term to view grades.
+                </div>
+               
                 <!-- form start -->
-                <form id = "semester-form" class="ml-3 mt-3">
+                <form id = "semester-form" class="ml-4 mt-3">
 
                     <div class="d-flex flex-nowrap">
                         <div class=" p-2">
@@ -26,7 +31,7 @@
                                 {% endfor %}
                             </select>
 
-                            <input type="submit" class="btn btn-primary" id="term_submit" value="Confirm">
+                            <input type="submit" class="btn btn-primary mt-2" id="term_submit" value="Confirm">
                             
                             </div>
                         </div>
@@ -36,9 +41,7 @@
                 </form>
             
                  <div class="container" id="results"> 
-                    <hr>
-                    <h5>Select term to view grades.</h5>
-                    <hr>
+                   
             
                  </div>
             </div>

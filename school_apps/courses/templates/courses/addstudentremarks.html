@@ -60,8 +60,8 @@
         <div>
             <form action=" {% url 'courses:editremarks' application.pk %} ">
                 <label for="remarks">Enter Remarks:</label>
-                <textarea name="remarks" id="remarks" rows="4" cols="50">{{application.remarks}}</textarea>
-                <input type="submit" value="Confirm" class="btn btn-primary btn-sm">
+                <textarea name="remarks" id="remarks" rows="1" cols="50" class="form-control col-md-6" placeholder="Enter your remark .">{{application.remarks}}</textarea>
+                <input type="submit" value="Confirm" class="btn btn-primary btn-sm mb-4 mt-2">
             </form>
         </div>
     </div>

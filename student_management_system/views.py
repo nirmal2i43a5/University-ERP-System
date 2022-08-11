@@ -7,7 +7,7 @@ from school_apps.announcement.models import Notice
 
 from django.db.models import Count
 from student_management_app.models import (
-    Staff, Student, Course, Subject, CustomUser, Semester, Student,CourseCategory
+    Department, ExtraUser, Staff, Student, Course, Subject, CustomUser, Semester, Student,CourseCategory
 
 )
 from django.views import View
@@ -107,9 +107,9 @@ class home(FullCalendarView, View):
         nonscience_faculty,total_subjects,science_faculty,inactive_students,active_students = 0,0,0,0,0
         semester_student_dataset = []
        
-        alevel_group = Group.objects.get(name = 'Admin')
-        bachelor_group = Group.objects.get(name = 'Bachelor-Admin')
-        master_group = Group.objects.get(name = 'Master-Admin')
+        # alevel_group = Group.objects.get(name = 'Admin')
+        # bachelor_group = Group.objects.get(name = 'Bachelor-Admin')
+        # master_group = Group.objects.get(name = 'Master-Admin')
         
         # if request.user.groups.filter(name=alevel_group).exists() or request.user.groups.filter(name=bachelor_group).exists() or \
         # request.user.groups.filter(name=master_group).exists():
@@ -132,8 +132,8 @@ class home(FullCalendarView, View):
 
 
         # active_students = Student.objects.filter( student_user__is_active = 1).count()
-        science_faculty = Student.objects.filter(faculty='Science').count()
-        nonscience_faculty = Student.objects.filter(faculty='Non-Science').count()
+        # science_faculty = Student.objects.filter(faculty='Science').count()
+        # nonscience_faculty = Student.objects.filter(faculty='Non-Science').count()
         
                 # ------------------------------------For bachelor bar-------------------------------------------------
                 
@@ -196,10 +196,12 @@ class home(FullCalendarView, View):
             # 'teachers_count':  Staff.objects.filter(courses__course_name__contains=request.user.adminuser.course_category.course_name).count(),
             'teachers_count' : teachers_count,  
             'courses_count': Course.objects.all().count(),
+            'extrauser_count': ExtraUser.objects.all().count(),
             'students_count': active_students,  # for active students,
             'inactive_students_count': inactive_students,  # for active students
-            'nonscience_faculty_count': nonscience_faculty,
-            'science_faculty_count': science_faculty,
+            'department_count': Department.objects.all().count(),
+            # 'nonscience_faculty_count': nonscience_faculty,
+            # 'science_faculty_count': science_faculty,
             'subjects_count':total_subjects,
             'semester_student_dataset':semester_student_dataset,
             #  'particular_subject_assign':particular_subject_assign,

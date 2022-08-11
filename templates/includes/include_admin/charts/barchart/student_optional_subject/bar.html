@@ -10,26 +10,27 @@
             type: 'column'
         },
         title: {
-            text: 'Science and Non-science students'
+            text: ''
         },
         yAxis: {
             title: {
-                text: 'Total Students'
+                text: 'Total'
             }
     
         },
         xAxis: {
             categories: [
-            'Science students','Non-science studets'
+            'Courses','Subjects','Department'
            // {% for subject in dataset %}'{{ subject.subject }}'{% if not forloop.last %}, {% endif %}{% endfor %}
             ]
 
         },
         series: [{
-            name: 'Students',
-            color:'#743DB8',
+            name:[ 'Courses','Subjects','Department'],
+            color:'#6b75e0',
             data: [
-            {{science_faculty_count}},  {{nonscience_faculty_count}}
+            {{courses_count}},  {{subjects_count}},{{department_count}}
+            
            // {% for subject in dataset %}{{ subject.student_count }}{% if not forloop.last %}, {% endif %}{% endfor %}
             ]
         }, ]

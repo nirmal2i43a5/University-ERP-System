@@ -120,7 +120,7 @@ class studentgrades(models.Model):
     def save(self, *args, **kwargs):
         self.passed = True if self.marks>=self.exam_id.pass_marks else False
 
-        level = self.application_id.student.semester.level
+        # level = self.application_id.student.semester.level
 
         if self.exam_id.exam_type == 'Term':
             if 0<=int(self.marks)<40:
@@ -138,10 +138,11 @@ class studentgrades(models.Model):
             elif int(self.marks)==-1:
                 self.grade='Abs'
             else:
-                if level == 'AS':
-                    self.grade='A'
-                else:
-                    self.grade='A*'
+                pass
+                # if level == 'AS':
+                #     self.grade='A'
+                # else:
+                # self.grade='A*'
 
         super().save(*args, **kwargs)
 

@@ -1,104 +1,198 @@
+<li class="nav-item">
+  <a href="#" class="nav-link">
+    <i class="fas  fa-book"></i>
+    <p>
+      Term Management
+      <i class="right fas fa-angle-left"></i>
+    </p>
+  </a>
 
-  
-      <li class="nav-item">
-        <a href="{% url 'courses:addterm' %}" class="nav-link">
-          <i class="far fa-xs fa-circle"></i>
-          <p>
-        Add term
-          </p>
-        </a>
-      </li>
-
-      <li class="nav-item">
-        <a href="{% url 'courses:viewterm' %}" class="nav-link">
-          <i class="far fa-xs fa-circle"></i>
-          <p>
-        View terms
-          </p>
-        </a>
-      </li>
-      
-        <li class="nav-item">
-            <a href="{% url 'courses:addexam' %}" class="nav-link">
-                  <i class="far fa-xs fa-circle"></i>
-              <p>
-                 Add exam
-              </p>
-            </a>
-        </li>
-        
-        <li class="nav-item">
-            <a href="{% url 'courses:examresults' %}" class="nav-link">
-                  <i class="far fa-xs fa-circle"></i>
-              <p>
-                 Exam results
-              </p>
-            </a>
-        </li>
-
-        <li class="nav-item">
-          <a href="{% url 'courses:addexammarks' %}" class="nav-link">
-                <i class="far fa-xs fa-circle"></i>
-            <p>
-               Add grades
-            </p>
-          </a>
-      </li>
-
-      <li class="nav-item">
-        <a href="{% url 'courses:addremarks' %}" class="nav-link">
-              <i class="far fa-xs fa-circle"></i>
-          <p>
-             Add Remarks
-          </p>
-        </a>
-      </li>
-
-      <li class="nav-item">
-        <a href="{% url 'courses:publishresults' %}" class="nav-link">
-              <i class="far fa-xs fa-circle"></i>
-          <p>
-             Publish Results
-          </p>
-        </a>
+  <ul class="nav nav-treeview">
+    <li class="nav-item">
+      <a href="{% url 'courses:addterm' %}" class="nav-link">
+        <i class="far fa-xs fa-circle"></i>
+        <p>
+      Add term
+        </p>
+      </a>
     </li>
 
+    <li class="nav-item">
+      <a href="{% url 'courses:viewterm' %}" class="nav-link">
+        <i class="far fa-xs fa-circle"></i>
+        <p>
+      View terms
+        </p>
+      </a>
+    </li>
 
-        <li class="nav-item">
-           <a href="{% url 'courses:examtoppers' %}" class="nav-link">
-                 <i class="far fa-xs fa-circle"></i>
-             <p>
-               Exam toppers
-             </p>
-           </a>
-         </li>
+  </ul>
+</li>
 
-         <!-- <li class="nav-item">
+<li class="nav-item">
+  <a href="#" class="nav-link">
+    <i class="fas fa-book-reader"></i>
+    <p>
+      Exam Management
+      <i class="right fas fa-angle-left"></i>
+    </p>
+  </a>
+
+  <ul class="nav nav-treeview">
+    <li class="nav-item">
+      <a href="{% url 'courses:addexam' %}" class="nav-link">
+            <i class="far fa-xs fa-circle"></i>
+        <p>
+           Add exam
+        </p>
+      </a>
+  </li>
+
+    <li class="nav-item">
+      <a href="" class="nav-link">
+        <i class="far fa-xs fa-circle"></i>
+        <p>
+      View exams
+        </p>
+      </a>
+    </li>
+
+  </ul>
+</li>
+  
+
+
+<li class="nav-item">
+  <a href="#" class="nav-link">
+    <i class="fas fa-book-reader"></i>
+    <p>
+      Application Management
+      <i class="right fas fa-angle-left"></i>
+    </p>
+  </a>
+
+  <ul class="nav nav-treeview">
+    <li class="nav-item">
+      <a href="{% url 'courses:confirmexamapplication' %}" class="nav-link">
+            <i class="far fa-xs fa-circle"></i>
+        <p>
+          Confirm exam application
+        </p>
+      </a>
+    </li>
+
+    <li class="nav-item">
+     <a href="{% url 'courses:massexamapplication' %}" class="nav-link">
+           <i class="far fa-xs fa-circle"></i>
+       <p>
+         Mass Exam Application
+       </p>
+     </a>
+   </li>
+
+  </ul>
+</li>
+  
+     
+    
+<li class="nav-item">
+  <a href="#" class="nav-link">
+    <i class="fas fa-poll"></i>
+    <p>
+      Result Management
+      <i class="right fas fa-angle-left"></i>
+    </p>
+  </a>
+
+  <ul class="nav nav-treeview">
+    <li class="nav-item">
+      <a href="{% url 'courses:examresults' %}" class="nav-link">
+            <i class="far fa-xs fa-circle"></i>
+        <p>
+           Exam results
+        </p>
+      </a>
+  </li>
+
+ 
+
+    <li class="nav-item">
+      <a href="{% url 'courses:publishresults' %}" class="nav-link">
+            <i class="far fa-xs fa-circle"></i>
+        <p>
+           Publish Results
+        </p>
+      </a>
+  </li>
+  <li class="nav-item">
+    <a href="{% url 'courses:bulkprintresults' %}" class="nav-link">
+          <i class="far fa-xs fa-circle"></i>
+      <p>
+        Print results
+      </p>
+    </a>
+  </li>
+  </ul>
+</li>
+  
+<li class="nav-item">
+  <a href="#" class="nav-link">
+    <i class="fas fa-check-circle"></i>
+    <p>
+      Grade Management
+      <i class="right fas fa-angle-left"></i>
+    </p>
+  </a>
+
+  <ul class="nav nav-treeview">
+    <li class="nav-item">
+      <a href="{% url 'courses:addexammarks' %}" class="nav-link">
+            <i class="far fa-xs fa-circle"></i>
+        <p>
+           Add grades
+        </p>
+      </a>
+  </li>
+
+  <li class="nav-item">
+    <a href="{% url 'courses:addremarks' %}" class="nav-link">
+          <i class="far fa-xs fa-circle"></i>
+      <p>
+         Add Remarks
+      </p>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a href="{% url 'courses:examtoppers' %}" class="nav-link">
+          <i class="far fa-xs fa-circle"></i>
+      <p>
+        Exam toppers
+      </p>
+    </a>
+  </li>
+  </ul>
+</li>
+      
+        
+       
+
+      
+
+    
+
+
+     
+
+          <!-- <li class="nav-item">
            <a href="{% url 'courses:addstudentmarks' %}" class="nav-link">
                  <i class="far fa-xs fa-circle"></i>
              <p>
                Add student marks
              </p>
            </a>
-         </li> -->
+         </li>  -->
 
-         <li class="nav-item">
-           <a href="{% url 'courses:confirmexamapplication' %}" class="nav-link">
-                 <i class="far fa-xs fa-circle"></i>
-             <p>
-               Confirm exam application
-             </p>
-           </a>
-         </li>
-
-         <li class="nav-item">
-          <a href="{% url 'courses:massexamapplication' %}" class="nav-link">
-                <i class="far fa-xs fa-circle"></i>
-            <p>
-              Mass Exam Application
-            </p>
-          </a>
-        </li>
+        
 
          <!-- <li class="nav-item">
            <a href="{% url 'courses:bulkprintadmitcard' %}" class="nav-link">
@@ -109,14 +203,7 @@
            </a>
          </li> -->
 
-         <li class="nav-item">
-           <a href="{% url 'courses:bulkprintresults' %}" class="nav-link">
-                 <i class="far fa-xs fa-circle"></i>
-             <p>
-               Print results
-             </p>
-           </a>
-         </li>
+        
          <li class="nav-item">
           <a href=" {% url 'courses:student-answer-upload' %}" class="nav-link">
             <i class="far fa-xs fa-circle"></i>
