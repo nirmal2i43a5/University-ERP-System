@@ -166,7 +166,7 @@ def addstudentmarks(request):
     return render(request, 'courses/addstudentmarks.html')
 
 def studentsAjax(request):
-    print("test")
+    print("test---------------------------")
     student_id = request.GET.get("student_id")
     student_list =[]
     student_all = Student.objects.all()
@@ -178,9 +178,11 @@ def studentsAjax(request):
     return render(request, 'courses/studentlist.html',{'students':student_list})
 
 def studentsmarksentry(request, id):
+    
     student = get_object_or_404(Student, student_user__username = id)
     today = datetime.date.today()
-    exams = studentgrades.objects.filter(Q(application_id__student = student)& Q(exam_id__date__lte=today) 
+    exams = studentgrades.objects.filter(Q(application_id__student = student)
+                                         & Q(exam_id__date__lte=today) 
                                             # &Q(exam_id__term__course_category=request.user.adminuser.course_category)
                                             )
     return render(request, 'courses/studentmarksentry.html', {'student': student, 'exams':exams})
@@ -549,11 +551,12 @@ def fill_exam_select(request):
 
 
 def examsAjax(request):
+    print("Inside examajax-----------------------------------")
     exam_id = request.GET.get('exam_id')
     selected_exam = get_object_or_404(Exams, exam_id=exam_id)
 
     student_data = studentgrades.objects.filter(Q(exam_id=selected_exam))
-    print(student_data)
+    print(student_data,";::::::::::::::::STUDEND DATA")
 
     return render (request, 'courses/submit_score.html', {'students':student_data, 'exam':selected_exam})
 

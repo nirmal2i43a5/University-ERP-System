@@ -33,7 +33,9 @@ def addscore(request):
     print(today)
     if request.method=='GET':
         subject = Subject.objects.all().filter(staff_user=teacher)
-        exams = Exams.objects.filter(Q(subject_id__in=subject) & Q(date__lt=today))
+        exams = Exams.objects.filter(Q(subject_id__in=subject)
+                                    #  & Q(date__lt=today)
+                                     )
         print(exams,"```````````````````````````````````````````")
         return render(request, 'teacher/addscore.html', {'teacher': teacher, 'subject':subject,'exams':exams, 'terms':terms})
 
@@ -50,6 +52,7 @@ def subscore(request):
     # form = gradesform()
     context = {'teacher': teacher,  'students':student_data, 'exam':selected_exam}
     return render (request, 'teacher/dump.html', context )
+
 
 def submitscore(request):
     teacher = get_object_or_404(CustomUser, id = request.user.id)
@@ -116,12 +119,19 @@ def submitscore(request):
     
     if (len(failed_attempts)==0):
         messages.success(request, "Marks entry for " + str(entries) + " students successful")
-        return HttpResponseRedirect(reverse('courses:addexammarks'))
+        if request.user.is_superuser:
+            return HttpResponseRedirect(reverse('courses:addexammarks'))
+        else:
+            return HttpResponseRedirect(reverse('teacher:addscore'))
+            
         #return HttpResponse("OK")
     else:
         messages.error(request, "Marks entry for " + str(len(failed_attempts)) + " students unsuccessful")
         # return HttpResponse("not ok" + str(len(failed_attempts)))
-        return HttpResponseRedirect(reverse('courses:addexammarks'))
+        if request.user.is_superuser:
+            return HttpResponseRedirect(reverse('courses:addexammarks'))
+        else:
+            return HttpResponseRedirect(reverse('teacher:addscore'))
 
 
 
@@ -139,7 +149,9 @@ def checkscore(request):
     # print(staff_user,'\n',category,'\n')
     # terms = Term.objects.filter(course_category__in = category)
     today = datetime.date.today()
-    exams = Exams.objects.all().filter(Q(subject_id__in=subjects) & Q(date__lte=today))
+    exams = Exams.objects.all().filter(Q(subject_id__in=subjects) 
+                                    #    & Q(date__lte=today)
+                                       )
 
     if request.method=='GET':
         return render(request, 'teacher/checkscore.html', {'exams':exams, 'teacher':teacher})
@@ -156,14 +168,20 @@ def examsAjax(request):
     exam_id = request.GET.get('exam_id')
     selected_exam = get_object_or_404(Exams, exam_id=exam_id)
     subject = selected_exam.subject_id
-    subjectobject = SubjectTeacher.objects.filter(teacher=teacher, subject=subject, section__semester=selected_exam.semester)
-    section = []
+    print(subject, selected_exam.semester)
+    subjectobject = SubjectTeacher.objects.filter(teacher=teacher, subject=subject, 
+                                                  semester=selected_exam.semester
+                                                  )
+    semester = []
 
     for item in subjectobject:
-        section.append(item.section)
-    print("section",section,"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        semester.append(item.semester)
+    print("semester",semester,"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
-    student_data = studentgrades.objects.filter(Q(exam_id=selected_exam) & Q(application_id__student__section__in=section))
+    student_data = studentgrades.objects.filter(Q(exam_id=selected_exam)
+                                                # & Q(application_id__student__semester__in=semester)
+                                                
+                                                )
 
     return render (request, 'teacher/submit_score.html', {'students':student_data, 'exam':selected_exam})
 
@@ -171,6 +189,7 @@ def login(request):
     return render(request, 'teacher/login.html')
 
 def loadExamsAjax(request):
+    print("Inside:::::load examajax")
     teacher = get_object_or_404(CustomUser, id = request.user.id)
     term = get_object_or_404(Term, pk=request.GET.get('term_id'))
     subjectteacherlist = SubjectTeacher.objects.filter(teacher=teacher)
@@ -181,7 +200,9 @@ def loadExamsAjax(request):
     today = datetime.date.today()
     print(subject)
 
-    exams = Exams.objects.filter(Q(subject_id__in=subject) & Q(term=term) & Q(date__lte=today))
+    exams = Exams.objects.filter(Q(subject_id__in=subject) & Q(term=term) 
+                                #  & Q(date__lte=today)
+                                 )
     return render(request, 'teacher/examslist.html', {'exams':exams})
 
 def exportcsv(request, exam_id):

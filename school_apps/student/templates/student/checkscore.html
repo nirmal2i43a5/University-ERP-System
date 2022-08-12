@@ -26,7 +26,7 @@
                                 <!-- <label for "select_sem">Select semester:</label> -->
                                 <select id="select_term" class="form-select form-select-lg form-control" >
                                     <option value ='--'> Select Term </option>
-                                {% for item in terms%}
+                                {% for item in terms %}
                                     <option value ='{{item.pk}}'> {{item.term_name}} </option>
                                 {% endfor %}
                             </select>

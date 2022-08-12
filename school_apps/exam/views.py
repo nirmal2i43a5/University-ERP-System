@@ -451,6 +451,7 @@ def check_exam_paper(request):
     context = {
           'terms': terms,
         'title':'Check Papers',
+         'answersheets' : AnswerSheet.objects.all()
         
     }
     return render(request, 'exam/teachers/check_papers.html', context)

@@ -1,4 +1,4 @@
-{% if students%}
+{% if students %}
     <hr>
     Please enter the score for the respective students.<br>
         <hr>
@@ -11,7 +11,7 @@
             {% for stu in students%}
                 <tr>
                     <td> {{stu.application_id.student.student_user.full_name}}</td>
-                    <td> <input type="number" min="0" max="100" name="{{stu.application_id.student.student_user.full_name}}" value="{{stu.marks}}"style="width: 150px; text-align: right; " 
+                    <td> <input type="number" min="0" max="100" class="form-control" name="{{stu.application_id.student.student_user.full_name}}" value="{{stu.marks}}"style="width: 150px; text-align: right; " 
                         {% if stu.marks == -1 %}
                             placeholder="Absent"
                         {% else %} 
