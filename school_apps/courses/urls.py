@@ -12,6 +12,7 @@ urlpatterns=[
     path('addterm/', views.addterm, name='addterm'),
     path('ajax/addexam_marks_ajax/', views.addexam_marks_ajax, name='addexam_marks_ajax'),
     path('viewterm/', views.viewterm, name='viewterm'),
+        # path('viewexam/', views.viewexam, name='viewexam'),
     path('checkterm_exams/<str:pk>', views.checkterm_exams, name='checkterm_exams'),
     path('examresults/', views.examresults, name='examresults'),
     path('publishresults/', views.publishresults, name='publishresults'),

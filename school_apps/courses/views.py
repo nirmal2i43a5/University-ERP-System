@@ -1,4 +1,5 @@
 from json.encoder import JSONEncoder
+from multiprocessing import context
 from schedule import context_processors
 from django import forms
 from django.db.models import Q
@@ -225,16 +226,21 @@ def submitscores(request):
     return HttpResponseRedirect(reverse('home'))
 
 def confirmexamapplication(request):
-    return render(request, 'courses/confirmexamapplication.html')
+    form = application_form.objects.all()
+    context = {
+        'form':form
+        
+    }
+    return render(request, 'courses/confirmexamapplication.html',context)
 
 
 def confirmAjax(request):
     form_id = request.GET.get('form_id')
     
-    form = application_form.objects.filter(Q(application_id__icontains=form_id),
+    form = application_form.objects.all()#filter(Q(application_id__icontains=form_id),
                                         #    Q(status=False),
                                         #    Q(term__course_category=request.user.adminuser.course_category)
-                                           )
+                                        #    )
     print(form,"-------Form----------")
     return render(request, 'courses/examapplication.html', {'form':form})
 
