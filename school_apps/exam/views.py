@@ -44,11 +44,11 @@ class QuestionPaperUpload(View):
 
 def qustion_paper_update(request, pk):
     paper_instance = get_object_or_404(QuestionPaper, pk=pk)
-    form = QuestionPaperUploadForm(instance=paper_instance)
+    form = QuestionPaperUploadForm(instance=paper_instance,user = request.user)
 
     if request.method == 'POST':
         form = QuestionPaperUploadForm(
-            request.POST, request.FILES, instance=paper_instance)
+            request.POST, request.FILES, instance=paper_instance,user = request.user)
         if form.is_valid():
             form.save()
             messages.success(
@@ -202,25 +202,60 @@ def sub_question_marks_show(request,mainquestion_id):
 
 
 def qustionpaper_mark_update(request, questionpaperid, pk):
-    questionpaper = get_object_or_404(QuestionPaper, pk=questionpaperid)
     paper_instance = get_object_or_404(Question, pk=pk)
+    
+    SubQuestionFormset = modelformset_factory(SubQuestion, form=SubQuestionMark)
     form = QuestionMark(instance=paper_instance)
+    formset = SubQuestionFormset(request.POST or None, request.FILES or None,
+                                 queryset=SubQuestion.objects.none(),
+                                 prefix='sub_questions',
+                                 
+                                 )  # prefix is related name for question(fk)
+    
+    # questionpaper = get_object_or_404(QuestionPaper, pk=questionpaperid)
+    if request.method == "POST":
+        form = QuestionMark(request.POST or None, request.FILES or None,instance=paper_instance)
+        
+        questionpaper_instance = get_object_or_404(QuestionPaper, pk=questionpaperid)
+        
+        if form.is_valid() and formset.is_valid():
+            
+            with transaction.atomic():
+                """For parent part"""
+                question = form.save(commit=False)
+                question.question_paper = questionpaper_instance
+                question.save() 
 
-    if request.method == 'POST':
-        form = QuestionMark(request.POST, request.FILES,
-                            instance=paper_instance)
-        if form.is_valid():
-            form.save()
-            messages.success(
-                request, 'Question Paper is Updated SUccessfully.')
-            return redirect('exam:question-index')
+                """For Child part"""
+            if  question.has_sub_question:
+                total_marks = 0
+                for subquestion in formset:
+                    instance = subquestion.save(commit=False)
+                    total_marks +=instance.total_marks
+                    instance.question = question
+                    instance.save()
+                question.total_marks = total_marks
+                question.save()
+         
+
+            messages.success(request, 'Question Mark is Uploaded SUccessfully.')
+            return redirect('exam:each-mark-add', questionpaperid)
+    
+    
+    # ---For Extra instance only--
+    questionpaper = get_object_or_404(QuestionPaper, pk=questionpaperid)
+    questions = questionpaper.question_set.all()
+
     context = {
-        'title': 'Question',
-        'paper_instance': paper_instance,
-        'questionpaper': questionpaper,
-            'form': form
+        'formset':formset,
+        'form':form,
+        'title':'Mark',
+        'questionpaper':questionpaper,
+        'questions':questions,
+         'paper_instance': paper_instance,
     }
     return render(request, 'exam/teachers/add_each_question_mark.html', context)
+ 
 
 
 class StudentQuestionPaperView(View):
@@ -395,7 +430,9 @@ class TeacherAddGrade(View):
 
 
 def check_exam_paper(request):
-    if request.method == 'POST' and 'fetch_answer_paper' in request.POST:
+    if request.method == 'POST':# and 'fetch_answer_paper' in request.POST:
+        print("Inside POST-------------------------------")
+        
         exam = Exams.objects.get(pk = request.POST['exam'])
         answersheets = AnswerSheet.objects.filter(exam = exam)
         context = {
@@ -428,7 +465,7 @@ def add_student_grade(request):
     questionmark_value = request.POST.get('questionmark_value')
     question_id = request.POST.get('questionmark_id')
     # grade_id = request.POST.get('grade_id')
-
+    
     student_instance = get_object_or_404(Student, pk=studentid)
     question_instance = get_object_or_404(Question, pk=question_id)
     exam_instance = get_object_or_404(Exams, pk=examid)
@@ -447,7 +484,6 @@ def add_student_grade(request):
     obj, created = QuestionGrade.objects.get_or_create(student=student_instance, question=question_instance)
     obj.marks = questionmark_value
     obj.save()
-    print(obj, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~", "obj")
 
 
     applicationform_instance = application_form.objects.get(term = exam_instance.term, student = student_instance)
@@ -465,9 +501,6 @@ def add_student_grade(request):
     student_grade.marks = float(total_marks)
     student_grade.save()
     
-    # question_grade = list(QuestionGrade.objects.values(
-    #     'marks', 'question__question_no'))
-
 
     question_grade_marks = QuestionGrade.objects.filter(student=Student.objects.get(pk=studentid), question__question_paper__exam=exam_instance)
     sub_question_grade_marks = SubQuestionGrade.objects.filter(student=Student.objects.get(pk=studentid), sub_question__question__question_paper__exam=exam_instance)
@@ -602,10 +635,15 @@ def add_student_grade_sub(request):
     res = {'html': html}
     return JsonResponse(res, safe=False)
 
+
+
 def all_answer_upload(request):
+    print("all answer upload")
 
     form = StudentDetailsSearch(user=request.user)
-    if request.method == 'POST' and 'fetch_student' in request.POST:
+    if request.method == 'POST' and  'fetch_student' in request.POST :
+        
+        print("Inside post:::")
         exam = Exams.objects.get(pk = request.POST['exam'])
         students = studentgrades.objects.filter(exam_id=exam)
         print(students)
@@ -620,28 +658,10 @@ def all_answer_upload(request):
         return render(request,  'exam/admin/all_answer_upload.html', {'students':valid_students, 
                                                                       'terms': Term.objects.all(),
                                                                         'exam':exam})
-        # form = StudentDetailsSearch(request.POST, user=request.user)
+   
 
-        # semester_id = request.POST.get('semester')
-        # section_id = request.POST.get('section')
-        # subject_id = request.POST.get('subject')
 
-        # semester = get_object_or_404(Semester, pk=semester_id)
-        # section = get_object_or_404(Section, pk=section_id)
-        # subject = get_object_or_404(Subject, pk=subject_id)
-
-        # # i add course in student  so as to  access subject for student based on course in the college only.
-        # # students = Student.objects.filter(semester = semester, section = section, course = course.subject)
-        # students = Student.objects.filter(semester=semester, section=section)
-        # return render(request, 'exam/admin/all_answer_upload.html', {'form': form,
-        #                                                              'students': students,
-        #                                                              'semester': semester,
-        #                                                              'section': section,
-        #                                                                     'subject': subject,
-        #                                                                     'exams': Exams.objects.all()
-        #                                                              })
-
-    if request.method == 'POST' and 'upload_answer_button' in request.POST:
+    if request.method == 'POST':# and 'upload_answer_button' in request.POST:
         examid = request.POST.get('exam')
         print("examid: ", examid, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         students = request.POST.getlist('students')
@@ -655,6 +675,7 @@ def all_answer_upload(request):
             obj.answer_upload=answer_file
             obj.save()
         messages.success(request, "Answers are uploaded successfully")
+
 
     teacher = get_object_or_404(CustomUser, id = request.user.id)
     try:

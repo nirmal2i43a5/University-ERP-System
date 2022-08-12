@@ -29,7 +29,7 @@
 
 
         {% if results %}
-        <h4>Here are the results for {{selectdexam.exam_title}}</h4>
+        <h4>Results for {{selectdexam.exam_title}}</h4>
         <hr>
         <table id = "dataTable" class="table table-hover">
           <thead >
@@ -55,7 +55,7 @@
         {% if selectdexam %}
         No results for {{selectdexam}}
         {% else %}
-        Please select an exam
+        <!-- Please select an exam -->
         {% endif %}
     {% endif %}
 

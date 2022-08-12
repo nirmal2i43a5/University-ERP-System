@@ -22,7 +22,7 @@ class QuestionPaperUploadForm(forms.ModelForm):
             subjects = SubjectTeacher.objects.filter(teacher = user).values_list('subject', flat=True)
             exam_list = Exams.objects.filter(subject_id__in = subjects)
             exam.queryset = exam_list
-        if user.is_superuser:# or user|has_group:'Admin':
+        if user.is_superuser:# or user|has_group:'Admin' or user|has_group:'Teacher':
             exam = self.fields['exam']
             exam.queryset = Exams.objects.all()
 

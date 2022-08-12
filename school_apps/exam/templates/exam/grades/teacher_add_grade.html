@@ -117,8 +117,8 @@
                             <hr>
                             <form action="">
 
-                                <input type="hidden" id="examid" name="examid" value={{answer_sheet.exam.pk}}>
-                                <input type="hidden" id = "studentid" name="studentid" value={{answer_sheet.student.pk}}>
+                                <input type="hidden" id="examid" name="examid" value="{{answer_sheet.exam.pk}}"">
+                                <input type="hidden" id = "studentid" name="studentid" value="{{answer_sheet.student.pk}}">
                                 {% for item in question %} 
                                 {{item.question_no}}
                                 {% if item.has_sub_question %} 
