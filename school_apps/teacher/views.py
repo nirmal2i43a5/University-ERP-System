@@ -30,13 +30,11 @@ def addscore(request):
     today = datetime.date.today()
     # graph_report(Student, Student.objects.all(), ['course'])
 
-    print(today)
     if request.method=='GET':
         subject = Subject.objects.all().filter(staff_user=teacher)
         exams = Exams.objects.filter(Q(subject_id__in=subject)
                                     #  & Q(date__lt=today)
                                      )
-        print(exams,"```````````````````````````````````````````")
         return render(request, 'teacher/addscore.html', {'teacher': teacher, 'subject':subject,'exams':exams, 'terms':terms})
 
 
@@ -58,9 +56,7 @@ def submitscore(request):
     teacher = get_object_or_404(CustomUser, id = request.user.id)
     exam = get_object_or_404(Exams, exam_id=request.GET['exam_id'])
     selected_subject = exam.subject_id
-    print("subject: " + selected_subject.__str__())
     students = studentgrades.objects.filter(exam_id__subject_id=selected_subject)
-    # print(list(request.GET.items()))
     
     failed_attempts=[]
     entries=0
@@ -77,7 +73,6 @@ def submitscore(request):
                 student.save()
                 entries+=1
             except Exception as e:
-                print(e)
                 failed_attempts.append(student.application_id.student)
     else:
         print("Error")
@@ -93,12 +88,10 @@ def submitscore(request):
     
     students_list = application_form.objects.filter(term=selected_term).values_list('student').distinct()
 
-    print('students_list: ', students_list , "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
     for item in students_list:
         total_marks = 0
         grades = studentgrades.objects.filter(application_id__student = item, exam_id__term=selected_term)
-        print('grades', grades, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
         for grade in grades:
             total_marks+= grade.marks
@@ -109,11 +102,10 @@ def submitscore(request):
 
     all_t_ranks = term_ranking.objects.filter(term=selected_term, student__in = students_list)
 
-    print("\n ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n")
     for t_rank in all_t_ranks:
         t_rank.rank = term_ranking.objects.filter(total_marks__gt=t_rank.total_marks, student__in=students_list).count()+1
         t_rank.save()
-        print(t_rank, type(t_rank), t_rank.total_marks, 'rank= ',t_rank.rank, "___________________________________")
+        # print(t_rank, type(t_rank), t_rank.total_marks, 'rank= ',t_rank.rank, "___________________________________")
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
@@ -168,7 +160,6 @@ def examsAjax(request):
     exam_id = request.GET.get('exam_id')
     selected_exam = get_object_or_404(Exams, exam_id=exam_id)
     subject = selected_exam.subject_id
-    print(subject, selected_exam.semester)
     subjectobject = SubjectTeacher.objects.filter(teacher=teacher, subject=subject, 
                                                   semester=selected_exam.semester
                                                   )
@@ -176,7 +167,6 @@ def examsAjax(request):
 
     for item in subjectobject:
         semester.append(item.semester)
-    print("semester",semester,"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
     student_data = studentgrades.objects.filter(Q(exam_id=selected_exam)
                                                 # & Q(application_id__student__semester__in=semester)
@@ -189,7 +179,6 @@ def login(request):
     return render(request, 'teacher/login.html')
 
 def loadExamsAjax(request):
-    print("Inside:::::load examajax")
     teacher = get_object_or_404(CustomUser, id = request.user.id)
     term = get_object_or_404(Term, pk=request.GET.get('term_id'))
     subjectteacherlist = SubjectTeacher.objects.filter(teacher=teacher)
@@ -198,7 +187,6 @@ def loadExamsAjax(request):
     for item in subjectteacherlist:
         subject.append(item.subject)
     today = datetime.date.today()
-    print(subject)
 
     exams = Exams.objects.filter(Q(subject_id__in=subject) & Q(term=term) 
                                 #  & Q(date__lte=today)
@@ -257,12 +245,10 @@ def uploadcsv(request):
     selected_term = exam.term 
     students_list = application_form.objects.filter(term=selected_term).values_list('student').distinct()
 
-    print('students_list: ', students_list , "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
     for item in students_list:
         total_marks = 0
         grades = studentgrades.objects.filter(application_id__student = item, exam_id__term=selected_term)
-        print('grades', grades, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
         for grade in grades:
             total_marks+= grade.marks
@@ -273,11 +259,10 @@ def uploadcsv(request):
 
     all_t_ranks = term_ranking.objects.filter(term=selected_term)
 
-    print("\n ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n")
     for t_rank in all_t_ranks:
         t_rank.rank = term_ranking.objects.filter(total_marks__gt=t_rank.total_marks).count()+1
         t_rank.save()
-        print(t_rank, type(t_rank), t_rank.total_marks, 'rank= ',t_rank.rank, "___________________________________")
+        # print(t_rank, type(t_rank), t_rank.total_marks, 'rank= ',t_rank.rank, "___________________________________")
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -322,7 +307,6 @@ def checkstudents(request):
 def graph_report(model: Model, queryset: QuerySet, list: list):
     fields_list = model._meta.get_fields()
     valid_list =[]
-    print('\n')
     for item in fields_list:
         if item.name in list:
             valid_list.append(item)
@@ -334,4 +318,4 @@ def graph_report(model: Model, queryset: QuerySet, list: list):
             
 
     
-    print('func:',valid_list,type(valid_list[0]),'\n')
+    # print('func:',valid_list,type(valid_list[0]),'\n')
