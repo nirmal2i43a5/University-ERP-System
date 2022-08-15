@@ -642,7 +642,7 @@ def all_answer_upload(request):
     print("all answer upload")
 
     form = StudentDetailsSearch(user=request.user)
-    if request.method == 'POST' and  'fetch_student' in request.POST :
+    if request.method == 'POST':# and  'fetch_student' in request.POST :
         
         print("Inside post:::")
         exam = Exams.objects.get(pk = request.POST['exam'])
@@ -662,7 +662,7 @@ def all_answer_upload(request):
    
 
 
-    if request.method == 'POST':# and 'upload_answer_button' in request.POST:
+    if request.method == 'POST' and 'upload_answer_button' in request.POST:
         examid = request.POST.get('exam')
         print("examid: ", examid, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         students = request.POST.getlist('students')

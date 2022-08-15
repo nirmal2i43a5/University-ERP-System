@@ -150,9 +150,10 @@ def toggle_results(request,pk):
 
 def examtoppers(request):
     today = datetime.date.today()
-    exams = Exams.objects.filter(date__lte=today, 
+    exams = Exams.objects.all()#filter(
+        # date__lte=today, 
                                 #  term__course_category=request.user.adminuser.course_category
-                                 )
+                                #  )
     if request.method=='GET':
         return render(request,'courses/examtoppers.html', {'exams':exams})
     else:

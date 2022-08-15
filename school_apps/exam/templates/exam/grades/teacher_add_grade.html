@@ -132,7 +132,7 @@
 
                                           {{sub.question_no}}
 
-                                          <select name="{{sub.pk}}" id="{{sub.pk}}" data-question = "{{item.pk}}" class="{{item.pk}} subquestion float-right">
+                                          <select name="{{sub.pk}}" id="{{sub.pk}}" data-question = "{{item.pk}}" class="{{item.pk}} subquestion float-right form-control col-md-5">
                                             <option value="0">0</option>
     
                                             {% with ''|center:sub.total_marks|mul:2 as range %}
@@ -160,7 +160,7 @@
 
                                     {% else %}
                                     <!-- for question selct -->
-                                    <select name="{{item.pk}}" class="{{item.pk}} questionmark float-right">
+                                    <select name="{{item.pk}}" class="{{item.pk}} questionmark float-right form-control col-md-6">
                                         <option value="0">0</option>
 
                                         {% with ''|center:item.total_marks|mul:2 as range %}

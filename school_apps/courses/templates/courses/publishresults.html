@@ -7,28 +7,44 @@
     <div class="row">
       <div class="col-md-12">
         <!-- general form elements -->
-        <div class="card card-info">
+        <div class="card">
 
           {% include 'override_table/header.html' with card_title=' Select exam to view results:' %}
         
           <!-- /.card-header -->
           <!-- form start -->
-          <form action="{% url 'courses:examresults' %}" method='POST' class="mt-4 ml-2 mb-2 ">
-            {% csrf_token%}
-            <select class="form-control col-md-4" name='exam' required>
-              <option>Select Exam Term</option>
-              {% for exams in exams%}
-              <option name='option' value='{{ exams.exam_id}}'>{{ exams.exam_title}}</option>
-              {% endfor%}
-            </select>
-            <input type='submit' class="mt-2 btn  btn-success">
-          </form>
+       
 
-        </div>
+          <div class="card-header" >
+       
+
+            <span>{{title}}</span>
+
+          
+            <form class="float-right mb-2" action="{% url 'courses:examresults' %}" method='POST' style="height: 27px;margin:auto;position:relative;">
+              {% csrf_token %}
+              <div class="input-group">
+             
+          
+                <select class="form-control col-md-6" name='exam' required>
+                  <option>Select Exam Term</option>
+                  {% for exams in exams%}
+                  <option name='option' value='{{ exams.exam_id}}'>{{ exams.exam_title}}</option>
+                  {% endfor%}
+                </select>
+            
+                <div class="input-group-btn ">
+                  <button type="submit" class="btn btn-primary">SUBMIT</button>
+    
+                </div>
+              </div>
+            </form>
+
+          </div>
+     
         <!-- /.card -->
 
-
-        {% if results %}
+<div class="card-body table-responsive">
         <h4>Results for {{selectdexam.exam_title}}</h4>
         <hr>
         <table id = "dataTable" class="table table-hover">
@@ -40,6 +56,8 @@
               <th>Rank</th>
             </tr>
           </thead>
+        {% if results %}
+
             {% for result in results%}
             <tr>
               <td></td>
@@ -59,9 +77,10 @@
         {% endif %}
     {% endif %}
 
+</div>
 
 
-
+      </div>
       </div>
     </div>
   </div>

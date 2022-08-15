@@ -127,6 +127,7 @@ def manage_routine(request,semester_id):
 
 @permission_required('academic.view_enotes', raise_exception=True)
 def manage_enotes(request,semester_id):
+    semester_instance = get_object_or_404(Semester, pk = semester_id)
 
     enote_search_form = forms.EnotesFilterForm(semester_id,request.user)
     
@@ -165,7 +166,9 @@ def manage_enotes(request,semester_id):
     
         return search_enotes,enote_search_form 
     
-    search_enotes = Enotes.objects.all()
+    search_enotes = Enotes.objects.filter(
+                                                    semester = semester_instance,
+                                                    )
     
     page = request.GET.get('page', 1)
     paginator = Paginator(search_enotes, 10)

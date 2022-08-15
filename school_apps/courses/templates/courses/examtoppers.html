@@ -1,37 +1,83 @@
 {% extends 'admin_templates/base_admin.html' %}
 {% block content %}
-    <h4>Choose Exam:</h4>
-    <form class = "ml-4" action="{% url 'courses:examtoppers' %}" method="POST">
-        {% csrf_token %}
-        <select class = " form-control col-md-6" name = "exam_id" required>
-            <option value="">Select Exam</option>
-            {% for exam in exams%}
-            <option name="sub" value="{{exam.exam_id}}">{{exam.exam_title}}</option>
-            {% endfor %}
-        </select>
-        <input class="btn btn-success mt-4" type="submit" value="Select">
-    </form>
-    <hr>
 
-    {% if students %}
-    <h4>{{selected_exam.exam_title}}</h4>
-        <table class ="table table-hover">
-            <thead class="thead-dark">
-            <tr>
-                <th>Student name</th>
-                <th>Marks obtained</th>
-                <th>Rank</th>
-            </tr>
-            </th></thead>
-        {% for students in students%}
-        <tr>
-        <td>{{ students.application_id.student.student_user.full_name}}</td> <td>{{ students.marks}}</td> <td>{{students.rank}}</td>
-        </tr>
-        {%endfor%}
-        </table>
-    {% else %}
-    <h4>There are no records for the selected exam.</h4>
-    {% endif %}
+
+<section class="content">
+    <div class="container-fluid">
+  
+    {% include "includes/messages.html" %}
+  
+      <div class="row">
+            <div class="col-12">
+           
+                <div class="card" >
+
+                    <div class="card-header"  style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);color:white;"  >
+       
+
+                        </span >
+                      
+                        <strong>  {{selected_exam.exam_title}}</strong>
+                        <span>                  
+                        <form class="float-right mb-2" action="{% url 'courses:examtoppers' %}" method="POST"
+                         style="height: 27px;margin:auto;position:relative;">
+                           {% csrf_token %}
+                            <div class="input-group">
+                           
+                        
+                                <select class = " form-control" name = "exam_id" required>
+                                    <option value="">----------Select Exam----------</option>
+                                    {% for exam in exams%}
+                                    <option name="sub" value="{{exam.exam_id}}">{{exam.exam_title}}</option>
+                                    {% endfor %}
+                                </select>
+                          
+                              <div class="input-group-btn ">
+                                <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i>SEARCH</button>
+                  
+                              </div>
+                            </div>
+                          </form>
+            
+                       
+                      
+            
+                      </div>
+                      <div class="card-body table-responsive">
+
+                        <table id = "dataTable" class ="table table-hover">
+                            <thead style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);color:white;">
+                            <tr>
+                                <th></th>
+                                <th>#</th>
+                                <th>Student name</th>
+                                <th>Marks obtained</th>
+                                <th>Rank</th>
+                            </tr>
+                            </th></thead>
+                    {% if students %}
+
+                        {% for students in students%}
+                        <tr>
+                            <td></td>
+                            <td>{{forloop.counter}}</td>
+                        <td>{{ students.application_id.student.student_user.full_name}}</td> <td>{{ students.marks}}</td> <td>{{students.rank}}</td>
+                        </tr>
+                        {%endfor%}
+                        {% else %}
+                        <!-- <h4 class="mb-2">There are no records for the selected exam.</h4> -->
+                    {% endif %}
+
+                        </table>
+                      </div>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
 {% endblock %}
 
 {% block title%} | Check score{% endblock %}

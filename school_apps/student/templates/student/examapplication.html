@@ -24,6 +24,8 @@
                   <table id="dataTable" class="table table-hover ml-4">
                       <thead class="thead" style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);color:white;">
                           <tr>
+                            <th></th>
+                            <td>#</td>
                               <th>Exam code</th>
                               <th>Exam</th>
                               <th>Exam date</th>
@@ -35,6 +37,8 @@
                           {% for exam in exams %}
                               <tr class="subject" data-id="{{ exam.exam_id }}" data-title= "{{ exam.exam_title }}">                        
                                   <input type="text" readonly value="{{exam.exam_id}}" hidden name="{{forloop.counter0}}">
+                                  <td></td>
+                                  <td>{{forloop.counter}}</td>
                                   <td>{{exam.exam_id}}</td>
                                   <td>{{exam.exam_title}}</td>
                                   <td>{{exam.date}}</td>

@@ -380,7 +380,9 @@ def student_view_by_teacher(request):
 
     else:
         search_students = Student.objects.filter(semester = semester_instance,student_user__is_active = 1)
-        context = {'students': Student.objects.filter(student_user__is_active = 1),'form':search_form}
+        context = {
+            'students': Student.objects.filter(student_user__is_active = 1),
+                   'form':search_form}
         return render(request,'teachers/students/student_list.html', context)
     #     students = []
     #     for item in subjectteacher:

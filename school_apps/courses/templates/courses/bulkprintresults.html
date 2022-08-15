@@ -3,59 +3,68 @@
 {% block content %}
 <div class="container" style="margin-left: 10px; margin-right: 10px">
 
-    <h4>Print results</h4><hr>
-    <div class = "row align-items-center">
-        <div class="col-7">
-            <form name="" method="POST">
-                {% csrf_token %}
-                <label for="term_id">Select Term</label>
-                <select name="term_id" id="term_id">
-                    {% for item in terms %}
-                        <option value="{{item.pk}}">
-                            {{item.term_name}}
-                        </option>
-                    {% endfor %}
-                </select>
+    <div class="card" >
 
-                <label for="semester_id">Select Class</label>
-                <select name="semester_id" id="semester_id">
-                    {% for item in semester %}
-                        <option value="{{item.pk}}">
-                            {{item}}
-                        </option>
-                    {% endfor %}
-                </select>
-                <button type="submit" class="btn btn-primary btn-sm">Confirm</button>
-            </form>
-        </div>
+    <div class="card-header bg-white"  >
+    <h4 class = "px-3 py-3" style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);color:white;" >Print Results</h4><hr>
+       
 
-        <div class = "col-5">
-            <div class = "row">
-                
-                <form action="{% url 'courses:printresults' %}" id="printadmitcard_form" method="POST">
+        <div class = "row align-items-center">
+            <div class="col-7">
+                <form name="" method="POST">
                     {% csrf_token %}
-                    <div id="printadmitcard_form_div">    
-                    </div>
-                    <input type="text" name="count" value="0" id="application_count" readonly hidden>
-                    
-                    <div class="row">
-                        <div class="col-6 col-sm-6">
-                            <label for="from">From: </label><br>
-                            <input type="date" name="from" id="from_date">
-                        </div>
-                        <div class="col-6 col-sm-6">
-                            <label for="to">To: </label><br>
-                            <input type="date" name="to" id="to_date">
-                        </div>
-                    </div>
-                
-                    <input type="submit" id="printadmitcard_form_submit" hidden>
+                    <label for="term_id">Select Term</label>
+                    <select class="form-control col-md-4" name="term_id" id="term_id">
+                        {% for item in terms %}
+                            <option value="{{item.pk}}">
+                                {{item.term_name}}
+                            </option>
+                        {% endfor %}
+                    </select>
+    
+                    <label for="semester_id">Select Class</label>
+                    <select class = "form-control col-md-4" name="semester_id" id="semester_id">
+                        {% for item in semester %}
+                            <option value="{{item.pk}}">
+                                {{item}}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn btn-primary btn-sm mt-2">Confirm</button>
                 </form>
             </div>
-        </div>
-    </div>
     
-    <hr>
+            <div class = "col-5">
+                <div class = "row">
+                    
+                    <form action="{% url 'courses:printresults' %}" id="printadmitcard_form" method="POST">
+                        {% csrf_token %}
+                        <div id="printadmitcard_form_div">    
+                        </div>
+                        <input type="text" name="count" value="0" id="application_count" readonly hidden>
+                        
+                        <div class="row">
+                            <div class="col-6 col-sm-6">
+                                <label for="from">From: </label><br>
+                                <input type="date" name="from" id="from_date">
+                            </div>
+                            <div class="col-6 col-sm-6">
+                                <label for="to">To: </label><br>
+                                <input type="date" name="to" id="to_date">
+                            </div>
+                        </div>
+                    
+                        <input type="submit" id="printadmitcard_form_submit" hidden>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+      
+
+      </div>
+  
+      <div class="card-body table-responsive">
     <!-- <button id="test_button">Click me</button> -->
     <table class="table table-hover" id="show_admit_cards">
         <thead class="thead" style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);color:white;"> 
@@ -85,8 +94,8 @@
         </tbody>
     </table>
     
-    
-    
+    </div>
+    </div>
 </div>
 {% endblock %}
 
