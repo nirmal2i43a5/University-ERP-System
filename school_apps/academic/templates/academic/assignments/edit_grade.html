@@ -34,7 +34,7 @@
             <div class="col-md-9">
 
 
-                <iframe src="/viewer/viewer.html?file={{student_assignment.assignment.file.url}}#magazineMode=true" width="100%"
+                <iframe src="/viewer/viewer.html?file={{grade_instance.assignment.file.url}}#magazineMode=true" width="100%"
                     height="700px" frameborder="0"></iframe> 
  
             
@@ -44,21 +44,21 @@
                 <div class="card ">
                     {% include 'override_table/header.html' with card_title='Add Grade' %}
 
-                    <form action="{% url 'academic:assignment_retured' %}" method="POST" class=" mx-2 my-4">
+                    <form action="{% url 'academic:assignment_returned_update' %}" method="POST" class=" mx-2 my-4">
                         {% csrf_token %}
        
-                        <input type="hidden" name = "assignment_id" value="{{student_assignment.assignment.pk}}">
-                        <input type="hidden" name = "grade_id" value="{{student_assignment.pk}}">
+                        <input type="hidden" name = "assignment_id" value="{{grade_instance.assignment.pk}}">
+                        <input type="hidden" name = "returned_id" value="{{grade_instance.pk}}">
                         <input type="hidden" name = "student_id" value="{{student_id}}">
        
-                       <input type="text" name="grade_mark" placeholder="Enter Assignment Grade" required><br><br>
-                       <textarea  name="feedback" rows="4" cols="25" placeholder="Enter Feedback"></textarea><br><br>
-                       <a class = "btn btn-sm btn-danger" href="{% url 'academic:student_assignment_grade' student_assignment.assignment.pk %}">Back</a>
-
-                       <input type="submit" class = "btn btn-sm" name="" value="Return" style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);color:white;">
+                       <input type="text" name="grade_mark" value = "{{grade_instance.grade_mark}}" placeholder="Enter Assignment Grade" required><br><br>
+                       <textarea  name="feedback" rows="4" cols="25" placeholder="Enter Feedback">{{grade_instance.feedback}}</textarea><br><br>
+                       <a class = "btn btn-sm btn-danger" href="{% url 'academic:student_assignment_grade' grade_instance.assignment.pk %}">Back</a>
+                      
+                       <input type="submit" class ="btn btn-sm" name="" value="Return" style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);color:white;">
                        
                       </form>
-                      
+
 
             </div>
         </div>

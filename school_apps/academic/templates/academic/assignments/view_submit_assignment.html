@@ -54,7 +54,9 @@
                   <td>{{ forloop.counter }}</td>
                   <td>{{ assignment_grade.student }}</td>
                   <td>{{ assignment_grade.assignment.semester }}(<span class="badge badge-info"> {{ assignment_grade.assignment.Subject }}</span>)</td>
-                  {% if assignment_grade.answer_upload %}
+                  {% if assignment_grade.date_submitted > assignment_grade.assignment.deadline %}
+                  <td><span class="badge badge-warning"> Handed in Late</span></td>
+                  {% elif assignment_grade.date_submitted <= assignment_grade.assignment.deadline %}
                   <td><span class="badge badge-success"> Handed in</span></td>
                       {% else %}
                       <td><span class="badge badge-danger">Not handed in</span></td>
@@ -65,11 +67,15 @@
                   {% else %}
                   <td></td>
                   {% endif %}
-                  
-                  {% if assignment_grade.grade %}
+                
+                  {% if assignment_grade.grade %}  <!-- checking grade to answersheet model -->
                   <td>
-                    <span class="badge badge-success">Checked</span>  <a class = "btn btn-xs text-white" href="{{ assignment_grade.answer_upload.url }}" style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);">
+                    <span class="badge badge-success">Checked</span>
+                      <a class = "btn btn-xs text-white" href="{{ assignment_grade.answer_upload.url }}" style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);">
                       <strong>View Answer</strong>
+                    </a>
+                    <a class = "btn btn-xs  text-white" href="{% url 'academic:edit_assignment_grade' assignment_grade.assignment.pk assignment_grade.student.pk %}" style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);">
+                      <strong>Edit</strong>
                     </a>
                   </td>
                  
@@ -78,7 +84,7 @@
                  
                   {% if assignment_grade.answer_upload %}
                   <td>
-                    <span class="badge badge-danger">Not Checked</span>  <a href="{% url 'academic:add_assignment_grade' assignment_grade.assignment.pk %}" class="btn btn-xs btn-info"
+                    <span class="badge badge-danger">Not Checked</span>  <a href="{% url 'academic:add_assignment_grade' assignment_grade.assignment.pk assignment_grade.student.pk %}" class="btn btn-xs btn-info"
                      style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);"><strong>View Answer and Grade</strong></a></td>
                       {% else %}
                       <td></td>

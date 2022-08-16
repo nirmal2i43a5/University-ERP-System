@@ -1,7 +1,7 @@
 from django.urls import path
 from school_apps.academic.log_views import * 
 from school_apps.academic.views import (assignment_answer_upload,student_assignment_grade,
-                                        assignment_retured,draft_publish_unpublish,add_assignment_grade,
+                                        assignment_retured,draft_publish_unpublish,add_assignment_grade,edit_assignment_grade,assignment_returned_update,
                                             manage_coursecategory,view_student_syllabus,add_enotes,edit_enotes,manage_enotes,delete_enote)
 from student_management_system.views import academic_home
 from school_apps.academic import views as academic_views
@@ -13,9 +13,12 @@ app_name = 'academic'
 urlpatterns = [
     path('assignment/answer/<str:assignment_id>/', assignment_answer_upload, name = 'assignment_answer_upload'),
     path('student/assignments/<str:assignment_id>/',student_assignment_grade,name = 'student_assignment_grade'),
-    path('add_assignment_grade/<str:pk>/',add_assignment_grade,name = 'add_assignment_grade'),
+    path('add_assignment_grade/<str:pk>/<str:student_id>/',add_assignment_grade,name = 'add_assignment_grade'),
+    path('edit_assignment_grade/<str:pk>/<str:student_id>/',edit_assignment_grade,name = 'edit_assignment_grade'),
+    
     path('draft_publish_unpublish/<str:pk>/',draft_publish_unpublish,name = 'draft_publish_unpublish'),
     path('assignment_retured/',assignment_retured,name = 'assignment_retured'),
+     path('assignment_returned_update/',assignment_returned_update,name = 'assignment_returned_update'),
     path('manage_coursecategory/', manage_coursecategory, name="manage_coursecategory"),
     path('syllabus/view/', view_student_syllabus, name="view_syllabus"),
        #for course

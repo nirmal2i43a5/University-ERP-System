@@ -422,7 +422,7 @@ class SubjectForm(forms.ModelForm):
 
 class SemesterForm(forms.ModelForm):#for a-level
 
-    course_category = forms.ModelChoiceField(label  = "Category",queryset = CourseCategory.objects.exclude(course_name__in = ['School']), widget=forms.RadioSelect())
+    course_category = forms.ModelChoiceField(label  = "Category",queryset = CourseCategory.objects.all(), widget=forms.RadioSelect())
     year_semester_check = forms.ChoiceField(label = 'Has Semester/Year',required = False, choices = year_semester_check_choices,
                                              widget=forms.RadioSelect(
                                                 #  attrs = {'hidden':''}

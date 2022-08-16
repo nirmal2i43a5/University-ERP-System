@@ -100,9 +100,9 @@ class Grade(models.Model):
     
 class AssignmentReturn(models.Model):
     assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE,related_name='assignment_return')
-    grade = models.OneToOneField(Grade, on_delete=models.CASCADE,related_name='grade')
+    grade = models.OneToOneField(Grade, on_delete=models.CASCADE,related_name='grade',blank=True,null=True)
     grade_mark = models.PositiveIntegerField(null = True,blank = True)
-    feedback = models.CharField(max_length=255, null=True, blank=True, default="No feedback")
+    feedback = models.TextField(max_length=255, null=True, blank=True, default="No feedback")
     grade_status = models.BooleanField(default=False)#for checking whether assignment is returned to student with points
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

@@ -1328,13 +1328,83 @@ def draft_publish_unpublish(request,pk):
         assignment.save()
     return redirect('classroom:school-classroom')
     
-def add_assignment_grade(request,pk):
+
+
+def student_assignment_grade(request, assignment_id):
+    student_assignments = Grade.objects.filter(assignment=assignment_id)#.exclude(grade_status = True)
+
+    context = {
+        'title': 'Check Assignment',
+        'assignments': student_assignments,
+    }
+    return render(request, 'academic/assignments/view_submit_assignment.html', context)
+
+
+
+
+def add_assignment_grade(request,pk,student_id):
     assignment = Assignment.objects.get(pk = pk)
+    student_assignment = Grade.objects.get(assignment=assignment,student=student_id)
+    # grade = Grade.objects.filter(assignment = assignment, student = request.user)
     context = {
         'title':'Mark',
-        'assignment':assignment
+        'student_assignment':student_assignment,
+        'student_id':student_id,
     }
     return render(request, 'academic/assignments/add_grade.html', context)
+
+
+def edit_assignment_grade(request,pk,student_id):
+    assignment = Assignment.objects.get(pk = pk)
+    grade_instance = AssignmentReturn.objects.filter(assignment = assignment,grade__student = student_id).first()
+    # print(grade_instance.feedback,"-------------")
+    context = {
+        'title':'Mark',
+        'assignment':assignment,
+        'grade_instance':grade_instance,
+          'student_id':student_id,
+    }
+    return render(request, 'academic/assignments/edit_grade.html', context)
+
+
+def assignment_retured(request):
+    grade_mark = request.POST.get('grade_mark')
+    feedback = request.POST.get('feedback')
+    student_id = request.POST.get('student_id')
+    student_instance = CustomUser.objects.get(pk  = student_id)
+    assignment_id = request.POST.get('assignment_id')
+    print(assignment_id,"assignment id;;;;;;;;;;;;;;;;;;;")
+    assignment_instance = get_object_or_404(Assignment,pk = assignment_id)
+    assignment_grade = Grade.objects.filter(assignment=assignment_instance,student = student_instance).first()
+    print(assignment_grade,"-----------------grade")
+    assignment_return = AssignmentReturn(assignment = assignment_instance, 
+                                         grade=assignment_grade, 
+                                         grade_mark=grade_mark,
+                                         feedback=feedback,
+                                         grade_status = True)
+    assignment_return.save()
+    # assignment_grade.grade = grade
+    # assignment_grade.feedback = feedback
+    # assignment_grade.grade_status = True
+    # assignment_grade.save(update_fields=['grade', 'grade_status','feedback'])
+    messages.success(request, 'Assignment is returned successfully')
+    return redirect('academic:student_assignment_grade', assignment_id)
+
+
+def assignment_returned_update(request):
+    grade_mark = request.POST.get('grade_mark')
+    feedback = request.POST.get('feedback')
+    returned_id = request.POST.get('returned_id')
+    assignment_id = request.POST.get('assignment_id')
+    assignment_return = AssignmentReturn.objects.get(pk = returned_id)
+    assignment_return.grade_mark = grade_mark
+    assignment_return.feedback = feedback
+    assignment_return.save()
+
+    messages.success(request, 'Grade is updated successfully')
+    return redirect('academic:student_assignment_grade', assignment_id)
+
+
 
 @permission_required('academic.change_assignment', raise_exception=True)
 def edit_assignment(request, assignment_id):
@@ -1445,30 +1515,7 @@ def assignment_answer_upload(request, assignment_id):
     return render(request, 'academic/assignments/upload_answer.html')
 
 
-def student_assignment_grade(request, assignment_id):
-    student_assignments = Grade.objects.filter(assignment=assignment_id)#.exclude(grade_status = True)
 
-    context = {
-        'title': 'Check Assignment',
-        'assignments': student_assignments,
-    }
-    return render(request, 'academic/assignments/view_submit_assignment.html', context)
-
-
-def assignment_retured(request):
-    grade_mark = request.POST.get('grade_mark')
-    feedback = request.POST.get('feedback')
-    assignment_id = request.POST.get('assignment_id')
-    assignment_instance = get_object_or_404(Assignment,pk = assignment_id)
-    assignment_grade = Grade.objects.filter(assignment=assignment_instance).first()
-    assignment_return = AssignmentReturn(assignment = assignment_instance, grade=assignment_grade, grade_mark=grade_mark, feedback=feedback,grade_status = True)
-    assignment_return.save()
-    # assignment_grade.grade = grade
-    # assignment_grade.feedback = feedback
-    # assignment_grade.grade_status = True
-    # assignment_grade.save(update_fields=['grade', 'grade_status','feedback'])
-    messages.success(request, 'Assignment is returned successfully')
-    return redirect('academic:student_assignment_grade', assignment_id)
 
 
 def manage_enotes(request):
