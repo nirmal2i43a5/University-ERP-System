@@ -61,8 +61,14 @@
           <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars" style="background-color: black;"></i></a>
         </li>
       </ul>
-      <h5 style="margin-left: 10px;margin-top: 5px;">COLLEGE MANAGEMENT INFORMATION SYSTEM</h5>
+      {% if setting_instance.site_title %}
+      <h5 style="margin-left: 10px;margin-top: 5px;">{{setting_instance.site_title}}</h5>
+{% else %}
+<h5 style="margin-left: 10px;margin-top: 5px;">SCHOOL MANAGEMENT INFORMATION SYSTEM</h5>
 
+        
+      {% endif %}
+      <!-- COLLEGE MANAGEMENT INFORMATION SYSTEM -->
  <!----------------------------------------------------------------- Right navbar links --------------------------------------------------->
                             {% include "includes/right_navbar.html" %}
  <!----------------------------------------------------------------- Right navbar links --------------------------------------------------->
@@ -124,7 +130,8 @@
       <b>Version</b> {{setting_instance.version}}
     </div>
    
-  </div> {% endcomment %}
+  </div>
+   {% endcomment %}
 
 
   <!----------For AdminLTE bootstrap js link--------------->

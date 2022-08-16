@@ -49,7 +49,8 @@ def GeneralSettingUpdate(request):
 			return redirect('setting_app:general_setting')
 	  
 
-	context = {'instance_form': instance_form,
+	context = {
+     		'instance_form': instance_form,
             'setting_instance':setting_instance
             }
 	return render(request, 'general/general_setting_view.html', context)

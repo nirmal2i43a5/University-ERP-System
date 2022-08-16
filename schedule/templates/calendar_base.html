@@ -35,7 +35,15 @@
           <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
         </li>
       </ul>
-      <h5 style="margin-left: 10px;margin-top: 5px;">COLLEGE MANAGEMENT INFORMATION SYSTEM</h5>
+
+      {% if setting_instance.site_title %}
+      <h5 style="margin-left: 10px;margin-top: 5px;">{{setting_instance.site_title}}</h5>
+{% else %}
+<h5 style="margin-left: 10px;margin-top: 5px;">SCHOOL MANAGEMENT INFORMATION SYSTEM</h5>
+
+        
+      {% endif %}
+
       <ul class="navbar-nav ml-auto">
         <!-- Messages Dropdown Menu -->
       </ul>
