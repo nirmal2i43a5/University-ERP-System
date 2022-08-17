@@ -91,6 +91,7 @@ def save_student_attendance(request):
     
     
     if course_category_instance in CourseCategory.objects.filter(course_name__in = ['School','Plus-Two']):
+        print()
         
         attendance_instance = Attendance.objects.filter(semester=semester,
                                                       
@@ -107,6 +108,8 @@ def save_student_attendance(request):
             attendance.save()
 
             for stud in json_student:#FETCH EACH STUDENT AND ASSIGN DATA FOT THEM 
+                print("::::::::::::::::inside josn for loop::::::::::")
+                
                 student=Student.objects.get(student_user=stud['id'])
                 attendance_report=AttendanceReport(student = student, attendance = attendance, status=stud['status'])   
                 attendance_report.save()
