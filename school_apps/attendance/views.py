@@ -87,6 +87,7 @@ def save_student_attendance(request):
     section_instance  = get_object_or_404(Section, pk = section) if section else None
     student_ids = request.POST.get('student_ids')
     json_student=json.loads(student_ids)
+    print(json_student,":::::::::::::::::::::::::student json data::::::::::::::::::::")
     subject = request.POST.get('subject_id')
     
     

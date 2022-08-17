@@ -123,7 +123,7 @@ Attendance {% endblock %} {% load crispy_forms_tags %} {% load static %} {% bloc
                   </div>
 
                   <div class="col-md-6">
-                    <select class="status form-control" name="{{ student.student_user.id }}">
+                    <select class="status" name="{{ student.student_user.id }}">
                       <!-- <option value="" selected>Choose Status</option> -->
 
                       <option value="Present" selected>Present</option>
@@ -156,7 +156,7 @@ Attendance {% endblock %} {% load crispy_forms_tags %} {% load static %} {% bloc
       <!-- /.card -->
       <a
         href="{% url 'attendance_app:manage_student_attendance' %}"
-        id="save_attendance"
+   
         class="btn btn-sm btn-info btn-danger mb-3"
         ><strong>Back</strong></a
       >
@@ -192,8 +192,8 @@ Attendance {% endblock %} {% load crispy_forms_tags %} {% load static %} {% bloc
 <script>
   $(document).ready(function () {
     $(document).on("click", "#save_attendance", function () {
-      var student_data = $("select[class='status']")
-        .map(function () {
+      var student_data = $("select[class='status']").map(function () {
+
           //  alert($(this).attr('name'))
           status = $(this).children("option:selected").val();
           student_id = $(this).attr("name");
