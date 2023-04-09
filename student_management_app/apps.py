@@ -13,6 +13,7 @@ class StudentManagementAppConfig(AppConfig):
         # ---------------using this way assists to create group directly without error---------------
         from .signals import populate_models
         post_migrate.connect(populate_models, sender=self)
+
         
         
     

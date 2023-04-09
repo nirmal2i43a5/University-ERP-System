@@ -15,8 +15,7 @@ from .helpers import (
                       manage_syllabus
                       )
 
-
-school_course_category = get_object_or_404(CourseCategory, course_name = 'School')
+school_course_category = get_object_or_404(CourseCategory, course_name = 'School') 
 plus_two_course_category = get_object_or_404(CourseCategory, course_name = 'Plus-Two')
 bachelor_course_category = get_object_or_404(CourseCategory, course_name = 'Bachelor')
 master_course_category = get_object_or_404(CourseCategory, course_name = 'Master')

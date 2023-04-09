@@ -1,11 +1,13 @@
 from django.contrib import admin
 from student_management_app.models import (Staff,CustomUser,Subject,Staff,Student, DocumentFile,
-                                           Course, Parent, ExtraUser, CertificateTemplate,Complain, Semester, SubjectTeacher,SemesterTeacher)
+                                           Course, Parent, ExtraUser, AdminUser,CertificateTemplate,Complain, Semester, SubjectTeacher,SemesterTeacher)
 
 # # # from django.contrib.auth.admin import UserAdmin
 
 # # # admin.site.register(CustomUser, UserAdmin)#using UserAdmin i am able to see some missing functionality to admin site
 # admin.site.register(Staff)
+admin.site.register(AdminUser)
+
 admin.site.register(ExtraUser)
 admin.site.register(CustomUser)
 admin.site.register(Student)

@@ -107,7 +107,6 @@ class CustomUser(AbstractUser):  # use this for extending deafult django auth sy
     full_name = models.CharField(max_length=255)
     user_type = models.ForeignKey(Group, on_delete=models.CASCADE, null=True)
     email = models.EmailField(_('email address'), blank=True, null=True)
-    # password = models.CharField(_('password'), max_length=128, null = True)
 
     class Meta:
         db_table = 'tbl_Customuser'
@@ -124,7 +123,6 @@ class CustomUser(AbstractUser):  # use this for extending deafult django auth sy
 
 
            
-         
         )
 
     def __str__(self):
@@ -166,7 +164,7 @@ class AdminUser(models.Model):
     gender = models.CharField(
         max_length=20, choices=gender_choice, default='Male', blank=True)
     religion = models.CharField(max_length=100, blank=True)
-    contact = models.CharField(max_length=30, blank=True,unique = True)
+    contact = models.CharField(max_length=30, blank=True)
     address = models.CharField(max_length=255, blank=True)
     join_date = models.DateField(null=True,blank = True)
     image = models.ImageField(upload_to='admin_images', null=True, blank=True)
@@ -270,7 +268,7 @@ class ExtraUser(models.Model):  # this all other user like driver accountant and
     branch = models.ForeignKey(Branch, on_delete=models.CASCADE, blank=True, null=True)
     gender = models.CharField(max_length=20, choices=gender_choice, default='Male')
     religion = models.CharField(max_length=100, blank=True)
-    contact = models.CharField(max_length=30, blank=True,unique = True)
+    contact = models.CharField(max_length=30, blank=True)
     address = models.CharField(max_length=255, blank=True)
     join_date = models.DateField(null=True)
     image = models.ImageField(upload_to='user_images', null=True, blank=True)
@@ -424,6 +422,7 @@ class SemesterTeacher(models.Model):
         else:
             return f'{self.semester.name}'
 
+
 class SubjectTeacher(models.Model):
     subject = models.ForeignKey(Subject, verbose_name=_("Subject"), on_delete=models.CASCADE)
     teacher = models.ForeignKey(CustomUser, on_delete = models.CASCADE)
@@ -466,7 +465,7 @@ class OptionalSubject(models.Model):
 
 
 class Parent(models.Model):
-    # --gci field
+    
     home_phone = models.CharField(max_length=30,null = True, blank=True)
     father_name = models.CharField(max_length=100, null = True, blank=True)#full_namei.e customuser retrieve from this is placed in father name
     father_phone = models.CharField(max_length=30,null = True, blank=True)

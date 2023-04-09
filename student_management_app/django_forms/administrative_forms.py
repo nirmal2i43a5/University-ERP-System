@@ -85,7 +85,7 @@ class CertificateTemplateForm(forms.ModelForm):
 class SystemAdminForm(forms.ModelForm):
     dob = forms.DateField(required = False, label = 'Date of Birth', widget=forms.DateInput(attrs = {'type':'date',}))
     join_date = forms.DateField(required = False, widget=forms.DateInput(attrs = {'type':'date',}))
-    contact=forms.CharField(required = False, widget=forms.TextInput(attrs={"placeholder": " Enter Mobile Number",}))
+    contact=forms.CharField(required = True, widget=forms.TextInput(attrs={"placeholder": " Enter Mobile Number",}))
     religion=forms.CharField(required = False,widget=forms.TextInput(attrs={"placeholder": " Enter Your Religion",}))
     address=forms.CharField(required = False,widget=forms.TextInput(attrs={"placeholder": " Enter Address",}))
  
