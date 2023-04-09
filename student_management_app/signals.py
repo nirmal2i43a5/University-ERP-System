@@ -8,8 +8,24 @@ from django.contrib.auth.models import Group
 from school_apps.school_settings.models import MisSetting
 from django.shortcuts import get_object_or_404
 from schedule.models import Calendar
-school_classes_choices = ['Class Montessori','Class Nursery','Class LKG','Class UKG','Class One','Class Two','Class Three','Class Four','Class Five',
-                          'Class Six','Class Seven','Class Eight','Class Nine','Class Ten']
+
+school_classes_choices = [
+                            'Class Montessori',
+                          'Class Nursery',
+                          'Class LKG',
+                          'Class UKG',
+                          'Class One',
+                          'Class Two',
+                          'Class Three',
+                          'Class Four',
+                          'Class Five',
+                          'Class Six',
+                          'Class Seven',
+                          'Class Eight',
+                          'Class Nine',
+                          'Class Ten'
+                          ]
+
        
 def populate_models(sender, **kwargs):
     a_level_admin, created = Group.objects.get_or_create(name='Admin')#a level admin
@@ -55,22 +71,12 @@ def populate_models(sender, **kwargs):
             student_group,
             parent_group,
             super_admin_group,
-            
             ]
     
     
 
-
 # @receiver(post_save, sender=CustomUser)
 # def create_user_profile(sender, instance, created, **kwargs):
-#     # extra_user_role = instance.user_type
-#     # try:
-#     #     # print(kwargs.get('role'),"role")
-#     #     print()
-#     #     print(Group.objects.get(pk=instance.user_type_id))
-#     #     print("in try","~~~~~~~~~~~~~~~~~~")
-#     # except:
-#     #     print("miss")
 #     if created:
 #         group = populate_models(sender)
 #         if instance.user_type in [group[0],group[1],group[2], group[6]]:
@@ -84,10 +90,8 @@ def populate_models(sender, **kwargs):
 #         else:
 #             ExtraUser.objects.create(extra_user=instance)
     
-
 # @receiver(post_save, sender=CustomUser)
 # def save_user_profile(sender, instance, **kwargs):
-#     # extra_user_role = instance.user_type
 #     group = populate_models(sender)
 #     if instance.user_type in [group[0],group[1],group[2]]:
 #         instance.adminuser.save()
@@ -97,8 +101,7 @@ def populate_models(sender, **kwargs):
 #         instance.student.save()
 #     if instance.user_type == group[5]:
 #         instance.parent.save()
-#     # if instance.user_type == extra_user_role:
-#     #     instance.extrauser.save()
+   
 
 
 
