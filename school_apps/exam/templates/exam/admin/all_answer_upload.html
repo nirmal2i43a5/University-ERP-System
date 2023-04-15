@@ -22,7 +22,7 @@
 
 
               <!-- -------------------------Subject filter form ------------------------------------------------ -->
-          <form  method="POST" enctype="multipart/form-data">
+          <form  method="POST" id = "fetch_student" enctype="multipart/form-data">
             <div class="input-group">
           {% csrf_token %}
               <select name="term" id="term_select">
@@ -55,7 +55,7 @@
     </div>
 
        <!-- -------------------------attendace save form ------------------------------------------------ -->
-    <form  method="POST" enctype="multipart/form-data">
+    <form  method="POST" id="answer_submit" enctype="multipart/form-data">
       <input type="text" name="exam" id="exam" hidden value="{{exam.pk}}">
 
       <!-- <input type="hidden" name = "semester_id" value = "{{ semester.id }}">

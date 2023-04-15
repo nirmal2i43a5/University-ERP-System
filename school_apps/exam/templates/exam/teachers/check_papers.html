@@ -20,27 +20,7 @@
 
 
               <!-- -------------------------Subject filter form ------------------------------------------------ -->
-          <form  method="POST" enctype="multipart/form-data">
-            <div class="input-group">
-          {% csrf_token %}
-              <select name="term" id="term_select">
-                <option value="">------------------------Select Term---------------------------</option>
-                {% for item in terms%}
-                  <option value="{{item.pk}}">{{item}}</option>
-                {% endfor %}
-              </select>
-
-              <select name="exam" id="exam_select">
-                <option value="">------------------------Select Exam---------------------------</option>
-              </select>
-
-              <div class="input-group-btn ml-1 mt-1 mb-1">
-                <button type="submit" class="btn btn-sm " name="fetch_answer_paper" style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);color:white">
-                  <strong>Fetch Student Answer</strong>
-                </button>
-              </div>
-            </div>
-          </form>
+       
 
 
     
@@ -48,7 +28,6 @@
     </div>
 
 
-   {% if answersheets %}
 
 
   
@@ -64,6 +43,27 @@
 
           <!-- /.card-header -->
           <div class="card-body table-responsive">
+            <form  method="POST" enctype="multipart/form-data" class="float-right">
+              <div class="input-group">
+            {% csrf_token %}
+                <select name="term" id="term_select">
+                  <option value="">------Select Term------</option>
+                  {% for item in terms%}
+                    <option value="{{item.pk}}">{{item}}</option>
+                  {% endfor %}
+                </select>
+  
+                <select name="exam" id="exam_select">
+                  <option value="">------Select Exam------</option>
+                </select>
+  
+                <div class="input-group-btn ml-1 mt-1 mb-1">
+                  <button type="submit" class="btn btn-sm " name="fetch_answer_paper" style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);color:white">
+                    <strong>Fetch Student Answer</strong>
+                  </button>
+                </div>
+              </div>
+            </form>
             
             <!-- <a href="{% url 'academic:subject_log' %}" class="btn btn-xs float-right mr-2 text-white" style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);"  >
              
@@ -84,6 +84,8 @@
                 </tr>
               </thead>
               <tbody>
+   {% if answersheets %}
+
                 {% for student_answer in answersheets %}
                 <tr>
                   <td></td>
@@ -115,6 +117,8 @@
                 </td>
                 </tr>
                 {% endfor %}
+   {% endif %}
+
               </tbody>
             </table>
           </div>
@@ -129,7 +133,6 @@
 
 <!-- /.content -->
      
-   {% endif %}
      
 
 {% endblock main_content %}

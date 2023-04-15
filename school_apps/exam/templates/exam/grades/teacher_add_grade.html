@@ -117,8 +117,8 @@
                             <hr>
                             <form action="">
 
-                                <input type="hidden" id="examid" name="examid" value={{answer_sheet.exam.pk}}>
-                                <input type="hidden" id = "studentid" name="studentid" value={{answer_sheet.student.pk}}>
+                                <input type="hidden" id="examid" name="examid" value="{{answer_sheet.exam.pk}}"">
+                                <input type="hidden" id = "studentid" name="studentid" value="{{answer_sheet.student.pk}}">
                                 {% for item in question %} 
                                 {{item.question_no}}
                                 {% if item.has_sub_question %} 
@@ -132,7 +132,7 @@
 
                                           {{sub.question_no}}
 
-                                          <select name="{{sub.pk}}" id="{{sub.pk}}" data-question = "{{item.pk}}" class="{{item.pk}} subquestion float-right">
+                                          <select name="{{sub.pk}}" id="{{sub.pk}}" data-question = "{{item.pk}}" class="{{item.pk}} subquestion float-right form-control col-md-5">
                                             <option value="0">0</option>
     
                                             {% with ''|center:sub.total_marks|mul:2 as range %}
@@ -160,7 +160,7 @@
 
                                     {% else %}
                                     <!-- for question selct -->
-                                    <select name="{{item.pk}}" class="{{item.pk}} questionmark float-right">
+                                    <select name="{{item.pk}}" class="{{item.pk}} questionmark float-right form-control col-md-6">
                                         <option value="0">0</option>
 
                                         {% with ''|center:item.total_marks|mul:2 as range %}
@@ -189,7 +189,7 @@
                             </form>
                             <!-- {{ grade_form|crispy }} -->
 
-                            <a href="{% url 'exam:teacher-view-answer' exam_instance.pk %}"
+                            <a href="{% url 'exam:check_exam_paper' %}"
                                 class="btn btn-sm btn-danger mt-4">Back</a>
                             <!-- <button type="submit" class="btn btn-sm btn-success mt-4">Save</button> -->
                         </div>

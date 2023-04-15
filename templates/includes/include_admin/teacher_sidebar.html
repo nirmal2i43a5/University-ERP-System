@@ -11,13 +11,13 @@
     </p>manage_subject_teacher
   </a>
   <ul class="nav nav-treeview">
-
+{% comment %} 
     <li class="nav-item">
               <a href=" {% url 'teacher:studentlist'%}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Marks Entry by student</p>
               </a>
-            </li>
+            </li> {% endcomment %}
 
     <li class="nav-item">
       <a href=" {% url 'teacher:addscore' %}" class="nav-link ml-2">
@@ -32,12 +32,12 @@
         <p>Check Scores</p>
       </a>
     </li>
-    <li class="nav-item">
-      <a href=" {% url 'exam:student-answer-upload' %}" class="nav-link ml-2">
+    {% comment %} <li class="nav-item">
+      <a href=" " class="nav-link ml-2">
         <i class="far fa-xs fa-circle"></i>
         <p>Upload Exam Answer</p>
       </a>
-    </li>
+    </li> {% endcomment %}
     <li class="nav-item">
       <a href=" {% url 'exam:check_exam_paper' %}" class="nav-link ml-2">
         <i class="far fa-xs fa-circle"></i>

@@ -91,7 +91,7 @@
            </a>
          </li> -->
 
-         <li class="nav-item">
+         {% comment %} <li class="nav-item">
            <a href="{% url 'courses:confirmexamapplication' %}" class="nav-link">
                  <i class="far fa-xs fa-circle"></i>
              <p>
@@ -107,7 +107,7 @@
               Mass Exam Application
             </p>
           </a>
-        </li>
+        </li> {% endcomment %}
 
          <!-- <li class="nav-item">
            <a href="{% url 'courses:bulkprintadmitcard' %}" class="nav-link">
@@ -126,10 +126,10 @@
              </p>
            </a>
          </li>
-         <li class="nav-item">
-          <a href=" {% url 'exam:student-answer-upload' %}" class="nav-link">
+         {% comment %} <li class="nav-item">
+          <a href=" " class="nav-link">
             <i class="far fa-xs fa-circle"></i>
             <p>Upload Exam Answer</p>
           </a>
-        </li>
+        </li> {% endcomment %}
   </ul>

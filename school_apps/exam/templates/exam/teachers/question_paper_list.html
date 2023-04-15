@@ -84,8 +84,11 @@
                   
                   <button  class="btn btn-danger btn-xs"  data-target='#deletequestion_paper-{{ subject.subject_id }}' data-toggle="modal"><i
                     class="fas fa-sm fa-trash-alt"></i></button>
-                    <a href="{% url 'exam:each-mark-add' question_paper.pk %}" class="btn btn-xs btn-success"><i class="fas fa-xs fa-plus"></i></a>
-                    <a href="{% url 'exam:each-mark-index' question_paper.pk %}" class="btn btn-xs btn-success"><strong>View Mark</strong></a>
+                    <a href="{% url 'exam:each-mark-add' question_paper.pk %}" class="btn btn-xs btn-success" data-placement="top"
+                    data-toggle="tooltip" title="Add mark to each question"><i class="fas fa-xs fa-plus"></i></a>
+                    <a href="{% url 'exam:each-mark-index' question_paper.pk %}" class="btn btn-xs btn-success"
+                    data-placement="top"
+                    data-toggle="tooltip" title="View Mark Of Individual Questions."><strong>View Mark</strong></a>
                     <a href="{% url 'exam:teacher-view-answer' question_paper.exam.pk  %}" class="btn btn-xs btn-success"><strong>View Student Answer</strong></a>
                 </td>
                 </tr>
