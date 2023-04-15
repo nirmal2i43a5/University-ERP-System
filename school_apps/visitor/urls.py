@@ -9,3 +9,4 @@ urlpatterns = [
     path('detail/<int:pk>', views.VisitorDetailView.as_view(), name='visitor_detail'),
     path('printform/<int:pk>', views.printform, name='printform'),
 ]
+
