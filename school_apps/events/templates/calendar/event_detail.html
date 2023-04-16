@@ -1,0 +1,133 @@
+{% extends 'admin_templates/base_admin.html' %}
+{% load static %}
+
+{% block content %}
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0 text-dark"><i class="fas fa-calendar-check"></i>&nbsp;{{ title }}</h1>
+      </div>
+      <!-- /.col -->
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item active">{{ title }}</li>
+        </ol>
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
+</div>
+<!-- Main content -->
+
+
+
+<div class="card card-danger card-outline">
+  <div class="card-body">
+    <div class="d-flex justify-content-between">
+      <div class="d-flex">
+        <a href="{% url 'calendar:event_create' %}">
+          <p class="add-text text-dark"><i class="fa fa-plus">&nbsp;</i> Add Event</p>
+        </a>
+      </div>
+      <div class="d-flex">
+        <a href="{% url 'calendar:home' %}">
+          <p class="add-text text-dark"><i class="fa fa-calendar">&nbsp;</i> View Calendar</p>
+        </a>
+      </div>
+    </div>
+    <div class="table-title">
+      <p class="title-text">Event Detail</p>
+    </div>
+    <!-- /.card-header -->
+   
+   {% if event %}
+
+   <div class="card-body table-responsive ">
+    <span class="text p-2"> <strong>Event Name : </strong> {{ event.title }}</span>
+    <div class="d-flex flex-row">
+
+
+    </div>
+    <div class="d-flex flex-row">
+      <div class="p-2">
+        <strong>Day </strong> : {{ event.event_day }}
+      </div>
+    </div>
+    <div class="d-flex flex-row">
+      <div class="p-2">
+        <strong>Time </strong> : {{ event.start_time }} <strong>To</strong> {{ event.end_time }}
+      </div>
+    </div>
+    <div class="d-flex flex-row">
+      <div class="p-2">
+        <strong>Category </strong> : <div class="badge badge-lg px-2 py-1 text-white text-bold"
+          style="background-color:#6B5AC2;">
+          {{ event.category }}
+        </div>
+      </div>
+    </div>
+    <div class="d-flex flex-row">
+      <div class="p-2">
+        <strong>Description </strong> : 
+          {{ event.description }}
+      </div>
+    </div>
+    <a href="{% url 'calendar:home' %}" class="btn btn-xs text-white btn-danger  mt-3  "><strong>Back</strong></a>
+    <a href="{% url 'calendar:event_edit' event.id %}"
+      class="btn btn-xs text-white btn-success  mt-3  "><strong>Update</strong></a>
+    <!-- /.content -->
+  </div>
+     
+   {% endif %}
+
+   
+   {% if holiday %}
+
+   <div class="card-body table-responsive ">
+    <span class="text p-2"> <strong>Event Name : </strong> {{ holiday.title }}</span>
+    <div class="d-flex flex-row">
+
+    </div>
+    <div class="d-flex flex-row">
+      <div class="p-2">
+        <strong>Day </strong> : {{ holiday.event_day }}
+      </div>
+    </div>
+    <div class="d-flex flex-row">
+      <div class="p-2">
+        <strong>Time </strong> : {{ holiday.start_time }} <strong>To</strong> {{ holiday.end_time }}
+      </div>
+    </div>
+    <div class="d-flex flex-row">
+      <div class="p-2">
+        <strong>Category </strong> : <div class="badge badge-lg px-2 py-1 text-white text-bold"
+          style="background-color:#6B5AC2;">
+          {{ holiday.category }}
+        </div>
+      </div>
+    </div>
+    <div class="d-flex flex-row">
+      <div class="p-2">
+        <strong>Description </strong> : <div class="text-white text-bold">
+          {{ holiday.description }}
+        </div>
+      </div>
+    </div>
+    <a href="{% url 'calendar:home' %}" class="btn btn-xs text-white btn-danger  mt-3  "><strong>Back</strong></a>
+    <a href="{% url 'calendar:event_edit' holiday.id %}"
+      class="btn btn-xs text-white btn-success  mt-3  "><strong>Update</strong></a>
+
+    <!-- /.content -->
+  </div>
+     
+   {% endif %}
+     
+     
+  </div>
+
+
+  {% endblock content %}

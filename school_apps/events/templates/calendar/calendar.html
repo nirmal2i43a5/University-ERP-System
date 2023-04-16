@@ -1,0 +1,65 @@
+{% extends "admin_templates/base_admin.html" %}{% load static %}
+
+{% block content %}
+{% include "calendar/event_click.html" %}
+<link rel="stylesheet" href="{% static 'css/calendar.css' %}">
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark"><i class="fas fa-calendar"></i>&nbsp;Calendar</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item active">Calendar</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+  </div>
+
+
+   
+      {% include 'calendar/monthlycalendar.html' %}
+
+    
+
+
+{% endblock content %}
+
+
+{% block javascript %}
+    <script>
+        $('.event-url').on('click',function(e){
+            e.preventDefault();
+            var event_date = $(this).attr('value')
+            
+            $.ajax({
+                url : "",
+                //method : 'POST',
+                dataType: 'json',
+                data : {event_date : event_date},
+                success:function(response){
+                    var event_data = response
+                    console.log(event_data.title)
+                  
+                    for(var i = 0;i<event_data.length;i++){
+                     
+                   
+                  var event = `"${event_date[i].title}"`
+                    $('#eventDetail').modal('show');
+                    $('#modalTitle').html(`${event_data[i].title}`)
+                    $('#modalDate').html(`${event_data[i].event_day}`)
+                    $('#modalStartTime').html(`${event_data[i].start_time}`)
+                    $('#modalEndTime').html(`${event_data[i].end_time}`)
+                  
+                  
+                    }
+                }
+            })
+
+        })
+    </script>
+{% endblock javascript %}
+    

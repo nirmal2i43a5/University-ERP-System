@@ -84,6 +84,8 @@ urlpatterns = [
      path('exam/',include('school_apps.exam.urls',namespace='exam')),
      
     path('schedule/',include('schedule.urls')),
+        path('', include('school_apps.events.urls', namespace='calendar')),
+
     
     # ------------------------------------I have commented the functionality of this app -----------------------------
     # path('',include('school_apps.inventory.urls',namespace='inventory')),

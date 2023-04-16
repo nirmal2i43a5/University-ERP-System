@@ -1,0 +1,67 @@
+<!-- Modal -->
+<div class="modal fade" id="eventDetail" tabindex="-1" role="dialog" 
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+
+
+          <div class="d-flex flex-row">
+            <div class="p-2 mt-1">
+              <i class="fas fa-1x fa-calendar-alt" s></i>
+
+            </div>
+            <div class="p-2 mt-1">
+              <h5>Time :</h5>
+            </div>
+            {{event}}
+            <div class="p-2">
+              <h5 class="modal-title" id="modalDate"></h5>
+            </div>
+          </div>
+        </div>
+
+
+
+        <a type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+
+
+      <div class="d-flex flex-row">
+        <div class="p-2 font-weight-bold text-lg event-name">Event  Name : </div>
+
+        <h5>
+          <div class="modal-body p-2" id="modalTitle">
+
+          </div>
+        </h5>
+
+      </div>
+      <div class="d-flex flex-row">
+        <div class="p-2 font-weight-bold text-lg"> Time : 
+          <span class="modal-body p-2 "  id="modalStartTime">
+
+          </span>
+          <span>To</span>
+          <span class="modal-body p-2 "  id="modalEndTime">
+
+          </span>
+        </div>
+
+        <h6>
+        
+        </h6>
+
+      </div>
+
+
+      <div class="modal-footer">
+        <a class="btn btn-primary text-white" data-dismiss="modal">Close</a>
+        <a id="eventDetailUrl" class="btn btn-default">View Details</a>
+      </div>
+    </div>
+  </div>
+</div>

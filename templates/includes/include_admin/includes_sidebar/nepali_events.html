@@ -1,0 +1,21 @@
+{% url 'calendar:event_index' as manage_event_url  %}
+<li class="nav-item">
+    <a href="{% url 'calendar:event_index'  %}" class=" nav-item nav-link {% if request.path == manage_event_url %} active{% endif %}">
+      <i class="far  fa-circle"></i>
+      <p>
+        Manage Event
+
+      </p>
+    </a>
+  </li>
+  {% url 'calendar:event_create' as create_event_url  %}
+
+  <li class="nav-item">
+    <a href="{% url 'calendar:event_create' %}" class=" nav-item nav-link {% if request.path == create_event_url %} active{% endif %}">
+      <i class="far  fa-circle"></i>
+      <p>
+       Add Event
+
+      </p>
+    </a>
+  </li>

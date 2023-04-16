@@ -399,7 +399,6 @@ def meeting_home(request):
 
 
 def asset_home(request):
-    from django import urls
 
 
 
@@ -462,10 +461,6 @@ def exam_home(request):
         'title':'Exam Management',
                  }
     return render(request, 'admin_templates/dashboard.html', context)
-
-
-
-
 
 
 

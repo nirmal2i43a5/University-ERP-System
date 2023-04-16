@@ -10,3 +10,10 @@ giving dynamic name for group
 nepali datepicker(and convert to english while logic development)
 For password(use mobile instead of mobile)
 proper notification
+
+
+Modified document models:for students with just customuser : 
+=>Manage queries selected_prefetch
+django compressor
+
+I am using nepali calendar(which is valid upto 2100)(check in datemap.py)

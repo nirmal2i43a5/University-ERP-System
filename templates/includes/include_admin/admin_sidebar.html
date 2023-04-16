@@ -106,8 +106,10 @@
         {% elif request.path ==  academic_url or request.path|has_namespace:'/academic-management/, admin_app'  %}
         {% include "includes/include_admin/includes_sidebar/academic.html" %}
 
-        {% elif request.path ==  event_url or request.path|has_namespace:'/schedule/event-management/'  %}
-        {% include "includes/include_admin/includes_sidebar/event.html" %}
+        {% comment %} {% elif request.path ==  event_url or request.path|has_namespace:'/schedule/event-management/'  %}
+        {% include "includes/include_admin/includes_sidebar/event.html" %} {% endcomment %}
+        {% elif request.path ==  event_url or request.path|has_namespace:'/event-management/,calendar' %}
+        {% include "includes/include_admin/includes_sidebar/nepali_events.html" %}
 
         {% elif request.path ==  routine_url or request.path|has_namespace:'/routine-management/, routine' %}
         {% include "includes/include_admin/includes_sidebar/routine.html" %}

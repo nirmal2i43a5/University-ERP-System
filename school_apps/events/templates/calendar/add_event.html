@@ -1,0 +1,73 @@
+
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block content %}
+{% comment %} <link rel="stylesheet" href="{% static 'nepali-date-picker/nepali-date-picker.css' %}"> {% endcomment %}
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark"><i class="fas fa-calendar-check"></i>&nbsp;{{ title }}</h1>
+            </div>
+            <!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item active">{{ title }}</li>
+                </ol>
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+  </div>
+
+  <div class="card card-danger card-outline">
+    <div class="card-body">
+        <form action="" method = "POST">
+            {% csrf_token %}
+
+{% crispy form %}
+          
+       
+        </form>
+    </div>
+  </div>
+
+{% endblock content %}
+
+{% block javascript %}
+        
+{% comment %} <script src="{% static 'nepali-date-picker/nepali-date-picker.js' %}"></script>
+<script>
+        $(document).ready(function(){
+            $('.nepali-date-picker').nepaliDatePicker({
+            
+            });
+            
+        })
+</script> {% endcomment %}
+{% comment %} <script>
+        $('.date-picker').click(function(){
+         
+                     var nepali_date =  $('.date-picker').val()
+                     console.log(nepali_date)
+             $.ajax({
+                 url: '{% url 'calendar:event_create' %}',
+                 type: 'GET',
+                 data: {
+                     'nepali_digit': nepali_date
+                 },
+                 success: function(response) {
+                     console.log(response);
+                 }
+             });
+                 })
+   
+  </script> {% endcomment %}
+{% endblock javascript %}

@@ -1,0 +1,120 @@
+{% extends 'admin_templates/base_admin.html' %} {% block content %} 
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0 text-dark">
+          <i class="fas fa-calendar-check"></i>&nbsp;{{ title }}
+        </h1>
+      </div>
+      <!-- /.col -->
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item active">{{ title }}</li>
+        </ol>
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
+</div>
+<div class="card card-danger card-outline">
+  <div class="card-body">
+    <div class="d-flex bd-highlight">
+      <div class="flex-fill bd-highlight">
+        <a href="{% url 'calendar:event_create' %}">
+          <p class="add-text test-danger float-left text-gray">
+            <i class="fa fa-plus">&nbsp;</i> Add Event/Holiday
+          </p>
+        </a>
+      </div>
+      <div class="flex-fill bd-highlight">
+        <a href="{% url 'calendar:home' %}">
+          <p class="btn btn-xs btn-danger test-danger float-right text-white">
+            <i class="fas fa-eye"></i> View Calendar
+          </p>
+        </a>
+      </div>
+    </div>
+
+    <div class="table-title">
+      <p class="title-text"> Event List</p>
+    </div>
+    <div class="table-responsive">
+      <table
+        id="upcomingevent-table"
+        style="width: 100%"
+        data-server-side="true"
+        data-ajax="/api/v1/upcomingevents/?format=datatables"
+        class="
+          table table-sm table-striped table-bordered table-hover
+          dataTable
+          no-footer
+        "
+      >
+
+      
+        <thead>
+          <tr>
+            <th data-data="select"><input id="checkBox" type="checkbox" /></th>
+            <th data-data="id">id</th>
+            <th data-data="id">#</th>
+            <th data-data="title">Title</th>
+            <th data-data="event_day">Date</th>
+            <th data-data="start_time">Start Time</th>
+            <th data-data="end_time">End Time</th>
+            <th data-data="category">Category</th>
+            <th data-data="description">Description</th>
+            <th data-data="Action">Action</th>
+          </tr>
+        </thead>
+
+
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock content %} {% block javascript %}
+<script>
+  $(function () {
+    table = $("#upcomingevent-table").DataTable(
+      getDataTableConfig({
+        table_id: "#upcomingevent-table",
+        delete_id_key: "id",
+        message_title: "Events",
+        Model: "Event",
+        action_index: $("#upcomingevent-table th").length - 1,
+        edit_url: '{% url "calendar:event_edit" pk="pk_val" %}',
+        delete_url: '{% url "calendar:event_delete" pk="pk_val" %}',
+        app_name:'calendar',
+        replace_app_name : 'events',
+        additionalColumn: [
+          {
+            targets: 7,
+            render: function (data, type, row, meta) {
+              return `<div class="badge badge-danger">${row.category}</div>`;
+            },
+          },
+        ],
+      })
+    );
+    table
+      .buttons()
+      .container()
+      .appendTo($(".col-sm-6:eq(0)", table.table().container()));
+    table
+      .on("order.dable search.dt", function () {
+        table
+          .column(2, { search: "applied", order: "applied" })
+          .nodes()
+          .each(function (cell, i) {
+            cell.innerHTML = i + 1;
+          });
+      })
+      .draw();
+  });
+</script>
+{% endblock javascript %}

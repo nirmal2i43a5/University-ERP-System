@@ -1,0 +1,26 @@
+<!-- Modal -->
+<div class="modal fade" id="deleteEvent-{{ event.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+            <form action="{% url 'calendar:event_delete' event.id %}" method="post">
+
+              {% csrf_token %}
+              <p>Are you sure you want to delete <strong>{{ event.title }}</strong> Event?</p>
+
+            {{ event.id }}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-sm btn-danger">Confirm</button>
+          </div>
+          </form>
+
+    </div>  
+  </div>
+</div>

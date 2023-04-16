@@ -27,6 +27,8 @@
 />
 
 <link href="{% static 'main_dashboard/css/loader.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/nepali-date-picker@2.0.1/dist/nepaliDatePicker.min.css" crossorigin="anonymous" />
+
   <title> {% block title %} {% endblock %}</title>
   <!-- <link rel="icon" type="images/jpg" href="">  -->
   <!-- <link rel="icon" type="images/jpg" href="">  -->
@@ -181,9 +183,49 @@ src="{% static 'flipbook/pdfjs-flipbook/js/jquery.fancybox.min.js' %}"
 <script src="{% static 'plugins/jquery-mousewheel/jquery.mousewheel.js' %}"></script>
 <script src="{% static 'plugins/raphael/raphael.min.js' %}"></script>
 <script src="{% static 'plugins/jquery-mapael/jquery.mapael.min.js' %}"></script>
+{% comment %} Nepali date picker {% endcomment %}
+<script src="https://unpkg.com/nepali-date-picker@2.0.1/dist/jquery.nepaliDatePicker.min.js" crossorigin="anonymous"></script>
+
 <script>
   
-  
+  $(".date-picker").nepaliDatePicker({
+    dateFormat: "%y-%m-%d",
+    closeOnDateSelect: true
+});
+
+function eventLog(event){
+    var datePickerData = event.datePickerData;
+    var outputData = {
+        "type": event.type,
+        "message": event.message,
+        "datePickerData": datePickerData
+    };
+
+    var output = '<p><code>▸ ' + JSON.stringify(outputData) + '</code></p>';
+    $('.output').append(output);
+}
+
+$(".date-picker").on("show", function (event) {
+    var output = '<p><code>▸ Show event trigger</code></p>';
+    $('.output').append(output);
+});
+
+$(".date-picker").on("yearChange", function (event) {
+    eventLog(event);
+});
+
+$(".date-picker").on("monthChange", function (event) {
+    eventLog(event);
+});
+
+$(".date-picker").on("dateChange", function (event) {
+    eventLog(event);
+});
+
+$(".date-picker").on("dateSelect", function (event) {
+    eventLog(event);
+});
+
 
 /*
     $(function(){

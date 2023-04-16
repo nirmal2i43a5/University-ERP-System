@@ -1,0 +1,225 @@
+
+<!-- today event popup -->
+
+  
+
+
+<div class="row">
+
+    <div class="col-md-7">
+
+        <div class="card card-danger card-outline">
+            <div class="card-body">
+
+                {% comment %} <div id="mycalendar">
+
+                    <div class="monthly-header">
+
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex p-2">
+                                {% if prevmonth %}
+                                <a href="{% url 'calendar:calendar' prevmonth.year prevmonth.month %}"
+                                    class="btn btn-xs btn-danger"><i class="fas fa-backward"></i></a>
+                                {% endif %}
+
+                            </div>
+                            <div class="d-flex p-2">
+
+                                <strong class="text-lg text-danger"> {{ firstdate.month_name }}, {{ firstdate.ne_year }}</strong>
+                            </div>
+                            <div class="d-flex p-2">
+
+                                {% if nextmonth %}
+                                <a href="{% url 'calendar:calendar' nextmonth.year nextmonth.month %}"
+                                    class="btn btn-xs btn-danger"><i class="fas fa-forward"></i></a>
+                                {% endif %}
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="monthly-day-title-wrap">
+                        <!--This nepcal_values come from context_processors-->
+                        {% for weekday in nepcal_values.NEPALI_WEEKDAY_NAMES_SHORT_NE.items %}
+                        <div class="{% if weekday.0 == 6 %} holiday {% endif %}">
+                            {{ weekday.1 }}
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="monthly-day-wrap">
+                        {% for week in monthlycalendar %}
+                        <div class="monthly-week">
+                            {% for day in week %}
+
+                            <div class="
+                        {% if day.month != firstdate.month %}
+                          m-d monthly-day-blank
+                        {% elif day == today %}
+                          m-d monthly-day-today
+                        {% else %}
+                          m-d monthly-day
+                        {% endif %}
+            
+                        {% if day.is_holiday %} holiday {% endif %}">
+
+                                <div class="monthly-day-number text-xs">
+                                    {% if day.en_date.day == 1 or day.day == 1%}
+                                    {{ day.en_date | date:"N j"}}
+                                    {% else %}
+                                    {{ day.en_date.day }}
+                                    <!--English data-->
+                                    {% endif %}
+                                </div>
+
+                                <div class="monthly-day-nep text-xl">
+                                    <a class='event-url' style="cursor:pointer;"
+                                        value=" {{ firstdate.year }}-{{ firstdate.month }}-{{ day.day }}">
+                                        {{ day.ne_day }}
+                                    </a>
+                                    <!--nepali day-->
+                                </div>
+
+                                {% if showtithi %}
+                                <div class="monthly-day-tithi hidden-xs hidden-sm">
+                                    {{ day.ne_tithi_name }}
+                                </div>
+                                {% endif %}
+
+                                <div class="monthly-day-events text-xs">
+
+                                    {% for event in day.events_name %}
+                                    {{ event }}<br />
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                            <div class="monthly-indicator-wrap"></div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div> {% endcomment %}
+
+                <iframe src="https://www.hamropatro.com/widgets/calender-full.php" frameborder="0" scrolling="no" marginwidth="0" marginheight="0"
+                style="border:none; overflow:hidden; width:1300px; height:840px;" allowtransparency="true"></iframe>
+            </div>
+
+
+
+        </div>
+    </div>
+
+
+    <div class="col-md-5">
+        <!-- -------------------------------------Today event End---------------------------------------------------- -->
+        <div class="card card-danger card-outline">
+            <div class="card-body">
+                <ul class="list-group">
+        
+        
+                    <div class="table-title bg-dark">
+                        <p class="ml-2 mt-2 text-bold">Today Events</p>
+                      </div>
+                   
+        
+                    {% for today_event in today_event %}
+                    <a href="{% url 'calendar:today_event'  %}">
+                        <li class="list-group-item" style="color:#CE3920;">{{ today_event.title }} <span
+                                class="float-right"><strong>-
+                                </strong>{{ today_event.event_day }} </span></li>
+                    </a>
+                    {% empty %}
+                    <span class="my-2 ml-1">No Today's Events.</span>
+                    {% endfor %}
+        
+                </ul>
+            </div>
+        </div>
+        <!-- -------------------------------------Today event End---------------------------------------------------- -->
+        <!-- -------------------------------------Upcoming event---------------------------------------------------- -->
+        <div class="card card-danger card-outline">
+            <div class="card-body">
+                <ul class="list-group">
+
+                    <div class="d-flex justify-content-between">
+                        <div class="d-flex">
+                            {% if perms.events.add_event %}
+                            <a href="{% url 'calendar:event_create' %}" >
+                                <p class="add-text text-dark text-xs text-bold"><i class="fa fa-plus">&nbsp;</i> Add Event/Holiday</p>
+                              </a>
+                              {% endif %}
+                        </div>
+                       
+                        <div class="d-flex">
+                            {% if perms.events.view_event %}
+                            <a href="{% url 'calendar:event_index' %}" >
+                                <p class="add-text text-dark text-xs text-bold"><i class="fa fa-list">&nbsp;</i>  Event List</p>
+                              </a>
+                              {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="table-title bg-dark ">
+                        <p class="ml-2 mt-2 text-bold">Upcoming Events</p>
+                      </div>
+                     
+
+                    {% for event in custom_event %}
+
+                    <a href="{% url 'calendar:event_detail' event.event_day %}">
+                        <li class="list-group-item" style="color:#CE3920;">{{ event.title }} <span
+                                class="float-right"><strong>-
+                                </strong>{{ event.event_day }} </span></li>
+                    </a>
+                    
+                    {% empty %}
+                    <span class="my-2 ml-1">No Upcoming Events.</span>
+                    {% endfor %}
+
+                    
+                    {% if custom_event.count > 0  %}
+                    <a href="{% url 'calendar:event_list_only' %}" class="my-2 ml-1 text-center">See All Events.</a>
+                        
+                    {% endif %}
+                        
+
+
+
+                </ul>
+            </div>
+        </div>
+
+        <!-- -------------------------------------Upcoming event End---------------------------------------------------- -->
+                <!-- -------------------------------------Upcoming Holiday---------------------------------------------------- -->
+        <div class="card card-danger card-outline">
+            <div class="card-body">
+                <ul class="list-group">
+
+
+                    <div class="table-title bg-dark">
+                        <p class="ml-2 mt-2 text-bold">Upcoming Holidays</p>
+                      </div>
+                   
+
+                    {% for holiday in holiday_event %}
+                    <a href="{% url 'calendar:holiday_detail' holiday.event_day %}">
+                        <li class="list-group-item" style="color:#CE3920;">{{ holiday.title }} <span
+                                class="float-right"><strong>-
+                                </strong>{{ holiday.event_day }} </span></li>
+                    </a>
+
+                    {% empty %}
+                    <span class="my-2 ml-1">No Upcoming Holidays.</span>
+                    {% endfor %}
+                    {% if holiday_event.count > 0  %}
+                    <a href="{% url 'calendar:holiday_list_only' %}" class="my-2 ml-1 text-center">See All Holidays.</a>
+                    {% endif %}
+
+                </ul>
+            </div>
+        </div>
+                <!-- -------------------------------------Upcoming Holiday end---------------------------------------------------- -->
+       
+
+    </div>
+</div>

@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'school_apps.customusers.apps.CustomusersConfig',
     'school_apps.log_history.apps.LogHistoryConfig',
     'school_apps.classroom.apps.ClassroomConfig',
+     'school_apps.events.apps.EventsConfig',
     # ------------------I have commented the functionality of this app -----------------------
     #   'school_apps.enquiry.apps.EnquiryConfig',
     # 'school_apps.visitor.apps.VisitorConfig',

@@ -1,0 +1,71 @@
+{% extends 'admin_templates/base_admin.html' %}
+{% load static %}
+
+{% block content %}
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0 text-dark"><i class="fas fa-calendar-check"></i>&nbsp;{{ title }}</h1>
+      </div>
+      <!-- /.col -->
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item active">{{ title }}</li>
+        </ol>
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
+</div>
+<!-- Main content -->
+
+
+
+<div class="card card-danger card-outline">
+  <div class="card-body">
+    <div class="d-flex justify-content-between">
+     
+      <div class="d-flex">
+        <a href="{% url 'calendar:home' %}">
+          <p class="add-text text-dark"><i class="fa fa-calendar">&nbsp;</i> View Calendar</p>
+        </a>
+      </div>
+    </div>
+    <div class="table-title">
+      <p class="title-text">Event Detail</p>
+    </div>
+    <!-- /.card-header -->
+   
+{% for event in today_events %}
+
+
+  
+    <div class="d-flex flex-column">
+        <div class="p-2">
+            <span class="text"> {{forloop.counter}} . <strong>Event Name : </strong> {{ event.title }}</span>
+            
+            {% if event.category == 'Event' %}
+            <a href="{% url 'calendar:event_detail' event.event_day %}" class="btn btn-xs btn-success"><i class="fas fa-xs fa-eye"></i></a>
+                {% elif event.category == 'Holiday' %}
+                <a href="{% url 'calendar:holiday_detail' event.event_day %}" class="btn btn-xs btn-success"><i class="fas fa-xs fa-eye"></i></a>
+            {% endif %}
+                
+        </div>
+      </div>
+  
+{% endfor %}
+
+    <!-- /.content -->
+  </div>
+     
+
+     
+     
+  </div>
+
+
+  {% endblock content %}
