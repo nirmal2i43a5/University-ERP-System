@@ -15,5 +15,6 @@ proper notification
 Modified document models:for students with just customuser : 
 =>Manage queries selected_prefetch
 django compressor
-
+update student_list with datatables
+create ajax datatables for attendance module, assignment
 I am using nepali calendar(which is valid upto 2100)(check in datemap.py)

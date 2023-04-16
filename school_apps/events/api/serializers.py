@@ -1,7 +1,7 @@
 
 from django.db.models import fields
-from rest_framework.serializers import ModelSerializer,HyperlinkedIdentityField,HyperlinkedModelSerializer,HyperlinkedRelatedField
-from prabhu_apps.events.models import Event
+from rest_framework.serializers import HyperlinkedModelSerializer
+from school_apps.events.models import Event
 
 from django_filters import FilterSet
 

@@ -7,7 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
-from prabhu_apps.events.models import Event
+from school_apps.events.models import Event
 from .serializers import (EventSerializer,EventFilter)
 from rest_framework import permissions, status,viewsets
 from rest_framework.response import Response
@@ -16,7 +16,7 @@ from rest_framework.filters import SearchFilter
 
 
     
-class EventApiView(viewsets.ViewSet):
+class EventsViewSet(viewsets.ViewSet):
     authentication_classes = (TokenAuthentication, SessionAuthentication)
     permission_classes = (IsAuthenticated,)
     serializer_class = EventSerializer
@@ -44,30 +44,30 @@ class EventApiView(viewsets.ViewSet):
     
 
     
-    def create(self, request):
-        event_serializers = EventSerializer(data=request.data) 
-        event_serializers.is_valid(raise_exception=True)
-        event_serializers.save()
-        return Response(event_serializers.data, status=status.HTTP_201_CREATED)
+    # def create(self, request):
+    #     event_serializers = EventSerializer(data=request.data) 
+    #     event_serializers.is_valid(raise_exception=True)
+    #     event_serializers.save()
+    #     return Response(event_serializers.data, status=status.HTTP_201_CREATED)
     
     
-    def retrieve(self, request, pk=None):
-        event = get_object_or_404(Event, pk = pk)
-        event_serializers = EventSerializer(event, many = False)
-        return Response(event_serializers.data, status=status.HTTP_200_OK)
+    # def retrieve(self, request, pk=None):
+    #     event = get_object_or_404(Event, pk = pk)
+    #     event_serializers = EventSerializer(event, many = False)
+    #     return Response(event_serializers.data, status=status.HTTP_200_OK)
 
 
-    def update(self, request, pk=None, ):
-        event = get_object_or_404(Event, pk = pk)
-        event_serializers = EventSerializer(instance=event, data=request.data)
-        event_serializers.is_valid(raise_exception=True)
-        event_serializers.save()
-        return Response(event_serializers.data, status=status.HTTP_200_OK)
+    # def update(self, request, pk=None, ):
+    #     event = get_object_or_404(Event, pk = pk)
+    #     event_serializers = EventSerializer(instance=event, data=request.data)
+    #     event_serializers.is_valid(raise_exception=True)
+    #     event_serializers.save()
+    #     return Response(event_serializers.data, status=status.HTTP_200_OK)
 
-    def delete(self,request, pk=None, ):
-        event = get_object_or_404(Event, pk = pk)
-        event.delete()
-        return Response({'message': 'Event is deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+    # def delete(self,request, pk=None, ):
+    #     event = get_object_or_404(Event, pk = pk)
+    #     event.delete()
+    #     return Response({'message': 'Event is deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
 
 
 class UpcomingEventViewSet(viewsets.ModelViewSet):

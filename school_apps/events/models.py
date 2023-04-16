@@ -7,7 +7,7 @@ from setuptools.sandbox import save_argv, save_modules
 from school_apps.events.slug import unique_slug_generator
 from simple_history.models import HistoricalRecords
 from .utils.DateConverter import _bs_to_ad
-from .utils.utilities import *
+from .utils.utilities import get_nepali_digit
 from datetime import datetime
 
 

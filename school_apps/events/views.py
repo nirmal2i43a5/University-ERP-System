@@ -17,8 +17,7 @@ from datetime import datetime, timezone
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 
-
-
+from .utils.utilities import get_nepali_digit
 
 
 
@@ -188,10 +187,11 @@ class EventListView(View, PermissionRequiredMixin):
     permission_required = 'events.view_event'
 
     def get(self, request):
-        events = Event.objects.all()
+        # events = Event.objects.all()
+
 
         context = {
-            'events': events,
+            # 'events': events,
             'title': 'Event',
             'active_menu': 'event',
         }
@@ -222,10 +222,12 @@ class EventEditView(View, PermissionRequiredMixin):
             instance = form.save(commit=False)
             nepali_event_day = instance.event_day
             nep_date = nepali_event_day.split('-')
-            year, month, day = _bs_to_ad(nep_date[0], nep_date[1], nep_date[2])
+            english_year_digit,english_month_digit,english_day_digit = get_nepali_digit(nep_date[0],nep_date[1],nep_date[2])
+            year,month,day = _bs_to_ad(english_year_digit,english_month_digit,english_day_digit)
             eng = f'{year}-{month}-{day}'
             eng_date = ''.join(eng)
-            instance.english_date = eng_date
+            parse_date = datetime.strptime(eng_date,'%Y-%m-%d').date()
+            instance.english_date = parse_date
             instance.save()
 
         return redirect('calendar:home')
