@@ -40,7 +40,6 @@ class EventForm(forms.ModelForm):
                 css_class='form-row'
             ),
                 Row(
-                         Column('group', css_class='form-group col-md-6 mb-0'),
                        Column('description', css_class='form-group col-md-6 mb-0'),
                
                   

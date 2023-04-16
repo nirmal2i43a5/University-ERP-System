@@ -15,60 +15,14 @@ from django.db.models import Q
 from rest_framework.filters import SearchFilter
 
 
-    
-class EventsViewSet(viewsets.ViewSet):
-    authentication_classes = (TokenAuthentication, SessionAuthentication)
-    permission_classes = (IsAuthenticated,)
+class EventsViewSet(viewsets.ModelViewSet):
+    queryset = Event.objects.all()
     serializer_class = EventSerializer
-    # filter_backends = [SearchFilter]
-    # search_fields = ['title']
-
-    def list(self, request):
-        events_qs = Event.objects.filter(category = 'Event')
-        holidays_qs = Event.objects.filter(category = 'Holiday')
-        today_event_qs = Event.objects.filter(event_day = NepDate.today())
-        
-            
-        event_serializers = EventSerializer(events_qs, many=True)
-        holidays_serializers = EventSerializer(holidays_qs, many=True, context={'request': request})
-        today_event_serializers = EventSerializer(today_event_qs, many=True)
-        
-        serializer_list = {
-                            'today_events': today_event_serializers.data,
-                           'upcoming_holidays':holidays_serializers.data,
-                           'upcoming_events':event_serializers.data
-                           }
-                       
-        # serializer_list = [event_serializers.data, holidays_serializers.data, today_event_serializers.data]
-        return Response(serializer_list, status=status.HTTP_200_OK)
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
+    permission_classes = (IsAuthenticated, )
+    # permission_required = 'events.view_event'
+    http_method_names = ['get']
     
-
-    
-    # def create(self, request):
-    #     event_serializers = EventSerializer(data=request.data) 
-    #     event_serializers.is_valid(raise_exception=True)
-    #     event_serializers.save()
-    #     return Response(event_serializers.data, status=status.HTTP_201_CREATED)
-    
-    
-    # def retrieve(self, request, pk=None):
-    #     event = get_object_or_404(Event, pk = pk)
-    #     event_serializers = EventSerializer(event, many = False)
-    #     return Response(event_serializers.data, status=status.HTTP_200_OK)
-
-
-    # def update(self, request, pk=None, ):
-    #     event = get_object_or_404(Event, pk = pk)
-    #     event_serializers = EventSerializer(instance=event, data=request.data)
-    #     event_serializers.is_valid(raise_exception=True)
-    #     event_serializers.save()
-    #     return Response(event_serializers.data, status=status.HTTP_200_OK)
-
-    # def delete(self,request, pk=None, ):
-    #     event = get_object_or_404(Event, pk = pk)
-    #     event.delete()
-    #     return Response({'message': 'Event is deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
-
 
 class UpcomingEventViewSet(viewsets.ModelViewSet):
     serializer_class = EventSerializer
@@ -114,18 +68,3 @@ class UpcomingHolidayViewSet(viewsets.ModelViewSet):
         return queryset_list
 
 
-@api_view(['GET'])
-def yearly_event_view(request, *args, **kwargs):
-    slug = request.GET.get('year')
-    yearly_events = Event.objects.filter(year = slug).values()
-    serializer = EventSerializer(yearly_events, many=True)
-    return Response(serializer.data, status=200)
-
-
-@api_view(['GET'])
-def today_events(request, *args, **kwargs):
-    todays_events = Event.objects.filter(event_day = NepDate.today())
-    print(today_events)
-    serializer = EventSerializer(todays_events, many=True)
-    return Response(serializer.data, status=200)
-   

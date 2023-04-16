@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from student_management_system.views import exam_home
 
 app_name = 'courses'
 
@@ -54,7 +55,11 @@ urlpatterns=[
     #mass exam application
     path('massexamapplication', views.massexamapplication, name="massexamapplication"),
     path('toggle_application/<str:pk>', views.toggle_application, name="toggle_application"),
-    path('gci_printresults/', views.gci_printresults, name="gci_printresults"),
+    path('printresults/', views.gci_printresults, name="gci_printresults"),
+
+
+   path('exam-management/',exam_home ,name = 'exam-management'),
+
     
     
     

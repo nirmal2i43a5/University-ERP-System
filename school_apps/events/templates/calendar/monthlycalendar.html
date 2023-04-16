@@ -2,11 +2,16 @@
 <!-- today event popup -->
 
   
-
+<style>
+    .calendar1 .dropdown >div img{
+        display:none;
+        visibility: hidden;
+    }
+</style>
 
 <div class="row">
-
-    <div class="col-md-7">
+   
+    <div class="col-md-6">
 
         <div class="card card-danger card-outline">
             <div class="card-body">
@@ -109,15 +114,16 @@
         </div>
     </div>
 
-
-    <div class="col-md-5">
+    <div class="col-md-1">
+    </div>
+    <div class="col-md-4">
         <!-- -------------------------------------Today event End---------------------------------------------------- -->
         <div class="card card-danger card-outline">
             <div class="card-body">
                 <ul class="list-group">
         
         
-                    <div class="table-title bg-dark">
+                    <div class="table-title bg-primary">
                         <p class="ml-2 mt-2 text-bold">Today Events</p>
                       </div>
                    
@@ -145,7 +151,7 @@
                         <div class="d-flex">
                             {% if perms.events.add_event %}
                             <a href="{% url 'calendar:event_create' %}" >
-                                <p class="add-text text-dark text-xs text-bold"><i class="fa fa-plus">&nbsp;</i> Add Event/Holiday</p>
+                                <p class="add-text text-primary text-xs text-bold"><i class="fa fa-plus">&nbsp;</i> Add Event/Holiday</p>
                               </a>
                               {% endif %}
                         </div>
@@ -153,13 +159,13 @@
                         <div class="d-flex">
                             {% if perms.events.view_event %}
                             <a href="{% url 'calendar:event_index' %}" >
-                                <p class="add-text text-dark text-xs text-bold"><i class="fa fa-list">&nbsp;</i>  Event List</p>
+                                <p class="add-text text-primary text-xs text-bold"><i class="fa fa-list">&nbsp;</i>  Event List</p>
                               </a>
                               {% endif %}
                         </div>
                     </div>
 
-                    <div class="table-title bg-dark ">
+                    <div class="table-title bg-primary ">
                         <p class="ml-2 mt-2 text-bold">Upcoming Events</p>
                       </div>
                      
@@ -196,7 +202,7 @@
                 <ul class="list-group">
 
 
-                    <div class="table-title bg-dark">
+                    <div class="table-title bg-primary">
                         <p class="ml-2 mt-2 text-bold">Upcoming Holidays</p>
                       </div>
                    
@@ -222,4 +228,5 @@
        
 
     </div>
+    
 </div>

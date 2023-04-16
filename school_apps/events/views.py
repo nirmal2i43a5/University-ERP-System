@@ -82,7 +82,7 @@ class MonthlyCalendar(TemplateView, MonthlyCalendarBaseView):
     """
     Show the monthly Calendar
     """
-    template_name = "calendar/calendar.html"
+    template_name = "calendar/nepalicalendar.html"
 
     def get_context_data(self, **kwargs):
         context = super(MonthlyCalendar, self).get_context_data(**kwargs)

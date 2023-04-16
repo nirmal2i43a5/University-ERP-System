@@ -10,11 +10,19 @@ giving dynamic name for group
 nepali datepicker(and convert to english while logic development)
 For password(use mobile instead of mobile)
 proper notification
-
+automatic redirect by ajax keyword searching
+Individual dashboard 
 
 Modified document models:for students with just customuser : 
 =>Manage queries selected_prefetch
 django compressor
 update student_list with datatables
-create ajax datatables for attendance module, assignment
+create ajax datatables for students, attendance module, assignment and its pagination
 I am using nepali calendar(which is valid upto 2100)(check in datemap.py)
+=>celery 
+
+===================
+Bugs :datatables is working 
+
+
+

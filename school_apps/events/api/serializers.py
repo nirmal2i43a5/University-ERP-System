@@ -7,9 +7,13 @@ from django_filters import FilterSet
 
 class EventSerializer(HyperlinkedModelSerializer):
     # url = HyperlinkedIdentityField(view_name="event_api:yearly_event")
+     # time_range = serializers.SerializerMethodField()
+
+    # def get_time_range(self, obj):
+    #     return '{} To {}'.format(obj.start_time, obj.end_time) 
     class Meta:
         model = Event
-        fields = ('id','title','event_day','start_time','end_time','description','category','year',)
+        fields = ('id','title','event_day','start_time','end_time','category','description',)
         
 
 class EventFilter(FilterSet):

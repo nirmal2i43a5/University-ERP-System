@@ -22,6 +22,7 @@ urlpatterns = [
    path('ajax/examselect',views.fill_exam_select_ajax ,name = 'fill_exam_select_ajax'),
    path('view_answer_sheet/',views.view_answer_sheet ,name = 'view_answer_sheet'),
    path('check_paper/',views.check_exam_paper ,name = 'check_exam_paper'),
+
    
    
    #  path('answer/save/',views.save_student_answer ,name = 'save_student_answer'),

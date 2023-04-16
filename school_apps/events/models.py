@@ -18,7 +18,7 @@ class Event(models.Model):
     title = models.CharField(max_length=200)
     event_day = models.CharField(_('Event Date'),max_length = 20)#default=date.today()
     english_date = models.DateField(null=True,blank=True)
-    year = models.SlugField(max_length=50, null=True,blank=True)
+    # year = models.SlugField(max_length=50, null=True,blank=True)
     start_time = models.TimeField()
     end_time = models.TimeField()
     description = models.TextField(null = True,blank= True)
@@ -43,10 +43,10 @@ class Event(models.Model):
 
 
 #I am slicing first four char of date and making it as slug
-@receiver(pre_save, sender=Event)
-def pre_save_receiver_event(sender, instance, *args, **kwargs):
+# @receiver(pre_save, sender=Event)
+# def pre_save_receiver_event(sender, instance, *args, **kwargs):
     
-    if not instance.year:
-        instance.year = unique_slug_generator(instance)
+#     if not instance.year:
+#         instance.year = unique_slug_generator(instance)
 
 

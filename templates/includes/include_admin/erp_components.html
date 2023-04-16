@@ -52,13 +52,24 @@
     </div>
     <div class="col-md-3">
 
-      <a href="{% url 'event-management' %}">
+      <a href="{% url 'calendar:home' %}">
 
       <span>
         <i class="fas fa-2x fa-calendar"></i>
         <br />
         <span>
           <strong>Event Management </strong>
+        </span>
+      </span>
+    </a>
+    </div>
+    <div class="col-md-3">
+      <a href="{% url 'courses:exam-management' %}">
+      <span>
+        <i class="fas fa-bus"></i>
+        <br />
+        <span>
+          <strong>Exam Management</strong>
         </span>
       </span>
     </a>
@@ -211,17 +222,9 @@
         </span>
       </span>
     </div> {% endcomment %}
-    {% comment %}
-    <div class="col-md-2">
-      <span>
-        <i class="fas fa-bus"></i>
-        <br />
-        <span>
-          <strong>Exam Planner and Schedule </strong>
-        </span>
-      </span>
-    </div>
-    {% endcomment %}
+  
+  
+   
     {% comment %} <div class="col-md-2" style="background-color:#EBDBC2;">
       <span>
         <i class="fas fa-users"></i>

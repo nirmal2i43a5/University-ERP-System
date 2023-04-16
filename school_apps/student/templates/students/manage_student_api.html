@@ -111,6 +111,7 @@
 
         
     <script>
+
       $("#id_semester").change(function(){
         var class_id = $(this).val();
         
@@ -122,6 +123,7 @@
             }
         })
     })
+{% include 'includes/api_datatables/student.html' %}
     
         $(document).ready(function(){
          
@@ -131,7 +133,7 @@
 
         */
         $(function () {
-          table = $("#student-table").DataTable(getDataTableConfig({//call getDataTableConfig located in  base_admin.py
+          table = $("#student-table").DataTable(getDataTableConfig({//call getDataTableConfig located in  base_admin.html
            
             table_id: '#student-table',
             delete_id_key: 'id',
@@ -147,7 +149,7 @@
            action : 'delete',
         
             additionalColumn: [{
-              targets: 3,
+              targets: 3,//image target in 3rd col
               render: function (data, type, row, meta) {
                 if (row.image) {
                   return ` <img src="${row.image}" alt="" style="width:35px;height:35px;" class="img-circle" />`;
