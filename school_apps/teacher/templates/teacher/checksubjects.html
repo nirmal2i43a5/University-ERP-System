@@ -4,12 +4,15 @@
         {% include 'override_table/header.html' with card_title='Your taught subjects' %}
         <br>
 
-    <table id="dataTable" class ="table table-hover">
+    <table id="example" cellspacing="0" width="100%" class=" table table-sm  table-striped table-bordered table-hover  text-nowrap  no-footer">
         <thead class="thead" style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);color:white;">
             <tr>
+                <th></th>
                 <th>#</th>
-                <th>Subject code</th>
+
                 <th>Subject name</th>
+                <th>Subject code</th>
+
                 <th>Class</th>
                 <th>Section</th>
                 <th>Course</th>
@@ -19,8 +22,11 @@
             {% for subject in subjectsteachers %}
                 <tr>
                     <td></td>
-                    <td> {{ subject.subject.subject_id}}</td>
+                    <td> {{ forloop.counter}}</td>
+
                     <td> {{ subject.subject.subject_name}}</td>
+                    <td> {{ subject.subject.subject_id}}</td>
+
                     <td> {{ subject.semester}}</td>
                     <td> {{ subject.section}}</td>
                     <td><span class="badge badge-info">{{subject.subject.course_category}}  </span>( <span class="badge badge-warning">{{subject.subject.course}}</span> )</td>

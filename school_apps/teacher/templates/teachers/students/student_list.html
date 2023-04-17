@@ -24,14 +24,14 @@
 
             <span>{{title}}</span>
 
-            <form class="float-right mb-2" role="search"  method="GET" style="height: 27px;margin:auto;position:relative;">
+            <form class="float-right mb-2" role="search"  method="GET" style="">
               <div class="input-group">
              
           
                 {{ form|crispy }} 
             
                 <div class="input-group-btn ">
-                  <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+                  <button type="submit" class="btn btn-primary">SEARCH</button>
     
                 </div>
               </div>
@@ -41,20 +41,21 @@
           </div>
 
           <!-- /.card-header -->
-          <div class="card-body table-responsive">
+          <div class="card-body ">
        
            
           
          
          
-            <table   class="table table-sm  table-striped table-bordered table-hover text-nowrap  no-footer">
+            <table   id="example" ellspacing="0" width="100%" class=" table table-sm  table-striped table-bordered table-hover  text-nowrap  no-footer">
               <thead>
                 <tr>
-                  <th></th>
+                  {% comment %} <th></th> {% endcomment %}
                   <th>#</th>
                   <th>Image</th>
-                  <th>Student Id</th>
                   <th>Full Name</th>
+
+                  <th>Student Id</th>
                   <th>Class</th>
                   <th>Section</th>
                   {% comment %} <th>Student Contact</th>
@@ -66,7 +67,7 @@
               <tbody>
                 {% for student in students %}{% include 'students/delete.html' %}
                 <tr>
-                  <td></td>
+                  {% comment %} <td></td> {% endcomment %}
                   <td>{{ forloop.counter }}</td>
                   <td>
 
@@ -79,10 +80,11 @@
                     {% endif %}
 
                   </td>
+                  <td>
+                    {{ student.student_user.full_name }}
+                        </td>
                     <td>{{ student.stu_id }} </td>
-                   <td>
-                  {{ student.student_user.full_name }}
-                      </td>
+                 
                     <td>{{ student.semester }}</td>
                     <td>{{ student.section }}</td>
              
@@ -127,8 +129,25 @@
     })
 })
 </script> -->
+ <script>
+
+$(function () {
+  $('#example').DataTable({
+      dom: 'lrftip',
+      responsive: true,
+      language: {
+        info: ""
+    }
+
+      
+     
+  });
+});
 
 
+
+
+</script>
 
 
 {% endblock custom_js %}

@@ -942,12 +942,12 @@ def add_syllabus(request):
 def manage_syllabus(request):
     syllabus = Syllabus.objects.all()
     search_form = TeacherSyllabusFilterForm(user = request.user)
-    semester = request.GET.get('semester')
+    subject = request.GET.get('subject')
     
-    if semester:
-        search_syllabus = Syllabus.objects.filter(semester=semester)
+    if subject:
+        search_syllabus = Syllabus.objects.filter(subject=subject)
         context = {'syllabus': search_syllabus,
-                   'form': SyllabusSearchForm(initial = {'semester': semester}),#show selected instance in search form
+                   'form': SyllabusSearchForm(initial = {'subject': subject}),#show selected instance in search form
                    'title': 'Syllabus'
                    }
 

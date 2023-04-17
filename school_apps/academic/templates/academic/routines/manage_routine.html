@@ -31,7 +31,7 @@
     {% if request.user.is_superuser or request.user|has_group:'Teacher' %}
 
 {% if not routines %}
-<div class="col-md-12">
+<div class="col-md-12 ">
   <div class="alert alert-default-warning">
     You should filter first to see routine.
   </div>
@@ -51,14 +51,14 @@
 
             <span><strong>Manage Routine</strong></span>
 
-            <form class="float-right mb-2" role="search"  method="GET" style="height: 27px;margin:auto;position:relative;">
+            <form class="float-right mb-2" role="search"  method="GET" style="">
               <div class="input-group">
              
           
                 {{ form|crispy }} 
             
                 <div class="input-group-btn ">
-                  <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+                  <button type="submit" class="btn btn-primary"><strong>SEARCH</strong></button>
     
                 </div>
               </div>
@@ -86,17 +86,25 @@
 
              
            {% endif %}
-
+           {% if request.user.is_superuser %}
 <table id="dataTable" class="table table-sm  table-striped table-bordered table-hover  text-nowrap  dataTable no-footer">
+        {% else %}
+        
+<table id="example"  cellspacing="0" width="100%" class=" table table-sm  table-striped table-bordered table-hover  text-nowrap  no-footer">
+
+           {% endif %}
+
   <thead>
     <tr>
-      <th></th>
+      {% comment %} <th></th> {% endcomment %}
       <th>ID</th>
-      <th>Course</th>
+      <th>File</th>
+
       <th>Semester</th>
       <th>Section</th>
 
-      <th>File</th>
+      <th>Course</th>
+
       <th>Description</th>
 
 {% if request.user.is_superuser %}
@@ -110,8 +118,17 @@
   <tbody>
     {% for routine in routines %}{% include 'academic/routines/delete.html' %}
     <tr>
-      <td></td>
+      {% comment %} <td></td> {% endcomment %}
       <td>{{ routine.id }}</td>
+      <td>
+        <a href="{{ routine.routine_file.url }}" style="cursor: pointer;" class="btn btn-xs btn-info">
+           <i class="fas fa-xs fa-eye"></i> View routine
+        </a>
+      
+      </td>
+      <td>{{ routine.semester }}</td>
+      <td>{{ routine.section }}</td>
+    
       <td>
         <span class="badge badge-info">{{routine.course_category}} 
         </span>
@@ -120,14 +137,6 @@
            {{routine.course}}</span> )
        {% else %}
        {% endif %}
-      </td>
-      <td>{{ routine.semester }}</td>
-      <td>{{ routine.section }}</td>
-      <td>
-        <a href="{{ routine.routine_file.url }}" style="cursor: pointer;" class="btn btn-xs btn-info">
-           <i class="fas fa-xs fa-eye"></i> View routine
-        </a>
-      
       </td>
       <td>{{ routine.description }}</td>
       {% if request.user.is_superuser %}
@@ -157,7 +166,9 @@
 {% endblock main_content %}
 
 {% block custom_js %}
+
 <script>
+
 $(document).ready(function () {
 
   $("#id_course_category").change(function(){
@@ -190,6 +201,16 @@ $("#id_semester").change(function(){
 
 
 });
+$(function () {
+  $('#example').DataTable({
+      dom: 'lrftip',
+      responsive: true
+
+      
+     
+  });
+});
+
 </script>
 
 

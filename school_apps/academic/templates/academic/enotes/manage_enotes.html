@@ -1,29 +1,47 @@
+
 {% extends 'admin_templates/base_admin.html' %}
 {% load static %}
 {% load auth_extras %}
+
 {% load crispy_forms_tags %}
-{% block title %}
-  {{title}}
-{% endblock title %}
+{% block title %}{{title}}{% endblock %}
 {% block main_content %}
 
+<!-- Main content -->
 <section class="content">
-    <div class="container-fluid">
-    <!-- /.card-header -->
+  <div class="container-fluid">
+  <!-- /.card-header -->
+
+  {% include "includes/messages.html" %}
   
-    {% include "includes/messages.html" %}
-    
-      <div class="row">
-        <div class="col-12">
-  
-  
+    <div class="row">
+      <div class="col-12">
+
+
+        <div class="card">
+          
+          <div class="card-header" style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);color:white;">
+            <span>{{title}}</span>
+
+   
+          </div>
           <div class="card">
             
             <div class="card-header">
+              <strong>
+                Advance Search:
+              </strong>
+              <button id="plus-search" class="btn btn-primary">+</button>
+        
+              {% if  request.user|has_group:'Admin' or request.user.is_superuser or request.user|has_group:'Teacher'   %}   
+              {% url 'academic:add_enote' as button_url %}
+                {% include 'override_table/header_button.html' with button_title='enote' button_url=button_url %}
+
+
               <div class="d-flex bd-highlight">
-                <div class="p-2 flex-fill bd-highlight"><strong>E-Notes</strong></div>
                 <div class="p-2 flex-fill bd-highlight">
-                  <form class="float-right" role="search"  method="GET" style="height: 40px;margin:auto;position:relative;margin-bottom:2rem;">
+
+                  <form class="float-right" id = "search-form" role="search"  method="GET" style="margin:auto;;">
                     <div class="input-group">
                    
                 
@@ -37,17 +55,13 @@
                   </form>
                 </div>
                 <div class="p-2 flex-fill bd-highlight">
-                         
-              {% if  request.user|has_group:'Admin' or request.user.is_superuser or request.user|has_group:'Teacher'   %}   
-              {% url 'academic:add_enote' as button_url %}
-                {% include 'override_table/header_button.html' with button_title='enote' button_url=button_url %}
-
-           
- 
-
-
-             
-            {% endif %}
+                 
+               
+     
+    
+    
+                 
+                {% endif %}
                 </div>
               </div>
   
@@ -56,159 +70,100 @@
      
   
             </div>
-          
-           
-            <!-- /.card-header -->
-            <div class="card-body table-responsive ">
-        
-            {% for enote in enotes %}
+          <!-- /.card-header -->
+          <div class="card-body table-responsive">
+            
+            {% url 'academic:add_subject' as button_url %}
+            
+                 
+            <table id="example" cellspacing="0" width="100%" class=" table table-sm  table-striped table-bordered table-hover  text-nowrap  no-footer">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>ID</th>
+                  <th>Title</th>
+                  <th>File</th>
+                  <th>Category</th>
+                  <th>Class</th>
+                  <th>Uploaded on</th>
+                  <th>Action</th>
 
+            
+
+                
+                
+                </tr>
+              </thead>
+              <tbody>
+                
+                {% for enote in enotes %}
             {% include "academic/enotes/delete.html" %}
 
+                <tr>
+                  <td></td>
+                  <td>{{forloop.counter}}</td>
 
-            <div class="row">
-              <div class="col-md-0 mt-2 mb-1">
-                <span>
-            
-            
-                  {% if enote.file %}
-                  <a href="{{ enote.file.url }}">
-                    <img src="{% static 'image/enotes.png' %}" alt="" style="width:70px;height:70px;" class="img-rectangle" />
-            
-                  </a>
+                  <td> {% if enote.file %}
+                    <a href="{{ enote.file.url }}" class="text-capitalize">
+                      <strong> Title : {{ enote.title }}</strong>
+                    </a>
                   {% else %}
-            
-                  <a href="">
-                    <img src="{% static 'image/enote.png' %}" alt="" style="width:70px;height:70px;" class="img-rectangle" />
-            
-                  </a>
+                    <a href="" class="text-capitalize">
+                      <strong> {{ enote.title }}</strong>
+                    </a>
+                  {% endif %}</td>
+
+
+                  <td>
+                    {% if enote.file %}
+                  
+                    <a href="{{ enote.file.url }}" style="cursor: pointer;" class="btn btn-xs btn-primary">
+                      <b>View Note</b>
+                    </a>
                   {% endif %}
-            
-            
-                </span>
-            
-              </div>
-              <div class="col-md-10">
-            
-            
-                <div class="card" style="border-radius:10px;">
-            
-                  <div class="card-body ">
-            
-            
-                    <div class="d-flex justify-content-between">
-            
-                      <div>
-                        {% if enote.file %}
-                        <a href="{{ enote.file.url }}" class="text-capitalize">
-                          <strong> {{ enote.title }}</strong>
-            
-                        </a>
-                        {% else %}
-                        <a href="" class="text-capitalize">
-                          <strong> {{ enote.title }}</strong>
-            
-                        </a>
-                        {% endif %}
-                      </div>
-            
-            
-                      <div>
-                       <strong>Category</strong> : <span class="badge badge-primary">
-                         {{enote.note_category}}
-                        </span>
-                      </div>
-            
-                    </div>
-                    <div class="d-flex justify-content-between">
 
-                      
-                      {% if enote.section %}
-                      <div>
-                        <strong> {{ enote.subject }}</strong>, {{ enote.section }} ,
-                      
-            
-                      </div>
-                      {% else %}
-                      <div>
-                        <strong> {{ enote.subject }}</strong>, {{ enote.semester }} ,
-                      
-            
-                      </div>
+                  </td>
+
+                 
+                  <td>
+                    {{ enote.note_category }}
+                  </td>
+
+                  <td>
+                    {% if enote.section %}
+                    <p><strong>{{ enote.subject }}</strong>, {{ enote.section }}</p>
+                  {% else %}
+                    <p><strong>{{ enote.subject }}</strong>, {{ enote.semester }}</p>
+                  {% endif %}
+                    </td>
+                   
+                      <td>{{ enote.created_at }}</td>
                         
-                      {% endif %}
+                       
+                      <td>
                         
-                  
-            
-                    
-                      <div>
-                        <span class="text-sm">
-                        <strong>Uploaded on:</strong> 
-                          {{enote.created_at}}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-            
-              </div>
-            
-
-              
-              {% if request.user.staff or request.user.is_superuser %}
-              <div class="col-md-0 mt-4" >
-                <div class="btn-group" role="group">
-                  <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false" style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);color:white;">
-                    Action
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                    <a class="dropdown-item" href="{% url 'academic:edit_enote' enote.pk %}">Edit</a>
-                    <button class="dropdown-item" data-target='#deleteenote-{{ enote.pk }}'
-                      data-toggle="modal">Delete
-                    </button>
-                  </div>
-                </div>
-                <div class="d-flex flex-column mt-1">
-                  
-            
-                </div>
-              </div>
-                
-              {% endif %}
-                
-            </div>
-            
-         
-               {% empty %}
-              
-               <h3> No E-Notes Found!</h3>
-            {% endfor %}
-
-            </div>
-            <!-- /.card-body -->
+                        <a href="{% url 'academic:edit_enote' enote.pk %}" class="btn btn-sm btn-outline-success"><i
+                            class="fas fa-xs fa-edit"></i> Edit</a>
+    
+                        <button class="btn btn-outline-danger btn-sm" data-target='#deleteenote-{{ enote.pk }}'
+                          data-toggle="modal"><i class="fas fa-sm fa-trash-alt"></i> Delete</button>
+    
+                      </td>
+                      
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
           </div>
-          <!-- /.card -->
+          <!-- /.card-body -->
         </div>
+        <!-- /.card -->
       </div>
     </div>
-  </section>
-  <!-- /.content -->
+  </div>
+</section>
+<!-- /.content -->
 
-<style>
-  .nav-custom > li > a:hover{
-    color:black;
-  }
-  .nav-custom > li > a{
-    
-    font-weight: 600;
-    color:white;
-    padding: 8px 10px 8px 10px;
-    background-color:#743DB8;
-    
-
-  }
-</style>
 {% endblock main_content %}
 
 {% block custom_js %}
@@ -259,7 +214,18 @@
   })
  
   });
+  // Hide the search form by default
+  $('#search-form').hide();
+  
+  // Toggle the search form visibility when clicking on the plus search button
+  $('#plus-search').click(function() {
+    $('#search-form').toggle();
+    $(this).toggleClass('btn-success btn-danger '); // Change button color
+    $(this).text(function(i, text){
+      return text === "+" ? "-" : "+"; // Change button text
+    });
+  });
 </script>
 
-{% endblock custom_js %}
 
+{% endblock custom_js %}

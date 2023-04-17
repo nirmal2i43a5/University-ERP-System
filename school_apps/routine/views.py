@@ -46,11 +46,11 @@ def add_routine(request):
 def manage_routine(request):
 
     routines = Routine.objects.all()
-    # if request.user.is_superuser:
-    search_form = RoutineSearchForm(user = request.user)
+    if request.user.is_superuser:
+        search_form = RoutineSearchForm(user = request.user)
 
-    # else:
-    #     search_form = RoutineSearchForm(user = request.user)
+    else:
+        search_form = RoutineSearchForm(user = request.user)
     semester = request.GET.get('filter_semester')
     section = request.GET.get('section')
 
@@ -66,14 +66,14 @@ def manage_routine(request):
     if semester:
         search_routines = Routine.objects.filter(semester=semester)
         context = {'routines': search_routines,
-                   'form': RoutineSearchForm(initial = {'semester': semester}),#show selected instance in search form
+                   'form': RoutineSearchForm(user = request.user,initial = {'semester': semester}),#show selected instance in search form
                    'title': 'Routine'
                    }
 
         return render(request, 'academic/routines/manage_routine.html', context)
 
     context = {'form': search_form,
-            #    'routines': routines,
+               'routines': routines,
                'title': 'Routine'}
     return render(request, 'academic/routines/manage_routine.html', context)
 

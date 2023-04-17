@@ -115,6 +115,7 @@ class AssignmentForm(forms.ModelForm):
         model = Assignment
         fields = '__all__'
         exclude = ('created_by','student','teacher',)
+
         
     def __init__(self, *args, user=None, **kwargs):
         super().__init__(*args, **kwargs)
@@ -124,16 +125,17 @@ class AssignmentForm(forms.ModelForm):
         if user.is_superuser or  user.groups.filter(name='Super-Admin') or user.groups.filter(name='Admin'):
             course_category = self.fields['course_category']
             course_category.queryset = CourseCategory.objects.all()
+            
 
 class SemesterSectionSearchForm(forms.Form):
     # course_category = forms.ModelChoiceField(empty_label = 'Choose Course Category',
     #                                   queryset = CourseCategory.objects.all())
     
-    semester = forms.ModelChoiceField(required = False, label = 'Semester',empty_label = 'Choose Class',
+    semester = forms.ModelChoiceField(required = False, label = 'Semester',empty_label = '------------------Choose Class------------------',
                                       queryset = Semester.objects.all())
     section = forms.ModelChoiceField(required = False, empty_label = 'Choose Section',
                                      queryset = Section.objects.all())
-    subject = forms.ModelChoiceField(required = False, empty_label = 'Choose Subject',
+    subject = forms.ModelChoiceField(required = False, empty_label = '------------------Choose Subject------------------',
                                      queryset = Subject.objects.all())
     start_date = forms.DateField(required = False, label = 'From', widget=forms.DateInput(attrs = {'type':'date','class':''}))
     end_date = forms.DateField(required = False,label = 'To',widget=forms.DateInput(attrs = {'type':'date','class':''}))
@@ -350,16 +352,28 @@ class SubjectSearchForm(forms.Form):
         
 
 class RoutineSearchForm(forms.Form):
-    # course_category = forms.ModelChoiceField(label = '',empty_label="Course Category",queryset = CourseCategory.objects.all())
-    # filter_course = forms.ModelChoiceField(label = '',empty_label="Course",required = False, queryset = Course.objects.all())
-    filter_semester = forms.ModelChoiceField(label = '',empty_label="Select Semester", queryset = Semester.objects.all())
-    section = forms.ModelChoiceField(label = '',empty_label="Select Section", queryset = Section.objects.none())
+ 
+
+
+    # filter_semester = forms.ModelChoiceField(label = '',empty_label="Select Semester", queryset = Semester.objects.all())
+    # section = forms.ModelChoiceField(label = '',empty_label="Select Section", queryset = Section.objects.none())
    
     def __init__(self, *args, user, **kwargs):
+        
         super().__init__(*args, **kwargs)
-        filter_semester = self.fields['filter_semester']
-        filter_semester.queryset = user.semester_set.all()
+        if user.is_superuser:
+
+            self.fields['course_category'] = forms.ModelChoiceField(label = '',required = False,empty_label="Course Category",queryset = CourseCategory.objects.all())
+            self.fields['filter_course'] = forms.ModelChoiceField(label = '',required = False, empty_label="Course ",queryset = Course.objects.all())
+            self.fields['filter_semester'] = forms.ModelChoiceField(label = '',empty_label="Select Semester", queryset = Semester.objects.all())
+            self.fields['section'] = forms.ModelChoiceField(label = '',required = False,empty_label="Select Section", queryset = Section.objects.none())
+        else:
+            self.fields['filter_semester'] = forms.ModelChoiceField(label = '',empty_label="Select Semester", queryset = Semester.objects.all())
+            self.fields['section'] = forms.ModelChoiceField(label = '',required = False,empty_label="Select Section", queryset = Section.objects.none())
+            filter_semester = self.fields['filter_semester']
+            filter_semester.queryset = user.semester_set.all()
         # filter_semester.queryset = user.semesterteacher_set.all()
+
 # class AdminRoutineSearchForm(forms.Form):
 #     course_category = forms.ModelChoiceField(label = '',empty_label="Course Category",queryset = CourseCategory.objects.all())
 #     filter_course = forms.ModelChoiceField(label = '',empty_label="Course",required = False, queryset = Course.objects.all())

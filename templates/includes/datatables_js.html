@@ -12,11 +12,25 @@
 <script src="{% static 'plugins/datatables-buttons/js/buttons.print.js' %}"></script>
 <script src="{% static 'plugins/datatables-buttons/js/buttons.flash.js' %}"></script>
 <script src="{% static 'plugins/datatables-buttons/js/buttons.colVis.js' %}"></script>
+<script src="{% static 'plugins/datatables/responsive.js' %}"></script>
 
 
 
 
 <script>
+  $(function () {
+    $('#example').DataTable({
+        dom: 'lrftip',
+        responsive: true,
+        language: {
+          info: "",
+         
+          }
+  
+        
+       
+    });
+  });
   $(function () {
     $('#dataTable').DataTable({
         dom: 'lBrftip',
