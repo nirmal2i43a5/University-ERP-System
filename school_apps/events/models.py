@@ -11,6 +11,7 @@ from .utils.utilities import get_nepali_digit
 from datetime import datetime
 
 
+
 class Event(models.Model):
     choices = (('Holiday','Holiday'),
                ('Event','Event'))

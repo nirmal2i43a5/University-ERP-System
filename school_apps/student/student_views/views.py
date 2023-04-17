@@ -56,19 +56,19 @@ def add_student(request):
             # father_fname = parent_form.cleaned_data["father_name"].split()[0]
             fname = full_name.split()[0]
             father_username = "p" + fname.lower() + f'{student_id}' 
-            Father_object = CustomUser.objects.create_user(
+            father_instance = CustomUser.objects.create_user(
                 username=father_username, password='password', user_type=parent_role, full_name = parent_form.cleaned_data["father_name"]
             )
-
-            Father_object.parent.father_name = parent_form.cleaned_data['father_name']
-            Father_object.parent.mother_name = parent_form.cleaned_data['mother_name']
-            Father_object.parent.father_phone = parent_form.cleaned_data['father_phone']
-            Father_object.parent.mother_phone = parent_form.cleaned_data['mother_phone']
-            Father_object.parent.local_guardian_name = parent_form.cleaned_data['local_guardian_name']
-            Father_object.parent.local_guardian_phone =  parent_form.cleaned_data['local_guardian_phone']
-            Father_object.parent.home_phone = parent_form.cleaned_data['home_phone']
-            Father_object.groups.add(parent_role)
-            Father_object.parent.save()
+            print(father_instance)
+            father_instance.parent.father_name = parent_form.cleaned_data['father_name']
+            father_instance.parent.mother_name = parent_form.cleaned_data['mother_name']
+            father_instance.parent.father_phone = parent_form.cleaned_data['father_phone']
+            father_instance.parent.mother_phone = parent_form.cleaned_data['mother_phone']
+            father_instance.parent.local_guardian_name = parent_form.cleaned_data['local_guardian_name']
+            father_instance.parent.local_guardian_phone =  parent_form.cleaned_data['local_guardian_phone']
+            father_instance.parent.home_phone = parent_form.cleaned_data['home_phone']
+            father_instance.groups.add(parent_role)
+            father_instance.parent.save()
             
             
             fname = full_name.split()[0]
@@ -91,7 +91,7 @@ def add_student(request):
         #     'join_year','stu_id','roll_no','gender','shift','semester','section','course','faculty','program','status','contact',
         #     'permanent_address','temporary_address','dob','blood_group','gpa','previous_school_name','image',
         # )
-            print(student_form.cleaned_data['course_category'],":::::::::::::::::course cate")
+            # print(student_form.cleaned_data['course_category'],":::::::::::::::::course cate")
            
             user.student.course_category = get_object_or_404(CourseCategory, course_name = student_form.cleaned_data['course_category'])
             user.student.semester = student_form.cleaned_data['semester']
@@ -114,7 +114,7 @@ def add_student(request):
             # user.student.optional_subject = student_form.cleaned_data['optional_subject']
             user.student.gpa = student_form.cleaned_data['gpa']
             user.student.previous_school_name = student_form.cleaned_data["previous_school_name"]
-            user.student.guardian = Father_object.parent
+            user.student.guardian = father_instance.parent
             if image_url != None:
                 user.student.image = image_url
             user.save()

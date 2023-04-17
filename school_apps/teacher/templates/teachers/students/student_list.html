@@ -44,10 +44,10 @@
           <div class="card-body table-responsive">
        
            
-            
+          
          
          
-            <table  id="dataTable" class="table table-sm  table-striped table-bordered table-hover text-nowrap  no-footer">
+            <table   class="table table-sm  table-striped table-bordered table-hover text-nowrap  no-footer">
               <thead>
                 <tr>
                   <th></th>
@@ -57,9 +57,9 @@
                   <th>Full Name</th>
                   <th>Class</th>
                   <th>Section</th>
-                  <th>Student Contact</th>
+                  {% comment %} <th>Student Contact</th>
                   <th>Parent Contact</th>
-                  <th>User Name</th>
+                  <th>User Name</th> {% endcomment %}
 
                 </tr>
               </thead>
@@ -86,10 +86,10 @@
                     <td>{{ student.semester }}</td>
                     <td>{{ student.section }}</td>
              
-                  <td>{{ student.contact }}</td>
+                  {% comment %} <td>{{ student.contact }}</td>
                   <td>{{ student.guardian.mother_phone }} , {{ student.guardian.father_phone }}</td>
 
-                  <td>{{ student.student_user.username }}</td>
+                  <td>{{ student.student_user.username }}</td> {% endcomment %}
                  
               
                   

@@ -2,6 +2,7 @@
 Attendance {% endblock %} {% load crispy_forms_tags %} {% load static %} {% block main_content %}
 
 <!-- Main content -->
+
 <section class="content">
   <div class="container-fluid">
     <!-- /.card-header -->
@@ -14,6 +15,12 @@ Attendance {% endblock %} {% load crispy_forms_tags %} {% load static %} {% bloc
             style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0); color: white"
           >
             <strong> Student Attendance</strong>
+            <a
+            href=""
+            class="btn btn-sm btn-info"
+            style="background-color: #743db8;float:right;"
+            ><i class="fas fa-sync"></i
+          ></a>
           </div>
 
           <!-- -------------------------Subject filter form ------------------------------------------------ -->
@@ -29,12 +36,7 @@ Attendance {% endblock %} {% load crispy_forms_tags %} {% load static %} {% bloc
                 >
                   <strong>Take Student Attendance</strong>
                 </button>
-                <a
-                  href=""
-                  class="btn btn-sm btn-info"
-                  style="background-color: #743db8"
-                  ><i class="fas fa-sync"></i
-                ></a>
+               
               </div>
             </div>
           </form>
@@ -42,37 +44,43 @@ Attendance {% endblock %} {% load crispy_forms_tags %} {% load static %} {% bloc
         </div>
       </div>
 
-      {% if course_category %}
-      <div class="d-flex flex-column bd-highlight" style="margin-right: 10%">
-        <div class="card px-4 py-3 ml-4 mt-0">
-          <div class="p-1 bd-highlight">
-            <strong>Course Category :</strong>:
-            <span class="badge badge-info">{{course_category}}</span>
-          </div>
-          <div class="p-1 bd-highlight">
-            <strong>Course :</strong>:
-            <span class="badge badge-info">{{course}}</span>
-          </div>
-          <div class="p-1 bd-highlight">
-            <strong>Semester</strong>: {{ semester.name }}
-          </div>
-          <div class="p-1 bd-highlight">
-            <strong>Section</strong>: {{ section.section_name }}
-          </div>
-          <div class="p-1 bd-highlight">
-            <strong>Subject</strong>: {{ subject }}
+    
+    </div>
+
+    <!-- -------------------------attendace save form ------------------------------------------------ -->
+    <div class="row">
+      <div class="col-sm-12 col-lg-12">
+            {% comment %} <h5 class="card-title">Card title</h5> {% endcomment %}
+              {% if course_category %}
+        <div class="d-flex flex-column bd-highlight" style="margin-right: 10%">
+          <div class="card px-4 py-3 ml-4 mt-0">
+            <div class="p-1 bd-highlight">
+              <strong>Course Category :</strong>:
+              <span class="badge badge-info">{{course_category}}</span>
+            </div>
+            <div class="p-1 bd-highlight">
+              <strong>Course :</strong>:
+              <span class="badge badge-info">{{course}}</span>
+            </div>
+            <div class="p-1 bd-highlight">
+              <strong>Semester</strong>: {{ semester.name }}
+            </div>
+            <div class="p-1 bd-highlight">
+              <strong>Section</strong>: {{ section.section_name }}
+            </div>
+            <div class="p-1 bd-highlight">
+              <strong>Subject</strong>: {{ subject }}
           </div>
         </div>
       </div>
 
       {% endif %}
+      </div>
     </div>
-
-    <!-- -------------------------attendace save form ------------------------------------------------ -->
-    <form
-      action="{% url 'attendance_app:save_student_attendance' %}"
-      method="POST"
-    >
+    {% comment %} <div class="container"> {% endcomment %}
+    
+    <form action="{% url 'attendance_app:save_student_attendance' %}" method="POST">
+    
       <!-- <input type="hidden" name = "semester_id" value = "{{ semester.id }}">
         <input type="hidden" name = "section_id" value = "{{ section.id }}"> -->
 
@@ -81,6 +89,7 @@ Attendance {% endblock %} {% load crispy_forms_tags %} {% load static %} {% bloc
       <div class="card">
         <!-- /.card-header -->
         <div class="card-body">
+          
           {% if students %}
 
           <div class="d-flex bd-highlight">
@@ -106,53 +115,57 @@ Attendance {% endblock %} {% load crispy_forms_tags %} {% load static %} {% bloc
               />
             </div>
           </div>
-          <hr />
-          <div class="row">
-            {% for student in students %}
 
-            <div class="col-md-6">
-              <div class="card card-header">
-                <div class="row">
-                  <div class="col-md-6">
-                    <strong> {{forloop.counter}}</strong> .
+          <hr />
+
+          <div class="container-fluid">
+            <div class="row">
+              {% for student in students %}
+              <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                <div class="row align-items-center">
+                  <strong> {{forloop.counter}}</strong> .
+
+                  <div class="col-2">
+                    {% if student.image %}
+          
+                    <a href="{{ student.image.url }}">   <img src="{{ student.image.url }}" alt="" style="width:35px;height:35px;" class="img-circle" /></a>
+          
+                      {% else %}
+                      <img src="{% static 'image/default_profile.png' %}" alt="" style="width:35px;height:35px;" class="img-circle" />
+                      {% endif %}
+                  </div>
+                  <div class="col-4">
                     <a href="{% url 'admin_app:view_student' student.id %}">
-                      {{ student.student_user.full_name }}<strong
+                      {{ student.student_user.full_name }}
+                      {% comment %} <strong
                         >( {{ student.student_user.username }})</strong
-                      >
+                      > {% endcomment %}
                     </a>
                   </div>
-
-                  <div class="col-md-6">
+                  <div class="col-5">
+                   
                     <select class="status" name="{{ student.student_user.id }}">
-                      <!-- <option value="" selected>Choose Status</option> -->
-
+          
                       <option value="Present" selected>Present</option>
-
                       <option value="Absent(Informed)">Absent(Informed)</option>
-
-                      <option value="Absent(Not Informed)">
-                        Absent(Not Informed)
-                      </option>
-
+                      <option value="Absent(Not Informed)">Absent(Not Informed)</option>
                       <option value="Late">Late</option>
-
                       <option value="Excused">Excused</option>
                     </select>
                   </div>
-
-                  <!-- <div class="col-md-4">
-                    <input type="text" id="id_remark"  name="{{ student.student_user.id }}" placeholder="Enter Remark" class="form-control">
-
-                  </div>  -->
                 </div>
               </div>
+              {% endfor %}
+            
+             
             </div>
-
-            {% endfor %}
           </div>
         </div>
-        <!-- /.card-body -->
+
       </div>
+     
+        <!-- /.card-body -->
+      
       <!-- /.card -->
       <a
         href="{% url 'attendance_app:manage_student_attendance' %}"
@@ -337,4 +350,52 @@ $("#id_section").change(function(){
 
 </script>
 
+
 {% endblock custom_js %}
+
+<div class="container-fluid">
+  <div class="row">
+    {% for student in students %}
+
+    <div class="col-12 col-sm-6 col-md-4 mb-3">
+      <div class="row align-items-center">
+
+        <div class="col-2 col-sm-2">
+          <strong> {{forloop.counter}}</strong> .
+  
+          {% if student.image %}
+
+          <a href="{{ student.image.url }}">   <img src="{{ student.image.url }}" alt="" style="width:35px;height:35px;" class="img-circle" /></a>
+
+            {% else %}
+            <img src="{% static 'image/default_profile.png' %}" alt="" style="width:35px;height:35px;" class="img-circle" />
+            {% endif %}
+        </div>
+        <div class="col-4 col-sm-4">
+          <a href="{% url 'admin_app:view_student' student.id %}">
+            {{ student.student_user.full_name }}
+            {% comment %} <strong
+              >( {{ student.student_user.username }})</strong
+            > {% endcomment %}
+          </a>
+        </div>
+        <div class="col-6 col-sm-6">
+          <select class="status" name="{{ student.student_user.id }}">
+
+            <option value="Present" selected>Present</option>
+            <option value="Absent(Informed)">Absent(Informed)</option>
+            <option value="Absent(Not Informed)">Absent(Not Informed)</option>
+            <option value="Late">Late</option>
+            <option value="Excused">Excused</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    
+  
+    
+ 
+    
+  </div>
+</div>

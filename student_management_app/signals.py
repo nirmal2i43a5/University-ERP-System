@@ -75,32 +75,32 @@ def populate_models(sender, **kwargs):
     
     
 
-# @receiver(post_save, sender=CustomUser)
-# def create_user_profile(sender, instance, created, **kwargs):
-#     if created:
-#         group = populate_models(sender)
-#         if instance.user_type in [group[0],group[1],group[2], group[6]]:
-#             AdminUser.objects.create(admin_user=instance)
-#         elif instance.user_type == group[3]:
-#             Staff.objects.create(staff_user=instance)
-#         elif instance.user_type == group[4]:
-#             Student.objects.create(student_user=instance)
-#         elif instance.user_type == group[5]:
-#             Parent.objects.create(parent_user=instance)
-#         else:
-#             ExtraUser.objects.create(extra_user=instance)
+@receiver(post_save, sender=CustomUser)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        group = populate_models(sender)
+        if instance.user_type in [group[0],group[1],group[2], group[6]]:
+            AdminUser.objects.create(admin_user=instance)
+        elif instance.user_type == group[3]:
+            Staff.objects.create(staff_user=instance)
+        elif instance.user_type == group[4]:
+            Student.objects.create(student_user=instance)
+        elif instance.user_type == group[5]:
+            Parent.objects.create(parent_user=instance)
+        else:
+            ExtraUser.objects.create(extra_user=instance)
     
-# @receiver(post_save, sender=CustomUser)
-# def save_user_profile(sender, instance, **kwargs):
-#     group = populate_models(sender)
-#     if instance.user_type in [group[0],group[1],group[2]]:
-#         instance.adminuser.save()
-#     if instance.user_type == group[3]:
-#         instance.staff.save()
-#     if instance.user_type == group[4]:
-#         instance.student.save()
-#     if instance.user_type == group[5]:
-#         instance.parent.save()
+@receiver(post_save, sender=CustomUser)
+def save_user_profile(sender, instance, **kwargs):
+    group = populate_models(sender)
+    if instance.user_type in [group[0],group[1],group[2]]:
+        instance.adminuser.save()
+    if instance.user_type == group[3]:
+        instance.staff.save()
+    if instance.user_type == group[4]:
+        instance.student.save()
+    if instance.user_type == group[5]:
+        instance.parent.save()
    
 
 

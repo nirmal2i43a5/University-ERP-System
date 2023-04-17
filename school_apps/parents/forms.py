@@ -53,8 +53,9 @@ class ParentForm(forms.ModelForm):
     local_guardian_name=forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"form-control", "placeholder": " Enter Local Guardian Name",}))
     mother_name=forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"form-control","placeholder": " Enter Mother Name",}))
     father_name=forms.CharField(required = False,widget=forms.TextInput(attrs={"class":"form-control","placeholder": " Enter Father Name",}))
-    father_phone=forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"form-control", "placeholder": " Enter Father Mobile Number",}))
-    mother_phone=forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"form-control", "placeholder": " Enter  Mother Mobile Number",}))
+    father_phone=forms.CharField(label = "Parent Main Contact",required = False, 
+                                 widget=forms.TextInput(attrs={"class":"form-control", "placeholder": " Enter Parent Main Contact",}))
+    mother_phone=forms.CharField(label = "Parent Additional Contact",required = False, widget=forms.TextInput(attrs={"class":"form-control", "placeholder": " Enter  Parent Additional Contact",}))
     local_guardian_phone=forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"form-control", "placeholder": " Enter Local Guardian Mobile Number",}))
     home_phone=forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"form-control", "placeholder": " Enter  Home Mobile Number",}))
     class Meta:
@@ -69,32 +70,29 @@ class ParentForm(forms.ModelForm):
         self.helper.form_tag = False
         self.helper.layout = Layout(
             Row(
+                  Column('father_phone', css_class='form-group col-md-6 mb-0'),
+                    Column('mother_phone', css_class='form-group col-md-6 mb-0'),
              
-                Column('home_phone', css_class='form-group col-md-6 mb-0'),
-               Column('father_name', css_class='form-group col-md-6 mb-0'),
                 
                 css_class='form-row'
             ),
              Row(
-                  Column('father_phone', css_class='form-group col-md-6 mb-0'),
+               Column('father_name', css_class='form-group col-md-6 mb-0'),
+            
                     Column('mother_name', css_class='form-group col-md-6 mb-0'),
                   
                 css_class='form-row'
             ),
                 Row(
                    
-                    Column('mother_phone', css_class='form-group col-md-6 mb-0'),
                     Column('local_guardian_name', css_class='form-group col-md-6 mb-0'),
+                    Column('local_guardian_phone', css_class='form-group col-md-6 mb-0'),
+
+                # Column('home_phone', css_class='form-group col-md-6 mb-0'),
                                  
                     css_class='form-row'
             ),
-                            Row(
-                   
-                    Column('local_guardian_phone', css_class='form-group col-md-6 mb-0'),
-                    
-                                #  Column('image', css_class='form-group col-md-6 mb-0'),
-                    css_class='form-row'
-            ),
+                            
                           
              
                 Row(
