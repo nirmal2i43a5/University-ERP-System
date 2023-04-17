@@ -24,14 +24,14 @@
 
             <span>{{title}}</span>
 
-            <form class="float-right mb-2" role="search"  method="GET" style="height: 27px;margin:auto;position:relative;">
+            <form class="float-right mb-2" role="search"  method="GET" >
               <div class="input-group">
              
           
                 {{ form|crispy }} 
             
                 <div class="input-group-btn ">
-                  <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+                  <button type="submit" class="btn btn-primary">SEARCH <i class="fas fa-search"></i></button>
     
                 </div>
               </div>
@@ -108,6 +108,7 @@
 
 {% block custom_js %}
 
+{% include 'includes/api_datatables/student.html' %}
 
         
     <script>
@@ -123,7 +124,6 @@
             }
         })
     })
-{% include 'includes/api_datatables/student.html' %}
     
         $(document).ready(function(){
          
@@ -142,8 +142,9 @@
             app_name : 'student_management_app',
             replace_app_name: 'student_management_app',
             action_index: $("#student-table th").length - 1,
-           edit_url: '{% url "admin_app:edit_student"  "pk_val" %}',
-           delete_url: '', 
+            edit_url: '{% url "admin_app:edit_student"  "pk_val" %}',
+            delete_url: '{% url "admin_app:delete_student" "pk_val" %}',
+
            view_url:'{% url "admin_app:view_student"  "pk_val" %}',
            make_inactive_url:'{% url "admin_app:make_student_inactive"  "pk_val" %}',
            action : 'delete',
@@ -161,7 +162,7 @@
             },
             
             {
-              targets: 12,//number of field i want to show in datatables(from id(#) to Username = 9)
+              targets: 9,//number of field i want to show in datatables(from id(#) to Username = 9)
               "visible": false,
             },
             ]
@@ -178,7 +179,6 @@
         });
        
     </script>
-
 
 {% endblock custom_js %}
 

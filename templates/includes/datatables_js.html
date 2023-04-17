@@ -31,38 +31,18 @@
        
     });
   });
-  $(function () {
+  $(document).ready(function() {
     $('#dataTable').DataTable({
         dom: 'lBrftip',
+        
         responsive: true,
         
         buttons: {
             buttons: [
-              
-         
-                { extend: 'selectAll', className: 'btn-datatables' },
-                { extend: 'selectNone', className: 'btn-datatables' },
-                { extend: 'copy', className: 'btn-datatables',
-                exportOptions: {
-                  columns: ':not(:last-child)' // hide columns with class 'actions'
-              }
-              },
-                { extend: 'csv', className: 'btn-datatables' ,
-                exportOptions: {
-                  columns: ':not(:last-child)' // hide columns with class 'actions'
-              }
-              },
-                { extend: 'excel', className: 'btn-datatables' ,
-                exportOptions: {
-                  columns: ':not(:last-child)' // hide columns with class 'actions'
-              }
-              },
-
-                { extend: 'print', className: 'btn-datatables' ,
-                exportOptions: {
-                  columns: ':not(:last-child)' // hide columns with class 'actions'
-              }
-              },
+                { extend: 'copy', className: 'btn-datatables'},
+                { extend: 'csv', className: 'btn-datatables' },
+                { extend: 'excel', className: 'btn-datatables' },
+                { extend: 'print', className: 'btn-datatables' },
             ],
         },
         'columnDefs': [{
@@ -73,64 +53,75 @@
                 'selectRow': true
             }
         }],
-        'select': {
-          'style': 'multi',
-      },
+       
         'order': [
             [1, 'asc']
         ]
     });
-});
-
-$(document).ready(function() {
+  });
+  
+  $(document).ready(function() {
    // $('select').select2({theme:"bootstrap4"});
-});
+  });
   </script>
-
-<style  type="text/css">
   
+  <style  type="text/css">
+
+  .dataTables_length>label>select[name="dataTable_length"]{
+    border-radius:2rem;
+  }
   .dt-buttons button{
-    background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);
+    background:#435EBE;
     font-weight: 40px;
-    font-size: large;
+    font-size: small;
+    color:white;
   }
-
-  .dt-buttons button:hover{
-    background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);
+.buttons-copy:hover,.buttons-csv:hover,.buttons-excel:hover,.buttons-print:hover{
+   background:#FFFFFF;color:black;
   }
+.dt-buttons button.dt-button{
+  margin-left:1rem;margin-bottom:8px;
+  border-radius:2rem;
 
-  /*For pagination */
+}
+.dt-buttons button{
+  border-radius:2rem;
+}
+.dt-buttons button>span{
+  font-size:0.8rem;
+  font-weight: bold;
+}
 
-  .paginate_button.current:hover
-  
-  {
-  
-          background: none !important;
-  
-               border-radius: 50px;
-  
-               background-color: var(--theadColor) !important;
-  
-           color:#fff !important
-  
+#dataTable_filter input[type=search]{
+  border-radius:1rem;padding:1rem;
+}
+  /*For pagination  This current css is not working from here*/
+  div.dataTables_paginate ul.pagination li.paginate_button.page-item.active>a.page-link{
+      background:#435EBE;
+      border-radius:2rem;
+      color:#fff !important
   }
   
+#dataTable_previous:hover, #dataTable_next:hover{
+  background:#435EBE;
+  border-radius:2rem;
+  color:#fff !important
+}
+.dataTables_wrapper .dataTables_length {
+  white-space: nowrap;
+}
+ /*
   .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover,
-  
   .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
   
     border: 1px solid #979797;
-  
     background: none !important;
-  
     border-radius: 50px !important;
-  
-     background-color: #000 !important;
-  
+     background-color: #435EBE !important;
      color: #fff !important;
   
-  }
-</style>
+  }*/
+  </style>
 
 
 

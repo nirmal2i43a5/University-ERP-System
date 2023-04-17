@@ -17,6 +17,7 @@ Individual dashboard
 =>change view pdf to download pdf because it is irresponsive(assignment, routine,e-notes,.......)
 =>also check verification of pdf size and restrict it
 =>pagination in enotes/assignment where I have not used datatables
+=>update datatables design with color
 
 =>Update dashboard with various events and charts(like birthday, leave apply, notification)
 =>backup database with cron
@@ -32,7 +33,12 @@ I am using nepali calendar(which is valid upto 2100)(check in datemap.py)
 =>celery 
 
 ===================
-Bugs :datatables is working 
+Bugs :datatables is working
 
 
+############################Main things : 
+after one year switch student to next class with new roll number 
 
+
+=>remove unnecessary static files and plugins 
+=>I am using same css from mycompany project datatables but button design margin not working

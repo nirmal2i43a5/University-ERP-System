@@ -84,6 +84,8 @@
                   <th>Title</th>
                   <th>File</th>
                   <th>Category</th>
+                  <th>Subject</th>
+
                   <th>Class</th>
                   <th>Uploaded on</th>
                   <th>Action</th>
@@ -128,12 +130,14 @@
                   <td>
                     {{ enote.note_category }}
                   </td>
-
+                    <td>
+                      {{ enote.subject }}
+                    </td>
                   <td>
                     {% if enote.section %}
-                    <p><strong>{{ enote.subject }}</strong>, {{ enote.section }}</p>
+                    <p><strong></strong>, {{ enote.section }}</p>
                   {% else %}
-                    <p><strong>{{ enote.subject }}</strong>, {{ enote.semester }}</p>
+                    <p><strong></strong>, {{ enote.semester }}</p>
                   {% endif %}
                     </td>
                    
@@ -141,12 +145,13 @@
                         
                        
                       <td>
+                       
                         
-                        <a href="{% url 'academic:edit_enote' enote.pk %}" class="btn btn-sm btn-outline-success"><i
-                            class="fas fa-xs fa-edit"></i> Edit</a>
+                        <a href="{% url 'academic:edit_enote' enote.pk %}" class="btn  btn-outline-primary" style="border-radius: 2rem;">
+                          <strong>Edit</strong> </a>
     
-                        <button class="btn btn-outline-danger btn-sm" data-target='#deleteenote-{{ enote.pk }}'
-                          data-toggle="modal"><i class="fas fa-sm fa-trash-alt"></i> Delete</button>
+                        <button class="btn btn-outline-danger " data-target='#deleteenote-{{ enote.pk }}'
+                          data-toggle="modal" style="border-radius: 2rem;"> <strong>Delete</strong> </button>
     
                       </td>
                       

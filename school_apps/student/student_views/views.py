@@ -839,7 +839,7 @@ def manage_student(request):
             'form':search_form,
             'status':True
             }
-    return render(request, 'students/manage_student.html', context)
+    return render(request, 'students/manage_student_api.html', context)
 
 
 
