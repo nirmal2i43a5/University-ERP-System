@@ -1,0 +1,151 @@
+
+
+
+
+{% extends 'admin_templates/base_admin.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+  {{title}}
+{% endblock title %}
+  
+
+{% block main_content %}
+
+<section class="content">
+  <div class="container-fluid">
+
+  
+
+   {% include "includes/messages.html" %}
+
+    <div class="row">
+      <div class="col-md-12">
+   
+        <div class="card card-info">
+          <div class="card-header" style="background:#435EBE;">
+            <h3 class="card-title  text-white">TEACHER HOME</h3>
+          </div>
+        
+         <br><br>
+          <!-- /.card-header -->
+
+       
+          <div class="row ml-4">
+         
+              <div class="col-md-3 col-sm-12">
+
+
+                  
+                      <div class="row">
+                    
+                        <div class="col-md-4 col-sm-4 col-4">
+                          <img src="{% static 'image/attendance.png' %}" alt="" style="width:35px;height:35px;" class="img-fluid img-rectangle" />
+
+                        </div>
+                        <div class="col-md-6 col-sm-8 col-8">
+                          <a href="">
+                            <span>
+                              <strong>Attendance Management</strong>
+                            </span>
+                          </a>
+
+                        </div>
+                          
+
+
+                          </div>
+
+                      </div>
+
+                      <div class="col-md-3">
+                        <a href="">
+                          <img src="{% static 'image/academic.png' %}" alt="" style="width:35px;height:35px;margin-right:1rem;" class="img-fluid img-rectangle" />
+          
+                           
+                              <span>
+                                <strong>Academic Management </strong>
+                              </span>
+                        </a>
+          
+                        </div>
+                <div class="col-md-3">
+                  <a href="">
+                    <img src="{% static 'image/notebook.gif' %}" alt="" style="width:35px;height:35px;margin-right:1rem;" class="img-fluid img-rectangle" />
+  
+                     
+                        <span>
+                          <strong> Notes and Materials  </strong>
+                        </span>
+                  </a>
+  
+                  </div>
+            <div class="col-md-3">
+              <a href="">
+                <img src="{% static 'image/exam.png' %}" alt="" style="width:35px;height:35px;margin-right:1rem;" class="img-fluid img-rectangle" />
+
+                 
+                    <span>
+                      <strong>Exam Grade Manage</strong>
+                    </span>
+              </a>
+
+              </div>
+            
+                <div class="col-md-3">
+									<a href="">
+                    <img src="{% static 'image/events.png' %}" alt="" style="width:35px;height:35px;margin-right:1rem;" class="img-fluid img-rectangle" />
+
+											
+												<span>
+													<strong>Event Management </strong>
+												</span>
+									</a>
+
+									</div>
+                
+           
+
+
+        </div>
+
+      </div>
+    
+
+    </div>
+  </div>
+</section>
+
+<style>
+
+	.col-md-3{
+		border-radius: 2rem;
+	    border: none;
+	    -webkit-box-shadow: 0 0 15px 0 #ddd;
+	    box-shadow: 0 0 15px 0 #ddd;
+	    text-align: center;
+	    background: #fff;
+	 	 padding:1.5rem 0rem;
+    margin-bottom:1rem;
+    margin-right:2rem;
+	}
+span{
+  text-transform: uppercase;
+}
+	.custom-icon i{
+	    padding: 20px;
+	    font-size: 50px;
+	    text-align: center;
+	    color: #115c8d;
+		padding-top:inherit;
+		padding-bottom: 1px;
+		margin-bottom:0.7rem;
+	}
+
+</style>
+
+{% endblock main_content %}
+
+{% block custom_js %}
+{% endblock custom_js %}

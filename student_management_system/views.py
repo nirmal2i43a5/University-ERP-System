@@ -32,19 +32,23 @@ from django.http import HttpResponse
 
 
 
-class TeacherHome(View):
-    def get(self, request, *args, **kwargs):
-        particular_student_assign = Student.objects.filter(
-            course__staff_user=request.user.id)
-        print(particular_student_assign)
+# class TeacherHome(View):
+#     def get(self, request, *args, **kwargs):
+#         particular_student_assign = Student.objects.filter(
+#             course__staff_user=request.user.id)
+#         print(particular_student_assign)
 
-        # teacher = get_object_or_404(Staff, staff_user = request.user)#for current login teacher
-        particular_teacher_subjects = Subject.objects.filter(
-            staff_user=request.user.id)
-        # subject belongs to particular teacher and subject is fk in student.so access
-        students = Student.objects.filter()
-        particular_subject_assign = subjects.count()
-
+#         # teacher = get_object_or_404(Staff, staff_user = request.user)#for current login teacher
+#         particular_teacher_subjects = Subject.objects.filter(
+#             staff_user=request.user.id)
+#         # subject belongs to particular teacher and subject is fk in student.so access
+#         students = Student.objects.filter()
+#         particular_subject_assign = subjects.count()
+def teacher_main_home(request):
+    context = {
+        'title':'Home',
+                 }
+    return render(request, 'teachers/main_home.html', context)
 
 class HistoryLogs(View):
     def get(self, request, *args, **kwargs):
