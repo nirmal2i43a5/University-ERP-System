@@ -1,10 +1,10 @@
-.selector > .selector-chosen > h2,
-.selector > .selector-available > h2{
-  padding:15px;
-  background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);
-  color:white;
+.selector>.selector-chosen>h2,
+.selector>.selector-available>h2 {
+    padding: 15px;
+    background: #435EBE;
+    color: white;
 }
-.help help-tooltip help-icon{
-  color:white;
-  
+
+.help help-tooltip help-icon {
+    color: white;
 }

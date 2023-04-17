@@ -1,7 +1,7 @@
 {% load auth_extras %}
 <ul class="list-group mr-1">
 
-  <li class="list-group-item active" style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);"><strong>UpComing Events</strong>
+  <li class="list-group-item active" style="background:#435EBE;"><strong>UpComing Events</strong>
     {% if request.user|has_group:'Admin' or request.user.is_superuser or request.user|has_group:'Teacher' %}
     <a href="{% url 'manage_event' %}" class="btn btn-sm  text-bold float-right" style="background-color: white;">
       Manage Event</a>

@@ -17,7 +17,7 @@
 
         <div class="card">
           
-          <div class="card-header" style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);color:white;">
+          <div class="card-header" style="background:#435EBE;color:white;">
             <span>{{title}}</span>
 
    
@@ -67,7 +67,7 @@
                   {% endif %}
                   {% if assignment_grade.answer_upload %}
                   <td><a href="{% url 'academic:add_assignment_grade' assignment_grade.assignment.pk %}" class="btn btn-xs btn-info"
-                     style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);"><strong>View Answer and Grade</strong></a></td>
+                     style="background:#435EBE;"><strong>View Answer and Grade</strong></a></td>
                       {% else %}
                       <td></td>
                   {% endif %}

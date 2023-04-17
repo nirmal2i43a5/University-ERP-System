@@ -26,7 +26,7 @@
           <!-- /.card-header -->
           <div class="card-body table-responsive ">
          
-            <a href="{% url 'fullcalendar' calendar.slug %}" class="btn btn-xs ml-2 btn-info  float-right " style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);">
+            <a href="{% url 'fullcalendar' calendar.slug %}" class="btn btn-xs ml-2 btn-info  float-right " style="background:#435EBE;">
               <i class = "fas fa-sm fa-eye"></i> <strong> View Calendar</strong></a>
             
             {% if  request.user|has_group:'Admin' or request.user.is_superuser   %}
