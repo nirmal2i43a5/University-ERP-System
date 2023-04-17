@@ -1,6 +1,8 @@
 
 
 {% extends 'admin_templates/base_admin.html' %}
+{% load crispy_forms_tags %}
+
 {% load static %}
 {% load crispy_forms_tags %}
 {% block title %}
@@ -17,13 +19,35 @@
         <!-- general form elements -->
         <div class="card">
           <div class="card-header" style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);">
-            <h3 class="card-title  text-white">Fetch attendance From Date range for <strong>{{student.student_user.full_name}}({{student.student_user.student.semester}})</strong></h3>
+            <h3 class="card-title  text-white">Fetch attendance From Date range for <strong>{{teacher.staff_user.full_name}}</strong></h3>
           </div>
         
           <!-- /.card-header -->
           <!-- form start -->
 
-          {% include "students/views/attendance/attendance_date_filter.html" %}<br>
+        <!-- Filter Attendance Form by Month -->
+
+
+
+
+<form method="POST" class="ml-3 mt-2">
+  <div class="input-group" >
+    {% csrf_token %}
+
+    <input type="hidden" name="teacher" value="{{ teacher.id }}">
+
+    {{ attendance_form|crispy }}
+
+    <div class="input-group-btn mt-3 ">
+      <button type="submit" name="attendance_submit" id="take_attendance" class="btn mt-3 ml-2"
+        style="background:-webkit-linear-gradient(left, #1f12d3, #6b75e0);color:white;">
+        <strong>Filter Attendance</strong></button>
+
+
+    </div>
+  </div>
+</form>
+          <br>
 
           
           
@@ -39,7 +63,7 @@
       </div>
     </div>
     <div class="card pt-1 pl-2">
-    {% include "students/views/attendance/attendance_details.html" %}
+    {% include "teachers/views/attendance/attendance_details.html" %}
     </div>
 
   </div>

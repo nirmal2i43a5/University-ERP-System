@@ -7,7 +7,7 @@ from school_apps.attendance.views import (get_students, save_student_attendance,
                               fill_subject_select,fill_teacher_select,student_attendance_report,student_daily_attendance,student_monthly_attendance
                               )
 from student_management_system.views import attendance_home
-from school_apps.student.student_views.views import student_attendance_view,student_view_own_attendance
+from school_apps.student.student_views.views import student_attendance_view,student_view_own_attendance,teacher_attendance_view
 app_name = 'attendance_app'
 
 urlpatterns = [
@@ -20,12 +20,13 @@ urlpatterns = [
     path('edit_save_student_attendance/',edit_save_student_attendance,name = 'edit_save_student_attendance'),
  
     path('teacher_attendance/',get_teachers,name = 'teacher_attendance'),
+         path('teacher/attendance/<teacher_id>/', teacher_attendance_view, name='teacher_attendance_view'),
     path('save_teacher_attendance/',save_teacher_attendance,name = 'save_teacher_attendance'),
     path('manage_teacher_attendance/',manage_teacher_attendance,name = 'manage_teacher_attendance'),
     
         path('student_attendance_report/',student_attendance_report,name = 'student_attendance_report'),
         path('student_monthly_attendance/',student_monthly_attendance,name = 'student_monthly_attendance'),
-        path('student_daily_attendance/',student_daily_attendance,name = 'student_daily_attendance'),
+        path('student_daily_attendance_report/',student_daily_attendance,name = 'student_daily_attendance'),
         
     path('user_attendance/',get_users,name = 'user_attendance'),
     path('save_user_attendance/',save_user_attendance,name = 'save_user_attendance'),

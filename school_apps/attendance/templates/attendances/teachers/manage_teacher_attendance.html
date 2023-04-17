@@ -119,11 +119,11 @@
                 <!-- <td></td> -->
 
                 <td>
-
+{{attendance.staff.pk }}
                 
                     
                
-                  <a href="{% url 'admin_app:view_teacher' attendance.staff.staff_user.id %}" class="btn btn-xs btn-info"><i class="fas fa-xs fa-eye"></i></a>
+                  <a href="{% url 'attendance_app:teacher_attendance_view' attendance.staff.pk %}" class="btn btn-xs btn-info"><i class="fas fa-xs fa-eye"></i></a>
                
                 </td>
 

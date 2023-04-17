@@ -12,7 +12,7 @@ from django.http import HttpResponse, JsonResponse
 from django.db.models import Q,Count
 from django.views.decorators.csrf import csrf_exempt
 from student_management_app.django_forms.forms import AddCustomUserForm, DocumentFileForm, EditCustomUserForm
-from school_apps.attendance.forms import StudentAttendanceDateFilterForm
+from school_apps.attendance.forms import StudentAttendanceDateFilterForm,TeacherAttendanceDateFilterForm
 from school_apps.academic.forms import StudentFormSearch,StudentSearch
 from school_apps.student.forms import StudentForm
 from student_management_app.models import (
@@ -558,6 +558,53 @@ def student_attendance_view(request, student_id):
     }
     return render(request,'students/attendance/attendance_view.html', context)
 
+
+
+''' Teacher attendance view by admin '''
+def teacher_attendance_view(request, teacher_id):
+    try:
+        teacher = get_object_or_404(Staff, pk=teacher_id)
+    except:
+        return render(request, '404.html')
+    
+    # teacher_attendance, total_present,total_absent = attendance_view(request)
+    if request.method == 'POST':
+        attendance_form = TeacherAttendanceDateFilterForm(request.POST)
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+        start_data_parse = datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
+        end_data_parse = datetime.datetime.strptime(end_date, "%Y-%m-%d").date()
+
+        teacher_id = request.POST.get('teacher')  # from hidden input
+        teacher = get_object_or_404(Staff, pk=teacher_id)
+        
+        attendance = Attendance.objects.filter(attendance_date__range=(start_data_parse, end_data_parse)
+                                               )
+        print(attendance,':::::::::::::::::::::::::')
+        # i add course in teacher  so access subject for teacher based on course in the collge only.
+        teacher_attendance = AttendanceReport.objects.filter(staff=teacher_id, attendance__in = attendance)  
+        total_present=AttendanceReport.objects.filter(staff=teacher_id, attendance__in = attendance,status = 'Present').count()
+        total_absent=AttendanceReport.objects.filter(staff=teacher_id, attendance__in = attendance,status__in = ['Absent(Not Informed)','Absent(Informed)']).count()
+        context = {
+        'title':'Attendance Details',
+        'teacher':teacher,
+        'attendance_reports': teacher_attendance,
+        'attendance_form':  TeacherAttendanceDateFilterForm(initial = {
+                                                                          'start_date':start_data_parse,
+                                                                          'end_date':end_data_parse}),#for report list after post request
+        'total_present':total_present,
+        'total_absent':total_absent
+        
+    }
+        return render(request,'teachers/views/attendance/attendance_view.html', context)
+    
+    context = {
+        'title':'Teacher Details',
+        'teacher':teacher,
+        'attendance_form':  TeacherAttendanceDateFilterForm(),
+        
+    }
+    return render(request,'teachers/views/attendance/attendance_view.html', context)
 
 
 def student_view_own_attendance(request):

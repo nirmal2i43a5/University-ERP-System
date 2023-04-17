@@ -7,12 +7,18 @@
     <tr>
       <th><span class="badge badge-success">Total Present : {{total_present}} days </span></th>
       <th></th>
+      <th></th>
+
       <th class="pull-right"><span class="badge badge-danger">Total Absent : {{total_absent}} days</span> </th>
     </tr>
   </thead>
+  
   <thead>
     <tr>
+      
       <th>#</th>
+      <th>Name</th>
+      
       <th>Date</th>
       <th>Status</th>
 
@@ -28,29 +34,40 @@
       {% if attendance_report.status == 'Present' %}
 
       <td>{{ forloop.counter }}</td>
+      
+      <td> {{student.student_user.full_name}}</td>
+
       <td> {{ attendance_report.attendance.attendance_date }}</td>
       <td> <span class="badge badge-success">Present</span></td>
 
       {% elif attendance_report.status == 'Absent(Informed)' %}
 
       <td>{{ forloop.counter }}</td>
+      <td> {{student.student_user.full_name}}</td>
+      
       <td> {{ attendance_report.attendance.attendance_date }}</td>
       <td> <span class="badge badge-danger">{{attendance_report.status}}</span></td>
 
       {% elif attendance_report.status == 'Absent(Not Informed)' %}
       <td>{{ forloop.counter }}</td>
+      <td> {{student.student_user.full_name}}</td>
+
       <td> {{ attendance_report.attendance.attendance_date }}</td>
 
       <td> <span class="badge badge-danger">{{attendance_report.status}}</span></td>
 
       {% elif attendance_report.status == 'Late' %}
       <td>{{ forloop.counter }}</td>
+      <td> {{student.student_user.full_name}}</td>
+
       <td> {{ attendance_report.attendance.attendance_date }}</td>
 
       <td> <span class="badge badge-warning">{{attendance_report.status}}</span></td>
 
       {% elif attendance_report.status == 'Excused' %}
       <td>{{ forloop.counter }}</td>
+      <td> {{student.student_user.full_name}}</td>
+
       <td> {{ attendance_report.attendance.attendance_date }}</td>
 
       <td> <span class="badge badge-primary">{{attendance_report.status}}</span></td>

@@ -13,12 +13,13 @@ proper notification
 automatic redirect by ajax keyword searching
 Individual dashboard 
 =>Update dashboard with various events and charts(like birthday, leave apply, notification)
-
+=>backup database with cron
 Modified document models:for students with just customuser : 
 =>Manage queries selected_prefetch
 =>nepali date(for assignment,)
 =>override django datetime picker with other because(time picker is not appropriate)
 django compressor
+=>Assign default permission to student and teacher(look prabhu)
 update student_list with datatables
 create ajax datatables for students, attendance module, assignment and its pagination
 I am using nepali calendar(which is valid upto 2100)(check in datemap.py)

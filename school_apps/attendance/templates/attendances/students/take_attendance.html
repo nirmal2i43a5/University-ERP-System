@@ -147,10 +147,16 @@ Attendance {% endblock %} {% load crispy_forms_tags %} {% load static %} {% bloc
                     <select class="status" name="{{ student.student_user.id }}">
           
                       <option value="Present" selected>Present</option>
-                      <option value="Absent(Informed)">Absent(Informed)</option>
-                      <option value="Absent(Not Informed)">Absent(Not Informed)</option>
-                      <option value="Late">Late</option>
-                      <option value="Excused">Excused</option>
+                  
+                          <option value="Absent(Informed)">Absent(Informed)</option>
+                  
+                          <option value="Absent(Not Informed)">
+                            Absent(Not Informed)
+                          </option>
+                  
+                          <option value="Late">Late</option>
+                  
+                          <option value="Excused">Excused</option>
                     </select>
                   </div>
                 </div>

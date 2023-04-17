@@ -93,6 +93,13 @@ class StudentAttendanceDateFilterForm(forms.Form):#for respective user not for t
     start_date = forms.DateField( widget=forms.DateInput(attrs = {'type':'date','class':''}))
     end_date = forms.DateField(widget=forms.DateInput(attrs = {'type':'date','class':''}))
 
+#for respective student
+class TeacherAttendanceDateFilterForm(forms.Form):#for respective user not for taking attendance
+    # subject = forms.ModelChoiceField(empty_label = 'Select Subject',widget=forms.Select(attrs={}),
+    #                                  queryset = Subject.objects.all())
+    start_date = forms.DateField( widget=forms.DateInput(attrs = {'type':'date','class':''}))
+    end_date = forms.DateField(widget=forms.DateInput(attrs = {'type':'date','class':''}))
+
 
 #for teacher and normal user
 class AttendanceDateFilterForm(forms.Form):#for respective user not for taking attendance

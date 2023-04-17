@@ -24,14 +24,31 @@
         
         buttons: {
             buttons: [
-
+              
          
                 { extend: 'selectAll', className: 'btn-datatables' },
                 { extend: 'selectNone', className: 'btn-datatables' },
-                { extend: 'copy', className: 'btn-datatables'},
-                { extend: 'csv', className: 'btn-datatables' },
-                { extend: 'excel', className: 'btn-datatables' },
-                { extend: 'print', className: 'btn-datatables' },
+                { extend: 'copy', className: 'btn-datatables',
+                exportOptions: {
+                  columns: ':not(:last-child)' // hide columns with class 'actions'
+              }
+              },
+                { extend: 'csv', className: 'btn-datatables' ,
+                exportOptions: {
+                  columns: ':not(:last-child)' // hide columns with class 'actions'
+              }
+              },
+                { extend: 'excel', className: 'btn-datatables' ,
+                exportOptions: {
+                  columns: ':not(:last-child)' // hide columns with class 'actions'
+              }
+              },
+
+                { extend: 'print', className: 'btn-datatables' ,
+                exportOptions: {
+                  columns: ':not(:last-child)' // hide columns with class 'actions'
+              }
+              },
             ],
         },
         'columnDefs': [{
