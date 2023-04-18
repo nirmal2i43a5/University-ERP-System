@@ -1,4 +1,6 @@
-{% extends 'admin_templates/base_admin.html' %} {% block title %}Take Student
+{% extends 'admin_templates/base_admin.html' %}
+{% load auth_extras %}
+{% block title %}Take Student
 Attendance {% endblock %} {% load crispy_forms_tags %} {% load static %} {% block main_content %}
 
 <!-- Main content -->
@@ -26,8 +28,19 @@ Attendance {% endblock %} {% load crispy_forms_tags %} {% load static %} {% bloc
           <!-- -------------------------Subject filter form ------------------------------------------------ -->
           <form method="POST">
             <div class="input-group">
+
               {% csrf_token %} {{ form|crispy }}
+             
               <div class="input-group-btn ml-1 mt-1 mb-1">
+                {% if request.user|has_group:'Teacher' %}
+
+                <a
+                href="{% url 'teacher:teacher_attendance_home' %}"
+                class="btn btn-sm btn-danger"
+              >
+                <strong>Back</strong>
+              </a>
+              {% endif %}
                 <button
                   type="submit"
                   class="btn btn-sm"
@@ -36,6 +49,7 @@ Attendance {% endblock %} {% load crispy_forms_tags %} {% load static %} {% bloc
                 >
                   <strong>Take Student Attendance</strong>
                 </button>
+              
                
               </div>
             </div>

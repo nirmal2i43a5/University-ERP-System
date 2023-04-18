@@ -1,6 +1,7 @@
 {% extends 'admin_templates/base_admin.html' %}
 
 {% load crispy_forms_tags %}
+{% load auth_extras %}
 
 {% load static %}
 
@@ -85,6 +86,15 @@
             {{ datewise_attendance_form|crispy }}
 
             <div class="input-group-btn ">
+              {% if request.user|has_group:'Teacher' %}
+
+              <a
+              href="{% url 'attendance_app:student_attendance_report' %}"
+              class="btn btn-sm btn-danger"
+            >
+              <strong>Back</strong>
+            </a>
+            {% endif %}
               <button type="submit" class="btn btn-sm ml-2 mt-1" style="background:#435EBE;color:white;">
                 <strong>Fetch Student Attendance</strong>
               </button>

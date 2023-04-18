@@ -24,7 +24,7 @@ from django.views.generic.base import RedirectView
 from django.views.i18n import JavaScriptCatalog
 from student_management_system.views import get_user_by_role_ajax
 from student_management_system.views import home as main_home
-from student_management_system.views import (redirect_home,teacher_main_home,
+from student_management_system.views import (redirect_home,mis_main_home,
 # a_level_home,bachelor_home,master_home,
                                              mass_delete
                                             )
@@ -45,7 +45,7 @@ urlpatterns = [
     # path('home/', admin_home,name = 'admin-home'),
     
     path('dashboard/', main_home.as_view(), name ="dashboard"),
-    path('teacher/home/', teacher_main_home, name ="teacher_main_home"),
+    path('mis/home/', mis_main_home, name ="mis_main_home"),
 
     path('', redirect_home,name = 'home'),
     

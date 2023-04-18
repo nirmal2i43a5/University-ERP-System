@@ -22,5 +22,7 @@ urlpatterns=[
     path('teacher/log/', teacher_log, name = "teacher_log"),
     path('teacher/delete/log/', delete_log, name = "delete_log"),
     path('teacher/students/', student_view_by_teacher, name='student_view_by_teacher'),
+    path('attendance/home/', teacher_attendance_home, name='teacher_attendance_home'),
+
     # path('attendance/<student_id>/', attendance_view_by_parent, name='attendance_view_by_parent'),
 ]

@@ -44,7 +44,7 @@ from django.http import HttpResponse
 #         # subject belongs to particular teacher and subject is fk in student.so access
 #         students = Student.objects.filter()
 #         particular_subject_assign = subjects.count()
-def teacher_main_home(request):
+def mis_main_home(request):
     context = {
         'title':'Home',
                  }

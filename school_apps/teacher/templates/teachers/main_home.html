@@ -2,7 +2,7 @@
 
 
 
-{% extends 'admin_templates/base_admin.html' %}
+{% extends 'teacher_base.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
 
@@ -12,6 +12,7 @@
   
 
 {% block main_content %}
+
 
 <section class="content">
   <div class="container-fluid">
@@ -23,24 +24,24 @@
     <div class="row">
       <div class="col-md-12">
    
-        <div class="card card-info">
+        <div class="card card-info" >
           <div class="card-header" style="background:#435EBE;">
-            <h3 class="card-title  text-white">TEACHER HOME</h3>
+            <h3 class="card-title  text-white text-uppercase" > {{request.user.user_type}} HOME</h3>
           </div>
         
          <br><br>
           <!-- /.card-header -->
 
        
-          <div class="row ml-4">
+          <div class="row ml-4" id="teacher_responsive_card_container">
          
             <div class="col-md-3">
+              
               <div class="container">
-              <a href="">
+              <a href="{% url 'teacher:teacher_attendance_home' %}">
                 
                 <img src="{% static 'image/attendance.png' %}" alt="" style="" class="img-fluid img-rectangle" />
 
-                 
                     <span >
                       <strong>Attendance  </strong>
                     </span>
@@ -167,281 +168,20 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title text-bold" id="myModalLabel"> Profile</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-      </div>
-      <div class="modal-body">
-        
-        <div class="row text-center">
-          <div class="col-md-4">
-            <img src="{% static 'image/admin.png' %}" alt="User Image" class="img-fluid img-circle" style="width:50%;height:80%;border: 3px solid #435EBE;">
-          </div>
-          <div class="col-md-8">
-            <h5 class="mb-2">Nirmal Pandey</h5>
-            <p class="mb-2">9865542614</p>
-            <p class="mb-2"></i>Student</p>
-          </div>
-        </div>
-        
-        <hr>
-        <div class="card">
-          <div class="row no-gutters">
-            <div class="col-4">
-              <img src="https://via.placeholder.com/100" class="card-img" alt="School Logo" style="width: 100%; height: auto;">
-            </div>
-            <div class="col-8">
-              <div class="card-body">
-                <h5 class="card-title">School Name</h5>
-                <p class="card-text"><small class="text-muted">School Location</small></p>
-                <p class="card-text"></p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="container" id="settings_navbar">
-          <div class="row">
-            <div class="col-md-12">
-              
-              <div class="card shadow">
-                <a href="" class="card-title ">
-                  <div class="card-body d-flex justify-content-between">
-                    <div class="card-title text-dark">
-                      Change Password
-                    </div>
-                    <div>
-                      <i class="fas fa-lock"></i> 
-                  </div>
 
-                  </div>
-                </a>
-              </div>
-              
-              <div class="card shadow">
-                <a href="" class="card-title ">
-                  <div class="card-body d-flex justify-content-between">
-                    <div class="card-title text-dark">
-                      Staff Profiles
-                    </div>
-                    <div>
-                      <i class="fas fa-users"></i> 
-                  </div>
-
-                  </div>
-                </a>
-              </div>
-              <div class="card shadow">
-                <a href="" class="card-title ">
-                  <div class="card-body d-flex justify-content-between">
-                    <div class="card-title text-dark">
-                      Feedback
-                    </div>
-                    <div>
-                      <i class="fas fa-lock"></i> 
-                  </div>
-
-                  </div>
-                </a>
-              </div>
-              <div class="card shadow">
-                <a href="" class="card-title ">
-                  <div class="card-body d-flex justify-content-between">
-                    <div class="card-title text-dark">
-                      Logout
-                    </div>
-                    <div>
-                      <i class="fas fa-sign-out-alt"></i> 
-                    </div>
-                  </div>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        
-      </div>
-      <div class="modal-footer">
-        <ul class="nav nav-pills">
-          <li class="nav-item">
-            <a class="nav-link text-dark" href="#"> </a> 
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-dark" href="#"> </a> 
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-dark" href="#"></a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</div>
+<!-- Profile popup modal for details -->
+{% include 'includes/profile_modal.html' %}
 
 
   {% comment %} Footer  {% endcomment %}
-  <footer class="bottom-nav">
-    <nav class="bottom-nav__nav">
-      <ul class="bottom-nav__list">
-        <li class="bottom-nav__item">
-          <a href="#" class="bottom-nav__link">
-            <i class="fa fa-home"></i>
-            <span class="bottom-nav__text">Home</span>
-          </a>
-        </li>
-        <li class="bottom-nav__item">
-          <a href="#" class="bottom-nav__link">
-            <i class="fas fa-tachometer-alt"></i>
-            <span class="bottom-nav__text">Dashboard</span>
-          </a>
-        </li>
-        <li class="bottom-nav__item">
-          <a href="#" class="bottom-nav__link">
-            <i class="fa fa-bell"></i>
-            <span class="bottom-nav__text">Notice</span>
-          </a>
-        </li>
-        <li class="bottom-nav__item">
-          <a href="#" class="bottom-nav__link" data-toggle="modal" data-target="#myModal">
-            <i class="fas fa-ellipsis-h"></i>
 
-            <span class="bottom-nav__text" >
-              More
-            </span>
-            
-          </a>
-        </li>
-      </ul>
-    </nav>
-  </footer>
+
+{% include 'includes/responsive_app_footer.html' %}
+  
   
 </section>
 
-<style>
-#settings_navbar .card-body{
-  padding: 0.8rem;
 
-}
-#settings_navbar i{
-  color:#435EBE;
-  margin-top: 5px;
-    font-size: 20px;
-    right: 0;    margin-right: 36px;
-    position:absolute;
-}
-	.col-md-3{
-		border-radius: 2rem;
-	    border: none;
-	    -webkit-box-shadow: 0 0 15px 0 #ddd;
-	    box-shadow: 0 0 15px 0 #ddd;
-	    text-align: center;
-	    background: #fff;
-	 	 padding:1.5rem 0rem;
-    margin-bottom:1rem;
-    margin-right:2rem;
-	}
-  .col-md-3 a{
-    color: #007bff;
-    text-decoration: none;
-    background-color: transparent;
-    margin-right: 9rem;
-  }
-  .col-md-3 img{
-    width:35px;height:35px;margin-right:1rem;
-
-  }
-
-.container {
-  position: relative;
-  /* 16:9 aspect ratio */
-}
-    .col-md-3 .container img {
-      position: absolute;
-      margin-left:1rem;
-      top: 0;
-      left: 0;
-      width:35px;height:35px;
-    }
-    
-    .col-md-3 .container span {
-      position: absolute;
-      bottom: 0;
-      text-transform: uppercase;
-      top:3px;
-      left: 0;
-      width: 70%;
-    }
-  
-
-    {% comment %} Css for bottom navbar like app {% endcomment %}
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      background-color: #f2f2f2;
-      box-shadow: 0px -1px 10px rgba(0, 0, 0, 0.2);
-      z-index: 999;
-    }
-    
-    .bottom-nav__nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      height: 60px;
-    }
-    
-    .bottom-nav__list {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-    }
-    
-    .bottom-nav__item {
-      width: 33.33%;
-      text-align: center;
-    }
-    
-    .bottom-nav__link {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      color: #333;
-      text-decoration: none;
-    }
-    
-    .bottom-nav__text {
-      font-size: 0.8rem;
-      margin-top: 0.2rem;
-    }
-    
-    .bottom-nav__link:hover {
-      color: #007bff;
-    }
-    
-    @media (max-width: 575px) {
-      .bottom-nav__nav {
-        flex-direction: column;
-        height: auto;
-      }
-      
-      .bottom-nav__item {
-        width: 100%;
-        margin: 0.2rem 0;
-      }
-    }
-    .bottom-nav__link i{
-      color:gray;
-    }
-</style>
 
 {% endblock main_content %}
 

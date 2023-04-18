@@ -1,0 +1,131 @@
+#profile_navbar .card-body {
+    padding: 0.8rem;
+}
+
+#profile_navbar i {
+    color: #435EBE;
+    margin-top: 5px;
+    font-size: 20px;
+    right: 0;
+    margin-right: 36px;
+    position: absolute;
+}
+
+#teacher_responsive_card_container .col-md-3 {
+    border-radius: 2rem;
+    border: none;
+    -webkit-box-shadow: 0 0 15px 0 #ddd;
+    box-shadow: 0 0 15px 0 #ddd;
+    text-align: center;
+    background: #fff;
+    padding: 1.5rem 0rem;
+    margin-bottom: 1rem;
+    margin-right: 2rem;
+}
+
+#teacher_responsive_card_container .col-md-3 a {
+    color: #007bff;
+    text-decoration: none;
+    background-color: transparent;
+    margin-right: 9rem;
+}
+
+#teacher_responsive_card_container .col-md-3 img {
+    width: 35px;
+    height: 35px;
+    margin-right: 1rem;
+}
+
+.container {
+    position: relative;
+    /* 16:9 aspect ratio */
+}
+
+
+/* CSS FOR CARD COLUMN */
+
+#teacher_responsive_card_container .col-md-3 .container img {
+    position: absolute;
+    margin-left: 1rem;
+    top: 0;
+    left: 0;
+    width: 35px;
+    height: 35px;
+}
+
+#teacher_responsive_card_container .col-md-3 .container span {
+    position: absolute;
+    bottom: 0;
+    text-transform: uppercase;
+    top: 3px;
+    left: 0;
+    width: 70%;
+}
+
+
+/* CSS FOR bottom navbar like app responsive */
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #f2f2f2;
+    box-shadow: 0px -1px 10px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+}
+
+.bottom-nav__nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+}
+
+.bottom-nav__list {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.bottom-nav__item {
+    width: 33.33%;
+    text-align: center;
+}
+
+.bottom-nav__link {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #333;
+    text-decoration: none;
+}
+
+.bottom-nav__text {
+    font-size: 0.8rem;
+    margin-top: 0.2rem;
+}
+
+.bottom-nav__link:hover {
+    color: #007bff;
+}
+
+@media (max-width: 575px) {
+    .bottom-nav__nav {
+        flex-direction: column;
+        height: auto;
+    }
+    .bottom-nav__item {
+        width: 100%;
+        margin: 0.2rem 0;
+    }
+}
+
+.bottom-nav__link i {
+    color: gray;
+}

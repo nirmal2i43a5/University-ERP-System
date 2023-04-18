@@ -1,6 +1,7 @@
 
 
 {% extends 'admin_templates/base_admin.html' %}
+{% load auth_extras  %}
 
 {% load crispy_forms_tags %}
 {% load static  %}
@@ -24,15 +25,24 @@
 
             <span>{{title}}</span>
 
-            <form class="float-right mb-2" role="search"  method="GET" style="height: 27px;margin:auto;position:relative;">
+            <form class="float-right mb-2" role="search"  method="GET">
               <div class="input-group">
              
           
                 {{ form|crispy }} 
             
                 <div class="input-group-btn ">
-                  <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
-    
+                 
+                  <button type="submit" class="btn btn-primary">SEARCH</button>
+                  {% if request.user|has_group:'Teacher' %}
+
+                  <a
+                  href="{% url 'attendance_app:student_attendance_report' %}"
+                  class="btn ml-1 btn-danger"
+                >
+                  <strong>Back</strong>
+                </a>
+                {% endif %}
                 </div>
               </div>
             </form>
@@ -56,17 +66,21 @@
               <input type="submit" id="printadmitcard_form_submit" hidden>
           </form>
          
-            <table  id="show_id_card" class="table table-sm  table-striped table-bordered table-hover text-nowrap  no-footer">
+            <table  id="example" cellspacing="0" width="100%" class=" table table-sm  table-striped table-bordered table-hover  text-nowrap  no-footer">
               <thead>
                 <tr>
                   <th></th>
-                  <th>#</th>
+
+                  {% comment %} <th>#</th> {% endcomment %}
                   <th>Image</th>
-                  <th>Student Id</th>
+
+                  <th>Action</th>
+
                   <th>Full Name</th>
+
+                  <th>Student Id</th>
                   <th>Class</th>
                   <th>Section</th>
-                  <th>Action</th>
 
                 </tr>
               </thead>
@@ -74,7 +88,7 @@
                 {% for student in students %}{% include 'students/delete.html' %}
                 <tr>
                   <td></td>
-                  <td>{{ forloop.counter }}</td>
+                  {% comment %} <td>{{ forloop.counter }}</td> {% endcomment %}
                   <td>
 
                     {% if student.image %}
@@ -86,22 +100,25 @@
                     {% endif %}
 
                   </td>
-                    <td>{{ student.stu_id }} </td>
-                   <td>
-                  {{ student.student_user.full_name }}
-                      </td>
-                    <td>{{ student.semester }}</td>
-                    <td>{{ student.section }}</td>
-             
-
-                 
-              
                   <td>
                     <a href="{% url 'attendance_app:student_attendance_view' student.id %}" class="btn btn-xs"
                      style="background:#435EBE;color:white;">
                     <i class="fas fa-xs fa-eye"></i>  <strong>View Attendance</strong>
                     </a>
                    </td>
+                 
+                   <td>
+                  {{ student.student_user.full_name }}
+                      </td>
+                    <td>{{ student.stu_id }} </td>
+
+                    <td>{{ student.semester }}</td>
+                    <td>{{ student.section }}</td>
+             
+
+                 
+              
+                  
                
                 </tr>
                
@@ -137,56 +154,57 @@
 })
 </script> -->
 
+{<!--
 
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-html5-1.7.0/b-print-1.7.0/sl-1.3.3/datatables.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-html5-1.7.0/b-print-1.7.0/sl-1.3.3/datatables.min.css"/>
         
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-html5-1.7.0/b-print-1.7.0/sl-1.3.3/datatables.min.js"></script>
-    <script>
-        $(document).ready(function(){
-            var table = $('#show_id_card').DataTable({
-                search: true,
-           
-                dom: 'lBfrtip',
-                columnDefs: [ {
-                    orderable: false,
-                    className: 'select-checkbox',
-                    targets:   0
-                } ],
-              
-            });
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-html5-1.7.0/b-print-1.7.0/sl-1.3.3/datatables.min.js"></script>
+<script>
+    $(document).ready(function(){
+        var table = $('#show_id_card').DataTable({
+            search: true,
+       
+            dom: 'lBfrtip',
+            columnDefs: [ {
+                orderable: false,
+                className: 'select-checkbox',
+                targets:   0
+            } ],
+          
+        });
+    })
+
+
+    function admitcardsubmit(){
+        var count=0;
+        var tr_count=0;
+        count = $("#show_id_card tbody tr.selected").length;
+
+        $("#printadmitcard_form_div").html("");
+        $("#show_id_card tbody tr.selected").each(function(){
+            tr_count+=1;
+            var app_id = $(this).find("td#student_id").text();
+            var to_add = "<input type=\"text\" name="+ tr_count +" value="+app_id +" readonly hidden>";
+            $("#printadmitcard_form_div").append(to_add);
         })
 
-
-        function admitcardsubmit(){
-            var count=0;
-            var tr_count=0;
-            count = $("#show_id_card tbody tr.selected").length;
-
-            $("#printadmitcard_form_div").html("");
-            $("#show_id_card tbody tr.selected").each(function(){
-                tr_count+=1;
-                var app_id = $(this).find("td#student_id").text();
-                var to_add = "<input type=\"text\" name="+ tr_count +" value="+app_id +" readonly hidden>";
-                $("#printadmitcard_form_div").append(to_add);
-            })
-
-            if(count>0){
-              if($("#from_date").val() == "" || $("#to_date").val() == ""){
-                  alert("Please select date for attendance count.")
-              }else{
-                  $("#application_count").val(tr_count);
-                  $("#printadmitcard_form_submit").click();
-              }
+        if(count>0){
+          if($("#from_date").val() == "" || $("#to_date").val() == ""){
+              alert("Please select date for attendance count.")
           }else{
-              $("#application_count").val(0);
-              alert("Please select a student or Select All")
+              $("#application_count").val(tr_count);
+              $("#printadmitcard_form_submit").click();
           }
-        }     
-        
-       
-    </script>
+      }else{
+          $("#application_count").val(0);
+          alert("Please select a student or Select All")
+      }
+    }     
+    
+   
+</script>-->
 
 
 {% endblock custom_js %}

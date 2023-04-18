@@ -1,0 +1,116 @@
+{% load static %}
+
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title text-bold" id="myModalLabel"> Profile</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+          
+          <div class="row text-center">
+            <div class="col-md-4">
+              <img src="{% static 'image/admin.png' %}" alt="User Image" class="img-fluid img-circle" style="width:50%;height:80%;border: 3px solid #435EBE;">
+            </div>
+            <div class="col-md-8">
+              <h5 class="mb-2">{{request.user.full_name}}</h5>
+              <p class="mb-2">{{request.user.staff.contact}}</p>
+              <p class="mb-2"></i>{{request.user.user_type}}</p>
+            </div>
+          </div>
+          
+          <hr>
+          <div class="card">
+            <div class="row no-gutters">
+              <div class="col-4">
+                <img src="https://via.placeholder.com/100" class="card-img" alt="School Logo" style="width: 100%; height: auto;">
+              </div>
+              <div class="col-8">
+                <div class="card-body">
+                  <h5 class="card-title">School Name</h5>
+                  <p class="card-text"><small class="text-muted">School Location</small></p>
+                  <p class="card-text"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="container" id="profile_navbar">
+            <div class="row">
+              <div class="col-md-12">
+                
+                <div class="card shadow">
+                  <a href="" class="card-title ">
+                    <div class="card-body d-flex justify-content-between">
+                      <div class="card-title text-dark">
+                        Change Password
+                      </div>
+                      <div>
+                        <i class="fas fa-lock"></i> 
+                    </div>
+  
+                    </div>
+                  </a>
+                </div>
+                
+                <div class="card shadow">
+                  <a href="" class="card-title ">
+                    <div class="card-body d-flex justify-content-between">
+                      <div class="card-title text-dark">
+                        Staff Profiles
+                      </div>
+                      <div>
+                        <i class="fas fa-users"></i> 
+                    </div>
+  
+                    </div>
+                  </a>
+                </div>
+                <div class="card shadow">
+                  <a href="" class="card-title ">
+                    <div class="card-body d-flex justify-content-between">
+                      <div class="card-title text-dark">
+                        Feedback
+                      </div>
+                      <div>
+                        <i class="fas fa-lock"></i> 
+                    </div>
+  
+                    </div>
+                  </a>
+                </div>
+                <div class="card shadow">
+                  <a href="" class="card-title ">
+                    <div class="card-body d-flex justify-content-between">
+                      <div class="card-title text-dark">
+                        Logout
+                      </div>
+                      <div>
+                        <i class="fas fa-sign-out-alt"></i> 
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          
+        </div>
+        <div class="modal-footer">
+          <ul class="nav nav-pills">
+            <li class="nav-item">
+              <a class="nav-link text-dark" href="#"> </a> 
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-dark" href="#"> </a> 
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-dark" href="#"></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>

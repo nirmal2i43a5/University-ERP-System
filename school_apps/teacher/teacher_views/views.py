@@ -396,3 +396,8 @@ def student_view_by_teacher(request):
     # ------------
     
   
+def teacher_attendance_home(request):
+    context = {
+        'title':'Attendance',
+                 }
+    return render(request, 'teachers/attendance_home.html', context)
