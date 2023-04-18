@@ -6,7 +6,7 @@
 {% load crispy_forms_tags %}
 {% load static  %}
 
-{% block title %} Manage Student {% endblock %}
+{% block title %} Fetch Attendance {% endblock %}
 
 {% block main_content %}
 
@@ -21,51 +21,47 @@
         <div class="card" >
           
           <div class="card-header" style="background:#435EBE;color:white;" >
-            
+            {% if request.user|has_group:'Teacher' %}
 
-            <span>{{title}}</span>
+            <a
+            href="{% url 'attendance_app:student_attendance_report' %}"
+            class="btn btn-sm btn-rounded float-right"
+          >
+            <strong class="text-capitalize text-white mb-1"><i class="fas fa-backward "></i>  Back</strong>
+          </a>
+          {% endif %}
 
-            <form class="float-right mb-2" role="search"  method="GET">
-              <div class="input-group">
-             
-          
-                {{ form|crispy }} 
-            
-                <div class="input-group-btn ">
-                 
-                  <button type="submit" class="btn btn-primary">SEARCH</button>
-                  {% if request.user|has_group:'Teacher' %}
+            <span>Fetch Attendance</span>
+           
 
-                  <a
-                  href="{% url 'attendance_app:student_attendance_report' %}"
-                  class="btn ml-1 btn-danger"
-                >
-                  <strong>Back</strong>
-                </a>
-                {% endif %}
-                </div>
-              </div>
-            </form>
+           
           
 
           </div>
 
           <!-- /.card-header -->
-          <div class="card-body table-responsive">
-       
+          <span class="text-right mt-2 mr-4">
+            <strong>
+              Advance Search:
+            </strong>
+            <button id="plus-search" class="btn btn-primary">+</button>
+          </span>
+          <form class=" mb-2" id="search-form" role="search"  method="GET">
+            <div class="input-group">
            
-            
-            <form action="{% url 'student:bulk_print_id_card' %}" id="printadmitcard_form" method="POST">
-              {% csrf_token %}
-              <div id="printadmitcard_form_div">    
-              </div>
-              <input type="text" name="count" value="0" id="application_count" readonly hidden>
-              
-             
+        
+              {{ form|crispy }} 
           
-              <input type="submit" id="printadmitcard_form_submit" hidden>
+              <div class="input-group-btn ">
+               
+                <button type="submit" class="btn btn-primary">SEARCH</button>
+               
+              </div>
+            </div>
           </form>
-         
+          <div class="card-body table-responsive">
+
+           
             <table  id="example" cellspacing="0" width="100%" class=" table table-sm  table-striped table-bordered table-hover  text-nowrap  no-footer">
               <thead>
                 <tr>
@@ -140,71 +136,21 @@
 {% endblock main_content %}
 
 {% block custom_js %}
-<!-- <script>
-  $("#id_semester").change(function(){
-    var class_id = $(this).val();
-    
-    $.ajax({
-        url:" {% url 'courses:fill_section_select'%}",
-        data:{'class':class_id},
-        success:function(data){
-            $("#id_section").html(data);
-        }
-    })
-})
-</script> -->
-
-{<!--
-
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-html5-1.7.0/b-print-1.7.0/sl-1.3.3/datatables.min.css"/>
-        
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-html5-1.7.0/b-print-1.7.0/sl-1.3.3/datatables.min.js"></script>
 <script>
-    $(document).ready(function(){
-        var table = $('#show_id_card').DataTable({
-            search: true,
-       
-            dom: 'lBfrtip',
-            columnDefs: [ {
-                orderable: false,
-                className: 'select-checkbox',
-                targets:   0
-            } ],
-          
-        });
-    })
+
+$('#search-form').hide();
+  
+// Toggle the search form visibility when clicking on the plus search button
+$('#plus-search').click(function() {
+  $('#search-form').toggle();
+  $(this).toggleClass('btn-success btn-danger '); // Change button color
+  $(this).text(function(i, text){
+    return text === "+" ? "-" : "+"; // Change button text
+  });
+});
+</script> 
 
 
-    function admitcardsubmit(){
-        var count=0;
-        var tr_count=0;
-        count = $("#show_id_card tbody tr.selected").length;
-
-        $("#printadmitcard_form_div").html("");
-        $("#show_id_card tbody tr.selected").each(function(){
-            tr_count+=1;
-            var app_id = $(this).find("td#student_id").text();
-            var to_add = "<input type=\"text\" name="+ tr_count +" value="+app_id +" readonly hidden>";
-            $("#printadmitcard_form_div").append(to_add);
-        })
-
-        if(count>0){
-          if($("#from_date").val() == "" || $("#to_date").val() == ""){
-              alert("Please select date for attendance count.")
-          }else{
-              $("#application_count").val(tr_count);
-              $("#printadmitcard_form_submit").click();
-          }
-      }else{
-          $("#application_count").val(0);
-          alert("Please select a student or Select All")
-      }
-    }     
-    
-   
-</script>-->
 
 
 {% endblock custom_js %}

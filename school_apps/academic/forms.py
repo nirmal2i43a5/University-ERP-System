@@ -17,7 +17,7 @@ from django.utils.translation import ugettext_lazy as _
 # 100MB 104857600
 # 250MB - 214958080
 # 500MB - 429916160
-MAX_UPLOAD_SIZE = "1048576"
+MAX_UPLOAD_SIZE = "5242880"
 
 
 
@@ -91,7 +91,18 @@ class AssignmentForm(forms.ModelForm):
     #                                  queryset = Subject.objects.all())
     course_category = forms.ModelChoiceField(queryset = CourseCategory.objects.all(), widget=forms.RadioSelect())
     # course_category.course = forms.ModelChoiceField(queryset = Course.objects.all(), widget=forms.RadioSelect())
-    deadline = forms.SplitDateTimeField(label = 'Deadline', widget=AdminSplitDateTime())
+    # deadline = forms.SplitDateTimeField(label = 'Deadline', widget=AdminSplitDateTime())
+    deadline = forms.DateTimeField(
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'id': 'datetimepicker',
+            
+            'data-target': '#datetimepicker',
+            'data-toggle': 'datetimepicker',
+            
+        },),
+            input_formats=['%m/%d/%Y %I:%M %p']  
+        )
     title=forms.CharField(widget=forms.TextInput(attrs={"class":"form-control","placeholder": " Enter Title",}))
     description = forms.CharField( widget=forms.Textarea(attrs={'rows': 2, 'cols': 10,"placeholder": " Enter  Course Description",}))
     Subject = forms.ModelChoiceField(empty_label = 'Select Subject',

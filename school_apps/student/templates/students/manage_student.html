@@ -182,6 +182,56 @@
     })
 })
 </script> -->
+<!--
 
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-html5-1.7.0/b-print-1.7.0/sl-1.3.3/datatables.min.css"/>
+        
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.24/b-1.7.0/b-html5-1.7.0/b-print-1.7.0/sl-1.3.3/datatables.min.js"></script>
+<script>
+    $(document).ready(function(){
+        var table = $('#show_id_card').DataTable({
+            search: true,
+       
+            dom: 'lBfrtip',
+            columnDefs: [ {
+                orderable: false,
+                className: 'select-checkbox',
+                targets:   0
+            } ],
+          
+        });
+    })
+
+
+    function admitcardsubmit(){
+        var count=0;
+        var tr_count=0;
+        count = $("#show_id_card tbody tr.selected").length;
+
+        $("#printadmitcard_form_div").html("");
+        $("#show_id_card tbody tr.selected").each(function(){
+            tr_count+=1;
+            var app_id = $(this).find("td#student_id").text();
+            var to_add = "<input type=\"text\" name="+ tr_count +" value="+app_id +" readonly hidden>";
+            $("#printadmitcard_form_div").append(to_add);
+        })
+
+        if(count>0){
+          if($("#from_date").val() == "" || $("#to_date").val() == ""){
+              alert("Please select date for attendance count.")
+          }else{
+              $("#application_count").val(tr_count);
+              $("#printadmitcard_form_submit").click();
+          }
+      }else{
+          $("#application_count").val(0);
+          alert("Please select a student or Select All")
+      }
+    }     
+    
+   
+</script>-->
 
 {% endblock custom_js %}

@@ -10,11 +10,8 @@
   
 
 {% block main_content %}
-<!--for admin widget use-->
-<script src="{% url 'js-catlog' %}"></script>
-<script src="{% static '/admin/js/core.js' %}"></script>
-<link rel="stylesheet" href="{% static 'admin/css/base.css' %}">
-<link rel="stylesheet" href="{% static 'admin/css/widgets.css' %}">
+
+
 <!-- Main content -->
 <section class="content">
   <div class="container-fluid">
@@ -96,6 +93,7 @@ $("#id_semester").change(function(){
       }
   })
 })
+
 </script>
 
 {% endblock javascript %}

@@ -10,7 +10,7 @@ from student_management_app.models import CustomUser
 # from school_apps.courses.models import Semester, Section, Subject
 from student_management_app.models import Section, Semester, Subject, Student,CourseCategory,Course
 from student_management_system.validators import (validate_file_extension, img_pdf_file_validate_file_extension,img_pdf_doc_validator, pdf_file_validate_file_extension,)
-
+from datetime import datetime
 
 class Syllabus(models.Model):
     course_category = models.ForeignKey(CourseCategory, on_delete=models.CASCADE,null = True, blank=True)
@@ -79,6 +79,8 @@ class Assignment(models.Model):
 
     def __str__(self):
         return self.title
+     
+  
 
 
 class Grade(models.Model):
