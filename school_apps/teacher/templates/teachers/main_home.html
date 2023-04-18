@@ -34,78 +34,124 @@
        
           <div class="row ml-4">
          
-              <div class="col-md-3 col-sm-12">
-
-
-                  
-                      <div class="row">
-                    
-                        <div class="col-md-4 col-sm-4 col-4">
-                          <img src="{% static 'image/attendance.png' %}" alt="" style="width:35px;height:35px;" class="img-fluid img-rectangle" />
-
-                        </div>
-                        <div class="col-md-6 col-sm-8 col-8">
-                          <a href="">
-                            <span>
-                              <strong>Attendance Management</strong>
-                            </span>
-                          </a>
-
-                        </div>
-                          
-
-
-                          </div>
-
-                      </div>
-
-                      <div class="col-md-3">
-                        <a href="">
-                          <img src="{% static 'image/academic.png' %}" alt="" style="width:35px;height:35px;margin-right:1rem;" class="img-fluid img-rectangle" />
-          
-                           
-                              <span>
-                                <strong>Academic Management </strong>
-                              </span>
-                        </a>
-          
-                        </div>
-                <div class="col-md-3">
-                  <a href="">
-                    <img src="{% static 'image/notebook.gif' %}" alt="" style="width:35px;height:35px;margin-right:1rem;" class="img-fluid img-rectangle" />
-  
-                     
-                        <span>
-                          <strong> Notes and Materials  </strong>
-                        </span>
-                  </a>
-  
-                  </div>
             <div class="col-md-3">
+              <div class="container">
               <a href="">
-                <img src="{% static 'image/exam.png' %}" alt="" style="width:35px;height:35px;margin-right:1rem;" class="img-fluid img-rectangle" />
+                
+                <img src="{% static 'image/attendance.png' %}" alt="" style="" class="img-fluid img-rectangle" />
 
                  
-                    <span>
-                      <strong>Exam Grade Manage</strong>
+                    <span >
+                      <strong>Attendance  </strong>
                     </span>
               </a>
 
               </div>
-            
-                <div class="col-md-3">
-									<a href="">
-                    <img src="{% static 'image/events.png' %}" alt="" style="width:35px;height:35px;margin-right:1rem;" class="img-fluid img-rectangle" />
+            </div>
 
-											
-												<span>
-													<strong>Event Management </strong>
-												</span>
-									</a>
-
-									</div>
+            <div class="col-md-3">
+              <div class="container">
+              <a href="">
                 
-           
+                <img src="{% static 'image/routine.png' %}" alt="" style="" class="img-fluid img-rectangle" />
+
+                 
+                    <span >
+                      <strong>Routines  </strong>
+                    </span>
+              </a>
+
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="container">
+              <a href="">
+                
+                <img src="{% static 'image/assignment2.png' %}" alt="" style="" class="img-fluid img-rectangle" />
+
+                 
+                    <span >
+                      <strong>Assignments  </strong>
+                    </span>
+              </a>
+
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="container">
+              <a href="">
+                
+                <img src="{% static 'image/enotes2.png' %}" alt="" style="" class="img-fluid img-rectangle" />
+
+                 
+                    <span >
+                      <strong>E-notes  </strong>
+                    </span>
+              </a>
+
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="container">
+              <a href="">
+                
+                <img src="{% static 'image/exam.png' %}" alt="" style="" class="img-fluid img-rectangle" />
+
+                 
+                    <span >
+                      <strong>Grades  </strong>
+                    </span>
+              </a>
+
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="container">
+              <a href="">
+                
+                <img src="{% static 'image/events.png' %}" alt="" style="" class="img-fluid img-rectangle" />
+
+                 
+                    <span >
+                      <strong>Events  </strong>
+                    </span>
+              </a>
+
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="container">
+              <a href="">
+                
+                <img src="{% static 'image/gallery.png' %}" alt="" style="" class="img-fluid img-rectangle" />
+
+                 
+                    <span >
+                      <strong>Gallery  </strong>
+                    </span>
+              </a>
+
+              </div>
+            </div>
+
+
+            <div class="col-md-3">
+              <div class="container">
+              <a href="">
+                
+                <img src="{% static 'image/library.png' %}" alt="" style="" class="img-fluid img-rectangle" />
+
+                 
+                    <span >
+                      <strong>Library  </strong>
+                    </span>
+              </a>
+
+              </div>
+            </div>
 
 
         </div>
@@ -130,19 +176,38 @@
     margin-bottom:1rem;
     margin-right:2rem;
 	}
-span{
-  text-transform: uppercase;
-}
-	.custom-icon i{
-	    padding: 20px;
-	    font-size: 50px;
-	    text-align: center;
-	    color: #115c8d;
-		padding-top:inherit;
-		padding-bottom: 1px;
-		margin-bottom:0.7rem;
-	}
+  .col-md-3 a{
+    color: #007bff;
+    text-decoration: none;
+    background-color: transparent;
+    margin-right: 9rem;
+  }
+  .col-md-3 img{
+    width:35px;height:35px;margin-right:1rem;
 
+  }
+
+.container {
+  position: relative;
+  /* 16:9 aspect ratio */
+}
+    .col-md-3 .container img {
+      position: absolute;
+      margin-left:1rem;
+      top: 0;
+      left: 0;
+      width:35px;height:35px;
+    }
+    
+    .col-md-3 .container span {
+      position: absolute;
+      bottom: 0;
+      text-transform: uppercase;
+      top:3px;
+      left: 0;
+      width: 70%;
+    }
+  
 </style>
 
 {% endblock main_content %}
