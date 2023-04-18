@@ -44,3 +44,7 @@ after one year switch student to next class with new roll number
 
 =>remove unnecessary static files and plugins 
 =>I am using same css from mycompany project datatables but button design margin not working
+=>login with register number and password(student_name and last phonenumbe)
+=>on reset password by admin(role>
+for student role : select class/semester  and for teacher
+)
