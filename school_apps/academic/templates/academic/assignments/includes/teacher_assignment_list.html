@@ -1,0 +1,114 @@
+{% load static %}
+
+{% load auth_extras %}
+
+   
+<table id="example"  cellspacing="0" width="100%" class=" table table-sm  table-striped table-bordered table-hover  text-nowrap  no-footer">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Deadline</th>
+      <th>Subject</th>
+      <th>Class</th>
+
+      <th>File</th>
+      <th>Turned In</th>
+      <th>Checked</th>
+
+
+      <th>Action</th>
+    </tr>
+  </thead>
+<tbody>
+
+  {% for assignment,student_submit_status in assignment_submitted_status %}
+  {% include "academic/assignments/delete.html" %}
+
+
+  <tr>
+    <td>{{ forloop.counter }}</td>
+    <td>{{ assignment.title }}</td>
+    <td>{{ assignment.description }}</td>
+    
+    {% if assignment.deadline <= today_date %}
+    <td><span class="badge badge-default badge-danger">{{ assignment.deadline }}</span></td>
+
+      {% else %}
+      <td>{{ assignment.deadline }}</td>
+
+    {% endif %}
+      
+    <td>{{ assignment.Subject }}</td>
+    <td>{{ assignment.semester }}({{ assignment.section }})</td>
+
+    <td>
+     
+     {% if assignment.file %}
+
+     <a href="{{ assignment.file.url }}" style="cursor: pointer;" class="btn btn-xs btn-success">
+      <strong>View Assignment</strong>
+    </a>
+   
+
+  {% else %}
+  Not Uploaded
+  {% endif %}
+         
+    
+    </td>
+    <td>
+      <span class="badge badge-primary">
+        {{assignment.grade_set.all.count}}/{{assignment.semester.student_set.all.count}}
+      </span>
+    </td>
+    <td>
+      <span class="badge badge-primary">
+        {{assignment.grade_set.count}}
+      </span>
+    </td>
+
+    <td>
+      <div class="btn-group" role="group">
+
+        <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false" style="background:#435EBE;color:white;">
+          Action
+        </button>
+
+        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+          <a class="dropdown-item" href="{% url 'academic:student_assignment_grade' assignment.pk %}">Check Assignment</a>
+          <a class="dropdown-item" href="{% url 'academic:edit_assignment' assignment.id %}">Edit</a>
+          <button class="dropdown-item" data-target='#deleteAssignment-{{ assignment.id}}'
+            data-toggle="modal">Delete
+          </button>
+          <a class="dropdown-item" href="{% url 'academic:draft_publish_unpublish' assignment.id %}">Move to Draft</a>
+        </div>
+      </div>
+    </td>
+
+   
+  
+  </tr>
+   </div>
+
+ 
+  {% endfor %}
+
+
+
+</tbody>
+
+</table>
+
+
+
+
+
+
+
+
+
+
+  

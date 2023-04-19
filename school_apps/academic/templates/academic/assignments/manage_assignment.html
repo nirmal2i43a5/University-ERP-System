@@ -19,98 +19,172 @@
 
         <div class="card " style="background-color: rgb(247, 245, 245);">
           
-          <div class="card-header">
-
-            <ul class="nav nav-tabs nav-custom p-0">
-              <li class="nav-item"><a class="nav-link active" href="#assigned" data-toggle="tab">Assigned</a></li>
-              <li class="nav-item"><a class="nav-link" href="#draft" data-toggle="tab">Draft</a></li>
-
-              
-                <li>
-                  <form class="float-right"  role="search"  method="GET" >
-                    <div class="input-group">
-                   
-                
-                      {{ form|crispy }} 
-                  
-                      <div class="input-group-btn ml-1" style="margin-top:2rem;">
-                        <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> SEARCH</button>
+          <div class="card-header" style="background:#435EBE;color:white;">
+            {% if request.user|has_group:'Teacher' %}
           
-                      </div>
-                    </div>
-                  </form>
-                </li>
-            <li>
-
-
-              {% if request.user.is_superuser or request.user|has_group:'Teacher'   %}
-              <div class="d-flex justify-content-end mb-4">
-
-                <div class="text-link">
-
-                  <a href="{% url 'academic:add_assignment' %}" class="add-link btn btn-xs ml-1" style="background:#435EBE;color:white;margin-top: 2.5rem;">
-                    <i class="fas fa-xs fa-plus"></i> <strong>Add assignment</strong></a>
-                  
-                </div>
-
-                <div>
-                 
-                </div>
-                
-             
-            </div>
-            {% endif %}
-            </li>
-              
-            </ul>
-        
+            <a
+            href="{% url 'mis_main_home' %}"
+            class="btn btn-sm btn-rounded float-right "
+          >
+            <strong class="text-capitalize text-white mb-1"><i class="fas fa-backward "></i>  Back</strong>
+          </a>
+          {% endif %}
+            <span>{{title}}</span>
+          
+          
           </div>
+          <div class="card">
+          
+          <div class="card-header">
+          <strong>
+          Advance Search:
+          </strong>
+          <button id="plus-search" class="btn btn-primary">+</button>
+          
+          {% if  request.user|has_group:'Admin' or request.user.is_superuser or request.user|has_group:'Teacher'   %}   
+          {% url 'academic:add_enote' as button_url %}
+          {% include 'override_table/header_button.html' with button_title='enote' button_url=button_url %}
+          
+          
+          <div class="d-flex bd-highlight">
+          <div class="p-2 flex-fill bd-highlight">
+          
+            <form class="float-right" id = "search-form" role="search"  method="GET" style="margin:auto;;">
+              <div class="input-group">
+             
+          
+                {{ form|crispy }} 
+            
+                <div class="input-group-btn ">
+                  <button type="submit" class="btn btn-primary" style="margin-top:2rem;">SEARCH <i class="fas fa-search"></i></button>
+          
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="p-2 flex-fill bd-highlight">
+          
+           
+          {% endif %}
+          </div>
+          </div>
+          
+          
+          
+          
+          
+          </div>
+          <!-- /.card-header -->
          
           <!-- /.card-header -->
-          <div class="card-body table-responsive">
-            <div class="tab-content">
+     
+<table id="example"  cellspacing="0" width="100%" class=" table table-sm  table-striped table-bordered table-hover  text-nowrap  no-footer">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Deadline</th>
+      <th>Subject</th>
+      <th>Class</th>
 
-              <div class="active tab-pane" id="assigned">
-                
-                {% for assignment,student_submit_status in assignment_submitted_status %}
+      <th>File</th>
+      <th>Turned In</th>
+      <th>Checked</th>
 
-                {% include "academic/assignments/delete.html" %}
+
+      <th>Action</th>
+    </tr>
+  </thead>
+<tbody>
+
+  {% for assignment,student_submit_status in assignment_submitted_status %}
+  {% include "academic/assignments/delete.html" %}
+
+
+  <tr>
+    <td>{{ forloop.counter }}</td>
+    <td>{{ assignment.title }}</td>
+    <td>{{ assignment.description }}</td>
     
-                 {% include "academic/assignments/includes/assignment_list.html" %}
-                   </div>
-                   {% empty %}
-                  
-                   <h3> No Assignments Found!</h3>
-                {% endfor %}
+    {% if assignment.deadline <= today_date %}
+    <td><span class="badge badge-default badge-danger">{{ assignment.deadline }}</span></td>
+
+      {% else %}
+      <td>{{ assignment.deadline }}</td>
+
+    {% endif %}
+      
+    <td>{{ assignment.Subject }}</td>
+    <td>
+      {% if enote.section %}
+                    <p><strong></strong>, {{ enote.section }}</p>
+                  {% else %}
+                    <p><strong></strong>, {{ enote.semester }}</p>
+        {% endif %}
+
+    </td>
+
+    <td>
+     
+     {% if assignment.file %}
+
+     <a href="{{ assignment.file.url }}" style="cursor: pointer;" class="btn btn-xs btn-success">
+      <strong>View Assignment</strong>
+    </a>
+   
+
+  {% else %}
+  Not Uploaded
+  {% endif %}
+         
     
-    
-                </div>
+    </td>
+    <td>
+      <span class="badge badge-primary">
+        {{assignment.grade_set.all.count}}/{{assignment.semester.student_set.all.count}}
+      </span>
+    </td>
+    <td>
+      <span class="badge badge-primary">
+        {{assignment.grade_set.count}}
+      </span>
+    </td>
 
-              <div class="tab-pane" id="draft">
-                {% for assignment in draft_assignments %}
+    <td>
+      <div class="btn-group" role="group">
 
-                {% include "academic/assignments/delete.html" %}
-    
-                 {% include "academic/assignments/includes/draft_assignment.html" %}
-                   </div>
-                   {% empty %}
-                  
-                   <h3> No Assignments Found!</h3>
-                {% endfor %}
-                  
-               </div>
-            </div>
+        <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false" style="background:#435EBE;color:white;">
+          Action
+        </button>
+
+        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+          <a class="dropdown-item" href="{% url 'academic:student_assignment_grade' assignment.pk %}">Check Assignment</a>
+          <a class="dropdown-item" href="{% url 'academic:edit_assignment' assignment.id %}">Edit</a>
+          <button class="dropdown-item" data-target='#deleteAssignment-{{ assignment.id}}'
+            data-toggle="modal">Delete
+          </button>
+          <a class="dropdown-item" href="{% url 'academic:draft_publish_unpublish' assignment.id %}">Move to Draft</a>
+        </div>
+      </div>
+    </td>
+
+   
+  
+  </tr>
+   </div>
+
+ 
+  {% endfor %}
 
 
-           
-          
-          
-            </div>
-           
-          
-            
-           
-          </div>
+
+</tbody>
+
+</table>
+
+
           <!-- /.card-body -->
         </div>
         <!-- /.card -->
@@ -185,6 +259,17 @@
   })
  
   });
+    // Hide the search form by default
+    $('#search-form').hide();
+  
+    // Toggle the search form visibility when clicking on the plus search button
+    $('#plus-search').click(function() {
+      $('#search-form').toggle();
+      $(this).toggleClass('btn-success btn-danger '); // Change button color
+      $(this).text(function(i, text){
+        return text === "+" ? "-" : "+"; // Change button text
+      });
+    });
 </script>
 
 {% endblock custom_js %}
@@ -204,3 +289,51 @@
 {% endfor %}
 
 {% endif %} -->
+
+
+<div class="card-header">
+
+  <ul class="nav nav-tabs nav-custom p-0">
+    <li class="nav-item"><a class="nav-link active" href="#assigned" data-toggle="tab">Assigned</a></li>
+    <li class="nav-item"><a class="nav-link" href="#draft" data-toggle="tab">Draft</a></li>
+
+    
+      <li>
+        <form class="float-right"  role="search"  method="GET" >
+          <div class="input-group">
+         
+      
+            {{ form|crispy }} 
+        
+            <div class="input-group-btn ml-1" style="margin-top:2rem;">
+              <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> SEARCH</button>
+
+            </div>
+          </div>
+        </form>
+      </li>
+  <li>
+
+
+    {% if request.user.is_superuser or request.user|has_group:'Teacher'   %}
+    <div class="d-flex justify-content-end mb-4">
+
+      <div class="text-link">
+
+        <a href="{% url 'academic:add_assignment' %}" class="add-link btn btn-xs ml-1" style="background:#435EBE;color:white;margin-top: 2.5rem;">
+          <i class="fas fa-xs fa-plus"></i> <strong>Add assignment</strong></a>
+        
+      </div>
+
+      <div>
+       
+      </div>
+      
+   
+  </div>
+  {% endif %}
+  </li>
+    
+  </ul>
+
+</div>

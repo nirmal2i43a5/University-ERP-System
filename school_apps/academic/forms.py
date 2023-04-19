@@ -93,15 +93,13 @@ class AssignmentForm(forms.ModelForm):
     # course_category.course = forms.ModelChoiceField(queryset = Course.objects.all(), widget=forms.RadioSelect())
     # deadline = forms.SplitDateTimeField(label = 'Deadline', widget=AdminSplitDateTime())
     deadline = forms.DateTimeField(
-        widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'id': 'datetimepicker',
-            
-            'data-target': '#datetimepicker',
-            'data-toggle': 'datetimepicker',
-            
-        },),
-            input_formats=['%m/%d/%Y %I:%M %p']  
+        widget=forms.DateInput(
+        attrs={
+
+            "type": "datetime-local", "class": "form-control"
+        },
+        ),
+            input_formats = ['%Y-%m-%dT%H:%M'] 
         )
     title=forms.CharField(widget=forms.TextInput(attrs={"class":"form-control","placeholder": " Enter Title",}))
     description = forms.CharField( widget=forms.Textarea(attrs={'rows': 2, 'cols': 10,"placeholder": " Enter  Course Description",}))
@@ -111,11 +109,9 @@ class AssignmentForm(forms.ModelForm):
 
     def clean(self):
         self.check_file()
-        print(":::I am inside clead------------")
         return self.cleaned_data
 
     def check_file(self):
-        print("I am inside file check--------------------------")
         content = self.cleaned_data["file"]
         content_type = content.content_type.split('/')[0]
         if content.size > int(MAX_UPLOAD_SIZE):
@@ -130,6 +126,7 @@ class AssignmentForm(forms.ModelForm):
         
     def __init__(self, *args, user=None, **kwargs):
         super().__init__(*args, **kwargs)
+        # self.fields["deadline"].input_formats = ("%Y-%m-%dT%H:%M",)
         if user.groups.filter(name='Teacher'):
             course_category = self.fields['course_category']
             course_category.queryset = user.staff.courses.all()
@@ -142,7 +139,7 @@ class SemesterSectionSearchForm(forms.Form):
     # course_category = forms.ModelChoiceField(empty_label = 'Choose Course Category',
     #                                   queryset = CourseCategory.objects.all())
     
-    semester = forms.ModelChoiceField(required = False, label = 'Semester',empty_label = '------------------Choose Class------------------',
+    semester = forms.ModelChoiceField(required = False, label = 'Class',empty_label = '------------------Choose Class------------------',
                                       queryset = Semester.objects.all())
     section = forms.ModelChoiceField(required = False, empty_label = 'Choose Section',
                                      queryset = Section.objects.all())
@@ -253,25 +250,32 @@ class EnotesFilterForm(forms.Form):
     # section = forms.ModelChoiceField(required = False,label = '', empty_label = 'Choose Section',
     #                                  queryset = Section.objects.all())
     
-
-    subject = forms.ModelChoiceField(empty_label = 'Choose Subject',
+    semester = forms.ModelChoiceField(required = False,label = "Class", empty_label = 'Choose Class',
+                                     queryset = Semester.objects.none())
+    subject = forms.ModelChoiceField(required = False,empty_label = 'Choose Subject',
                                      queryset = Subject.objects.none())
 
-    category=forms.ChoiceField(choices=category_choices,
+    category=forms.ChoiceField(required = False,choices=category_choices,
                         )
     start_date = forms.DateField(required = False, label = 'From', widget=forms.DateInput(attrs = {'type':'date','class':''}))
     end_date = forms.DateField(required = False,label = 'To',widget=forms.DateInput(attrs = {'type':'date','class':''}))
 
     
-    def __init__(self,semester = None, user = None, *args, **kwargs):
+    def __init__(self,
+                 semester = None, 
+                 user = None, *args, **kwargs):
         super(EnotesFilterForm,self).__init__(*args, **kwargs)
         
         subject = kwargs.pop('subject', None)
         if user.groups.filter(name='Teacher'):
             print("satecher:::")
             self.fields['subject'].queryset = user.subjectteacher_set.all()
+            self.fields['semester'].queryset = user.semesterteacher_set.all()
+
         if user.groups.filter(name='Student'):
             self.fields['subject'].queryset = Subject.objects.filter(semester =  user.student.semester)
+            self.fields['semester'].widget = forms.HiddenInput()
+
         if user.groups.filter(name='Super-Admin') or user.is_superuser:
             self.fields['subject'].queryset = Subject.objects.filter(semester =  get_object_or_404(Semester , pk = semester))
     
