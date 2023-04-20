@@ -23,6 +23,8 @@ class Term(models.Model):
     year = models.IntegerField(choices=YEAR_CHOICES, default=datetime.datetime.now().year)
     term_name = models.CharField(max_length=25)
     type = models.CharField(max_length=5, choices= exam_choices, default = 'Unit')
+    full_marks = models.IntegerField(default=100)
+    pass_marks = models.IntegerField(default=40)
     start_date = models.DateField(null = True, blank=True)
     end_date = models.DateField(null = True, blank=True)
     exam_centre = models.CharField(max_length=30,null = True, blank=True)
@@ -101,8 +103,13 @@ class studentgrades(models.Model):
         ('U', 'U'),
         ('Abs', 'Absent'),
     ]
-    exam_id = models.ForeignKey(Exams, on_delete=models.CASCADE)
-    application_id = models.ForeignKey(application_form, on_delete=models.CASCADE)
+    exam_id = models.ForeignKey(Exams, on_delete=models.CASCADE,null=True, blank=True)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE,null=True, blank=True)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE,null=True, blank=True)
+    term = models.ForeignKey(Term, on_delete=models.CASCADE,null=True, blank=True)
+
+
+    application_id = models.ForeignKey(application_form, on_delete=models.CASCADE,null=True, blank=True)
     marks = models.FloatField(default=0)
     grade = models.CharField(max_length=6, choices=GRADE_OPTIONS, default='U')
     passed = models.BooleanField()
@@ -114,33 +121,33 @@ class studentgrades(models.Model):
     
 
     def __str__(self):
-        return self.application_id.student.student_user.full_name + " " + self.exam_id.exam_title
+        return self.student.student_user.full_name# + " " + self.exam_id.exam_title
     
     def save(self, *args, **kwargs):
-        self.passed = True if self.marks>=self.exam_id.pass_marks else False
+        self.passed = True if self.marks>=self.term.pass_marks else False
 
         level = self.application_id.student.semester.level
 
-        if self.exam_id.exam_type == 'Term':
-            if 0<=int(self.marks)<40:
-                self.grade='U'
-            elif 40<=int(self.marks)<50:
-                self.grade='E'
-            elif 50<=int(self.marks)<60:
-                self.grade='D'
-            elif 60<=int(self.marks)<70:
-                self.grade='C'
-            elif 70<=int(self.marks)<80:
-                self.grade='B'
-            elif 80<=int(self.marks)<90:
+        # if self.exam_id.exam_type == 'Term':
+        if 0<=int(self.marks)<40:
+            self.grade='U'
+        elif 40<=int(self.marks)<50:
+            self.grade='E'
+        elif 50<=int(self.marks)<60:
+            self.grade='D'
+        elif 60<=int(self.marks)<70:
+            self.grade='C'
+        elif 70<=int(self.marks)<80:
+            self.grade='B'
+        elif 80<=int(self.marks)<90:
+            self.grade='A'
+        elif int(self.marks)==-1:
+            self.grade='Abs'
+        else:
+            if level == 'AS':
                 self.grade='A'
-            elif int(self.marks)==-1:
-                self.grade='Abs'
             else:
-                if level == 'AS':
-                    self.grade='A'
-                else:
-                    self.grade='A*'
+                self.grade='A*'
 
         super().save(*args, **kwargs)
 

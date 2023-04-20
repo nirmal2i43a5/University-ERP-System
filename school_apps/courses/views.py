@@ -537,7 +537,8 @@ def examsAjax(request):
     section_id = request.GET.get('section_id')
     class_id = request.GET.get('class_id')
     term_id = request.GET.get('term_id')
-    print(section_id, class_id)
+    subject_id = request.GET.get('subject_id')
+    print(section_id, class_id,term_id, subject_id)
     semester_instance = Semester.objects.get(pk = class_id) if class_id else None
     section_instance = Section.objects.get(pk =  section_id) if section_id else None
     if not section_id:
@@ -550,6 +551,11 @@ def examsAjax(request):
     # print(student_data)
 
     return render (request, 'courses/submit_score.html', {'students':students,
+                                                          'section_id':section_id,
+                                                          'class_id':class_id,
+                                                          'term_id':term_id,
+                                                          'subject_id':subject_id
+
                                                           
                                                           }
                 #    {'students':student_data, 'term_id':term_id}

@@ -4,11 +4,16 @@
         <hr>
         <h4>Exam = {{term.term_name}}</h4>
         <hr>
-        <form action="{% url 'teacher:submitscore' %}">
+        <form action="{% url 'teacher:submitscore' %}" method="post">
 
-
+{% csrf_token %}
 
             <input type="hidden" name="term_id" value="{{term_id}}">
+            <input type="hidden" name="class_id" value="{{class_id}}">
+            <input type="hidden" name="section_id" value="{{section_id}}">
+            <input type="hidden" name="subject_id" value="{{subject_id}}">
+
+
 
 
 
@@ -30,7 +35,9 @@
                         >
                     </td>
                     <td>
-                        <input type="checkbox" name="absent" value="{{stu.application_id.student.student_user.username}}"class="absent_checkbox"> Absent
+                         {% comment %} <input type="hidden" name="student_ids" value="{{stu.student_user.pk}}"> {% endcomment %}
+
+                        <input type="checkbox" name="absent" value="{{stu.student_user.username}}"class="absent_checkbox"> Absent
                     </td>
                 </tr>
             {%endfor%}

@@ -8,7 +8,7 @@ from django.http.response import HttpResponseRedirect, JsonResponse
 from django.http.response import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from school_apps.courses.models import Term, application_form, studentgrades, Exams, Subject, selectedcourses, term_ranking
-from student_management_app.models import Student, Staff, CustomUser, SubjectTeacher
+from student_management_app.models import Student, Staff, CustomUser, SubjectTeacher,Section, Semester
 from django.urls import reverse
 from django.db.models import Q, Model
 from django.db.models.query import QuerySet
@@ -56,74 +56,108 @@ def subscore(request):
 
 def submitscore(request):
     teacher = get_object_or_404(CustomUser, id = request.user.id)
-    term  = get_object_or_404(Term, term_id=request.GET['term_id'])
-    selected_subject = term.subject_id
-    print("subject: " + selected_subject.__str__())
-    students = studentgrades.objects.filter(exam_id__subject_id=selected_subject)
+    term  = get_object_or_404(Term, term_id=request.POST['term_id'])
+    section_id = request.POST['section_id']
+    subject_id = request.POST['subject_id']
+    class_instance = get_object_or_404(Semester , pk = request.POST['class_id'])
+    section_instance = get_object_or_404(Section , pk = section_id) if section_id else None
+    subject_instance = get_object_or_404(Subject , pk = subject_id) if subject_id else None
+
+    if not section_instance:
+        students = Student.objects.filter(semester = class_instance)
+    if section_instance:
+        students = Student.objects.filter(section = section_instance)
+
+    for student in students:
+        marks=float(request.POST[student.student_user.full_name])#name = student_name in input field
+        absent_student = request.POST.getlist('absent')
+        print(marks, absent_student,":::::::::::::::::;;")
+        grade = studentgrades.objects.create(
+            term = term , 
+            subject = subject_instance, 
+            student = Student.objects.get(pk = student.pk),
+
+        )
+        if student.student_user.username in absent_student:
+            student.is_absent = True
+            student.marks = 0
+        else:
+            student.is_absent = False
+            student.marks = marks
+        # student.save()
+
+
+
+
+
+#     selected_subject = term.subject_id
+#     print("subject: " + selected_subject.__str__())
+    # students = studentgrades.objects.filter(exam_id__subject_id=selected_subject)
+#     grades= studentgrades.objects.create()
     
-    failed_attempts=[]
-    entries=0
-    if (students):
-        for student in students:
-            try:
-                marks=float(request.GET[student.application_id.student.student_user.full_name])
-                if (str(student.application_id.student.student_user.username) in request.GET.getlist('absent')):
-                    student.is_absent = True
-                    student.marks = 0
-                else:
-                    student.is_absent = False
-                    student.marks = marks
-                student.save()
-                entries+=1
-            except Exception as e:
-                print(e)
-                failed_attempts.append(student.application_id.student)
-    else:
-        print("Error")
+#     failed_attempts=[]
+#     entries=0
+#     # if (students):
+#     for student in students:
+#         try:
+#             marks=float(request.GET[student.application_id.student.student_user.full_name])
+#             if (str(student.application_id.student.student_user.username) in request.GET.getlist('absent')):
+#                 student.is_absent = True
+#                 student.marks = 0
+#             else:
+#                 student.is_absent = False
+#                 student.marks = marks
+#             student.save()
+#             entries+=1
+#         except Exception as e:
+#             print(e)
+#             failed_attempts.append(student.application_id.student)
+#     else:
+#         print("Error")
 
-    for item in studentgrades.objects.filter(exam_id=exam):
-        item.rank = studentgrades.objects.filter(exam_id =exam, marks__gt=item.marks).count()+1
-        item.save()
-    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    #term_ranking
+#     for item in studentgrades.objects.filter(exam_id=exam):
+#         item.rank = studentgrades.objects.filter(exam_id =exam, marks__gt=item.marks).count()+1
+#         item.save()
+#     #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#     #term_ranking
 
-    selected_term = exam.term
-    term_students = studentgrades.objects.filter(exam_id__term=selected_term)
+#     selected_term = exam.term
+#     term_students = studentgrades.objects.filter(exam_id__term=selected_term)
     
-    students_list = application_form.objects.filter(term=selected_term).values_list('student').distinct()
+#     students_list = application_form.objects.filter(term=selected_term).values_list('student').distinct()
 
-    print('students_list: ', students_list , "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+#     print('students_list: ', students_list , "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
-    for item in students_list:
-        total_marks = 0
-        grades = studentgrades.objects.filter(application_id__student = item, exam_id__term=selected_term)
-        print('grades', grades, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+#     for item in students_list:
+#         total_marks = 0
+#         grades = studentgrades.objects.filter(application_id__student = item, exam_id__term=selected_term)
+#         print('grades', grades, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
-        for grade in grades:
-            total_marks+= grade.marks
+#         for grade in grades:
+#             total_marks+= grade.marks
         
-        obj,created = term_ranking.objects.get_or_create(term=selected_term, student=Student.objects.get(pk=item[0]))
-        obj.total_marks=total_marks
-        obj.save()
+#         obj,created = term_ranking.objects.get_or_create(term=selected_term, student=Student.objects.get(pk=item[0]))
+#         obj.total_marks=total_marks
+#         obj.save()
 
-    all_t_ranks = term_ranking.objects.filter(term=selected_term, student__in = students_list)
+#     all_t_ranks = term_ranking.objects.filter(term=selected_term, student__in = students_list)
 
-    print("\n ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n")
-    for t_rank in all_t_ranks:
-        t_rank.rank = term_ranking.objects.filter(total_marks__gt=t_rank.total_marks, student__in=students_list).count()+1
-        t_rank.save()
-        print(t_rank, type(t_rank), t_rank.total_marks, 'rank= ',t_rank.rank, "___________________________________")
+#     print("\n ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n")
+#     for t_rank in all_t_ranks:
+#         t_rank.rank = term_ranking.objects.filter(total_marks__gt=t_rank.total_marks, student__in=students_list).count()+1
+#         t_rank.save()
+#         print(t_rank, type(t_rank), t_rank.total_marks, 'rank= ',t_rank.rank, "___________________________________")
 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
-    if (len(failed_attempts)==0):
-        messages.success(request, "Marks entry for " + str(entries) + " students successful")
-        return HttpResponseRedirect(reverse('courses:addexammarks'))
-        #return HttpResponse("OK")
-    else:
-        messages.error(request, "Marks entry for " + str(len(failed_attempts)) + " students unsuccessful")
-        # return HttpResponse("not ok" + str(len(failed_attempts)))
-        return HttpResponseRedirect(reverse('courses:addexammarks'))
+#     if (len(failed_attempts)==0):
+#         messages.success(request, "Marks entry for " + str(entries) + " students successful")
+#         return HttpResponseRedirect(reverse('courses:addexammarks'))
+#         #return HttpResponse("OK")
+#     else:
+#         messages.error(request, "Marks entry for " + str(len(failed_attempts)) + " students unsuccessful")
+#         # return HttpResponse("not ok" + str(len(failed_attempts)))
+#         return HttpResponseRedirect(reverse('courses:addexammarks'))
 
 
 

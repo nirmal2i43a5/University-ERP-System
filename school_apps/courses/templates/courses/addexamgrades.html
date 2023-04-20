@@ -16,23 +16,25 @@
     <div style="margin-left: 10px; margin-right: 10px; margin-top: 15px;">
         <form id="exam_form"> 
             <label for="term_select">Select Class: </label>
-            <select name="term_select" id="id_semester" class="form-control col-md-6">
+            <select name="id_semester" id="id_semester" class="form-control col-md-6">
                 <option value="">Select Class</option>
+
                 {% for item in classes %}
+
                     <option value="{{item.pk}}">{{ item }}</option>
                 {% endfor %}
             </select>
             <br>
             <label for="term_select">Select Subject: </label>
             
-            <select name="term_select" id="id_subject" class="form-control col-md-6">
+            <select name="id_subject" id="id_subject" class="form-control col-md-6">
                 <option value="">Select Subject</option>
                 {% for item in subjects %}
                     <option value="{{item.pk}}">{{ item }}</option>
                 {% endfor %}
             </select>
             <br>
-            <select name="term_select" id="id_section" class="form-control col-md-6">
+            <select name="id_section" id="id_section" class="form-control col-md-6">
                 <option value="">Select Section</option>
                 {% for item in sections %}
                     <option value="{{item.pk}}">{{ item }}</option>
@@ -40,10 +42,12 @@
             </select>
             <br>
             <label for="term_select">Select term: </label>
-            <select name="term_select" id="term_select" class="form-control col-md-6">
+            <select name="term_select" id="id_term" class="form-control col-md-6">
                 <option value="">Select Term</option>
                 {% for item in terms %}
                     <option value="{{item.pk}}">{{ item }}</option>
+
+
                 {% endfor %}
             </select>
             {% comment %} <br>
@@ -58,6 +62,7 @@
 
         </div>
     </div>
+
 
 {% endblock %}
 
@@ -100,11 +105,19 @@
             e.preventDefault();
             section_id = $("#id_section").val();
             class_id = $('#id_semester').val()
+            subject_id = $('#id_subject').val()
+            term_id = $('#id_term').val()
+
 
             
                 $.ajax({
                     url: "{% url 'courses:examsAjax'%}",
-                    data: {'section_id':section_id,'class_id':class_id},
+                    data: {'section_id':section_id,
+                    'class_id':class_id,
+                    'term_id':term_id,
+
+                        'subject_id':subject_id
+            },
                     success: function (data) {
                         $("#entryfield").html(data);
                     }
