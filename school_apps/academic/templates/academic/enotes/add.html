@@ -1,4 +1,6 @@
 {% extends 'admin_templates/base_admin.html' %}
+{% load auth_extras %}
+
 {% block title %}
   {{title}}
 {% endblock title %}
@@ -23,13 +25,30 @@
         <!-- general form elements -->
         <div class="card card-info">
           
-          {% if enote_instance %}
-          {% include 'override_table/header.html' with card_title='Edit E-Note' %}
-{% else %}
-{% include 'override_table/header.html' with card_title='Add E-Note' %}
+
+          <div class="card-header" style="background:#435EBE;">
+                {% if request.user|has_group:'Teacher' %}
+          
+                <a
+                href="{% url 'academic:manage_enote' %}"
+                class="btn btn-sm btn-rounded float-right "
+              >
+                <strong class="text-capitalize mb-1"><i class="fas fa-backward "></i>  Back</strong>
+              </a>
+              {% endif %}
+              {% if enote_instance %}
+
+
+                <h3 class="card-title  text-white">Edit E-Note</h3>
+
+                {% else %}
+                <h3 class="card-title  text-white">Add E-Note</h3>
+
+          {% endif %}
+                
+            </div>
 
             
-          {% endif %}
             
           <!-- /.card-header -->
           {% url 'academic:manage_enote' as back_url %}

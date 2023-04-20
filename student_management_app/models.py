@@ -360,7 +360,7 @@ class Subject(models.Model):
     course_category = models.ForeignKey(CourseCategory, on_delete=models.CASCADE,null = True, blank=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE, null= True, blank=True)
     
-    semester = models.ForeignKey(Semester, verbose_name = 'Class', on_delete=models.CASCADE)
+    semester = models.ForeignKey(Semester, verbose_name = 'Class', on_delete=models.CASCADE,null = True, blank=True)
     faculty = models.CharField(_('Group'), max_length=50,choices = faculty_choices,blank = True)
     subject_name = models.CharField(max_length=255)
     subject_code = models.CharField(max_length=255,blank=True, null = True)

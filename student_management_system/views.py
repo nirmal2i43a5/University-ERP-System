@@ -50,6 +50,12 @@ def mis_main_home(request):
                  }
     return render(request, 'teachers/main_home.html', context)
 
+def teacher_grade_home(request):
+    context = {
+        'title':'Grade',
+                 }
+    return render(request, 'exam/grades/teacher_grade_home.html', context)
+
 class HistoryLogs(View):
     def get(self, request, *args, **kwargs):
         students = Student.objects.get(id=10).delete().history.all()

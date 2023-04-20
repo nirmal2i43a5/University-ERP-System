@@ -164,10 +164,11 @@ def studentsAjax(request):
     
     return render(request, 'courses/studentlist.html',{'students':student_list})
 
+
 def studentsmarksentry(request, id):
     student = get_object_or_404(Student, student_user__username = id)
     today = datetime.date.today()
-    exams = studentgrades.objects.filter(Q(application_id__student = student)& Q(exam_id__date__lte=today) 
+    exams = studentgrades.objects.all().filter(Q(application_id__student = student)& Q(exam_id__date__lte=today) 
                                             &Q(exam_id__term__course_category=request.user.adminuser.course_category))
     return render(request, 'courses/studentmarksentry.html', {'student': student, 'exams':exams})
 
@@ -465,9 +466,13 @@ def printexamreport(request, pk):
 
 def addexammarks(request):
     print(request.user)
-    terms = Term.objects.filter(course_category=request.user.adminuser.course_category)
-
-    context = {'terms':terms}
+    terms = Term.objects.all()#filter(course_category=request.user.adminuser.course_category)
+    semesters = Semester.objects.all()
+    subjects = Subject.objects.all()
+    sections = Section.objects.all()
+    print(terms)
+    context = {'terms':terms,'sections':sections,
+               'classes':semesters, 'subjects':subjects}
 
     return render(request, 'courses/addexamgrades.html', context)
 
@@ -529,13 +534,26 @@ def fill_exam_select(request):
 
 
 def examsAjax(request):
-    exam_id = request.GET.get('exam_id')
-    selected_exam = get_object_or_404(Exams, exam_id=exam_id)
+    section_id = request.GET.get('section_id')
+    class_id = request.GET.get('class_id')
+    term_id = request.GET.get('term_id')
+    print(section_id, class_id)
+    semester_instance = Semester.objects.get(pk = class_id) if class_id else None
+    section_instance = Section.objects.get(pk =  section_id) if section_id else None
+    if not section_id:
+        students = Student.objects.filter(semester = semester_instance)
+    if  section_id:
+        students = Student.objects.filter(section = section_instance)
+    # selected_exam = get_object_or_404(Exams, exam_id=exam_id)
 
-    student_data = studentgrades.objects.filter(Q(exam_id=selected_exam))
-    print(student_data)
+    # student_data = studentgrades.objects.all()#filter(Q(exam_id=selected_exam))
+    # print(student_data)
 
-    return render (request, 'courses/submit_score.html', {'students':student_data, 'exam':selected_exam})
+    return render (request, 'courses/submit_score.html', {'students':students,
+                                                          
+                                                          }
+                #    {'students':student_data, 'term_id':term_id}
+                   )
 
 
 def massexamapplication(request):

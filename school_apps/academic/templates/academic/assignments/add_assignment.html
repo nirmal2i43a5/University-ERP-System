@@ -1,5 +1,5 @@
 {% extends 'admin_templates/base_admin.html' %}
-
+{% load auth_extras %}
 {% load crispy_forms_tags %}
 {% load static %}
 
@@ -23,10 +23,27 @@
       <div class="col-md-12">
         <!-- general form elements -->
         <div class="card card-info">
-          {% include 'override_table/header.html' with card_title='Add Assignment' %}
+        
+         
+              <div class="card-header" style="background:#435EBE;">
+                {% if request.user|has_group:'Teacher' %}
+          
+                <a
+                href="{% url 'academic:manage_assignment' %}"
+                class="btn btn-sm btn-rounded float-right "
+              >
+                <strong class="text-capitalize mb-1"><i class="fas fa-backward "></i>  Back</strong>
+              </a>
+              {% endif %}
+                <h3 class="card-title  text-white">Add Assignment</h3>
+              </div>
+
+
+         
           <!-- /.card-header -->
           {% url 'academic:manage_assignment' as back_url %}
           <!-- form start -->
+          
           {% include 'admin_templates/form.html' with messages=messages form=form back_url=back_url button_text="Add Assignment" %}
 
         <!-- /.card -->

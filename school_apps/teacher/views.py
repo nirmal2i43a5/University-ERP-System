@@ -51,13 +51,15 @@ def subscore(request):
     context = {'teacher': teacher,  'students':student_data, 'exam':selected_exam}
     return render (request, 'teacher/dump.html', context )
 
+
+
+
 def submitscore(request):
     teacher = get_object_or_404(CustomUser, id = request.user.id)
-    exam = get_object_or_404(Exams, exam_id=request.GET['exam_id'])
-    selected_subject = exam.subject_id
+    term  = get_object_or_404(Term, term_id=request.GET['term_id'])
+    selected_subject = term.subject_id
     print("subject: " + selected_subject.__str__())
     students = studentgrades.objects.filter(exam_id__subject_id=selected_subject)
-    # print(list(request.GET.items()))
     
     failed_attempts=[]
     entries=0
@@ -125,6 +127,9 @@ def submitscore(request):
 
 
 
+
+
+
 def studentlist(request):
     teacher = get_object_or_404(CustomUser, id = request.user.id)
     return render (request, 'teacher/studentlist.html', {'teacher':teacher})
@@ -148,8 +153,15 @@ def checkscore(request):
         selected_exam = get_object_or_404(Exams, exam_id=request.POST['exam_id'])
         studentrecords = studentgrades.objects.filter(exam_id=selected_exam).exclude(marks=-1)
         studentrecords_remaining = studentgrades.objects.filter(exam_id=selected_exam).filter(marks=-1)
-        context = {'teacher':teacher,'students':studentrecords, 'exams':exams, 'selected_exam':selected_exam, 'code':code, 'remaining':studentrecords_remaining}
+        context = {'teacher':teacher,
+                   'students':studentrecords, 
+                   'exams':exams, 
+                   'selected_exam':selected_exam, 
+                   'code':code,
+                     'remaining':studentrecords_remaining}
         return render(request, 'teacher/checkscore.html', context)
+
+
 
 def examsAjax(request):
     teacher = get_object_or_404(CustomUser, id = request.user.id)

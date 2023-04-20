@@ -38,6 +38,9 @@
 
 .container {
     position: relative;
+    margin-right: 7rem;
+    margin-left: 1rem;
+    margin-bottom: 6px;
     /* 16:9 aspect ratio */
 }
 
@@ -57,9 +60,23 @@
     position: absolute;
     bottom: 0;
     text-transform: uppercase;
-    top: 3px;
+    top: 4px;
     left: 0;
     width: 70%;
+}
+
+
+/* Media query for screens smaller than 768px (mobile screens) */
+
+@media (max-width: 767px) {
+    #teacher_responsive_card_container .col-md-3 .container span {}
+}
+
+
+/* Media query for screens larger than 768px (desktop screens) */
+
+@media (min-width: 768px) {
+    #teacher_responsive_card_container .col-md-3 .container span {}
 }
 
 

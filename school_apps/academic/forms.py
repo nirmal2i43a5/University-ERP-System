@@ -121,7 +121,7 @@ class AssignmentForm(forms.ModelForm):
     class Meta:
         model = Assignment
         fields = '__all__'
-        exclude = ('created_by','student','teacher',)
+        exclude = ('created_by','student','teacher','draft',)
 
         
     def __init__(self, *args, user=None, **kwargs):
@@ -156,6 +156,7 @@ class SemesterSectionSearchForm(forms.Form):
         filter_semester = self.fields['semester']
         # course_category = self.fields['course_category']
         # course_category.queryset = user.staff.course.all()
+            
         filter_semester.queryset = user.semester_set.all()
         subject.queryset = user.subject_set.all()
 
@@ -400,8 +401,8 @@ class RoutineSearchForm(forms.Form):
         
         
 class SubjectForm(forms.ModelForm):
-    course_category = forms.ModelChoiceField(queryset = CourseCategory.objects.all(), widget=forms.RadioSelect())
-    semester = forms.ModelChoiceField(queryset = Semester.objects.all())
+    course_category = forms.ModelChoiceField(required = False,queryset = CourseCategory.objects.all(), widget=forms.RadioSelect())
+    semester = forms.ModelChoiceField(required = False,queryset = Semester.objects.all())
     course = forms.ModelChoiceField(required = False, queryset = Course.objects.all())
     subject_name = forms.CharField(required = True, widget=forms.TextInput(
         attrs={'placeholder': 'Enter Your Subject Name'}))
@@ -411,7 +412,13 @@ class SubjectForm(forms.ModelForm):
         attrs={'rows': 2, 'cols': 10, "placeholder": " Enter  Course Description", }))
     class Meta:
         model=Subject
-        fields = ('course_category','course','semester','subject_name','subject_code','description')
+        fields = (
+            'course_category',
+            'course',
+            'semester',
+                  'subject_name',
+                  'subject_code',
+                  'description')
  
 
 

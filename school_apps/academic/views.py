@@ -228,6 +228,8 @@ def manage_subject(request):
                }
         return render(request, "academic/subjects/manage_subject.html", context)
     if request.method == 'POST':
+       
+   
         form = SubjectForm(request.POST)
         try:
             if form.is_valid():
@@ -633,6 +635,7 @@ def subject_to_class(request):
                 'subjects': subjects}
 
     return render(request, 'courses/subject_to_class.html', context)
+
 
 def subject_to_class_Ajax(request):
     section = Section.objects.get(pk = request.GET['section'])
@@ -1270,7 +1273,6 @@ def edit_assignment(request, assignment_id):
                               instance=assignment,
                               user = request.user)
         # try:
-        print(form,"----------------------")
         if form.is_valid():
             title = form.cleaned_data['title']
             form.save()
@@ -1344,7 +1346,6 @@ def assignment_answer_upload(request, assignment_id):
 
 
         if check_existing_upload:#Student cannot reupload the answer for the same assignment
-            print("Already uploaded")
             messages.error(request, 'You have already uploaded an answer for this assignment!Cannot reupload.')
             return redirect('academic:assignment_answer_upload', assignment_id)
         else:

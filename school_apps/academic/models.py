@@ -59,6 +59,7 @@ class Assignment(models.Model):
     course_category = models.ForeignKey(CourseCategory, on_delete=models.CASCADE,null = True, blank=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE,null = True, blank=True)
     title = models.CharField(max_length=100)
+    url_link = models.URLField(null = True, blank=True)
     description = models.TextField()
     deadline = models.DateTimeField()
     # class_id=models.ForeignKey(Class,on_delete=models.CASCADE)

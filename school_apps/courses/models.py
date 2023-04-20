@@ -23,9 +23,9 @@ class Term(models.Model):
     year = models.IntegerField(choices=YEAR_CHOICES, default=datetime.datetime.now().year)
     term_name = models.CharField(max_length=25)
     type = models.CharField(max_length=5, choices= exam_choices, default = 'Unit')
-    start_date = models.DateField()
-    end_date = models.DateField()
-    exam_centre = models.CharField(max_length=30)
+    start_date = models.DateField(null = True, blank=True)
+    end_date = models.DateField(null = True, blank=True)
+    exam_centre = models.CharField(max_length=30,null = True, blank=True)
     is_published = models.BooleanField(default = False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -54,11 +54,11 @@ class Exams(models.Model):
     exam_title = models.CharField(max_length=100)
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
     subject_id = models.ForeignKey(Subject, on_delete=models.CASCADE)
-    semester = models.ForeignKey(Semester, on_delete=models.CASCADE, null = True)
+    # semester = models.ForeignKey(Semester, on_delete=models.CASCADE, null = True)
     exam_type = models.CharField(max_length=5, choices= exam_choices, default = 'Unit')
     exam_format = models.CharField(max_length=50,choices  = format_choices )
-    date = models.DateField()
-    time = models.TimeField()
+    date = models.DateField(null=True, blank = True)
+    time = models.TimeField(null=True, blank = True)
     full_marks = models.IntegerField(default=100)
     pass_marks = models.IntegerField(default=40)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -85,7 +85,6 @@ class application_form(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
 
-    
     def save(self, *args, **kwargs):
         self.semester = self.student.semester
         super().save(*args, **kwargs)
@@ -145,6 +144,7 @@ class studentgrades(models.Model):
 
         super().save(*args, **kwargs)
 
+
 class term_ranking(models.Model):
     term=models.ForeignKey(Term, on_delete=models.CASCADE)
     student=models.ForeignKey(Student, on_delete=models.CASCADE)
@@ -164,7 +164,87 @@ class selectedcourses(models.Model):
     def __str__(self):
         return self.student_id.student_user.full_name + " " + self.subject_id.subject_name
     
+# signals.py
 
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from student_management_app.models import   Student
+
+@receiver(post_save, sender=Term)
+def create_exams_and_application_forms(sender, instance, created, **kwargs):
+    if created:
+        '''Automatically create exam for all subjects for school(one to class ten only)'''
+      
+        exam_format = 'Close Book'
+        print(instance.type,"::::::::::::::::::::::::::::::::::::::::::::::")
+        if instance.type == 'Unit':
+            pass_marks = 25
+            full_marks = 10
+        if instance.type == 'Term':
+            pass_marks = 40
+            full_marks = 100
+        # print(instance.term_name,instance.subject__pk)
+        '''Automatically creating exam for all the subjects when admin create term from 1 to 10 as exam type are almost similar'''
+        school_subjects = Subject.objects.filter(course_category = CourseCategory.objects.get(course_name = 'School'))
+        for subject in school_subjects:
+            exam_instance = Exams(
+                exam_id = f'{instance.term_name}.{subject.pk}.{subject.semester.pk}',
+
+                term = instance,
+                exam_title = f'{subject.subject_name}.{instance.term_name}.{subject.semester.name}',
+                semester = Semester.objects.get(pk  = subject.semester.pk),
+                subject_id = Subject.objects.get(pk = subject.pk), 
+                exam_format = exam_format, 
+                pass_marks= pass_marks,
+                full_marks = full_marks
+                
+                
+            )
+            exam_instance.save()
+        # '''Automatically create application form'''
+        students = Student.objects.all()
+
+        for student in students:
+            term_id = instance.pk
+            student_username = student.student_user.username
+            application_id = f'{term_id}.{student_username}' 
+            application_form.objects.get_or_create(application_id = application_id, term=instance, student=student, semester=student.semester)
+
+
+# exams = []
+#    app_obj = application_form(application_id=app_id, student=student, term=term, semester=student.semester)
+
+#     if (application_form.objects.filter(application_id=app_id).exists()):
+
+#         while(i<count):
+#             exams.append(get_object_or_404(Exams, pk=request.POST[str(i)]))
+#             i+=1
+    
+#         print(exams)
+#         for item in exams:
+#             if item not in app_obj.exam.all():
+#                 print(str(item))
+#                 '''I make this passed = true as I dont want admin to verify for appliation form '''
+#             app_obj.exam.add(item, through_defaults={'exam_type':True, 'passed':True})#
+        
+#         app_obj.save()
+
+#         messages.success(request, 'Application successful. <a href="printapplicationform">Test link</a><br>Or access the page from sidebar.', extra_tags='safe')
+#         return HttpResponseRedirect(reverse('home'))
+#     else:
+#         app_obj.save()
+
+#         while(i<count):
+#             exams.append(get_object_or_404(Exams, pk=request.POST[str(i)]))
+#             i+=1
+    
+#         for item in exams:
+#             app_obj.exam.add(item, through_defaults={'exam_type':True, 'passed':True})
+        
+#         app_obj.save()
+        
+#         messages.success(request, 'Application successful. Print form <a href="printapplicationform">here</a>', extra_tags='safe')
+#         return HttpResponseRedirect(reverse('home'))
 # class routine(models.Model):
 
 #     DAY_CHOICES = [

@@ -28,7 +28,7 @@
     <div class="row">
       <div class="col-md-12">
    
-        <div class="card card-info" >
+        <div class="card pb-2" style="background:#f2f2f2;" >
           <div class="card-header" style="background:#435EBE;">
             <h3 class="card-title  text-white text-uppercase" > 
               {% if request.user|has_group:'Teacher' %}
@@ -53,13 +53,13 @@
          
             <div class="col-md-3">
               
-              <div class="container">
+              <div class="container" id="attendance_report_card">
               <a href="{% url 'attendance_app:student_daily_attendance' %}">
                 <img src="{% static 'image/attendance.png' %}" alt="" style="" class="img-fluid img-rectangle" />
                 
 
-                    <span >
-                      <strong>Daily   </strong>
+                    <span style="width:90%">
+                      <strong>Daily Attendance   </strong>
                     </span>
               </a>
 
@@ -73,8 +73,8 @@
                 
                 <img src="{% static 'image/attendance.png' %}" alt="" style="" class="img-fluid img-rectangle" />
 
-                    <span >
-                      <strong>Monthly   </strong>
+                    <span style="width:90%">
+                      <strong>Monthly Attendance </strong>
                     </span>
               </a>
 
@@ -87,7 +87,7 @@
                 <img src="{% static 'image/attendance.png' %}" alt="" style="" class="img-fluid img-rectangle" />
                 
 
-                    <span >
+                    <span style="width:90%">
                       <strong>Individual Student   </strong>
                     </span>
               </a>
@@ -111,6 +111,18 @@
 <style>
 
 
+/* Media query for screens smaller than 768px (mobile screens) */
+
+@media (max-width: 767px) {
+  #attendance_report_card  span {}
+}
+
+
+/* Media query for screens larger than 768px (desktop screens) */
+
+@media (min-width: 768px) {
+  #attendance_report_card  span {}
+}
 
 
 </style>

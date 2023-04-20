@@ -15,19 +15,43 @@
     {% include 'override_table/header.html' with card_title='Add Exam Grades' %}
     <div style="margin-left: 10px; margin-right: 10px; margin-top: 15px;">
         <form id="exam_form"> 
+            <label for="term_select">Select Class: </label>
+            <select name="term_select" id="id_semester" class="form-control col-md-6">
+                <option value="">Select Class</option>
+                {% for item in classes %}
+                    <option value="{{item.pk}}">{{ item }}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <label for="term_select">Select Subject: </label>
+            
+            <select name="term_select" id="id_subject" class="form-control col-md-6">
+                <option value="">Select Subject</option>
+                {% for item in subjects %}
+                    <option value="{{item.pk}}">{{ item }}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <select name="term_select" id="id_section" class="form-control col-md-6">
+                <option value="">Select Section</option>
+                {% for item in sections %}
+                    <option value="{{item.pk}}">{{ item }}</option>
+                {% endfor %}
+            </select>
+            <br>
             <label for="term_select">Select term: </label>
-            <select name="term_select" id="term_select">
+            <select name="term_select" id="term_select" class="form-control col-md-6">
                 <option value="">Select Term</option>
                 {% for item in terms %}
                     <option value="{{item.pk}}">{{ item }}</option>
                 {% endfor %}
             </select>
-            <br>
+            {% comment %} <br>
             <label for="exam_select">Select exam: </label>
-            <select name="exam_select" id="exam_select">
+            <select name="exam_select" id="exam_select" class="form-control col-md-6">
                 <option value="">Select Examination</option>
-            </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <button type="submit" class="btn btn-primary">Confirm</button>
+            </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {% endcomment %}
+            <button type="submit" class="btn btn-primary mt-2 mr-4">Confirm</button>
         </form>
         <hr>
         <div id="entryfield">
@@ -39,6 +63,7 @@
 
 {% block javascript %}
     <script>
+        /*
         $(function() {
             $('#exam_select').prop('disabled', 'disabled');
         });
@@ -57,8 +82,9 @@
                 $('#exam_select').prop('disabled', 'disabled');
                 $('#exam_select option:eq(0)').prop('selected', true)
             }
-        })
+        })*/
 
+       /*
         $('#exam_form').submit(function(e){
             e.preventDefault();
             exam_id = $("#exam_select").val();
@@ -69,6 +95,21 @@
                     $("#entryfield").html(data);
                 }
             })
+        })*/
+        $('#exam_form').submit(function(e){
+            e.preventDefault();
+            section_id = $("#id_section").val();
+            class_id = $('#id_semester').val()
+
+            
+                $.ajax({
+                    url: "{% url 'courses:examsAjax'%}",
+                    data: {'section_id':section_id,'class_id':class_id},
+                    success: function (data) {
+                        $("#entryfield").html(data);
+                    }
+                })
+           
         })
     </script>
 {% endblock %}
