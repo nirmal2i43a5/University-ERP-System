@@ -19,7 +19,7 @@
 
             <table class="table table-hover">
 
-            {% for stu in students%}
+            {% for stu in students %}
                 <tr>
                     <td>{{ forloop.counter }}</td>
                     <td> {{stu.student_user.full_name}}</td>
@@ -34,6 +34,8 @@
                         {% endif %}
                         >
                     </td>
+                    <input type="hidden" name="student_ids" value="{{stu.pk}}">
+
                     <td>
                          {% comment %} <input type="hidden" name="student_ids" value="{{stu.student_user.pk}}"> {% endcomment %}
 

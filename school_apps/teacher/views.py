@@ -63,30 +63,33 @@ def submitscore(request):
     section_instance = get_object_or_404(Section , pk = section_id) if section_id else None
     subject_instance = get_object_or_404(Subject , pk = subject_id) if subject_id else None
 
-    if not section_instance:
-        students = Student.objects.filter(semester = class_instance)
-    if section_instance:
-        students = Student.objects.filter(section = section_instance)
+    # if not section_instance:
+    #     students = Student.objects.filter(semester = class_instance)
+    # if section_instance:
+    #     students = Student.objects.filter(section = section_instance)
 
-    for student in students:
-        marks=float(request.POST[student.student_user.full_name])#name = student_name in input field
+    students_ids = request.POST.getlist('student_ids')
+    print(students_ids,":::::::::::::::::::::::::::")
+
+    for student_id in students_ids:
+        student_instance = get_object_or_404(Student, pk = student_id)
+        marks=float(request.POST[student_instance.student_user.full_name])#name = student_name in input field
         absent_student = request.POST.getlist('absent')
-        print(marks, absent_student,":::::::::::::::::;;")
         grade = studentgrades.objects.create(
             term = term , 
             subject = subject_instance, 
-            student = Student.objects.get(pk = student.pk),
+            student = student_instance,
 
         )
-        if student.student_user.username in absent_student:
-            student.is_absent = True
-            student.marks = 0
+        if student_instance.student_user.username in absent_student:
+            grade.is_absent = True
+            grade.marks = 0
         else:
-            student.is_absent = False
-            student.marks = marks
-        # student.save()
+            grade.is_absent = False
+            grade.marks = marks
+        grade.save()
 
-
+# Term ranking code 
 
 
 

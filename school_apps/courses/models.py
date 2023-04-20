@@ -1,15 +1,11 @@
 from django.db import models
-from django.db.models.base import Model
-from django.db.models.deletion import CASCADE
-from django.db.models.enums import Choices
-
-from django.db.models.fields import CharField
 import datetime
 from django.utils import timezone
-from student_management_app.models import Student, Staff, Subject, Semester,CourseCategory
-
+from student_management_app.models import Student, Subject, Semester,CourseCategory
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from student_management_app.models import   Student
 from django.utils.translation import gettext_lazy as _
-from student_management_app.models import Department
 
 YEAR_CHOICES = [(r,r) for r in range(1990, datetime.date.today().year+1)]
 
@@ -103,17 +99,15 @@ class studentgrades(models.Model):
         ('U', 'U'),
         ('Abs', 'Absent'),
     ]
-    exam_id = models.ForeignKey(Exams, on_delete=models.CASCADE,null=True, blank=True)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE,null=True, blank=True)
     student = models.ForeignKey(Student, on_delete=models.CASCADE,null=True, blank=True)
     term = models.ForeignKey(Term, on_delete=models.CASCADE,null=True, blank=True)
-
-
+    exam_id = models.ForeignKey(Exams, on_delete=models.CASCADE,null=True, blank=True)
     application_id = models.ForeignKey(application_form, on_delete=models.CASCADE,null=True, blank=True)
     marks = models.FloatField(default=0)
     grade = models.CharField(max_length=6, choices=GRADE_OPTIONS, default='U')
     passed = models.BooleanField()
-    exam_type = models.BooleanField() #True=Regular, False=Chance
+    exam_type = models.BooleanField(null=True, blank=True) #True=Regular, False=Chance
     is_absent = models.BooleanField(default=False)
     rank = models.IntegerField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -126,7 +120,7 @@ class studentgrades(models.Model):
     def save(self, *args, **kwargs):
         self.passed = True if self.marks>=self.term.pass_marks else False
 
-        level = self.application_id.student.semester.level
+        # level = self.application_id.student.semester.level
 
         # if self.exam_id.exam_type == 'Term':
         if 0<=int(self.marks)<40:
@@ -143,11 +137,11 @@ class studentgrades(models.Model):
             self.grade='A'
         elif int(self.marks)==-1:
             self.grade='Abs'
-        else:
-            if level == 'AS':
-                self.grade='A'
-            else:
-                self.grade='A*'
+        # else:
+        #     if level == 'AS':
+        #         self.grade='A'
+        #     else:
+        #         self.grade='A*'
 
         super().save(*args, **kwargs)
 
@@ -173,9 +167,7 @@ class selectedcourses(models.Model):
     
 # signals.py
 
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-from student_management_app.models import   Student
+
 
 @receiver(post_save, sender=Term)
 def create_exams_and_application_forms(sender, instance, created, **kwargs):
