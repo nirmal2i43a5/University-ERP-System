@@ -545,6 +545,11 @@ def examsAjax(request):
         students = Student.objects.filter(semester = semester_instance)
     if  section_id:
         students = Student.objects.filter(section = section_instance)
+    grades = studentgrades.objects.filter(
+                                                term = Term.objects.get(pk = term_id),
+                                                #  semester = semester_instance, 
+                                                 subject = Subject.objects.get(pk = subject_id)
+                                                 )
     # selected_exam = get_object_or_404(Exams, exam_id=exam_id)
 
     # student_data = studentgrades.objects.all()#filter(Q(exam_id=selected_exam))
@@ -554,7 +559,8 @@ def examsAjax(request):
                                                           'section_id':section_id,
                                                           'class_id':class_id,
                                                           'term_id':term_id,
-                                                          'subject_id':subject_id
+                                                          'subject_id':subject_id,
+                                                          'studentgrades':grades
 
                                                           
                                                           }

@@ -9,6 +9,8 @@ urlpatterns=[
     path('addscore/', views.addscore, name='addscore'),
     path('addscore/code', views.subscore, name='subscore'),
     path('submitscore/', views.submitscore, name='submitscore'),
+    path('submitscore/edit/', views.editsubmitscore, name='edit_submitscore'),
+
     path('checksubjects/', views.checksubjects, name='checksubjects'),
     path('checkstudents/', views.checkstudents, name='checkstudents'),
     path('checkscore/', views.checkscore, name='checkscore'),

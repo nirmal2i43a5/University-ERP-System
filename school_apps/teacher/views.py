@@ -53,7 +53,6 @@ def subscore(request):
 
 
 
-
 def submitscore(request):
     teacher = get_object_or_404(CustomUser, id = request.user.id)
     term  = get_object_or_404(Term, term_id=request.POST['term_id'])
@@ -72,10 +71,11 @@ def submitscore(request):
     print(students_ids,":::::::::::::::::::::::::::")
 
     for student_id in students_ids:
+        print("Inside lop::::",student_id)
         student_instance = get_object_or_404(Student, pk = student_id)
         marks=float(request.POST[student_instance.student_user.full_name])#name = student_name in input field
         absent_student = request.POST.getlist('absent')
-        grade = studentgrades.objects.create(
+        grade = studentgrades(
             term = term , 
             subject = subject_instance, 
             student = student_instance,
@@ -87,10 +87,68 @@ def submitscore(request):
         else:
             grade.is_absent = False
             grade.marks = marks
-        grade.save()
+        if studentgrades.objects.filter(term = term , 
+            subject = subject_instance, 
+            student = student_instance).exists():
+            messages.error(request, "Already graded for this term and subject.")
+        else:
+            grade.save()
 
-# Term ranking code 
+    #  Subject  ranking 
+    for grade in studentgrades.objects.filter(term =term):
+            grade.rank = studentgrades.objects.filter(term =term, marks__gt=grade.marks).count()+1
+            grade.save()
+    # Overall ranking
+    for grade in studentgrades.objects.filter(term =term):
+        print(grade.student,grade.marks)
 
+
+
+
+
+    messages.success(request, "Marks entry for " +  " students successful")
+    return HttpResponseRedirect(reverse('courses:addexammarks'))
+   
+def editsubmitscore(request):
+    term  = get_object_or_404(Term, term_id=request.POST['term_id'])
+    section_id = request.POST['section_id']
+    subject_id = request.POST['subject_id']
+    subject_instance = get_object_or_404(Subject , pk = subject_id) if subject_id else None
+ 
+
+    students_ids = request.POST.getlist('student_ids')
+
+    for student_id in students_ids:
+        student_instance = get_object_or_404(Student, pk = student_id)
+        marks = float(request.POST[student_instance.student_user.full_name])#name = student_name in input field
+        absent_student = request.POST.getlist('absent')
+        grade = studentgrades.objects.get(
+            term = term , 
+            subject = subject_instance, 
+            student = student_instance,
+
+        )
+        if student_instance.student_user.username in absent_student:
+            grade.is_absent = True
+            grade.marks = marks
+            grade.save()
+        else:
+            grade.is_absent = False
+            grade.marks = marks
+            grade.save()
+    
+    #  Subject  ranking 
+    for grade in studentgrades.objects.filter(term =term):
+            grade.rank = studentgrades.objects.filter(term =term, marks__gt=grade.marks).count()+1
+            grade.save()
+    # Overall ranking
+    for grade in studentgrades.objects.filter(term =term):
+        print(grade.student,grade.marks)
+
+    messages.success(request, "Marks are edited successfully")
+    return HttpResponseRedirect(reverse('courses:addexammarks'))
+
+#     failed_attempts=[]
 
 
 #     selected_subject = term.subject_id
