@@ -7,14 +7,14 @@
         <div class="container-fluid">
             <div class="d-flex bd-highlight">
                 <div class=" flex-grow-1 bd-highlight">
+                
+
                     <div class="card pt-3 pl-2">
                         <div class="card-header mb-2 mr-1" style="background:#435EBE;color:white">
                             <strong> Publish Results </strong>
                         </div>
-                    </div>
+                        <table id="example"  cellspacing="0" width="100%" class=" table table-sm  table-striped table-bordered table-hover  text-nowrap  no-footer">
 
-                    <div class="card pt-3 pl-2">
-                        <table class='table table-md table-hover'>
                             <thead class='thead text-center'>
                                 <tr>
                                     <th>Term</th>
@@ -24,10 +24,18 @@
                                 </tr>
                             </thead>
                             <tbody class='text-center'>
-                                {% for item in terms%}
+                                {% for item in terms %}
                                     <tr>
-                                        <td>{{item}}</td>
-                                        <td>{{item.start_date}} - {{item.end_date}}</td>
+                                        <td>{{item.pk}}</td>
+                                      
+                                       <td>
+                                        {% if item.start_date and item.end_date %}
+                                        {{item.start_date}} - {{item.end_date}}
+
+                                        {% else %}
+                                        {% endif %}
+                                    </td>
+                                   
                                         <td>{% if item.is_published %}
                                             Yes
                                             {% else %}

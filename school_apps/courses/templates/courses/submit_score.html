@@ -1,56 +1,19 @@
 {% comment %} {% if students%} {% endcomment %}
     <hr>
-    Please enter the score for the respective students.<br>
+  
+        <h4>Term = {{term.term_name}}</h4>
         <hr>
-        <h4>Exam = {{term.term_name}}</h4>
-        <hr>
-       
-            {% if studentgrades %}
-            <form action="{% url 'teacher:edit_submitscore' %}" method="post">
+        <div class="card">
+            <div class="card-header" style="background:#435EBE;">
+                <h3 class="card-title  text-white">Enter the score for the respective students.</h3>
+              </div>
+            <div class="card-body">
 
-                {% csrf_token %}
-        
-                    <input type="hidden" name="term_id" value="{{term_id}}">
-                    <input type="hidden" name="class_id" value="{{class_id}}">
-                    <input type="hidden" name="section_id" value="{{section_id}}">
-                    <input type="hidden" name="subject_id" value="{{subject_id}}">
-        
-                    <table class="table table-hover">
-        
-                         {% for grade in studentgrades %}
 
-                        <tr>
-                            <td>{{ forloop.counter }}</td>
-                            <td> {{grade.student.student_user.full_name}}</td>
-                            <td class='holder'> 
-                                <input type="number" min="-1" max="100" 
-                                    class="marks_input"    
-                                    name="{{grade.student.student_user.full_name}}" value="{{grade.marks}}"style="width: 150px; text-align: right; " 
-                                {% if grade.marks == -1 %}
-                                    placeholder="Absent"
-                                {% else %} 
-                                    placeholder="{{grade.marks}}"
-                                {% endif %}
-                                >
-                            </td>
-                            <input type="hidden" name="student_ids" value="{{grade.student.pk}}">
-        
-                            <td>
-                                 {% comment %} <input type="hidden" name="student_ids" value="{{stu.student_user.pk}}"> {% endcomment %}
-        
-                                <input type="checkbox" name="absent" value="{{grade.student.student_user.username}}"class="absent_checkbox"
-                                {% if grade.is_absent %}checked{% endif %}> Absent
-                            </td>
-                        </tr>
-            {% endfor %}
 
-        
-                    <tr><td colspan="3" align="center" ><button class="btn btn-primary" type="submit"> Submit</button></td>
-                    </form>
-
-                {% else %}
-                <form action="{% url 'teacher:submitscore' %}" method="post">
-
+                {% if studentgrades %}
+                <form action="{% url 'teacher:edit_submitscore' %}" method="post">
+    
                     {% csrf_token %}
             
                         <input type="hidden" name="term_id" value="{{term_id}}">
@@ -60,38 +23,84 @@
             
                         <table class="table table-hover">
             
-                        {% for stu in students %}
+                             {% for grade in studentgrades %}
+    
                             <tr>
                                 <td>{{ forloop.counter }}</td>
-                                <td> {{stu.student_user.full_name}}</td>
+                                <td> {{grade.student.student_user.full_name}}</td>
                                 <td class='holder'> 
                                     <input type="number" min="-1" max="100" 
-                                        class="marks_input"    
-                                        name="{{stu.student_user.full_name}}" value="{{stu.marks}}"style="width: 150px; text-align: right; " 
-                                    {% if stu.marks == -1 %}
+                                        class="marks_input px-2 py-1"    style="border-radius:1rem;" 
+                                        name="{{grade.student.student_user.full_name}}" value="{{grade.marks}}"style="width: 150px; text-align: right; " 
+                                    {% if grade.marks == -1 %}
                                         placeholder="Absent"
                                     {% else %} 
-                                        placeholder="{{stu.marks}}"
+                                        placeholder="{{grade.marks}}"
                                     {% endif %}
                                     >
                                 </td>
-                                <input type="hidden" name="student_ids" value="{{stu.pk}}">
+                                <input type="hidden" name="student_ids" value="{{grade.student.pk}}">
             
                                 <td>
                                      {% comment %} <input type="hidden" name="student_ids" value="{{stu.student_user.pk}}"> {% endcomment %}
             
-                                    <input type="checkbox" name="absent" value="{{stu.student_user.username}}"class="absent_checkbox"> Absent
+                                    <input type="checkbox" name="absent" value="{{grade.student.student_user.username}}"class="absent_checkbox"
+                                    {% if grade.is_absent %}checked{% endif %}> Absent
                                 </td>
                             </tr>
-                        {%endfor%}
+                {% endfor %}
+    
             
                         <tr><td colspan="3" align="center" ><button class="btn btn-primary" type="submit"> Submit</button></td>
                         </form>
-            {% endif %}
+    
+                    {% else %}
+                    <form action="{% url 'teacher:submitscore' %}" method="post">
+    
+                        {% csrf_token %}
+                
+                            <input type="hidden" name="term_id" value="{{term_id}}">
+                            <input type="hidden" name="class_id" value="{{class_id}}">
+                            <input type="hidden" name="section_id" value="{{section_id}}">
+                            <input type="hidden" name="subject_id" value="{{subject_id}}">
+                
+                            <table class="table table-hover">
+                
+                            {% for stu in students %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td> {{stu.student_user.full_name}}</td>
+                                    <td class='holder'> 
+                                        <input type="number" min="-1" max="100" 
+                                            class="marks_input px-2 py-1" style="border-radius:1rem;"    
+                                            name="{{stu.student_user.full_name}}" value="{{stu.marks}}"style="width: 150px; text-align: right; " 
+                                        {% if stu.marks == -1 %}
+                                            placeholder="Absent"
+                                        {% else %} 
+                                            placeholder="{{stu.marks}}"
+                                        {% endif %}
+                                        >
+                                    </td>
+                                    <input type="hidden" name="student_ids" value="{{stu.pk}}">
+                
+                                    <td>
+                                         {% comment %} <input type="hidden" name="student_ids" value="{{stu.student_user.pk}}"> {% endcomment %}
+                
+                                        <input type="checkbox" name="absent" value="{{stu.student_user.username}}"class="absent_checkbox"> Absent
+                                    </td>
+                                </tr>
+                            {%endfor%}
+                
+                            <tr><td colspan="3" align="center" ><button class="btn btn-primary" type="submit"> Submit</button></td>
+                            </form>
+                {% endif %}
+            </div>
+        </div>
+          
             </tr>
             <tr>
                 <td colspan="3" align="center"> 
-                    {% comment %} <a href="{% url 'teacher:exportcsv' exam.exam_id %}"><button type="button" class="btn btn-primary" id="export_csv">Upload by csv instead</button></a> {% endcomment %}
+                    {% comment %} <a href="{% url 'teacher:exportcsv' term.pk %}"><button type="button" class="btn btn-primary" id="export_csv">Upload by csv instead</button></a> {% endcomment %}
                 </td>
                 </tr>
                 <tr>

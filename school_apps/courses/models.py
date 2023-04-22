@@ -34,7 +34,7 @@ class Term(models.Model):
         return self.latest('start_date')
     
     def __str__(self):
-        return self.term_name
+        return f'{self.term_name}'
     
 
 class Exams(models.Model):

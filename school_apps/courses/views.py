@@ -97,23 +97,39 @@ def addexam_marks_ajax(request):
 
 def examresults(request):
     today = datetime.date.today()
-    exams = Exams.objects.all()
+    # exams = Exams.objects.all()
+    terms = Term.objects.all()
+    semesters = Semester.objects.all()
+    subjects = Subject.objects.all()
+    sections = Section.objects.all()
+
     
     #for viewresult part
     if request.method == 'POST':
-        print(request.POST['exam'])
-        selectedexam = get_object_or_404(Exams, exam_id = request.POST['exam'])
-        results = studentgrades.objects.filter(exam_id = selectedexam).order_by('-marks')
-        print(results)
+        subject_id = request.POST['subject']
+        semester_id =request.POST['semester']
+        section_id = request.POST['section']
+        subject_instance = get_object_or_404(Subject, pk = subject_id) if subject_id else None
+        semester_instance = Semester.objects.get(pk = semester_id) if semester_id else None
+        section_instance = Section.objects.get(pk = section_id) if section_id else None
+
+
+        term_instance = get_object_or_404(Term, pk = request.POST['term'])
+        results = studentgrades.objects.filter(term = term_instance,
+                                               subject = subject_instance
+                                               ).order_by('-marks')
         context = {
-            'exams':exams,
+            'terms':terms,
             'results':results, 
-            'selectdexam':selectedexam
+            'term_instance':term_instance,
+            'subject_instance':subject_instance,
+            'semester_instance':semester_instance,
+            'section_instance':section_instance,
             
         }
         return render(request, 'courses/publishresults.html',context)
     else:    
-        return render(request, 'courses/publishresults.html',{'exams':exams})
+        return render(request, 'courses/publishresults.html',{'terms':terms,'classes':semesters,'subjects':subjects,'sections':sections})
 
 
 def viewresults(request):
@@ -121,12 +137,15 @@ def viewresults(request):
     results = studentgrades.objects.filter(exam_id = selectedexam).order_by('-marks')
     return render(request, 'courses/results.html', {'results':results, 'exam':selectedexam})
 
+
+
+
 def publishresults(request):
-    terms = Term.objects.filter(course_category=request.user.adminuser.course_category)
+    terms = Term.objects.all()
     return render(request, 'courses/publishtermresults.html', {'terms':terms})
 
 def toggle_results(request,pk):
-    terms = Term.objects.filter(course_category=request.user.adminuser.course_category)
+    terms = Term.objects.all()
     selected_term = Term.objects.get(pk=pk)
 
     if(selected_term.is_published):
@@ -476,46 +495,60 @@ def addexammarks(request):
 
     return render(request, 'courses/addexamgrades.html', context)
 
+
 def addremarks(request):
-    terms = Term.objects.filter(course_category=request.user.adminuser.course_category)
-    semester = Semester.objects.filter(course_category=request.user.adminuser.course_category)
 
-    faculty = Student._meta.get_field('faculty').choices
-    faculty_choices = []
-
-    for item in faculty:
-        faculty_choices.append(item[0])
-
+    terms = Term.objects.all()#filter(course_category=request.user.adminuser.course_category)
+    semester = Semester.objects.all()#filter(course_category=request.user.adminuser.course_category)
+    sections = Section.objects.all()
     context = {
             'terms':terms,
-            'semester':semester,
-            'faculty':faculty_choices
+            'classes':semester,
+            'sections':sections
+
         }
-
+    
     if request.method == 'POST':    
-        term = Term.objects.get(pk=request.POST['term'])
-        semester = Semester.objects.get(pk=request.POST['semester'])
+        term_id = request.POST['term']
+        term_instance = Term.objects.get(pk= term_id) if term_id else None
+        class_id= request.POST['semester']
+        # semester = Semester.objects.get(pk=class_id)
+        section_id= request.POST['section']
+        semester_instance = Semester.objects.get(pk = class_id) if class_id else None
+        section_instance = Section.objects.get(pk =  section_id) if section_id else None
+        if not section_id:
+            students = Student.objects.filter(semester = semester_instance)
+        if  section_id:
 
-        applications = application_form.objects.filter(term=term, student__semester=semester, student__faculty=request.POST['group'])
-        context['applications']=applications
+            students = Student.objects.filter(section = section_instance)
+        context['students'] = students
+        context['term'] = term_instance
+        return render(request, 'courses/addremarks.html', context)
 
     return render(request, 'courses/addremarks.html', context)
 
-def addstudentremarks(request, pk):
-    app_form = application_form.objects.get(pk=pk)
-    grades = studentgrades.objects.filter(application_id=app_form)
+
+def addstudentremarks(request, term_id, student_id):
+    # app_form = application_form.objects.get(pk=pk)
+    student_instance = Student.objects.get(pk = student_id)
+    term_instance = Term.objects.get(pk = term_id)
+
+    grades = studentgrades.objects.filter(term = term_instance, student=student_instance)
 
     context={
-        'application':app_form,
-        'grades':grades
+        'student':student_instance,
+        'grades':grades,
+        'term':term_instance
     }
     return render(request, 'courses/addstudentremarks.html', context)
 
+
+
 def editremarks(request,pk):
-    app_form = application_form.objects.get(pk=pk)
+    student = Student.objects.get(pk=pk)
     remarks = request.GET['remarks']
-    app_form.remarks=remarks
-    app_form.save()
+    student.remarks=remarks
+    student.save()
 
     return HttpResponseRedirect(reverse('courses:addremarks'))
 
@@ -537,6 +570,7 @@ def examsAjax(request):
     section_id = request.GET.get('section_id')
     class_id = request.GET.get('class_id')
     term_id = request.GET.get('term_id')
+    term_instance = Term.objects.get(pk = term_id)
     subject_id = request.GET.get('subject_id')
     print(section_id, class_id,term_id, subject_id)
     semester_instance = Semester.objects.get(pk = class_id) if class_id else None
@@ -546,7 +580,7 @@ def examsAjax(request):
     if  section_id:
         students = Student.objects.filter(section = section_instance)
     grades = studentgrades.objects.filter(
-                                                term = Term.objects.get(pk = term_id),
+                                                term =term_instance ,
                                                 #  semester = semester_instance, 
                                                  subject = Subject.objects.get(pk = subject_id)
                                                  )
@@ -560,7 +594,8 @@ def examsAjax(request):
                                                           'class_id':class_id,
                                                           'term_id':term_id,
                                                           'subject_id':subject_id,
-                                                          'studentgrades':grades
+                                                          'studentgrades':grades,
+                                                          'term':term_instance
 
                                                           
                                                           }

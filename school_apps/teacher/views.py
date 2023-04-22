@@ -291,21 +291,22 @@ def loadExamsAjax(request):
     exams = Exams.objects.filter(Q(subject_id__in=subject) & Q(term=term) & Q(date__lte=today))
     return render(request, 'teacher/examslist.html', {'exams':exams})
 
-def exportcsv(request, exam_id):
-    selected_exam = get_object_or_404(Exams, exam_id=exam_id)
-    student_data = studentgrades.objects.all().filter(exam_id=selected_exam)
-    student_data = studentgrades.objects.all().filter(exam_id=selected_exam)
+def exportcsv(request, pk):
+    term_id  = pk
+    term_instance = get_object_or_404(Term, pk=term_id)
+    grades = studentgrades.objects.all().filter(term=term_instance)
 
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename= "results.csv"'
 
     writer = csv.writer(response, delimiter=",")
-    writer.writerow(['exam_id','application_id', 'name','marks','exam_type'])
+    writer.writerow(['term','name','marks'])
 
-    for obj in student_data:
-        writer.writerow([obj.exam_id.exam_id, obj.application_id.application_id,obj.application_id.student.student_user.full_name, "", obj.exam_type])
+    for obj in grades:
+        writer.writerow([obj.term.term_name,obj.student.student_user.full_name, obj.marks])
     
     return response
+
 
 def uploadcsv(request):
     csv_file = request.FILES['file']

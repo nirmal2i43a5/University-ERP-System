@@ -7,82 +7,85 @@
         <span>Add Remarks</span>
     </div>
     
-    <div class = " card-body row align-items-center">
-        <div class="col-4">
-            <form name="" method="POST">
-                {% csrf_token %}
-                <label for="term_id">Select Term</label>
-                <select name="term" id="term_id">
-                    {% for item in terms %}
-                        <option value="{{item.pk}}">
-                            {{item.term_name}}
-                        </option>
-                    {% endfor %}
-                </select>
-        </div>
-
-        <div class="col-3">
-            <label for="term_id">Select Class</label>
-            <select name="semester" id="term_id">
-                {% for item in semester %}
-                    <option value="{{item.pk}}">
-                        {{item}}
-                    </option>
+   
+    <div class="card-body">
+        <form method="POST">
+          {% csrf_token %}
+          <div class="row">
+            <div class="col-md-2 mt-2">
+              <select name="semester" id="id_semester" class="form-control">
+                <option value="">Select Class</option>
+  
+                {% for item in classes %}
+  
+                <option value="{{item.pk}}">{{ item }}</option>
                 {% endfor %}
-            </select>
-        </div>
-
-        <div class="col-3">
-            <label for="term_id">Select Group</label>
-            <select name="group" id="term_id">
-                {% for item in faculty %}
-                    <option value="{{item}}">
-                        {{item}}
-                    </option>
+              </select>
+            </div>
+            
+            <div class="col-md-2 mt-2">
+              <select name="section" id="id_section" class="form-control">
+                <option value="">Select Section</option>
+                {% for item in sections %}
+                <option value="{{item.pk}}">{{ item }}</option>
                 {% endfor %}
-            </select>
-        </div>
-            <button type="submit" class="btn btn-primary btn-sm">Confirm</button>
+              </select>
+            </div>
+            <div class="col-md-2 mt-2">
+              <select name="term" id="id_term" class="form-control">
+                <option value="">Select Term</option>
+                {% for item in terms %}
+                <option value="{{item.pk}}">{{ item }}</option>
+  
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-md-2 mt-2">
+              <button type="submit" class="btn btn-primary mr-4" id="confirm">
+                Confirm
+              </button>
+            </div>
+          </div>
         </form>
-
-        
-        
-    </div>
-    </div>
+      </div>
     
     <hr>
     <!-- <button id="test_button">Click me</button> -->
+    {% if students %}
+
     <div class='card' style="margin-left: 10px; margin-right: 10px">
         <div class="card-body">
-            <table class="table table-hover" id="show_admit_cards">
+
+            <table id="example"  cellspacing="0" width="100%" class=" table table-sm  table-striped table-bordered table-hover  text-nowrap  no-footer">
                 <thead class="thead" style="background:#435EBE;color:white;"> 
                     <tr>
-                        <th>Application ID</th>   
+                        <th>#</th>   
                         <th>Student Name</th>
-                        <th>Class</th>
-                        <th>Term</th>
+                        <!-- <th>Class</th> -->
                         <th>Action</th>
                         
                     </tr>
                 </thead>
-                {% if applications %}
                 <tbody>
-                    {% for item in applications %}
+                    {% for item in students %}
                     <tr>
-                        <td id="application_id">{{item.pk}}</td>
-                        <td>{{item.student.student_user.full_name}}</td>
-                        <td>{{item.student.section}}</td>
-                        <td>{{item.term}}</td>
-                        <td><a href=" {% url 'courses:addstudentremarks' item.pk %} " class='btn btn-primary btn-sm'>Add Remarks</a></td>
+                        <td >{{forloop.student.roll_no}}</td>
+                        <td>{{item.student_user.full_name}}</td>
+                        <!-- <td>{{item.section}}</td> -->
+                        <td><a href=" {% url 'courses:addstudentremarks' term.pk item.pk %} " class='btn btn-primary btn-sm'>Add Remarks</a></td>
                     </tr>
                     {% endfor %}
                 </tbody>
-                {% endif %}
             </table>
         </div>
     </div>
+    {% endif %}
+
     
     
     
 </div>
 {% endblock %}
+
+
+   

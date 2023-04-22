@@ -1,3 +1,5 @@
+from re import template
+from webbrowser import get
 from django.core.files.base import ContentFile
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect

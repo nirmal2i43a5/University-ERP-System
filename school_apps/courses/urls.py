@@ -13,7 +13,7 @@ urlpatterns=[
     path('checkterm_exams/<str:pk>', views.checkterm_exams, name='checkterm_exams'),
     path('examresults/', views.examresults, name='examresults'),
     path('publishresults/', views.publishresults, name='publishresults'),
-    path('toggle_results/<str:pk>', views.toggle_results, name="toggle_results"),
+    path('toggle_results/<str:pk>/', views.toggle_results, name="toggle_results"),
     path('examreport/', views.examreport, name='examreport'),
     path('viewresults/', views.viewresults, name='viewresults'),
     path('examtoppers/', views.examtoppers, name='examtoppers'),
@@ -48,7 +48,7 @@ urlpatterns=[
     path('addexammarks/', views.addexammarks, name='addexammarks'),
     path('addremarks/', views.addremarks, name='addremarks'),
     path('editremarks/<str:pk>', views.editremarks, name='editremarks'),
-    path('addstudentremarks/<str:pk>',views.addstudentremarks, name='addstudentremarks'),
+    path('addstudentremarks/<str:term_id>/<str:student_id>',views.addstudentremarks, name='addstudentremarks'),
     path('ajax/fill_exam_select/', views.fill_exam_select, name='fill_exam_select'),
     path('ajax/examsAjax/', views.examsAjax, name='examsAjax'),
 

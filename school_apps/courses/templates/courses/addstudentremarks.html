@@ -4,20 +4,20 @@
 <div class="card" style="margin-left: 10px; margin-right: 10px">
 
     <div class="card-header" style="background:#435EBE;color:white;" >
-        <span>Add Remarks: {{application.student.student_user.full_name}}</span>
+        <span>Add Remarks: {{student.student_user.full_name}}</span>
     </div>
     
     <div class = "card-body">
         <div class="row">
             <div class="col-sm-6">
                 <div class="profile-view-tab">
-                    <p><span>Name: </span> {{application.student.student_user.full_name}} </p>
+                    <p><span>Name: </span> {{student.student_user.full_name}} </p>
                 </div>
             </div>
 
             <div class="col-sm-6">
                 <div class="profile-view-tab">
-                    <p><span>Student ID: </span> {{application.student.student_user.username}} </p>
+                    <p><span>Student ID: </span> {{student.student_user.username}} </p>
                 </div>
             </div>
         </div>
@@ -25,12 +25,12 @@
         <div class="row">
             <div class="col-sm-6">
                 <div class="profile-view-tab">
-                    <p><span>Class: </span> {{application.student.semester}} </p>
+                    <p><span>Class: </span> {{student.semester}} </p>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="profile-view-tab">
-                    <p><span>Term: </span> {{application.term}} </p>
+                    <p><span>Term: </span> {{term}} </p>
                 </div>
             </div>
         </div>
@@ -42,15 +42,18 @@
                 <table class="table table-hover table-sm">
                     <thead class=thead>
                         <tr>
-                            <th>Exam</th>
+                            <th>Subject</th>
                             <th>Grade</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for item in grades %}
                         <tr>
-                            <td>{{item.exam_id}}</td>
-                            <td>{{item.marks}} ({{item.grade}})</td>
+                            <td>{{item.subject}}</td>
+                            <td>{{item.marks}} 
+                                <!-- ({{item.grade}}) -->
+
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -58,10 +61,11 @@
             </div>
         </div>
         <div>
-            <form action=" {% url 'courses:editremarks' application.pk %} ">
-                <label for="remarks">Enter Remarks:</label>
-                <textarea name="remarks" id="remarks" rows="4" cols="50">{{application.remarks}}</textarea>
-                <input type="submit" value="Confirm" class="btn btn-primary btn-sm">
+            <form action=" {% url 'courses:editremarks' student.pk %} ">
+                <!-- <label for="remarks">Enter Remarks:</label> -->
+                <textarea name="remarks" id="remarks" rows="3" cols="60" style = "border-radius: 1rem;" placeholder="Enter Remarks For Students">{{application.remarks}}</textarea>
+                <br>
+                <input type="submit" value="Confirm" class="btn btn-primary">
             </form>
         </div>
     </div>
