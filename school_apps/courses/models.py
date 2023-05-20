@@ -35,7 +35,8 @@ class Term(models.Model):
     
     def __str__(self):
         return f'{self.term_name}'
-    
+
+
 
 class Exams(models.Model):
     format_choices = (
@@ -62,7 +63,6 @@ class Exams(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
-
     def save(self, *args, **kwargs):
         self.exam_type = self.term.type
         super().save(*args, **kwargs)
