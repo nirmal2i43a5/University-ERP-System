@@ -110,3 +110,5 @@ media/
 .vscode
 .vscode/
 CACHE/
+todo.txt
+beforerun.txt
