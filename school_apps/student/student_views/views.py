@@ -193,7 +193,6 @@ def student_file_upload(request):
         contact = column[13]
         permanent_address = column[20]
         temporary_address = column[21]
-        
         dob_es_parse=""
         if (column[22]!="" ):
             dob_es_parse = parse(column[22]).date() #this change from 8/10/2020 to 2020-8-10 i.e in python format

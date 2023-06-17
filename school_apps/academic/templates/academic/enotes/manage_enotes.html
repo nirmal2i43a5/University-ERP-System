@@ -88,7 +88,10 @@
 
                   <th>Class</th>
                   <th>Uploaded on</th>
+                  {% if request.user.is_superuser or request.user|has_group:'Teacher' %}
+
                   <th>Action</th>
+                  {% endif %}
 
             
 
@@ -143,7 +146,7 @@
                    
                       <td>{{ enote.created_at }}</td>
                         
-                       
+                      {% if request.user.is_superuser or request.user|has_group:'Teacher' %}
                       <td>
                        
                         
@@ -154,6 +157,7 @@
                           data-toggle="modal" style="border-radius: 2rem;"> <strong>Delete</strong> </button>
     
                       </td>
+                      {% endif %}
                       
                 </tr>
                 {% endfor %}

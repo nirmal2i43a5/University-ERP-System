@@ -226,13 +226,13 @@
           <h4 class="name text-uppercase">{{ student.student_user.full_name }}</h4>
           
           <ul class="card__body-details">
-
+<!-- 
             {% if request.user.adminuser.course_category == bachelor_category %}
             <li>{{ student.program }} : {{ student.join_year }}-{{ student.join_year|add:'4'}}</li>
             {% else %}
             <li>{{ student.program }} : {{ student.join_year }}-{{ student.join_year|add:'2'}}</li>
-            {% endif %}
-
+            {% endif %} -->
+            <li>BICT : 2020-2024</li>
             <li>{{ student.contact }}</li>
           </ul>
         </div>
@@ -240,12 +240,13 @@
       <!-- body quater -->
       <div class="card__main-details">
         <div class="card__main-details-1">
-          {% if request.user.adminuser.course_category == bachelor_category %}
+          <!-- {% if request.user.adminuser.course_category == bachelor_category %}
           <p class="ml-4"><strong>Valid Upto</strong> <span class="text-lg">31-12-{{ student.join_year|add:'4'}}</span></p>
           {% else %}
           <p class="ml-4"><strong>Valid Upto</strong> <span class="text-lg">31-12-{{ student.join_year|add:'2'}}</span></p>
 
-          {% endif %}
+          {% endif %} -->
+          <p class="ml-4"><strong>Valid Upto</strong> <span class="text-lg">31-12-2024</span></p>
          
         </div>
         <div class="principle__signature">
