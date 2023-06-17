@@ -25,10 +25,10 @@ school_classes_choices = [
                           'Class Nine',
                           'Class Ten'
                           ]
-subjects_choices = [    'Nepali',    'English',    'Mathematics',    'Science',    'Social Studies', 'Computer Science' , 'Health,Population,& Environment', 
-                      'Moral Education',   'Creative Arts', ' Optional Mathematics',
-                        'Sanskrit (Optional)'
-                          ]
+# subjects_choices = [    'Nepali',    'English',    'Mathematics',    'Science',    'Social Studies', 'Computer Science' , 'Health,Population,& Environment', 
+#                       'Moral Education',   'Creative Arts', ' Optional Mathematics',
+#                         'Sanskrit (Optional)'
+#                           ]
 
                
         
@@ -41,8 +41,8 @@ def populate_models(sender, **kwargs):
     student_group, created = Group.objects.get_or_create(name='Student')
     parent_group, created = Group.objects.get_or_create(name='Parent')
     super_admin_group, created = Group.objects.get_or_create(name='Super-Admin')
-    procurement_group, created = Group.objects.get_or_create(name='Procurement')
-    finance_group, created = Group.objects.get_or_create(name='Finance')
+    # procurement_group, created = Group.objects.get_or_create(name='Procurement')
+    # finance_group, created = Group.objects.get_or_create(name='Finance')
     school_level, created = CourseCategory.objects.get_or_create(course_name="School")
     plus_two_level, created = CourseCategory.objects.get_or_create(course_name="Plus-Two")
     a_level, created = CourseCategory.objects.get_or_create(course_name="A-Level")
@@ -56,17 +56,17 @@ def populate_models(sender, **kwargs):
                           'Class LKG',
                           'Class UKG',])
     
-    if not Subject.objects.filter(subject_name__in = subjects_choices):
-        for item in one_to_ten_class:
-            '''if montessari, lkg, ukg and others assign from subject to class'''
-            Subject.objects.bulk_create(
-                                                [
-                                                    Subject(
-                                                        course_category = get_object_or_404(CourseCategory,course_name = "School"), 
-                                                        semester = Semester.objects.get(pk = item.pk),
-                                                        subject_name=subject
-                                                ) 
-                                                    for subject in subjects_choices]                              )
+    # if not Subject.objects.filter(subject_name__in = subjects_choices):
+    #     for item in one_to_ten_class:
+    #         '''if montessari, lkg, ukg and others assign from subject to class'''
+    #         Subject.objects.bulk_create(
+    #                                             [
+    #                                                 Subject(
+    #                                                     course_category = get_object_or_404(CourseCategory,course_name = "School"), 
+    #                                                     semester = Semester.objects.get(pk = item.pk),
+    #                                                     subject_name=subject
+    #                                             ) 
+    #                                                 for subject in subjects_choices]                              )
     
         
 

@@ -13,6 +13,7 @@ from student_management_app.models import Student,Parent
     
 class StudentSerializer(serializers.ModelSerializer):
     # guardian = ParentSerializer()
+    student_user = serializers.StringRelatedField() 
     semester = serializers.CharField(source='semester.name', read_only=True)
     # section = serializers.CharField(source='section.section_name', read_only=True)
     father_phone = serializers.CharField(source='guardian.father_phone', read_only=True)

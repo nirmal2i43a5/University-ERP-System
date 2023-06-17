@@ -22,7 +22,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.utils import timezone
 from django.contrib.auth.decorators import  permission_required
 from django.http import HttpResponse
-
+from django.db.models import Count,Q
 
 
 # @login_required
@@ -77,8 +77,8 @@ class home(FullCalendarView, View):
         master_course_category = get_object_or_404(CourseCategory,course_name = 'Master')
         '''----------------------For Teacher Dashboard content------------------------------'''
         # here I am filtering
-        subject_assign_to_particular_teacher = Subject.objects.filter(
-            staff_user=request.user.id)
+        # subject_assign_to_particular_teacher = Subject.objects.filter(
+        #     staff_user=request.user.id)
         class_list = []
         # for subject in subject_assign_to_particular_teacher:
         # 	semester = Semester.objects.get(id = subject.semester.id)
@@ -117,9 +117,9 @@ class home(FullCalendarView, View):
         nonscience_faculty,total_subjects,science_faculty,inactive_students,active_students = 0,0,0,0,0
         semester_student_dataset = []
        
-        alevel_group = Group.objects.get(name = 'Admin')
-        bachelor_group = Group.objects.get(name = 'Bachelor-Admin')
-        master_group = Group.objects.get(name = 'Master-Admin')
+        # alevel_group = Group.objects.get(name = 'Admin')
+        # bachelor_group = Group.objects.get(name = 'Bachelor-Admin')
+        # master_group = Group.objects.get(name = 'Master-Admin')
         
         # if request.user.groups.filter(name=alevel_group).exists() or request.user.groups.filter(name=bachelor_group).exists() or \
         # request.user.groups.filter(name=master_group).exists():
@@ -152,21 +152,21 @@ class home(FullCalendarView, View):
             categories = request.user.staff.courses.all()
             for semester in Semester.objects.filter(course_category__in = categories):
                 semester_instance = get_object_or_404(Semester, pk = semester.pk)
-                students = semester_instance.student_set.all().count()
+                students = semester_instance.student_set.aggregate(total_count=Count('id'))['total_count']
                 semester_student_dataset.append({'semester_name':semester,'students':students})
         except:
             try:
                 categories = request.user.adminuser.course_category
                 for semester in Semester.objects.filter(course_category = categories):
                     semester_instance = get_object_or_404(Semester, pk = semester.pk)
-                    students = semester_instance.student_set.all().count()
+                    students = semester_instance.student_set.aggregate(total_count=Count('id'))['total_count']
                     semester_student_dataset.append({'semester_name':semester,'students':students})
             except:
                 s_user =Student.objects.get(student_user=request.user)
                 categories = s_user.course_category
                 for semester in Semester.objects.filter(course_category = categories):
                     semester_instance = get_object_or_404(Semester, pk = semester.pk)
-                    students = semester_instance.student_set.all().count()
+                    students = semester_instance.student_set.aggregate(total_count=Count('id'))['total_count']
                     semester_student_dataset.append({'semester_name':semester,'students':students})
         
         
@@ -199,13 +199,13 @@ class home(FullCalendarView, View):
             teachers_list_final = set(teachers_list)
             teachers_count = len(teachers_list_final)
         else:
-            teachers_count =  Staff.objects.all().count()
+            teachers_count =  Staff.objects.aggregate(total_count=Count('id'))['total_count']
 
         context = {
 
             # 'teachers_count':  Staff.objects.filter(courses__course_name__contains=request.user.adminuser.course_category.course_name).count(),
             'teachers_count' : teachers_count,  
-            'courses_count': Course.objects.all().count(),
+            'courses_count': Course.objects.aggregate(total_count=Count('id'))['total_count'],
             'students_count': active_students,  # for active students,
             'inactive_students_count': inactive_students,  # for active students
             'nonscience_faculty_count': nonscience_faculty,
@@ -215,7 +215,7 @@ class home(FullCalendarView, View):
             #  'particular_subject_assign':particular_subject_assign,
             'particular_student_assign': student_belong_to_particulat_subject,
             'subject_assign': particular_teacher_subject_assign,
-            'students_count_chart': Student.objects.all().count(),
+            'students_count_chart': Student.objects.aggregate(total_count=Count('id'))['total_count'],
 
             # ----------------------For calendar slug akin to schedule view for fullcalendar.html----------------------------
             'events': Event.objects.filter(start__gte=datetime.today()),

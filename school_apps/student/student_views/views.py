@@ -817,7 +817,7 @@ def inactive_students(request):
 @permission_required('student_management_app.view_student', raise_exception=True)
 def manage_student(request):
 
-    students = Student.objects.filter(student_user__is_active = 1)
+    # students = Student.objects.filter(student_user__is_active = 1)
     
     # if request.user.adminuser.course_category == a_level_course_category:
     #     search_form = StudentFormSearch(user = request.user)
@@ -856,7 +856,7 @@ def manage_student(request):
     # else:
     context = {
         'title':'Manage Student',
-        'students': students,
+        # 'students': students,
             'form':search_form,
             'status':True
             }

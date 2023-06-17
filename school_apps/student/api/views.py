@@ -3,58 +3,51 @@ from rest_framework.permissions import IsAuthenticated
 from .serializers import StudentSerializer
 from rest_framework import viewsets
 from student_management_app.models import Student
-from school_apps.log_history.models import UserLog
 from django.db.models import Q
+from django.db import connection
+from django_filters import filters
+from rest_framework_datatables.django_filters.backends import DatatablesFilterBackend
+from rest_framework_datatables.django_filters.filterset import DatatablesFilterSet
+from rest_framework_datatables.django_filters.filters import GlobalFilter
+import django_filters
+from django.db import models
 
-    
+class GlobalCharFilter(GlobalFilter, filters.CharFilter):
+    pass
+
+class StudentGlobalFilter(DatatablesFilterSet):
+    """Filter name, artist and genre by name with icontains"""
+
+    stu_id = GlobalCharFilter(field_name='stu_id', lookup_expr='icontains')#for this i need to use student_user in serializer to assume it as foreign key
+
+    full_name = GlobalCharFilter(field_name='student_user__full_name', lookup_expr='icontains')#for this i need to use student_user in serializer to assume it as foreign key
+    username = GlobalCharFilter(field_name='student_user__username', lookup_expr='icontains')
+    email = GlobalCharFilter(field_name='student_user__email', lookup_expr='icontains')
+
+    class Meta:
+        model = Student
+        fields = '__all__'
+        filter_overrides = {
+            models.ImageField: {
+                'filter_class': django_filters.CharFilter,
+                # 'extra': lambda f: {
+                #     'lookup_expr': 'exact',
+                # },
+            },
+        }
+
 
 class StudentApiView(viewsets.ModelViewSet):
     queryset = Student.objects.filter(student_user__is_active = 1)
     serializer_class = StudentSerializer
-    authentication_classes = (TokenAuthentication, SessionAuthentication)
     permission_classes = (IsAuthenticated,)
+    filter_backends = (DatatablesFilterBackend,)
+    filterset_class = StudentGlobalFilter
     http_method_names = ['get']
 
             
-    search_fields = ['stu_id','roll_no','student_user__full_name',
-                    #  'full_name',
-                    #  'username',
-                    #  'contact',
-                     ]
-    # search_fields = ['stu_id']
-    # def get_queryset(self, *args, **kwargs):
-    #     queryset = Student.objects.filter(student_user__is_active = 1)
-    #     query = self.request.GET.get("search")
-        
-    #     if query:
-    #         queryset_list = queryset.filter(
-    #                 # Q(stu_id__icontains=query)|
-    #                 Q(full_name__icontains=query)
-                    
-    #                 ).distinct()
-    #     return queryset
-    def get_queryset(self, *args, **kwargs):
-        print(self.request.GET.get('stu_id'),":::::::::::::::::::::::::")
-        
-        if self.request.GET.get('stu_id'):
-            data = Student.objects.filter(stu_id=self.request.GET.get('stu_id'))
-            return data
-        # if self.request.GET.get('full_name'):
-        #     data = Student.objects.filter(full_name=self.request.GET.get('full_name'))
-        #     return data
-        if self.request.GET.get('roll_no'):
-            data = Student.objects.filter(roll_no=self.request.GET.get('roll_no'))
-            return data
-        # if self.request.GET.get('username'):
-        #     data = Student.objects.filter(username=self.request.GET.get('username'))
-        #     return data
-        # if self.request.GET.get('contact'):
-        #     data = Student.objects.filter(contact=self.request.GET.get('contact'))
-        #     return data
-        return Student.objects.filter(student_user__is_active = 1)
+    def dispatch(self, *args, **kwargs):
+        response =  super().dispatch(*args, **kwargs)
+        print('------------------------employee api queries-----------------------------: {}'.format(len(connection.queries)))
+        return response
     
-        # def get_serializer(self, *args, **kwargs):
-        #     serializer_class = self.get_serializer_class()
-        # # print(serializer_class)
-        #     kwargs['context'] = self.get_serializer_context()
-        #     return serializer_class(*args, **kwargs)
