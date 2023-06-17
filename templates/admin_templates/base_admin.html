@@ -1,4 +1,6 @@
 {% load static %}
+{% load compress %}
+
 {% load auth_extras %}
 
 <!DOCTYPE html>
@@ -17,6 +19,7 @@
   {% include "includes/adminlte_css.html" %}
   {% include "includes/datatables_css.html" %}
  
+  {% compress css %}
   <link
   rel="stylesheet"
   href="{% static 'plugins/select2-bootstrap4-theme/select2-bootstrap4.css' %}"
@@ -32,8 +35,12 @@
   <link href="{% static 'main_dashboard/css/common.css' %}" rel="stylesheet">
 <link href="{% static 'teachers/css/main_home.css' %}" rel="stylesheet">
 
-  
-  
+<link
+rel="stylesheet"
+type="text/css"
+href="{% static 'flipbook/pdfjs-flipbook/css/jquery.fancybox.min.css' %}"
+/>
+{% endcompress %}
     <!------------------- Custom Common Css End -------------------->
 
 
@@ -194,16 +201,13 @@
   </div>
 </body>
 
+{% compress js %}
 <script
 type="text/javascript"
 src="{% static 'flipbook/pdfjs-flipbook/js/jquery.fancybox.min.js' %}"
 ></script>
   <!-- flipbook js -->
-  <link
-  rel="stylesheet"
-  type="text/css"
-  href="{% static 'flipbook/pdfjs-flipbook/css/jquery.fancybox.min.css' %}"
-/>
+ 
 
 <script src="{% static 'plugins/toastr/toastr.min.js' %}"></script>
 <script src="{% static 'plugins/select2/js/select2.min.js' %}"></script>
@@ -213,8 +217,10 @@ src="{% static 'flipbook/pdfjs-flipbook/js/jquery.fancybox.min.js' %}"
 <script src="{% static 'plugins/jquery-mousewheel/jquery.mousewheel.js' %}"></script>
 <script src="{% static 'plugins/raphael/raphael.min.js' %}"></script>
 <script src="{% static 'plugins/jquery-mapael/jquery.mapael.min.js' %}"></script>
+{% endcompress %}
 {% comment %} Nepali date picker {% endcomment %}
 <script src="https://unpkg.com/nepali-date-picker@2.0.1/dist/jquery.nepaliDatePicker.min.js" crossorigin="anonymous"></script>
+{% compress js %}
 
 <script>
   
@@ -285,9 +291,7 @@ $(".date-picker").on("dateSelect", function (event) {
 
   
 
-</script>
 
-<script>
   function Confirmation(message='',callback,confirm_action='delete'){
     $('#confirm-modal').modal('toggle');
     $('#confirm-modal').find('.confirm-message').html(message);
@@ -571,6 +575,8 @@ $("#id_semester").change(function(){
  
     
 </script>
+
+{% endcompress %}
 
 {% include "static_includes/fullcalendar_cdn.html" %}
 

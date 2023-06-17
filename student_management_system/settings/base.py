@@ -55,12 +55,12 @@ INSTALLED_APPS = [
     'school_apps.parents.apps.ParentsConfig',
     'school_apps.library.apps.LibraryConfig',
     'school_apps.admin_user.apps.AdminUserConfig',
-      'school_apps.email_sms.apps.EmailSmsConfig',
+    'school_apps.email_sms.apps.EmailSmsConfig',
     'viewer.apps.ViewerConfig',
-     'school_apps.extrausers.apps.ExtrausersConfig',
+    'school_apps.extrausers.apps.ExtrausersConfig',
     'school_apps.notifications.apps.NotificationsConfig',
      'school_apps.administrator.apps.AdministratorConfig',
-       'school_apps.student_certificate.apps.StudentCertificateConfig',
+    'school_apps.student_certificate.apps.StudentCertificateConfig',
     'school_apps.customusers.apps.CustomusersConfig',
     'school_apps.log_history.apps.LogHistoryConfig',
     'school_apps.classroom.apps.ClassroomConfig',
@@ -79,30 +79,19 @@ INSTALLED_APPS = [
     'crispy_forms',
     'django_countries',
     'django_filters',
-    'ckeditor',
     'django_extensions',
-    # 'simple_history',
-    'schedule',
-    'djangobower',
-    'dbbackup',
-    'widget_tweaks',
-    'mathfilters',
-    # 'webcam',
+    'compressor',
     'rest_framework',
     'rest_framework_datatables',
-    # 'corsheaders',
-    # 'rest_framework.authtoken',
+    'schedule',
+    'ckeditor',
+    'widget_tweaks',
+    'mathfilters',
+    'djangobower',
+    'dbbackup',
+
 ]
 
-# REST_FRAMEWORK = {
-#     'DEFAULT_AUTHENTICATION_CLASSES': [
-#         'rest_framework.authentication.TokenAuthentication', 
-#     ],
-
-#     'DEFAULT_PERMISSION_CLASSES':[
-#         'rest_framework.permissions.IsAuthenticated',
-#     ]
-# }
 
 
 MIDDLEWARE = [
@@ -276,10 +265,23 @@ STATICFILES_DIRS = [
 # when using collectstatic use static_root
 STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
 
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'#for heroku
+
+STATICFILES_FINDERS = (
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "compressor.finders.CompressorFinder",
+)
 
 
-
+COMPRESS_JS_FILTERS = ["compressor.filters.jsmin.JSMinFilter"]
+COMPRESS_ENABLED = True
+COMPRESS_CSS_HASHING_METHOD = 'content'
+COMPRESS_CSS_FILTERS = [
+    "compressor.filters.css_default.CssAbsoluteFilter",
+    "compressor.filters.cssmin.CSSMinFilter",
+]
+# COMPRESS_ENABLED = True
+# COMPRESS_OFFLINE = True
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media/')

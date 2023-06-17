@@ -1,9 +1,9 @@
 
-
 {% load static %}
+{% load compress %}
 
 
-
+{% compress js %}
 <!-- jQuery -->
 <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
 
@@ -43,3 +43,4 @@
 <script src="{% static 'dist/js/pages/dashboard.js' %}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{% static 'dist/js/demo.js' %}"></script>
+{% endcompress %}
