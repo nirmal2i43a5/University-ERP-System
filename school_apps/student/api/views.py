@@ -38,7 +38,17 @@ class StudentGlobalFilter(DatatablesFilterSet):
 
 
 class StudentApiView(viewsets.ModelViewSet):
-    queryset = Student.objects.filter(student_user__is_active = 1)
+    queryset = Student.objects.\
+    select_related('student_user', 'semester', 'section', 'guardian').\
+    filter(student_user__is_active = 1)
+    # values('id','image','stu_id','student_user__full_name',
+    #                                                                                                     'semester__name',
+    #                                                                                                     'section__section_name',
+    #                                                                                                     'guardian__father_phone',
+    #                                                                                                     'contact',
+    #                                                                                                     'student_user__username',
+    #                                                                                                     )
+                                                                                                        
     serializer_class = StudentSerializer
     permission_classes = (IsAuthenticated,)
     filter_backends = (DatatablesFilterBackend,)

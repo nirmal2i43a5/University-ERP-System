@@ -20,14 +20,14 @@ plus_two_course_category = get_object_or_404(CourseCategory, course_name = 'Plus
 bachelor_course_category = get_object_or_404(CourseCategory, course_name = 'Bachelor')
 master_course_category = get_object_or_404(CourseCategory, course_name = 'Master')
 
-plus_two_courses = Course.objects.filter(course_category = plus_two_course_category )
-bachelor_courses = Course.objects.filter(course_category = bachelor_course_category )
-master_courses = Course.objects.filter(course_category = master_course_category )
+plus_two_courses = Course.objects.select_related('course_category','department').filter(course_category = plus_two_course_category )
+bachelor_courses = Course.objects.select_related('course_category','department').filter(course_category = bachelor_course_category )
+master_courses = Course.objects.select_related('course_category','department').filter(course_category = master_course_category )
 
-school_classes = Semester.objects.filter(course_category = school_course_category)
-plus_two_classes = Semester.objects.filter(course_category = plus_two_course_category)
-bachelor_classes = Semester.objects.filter(course_category = bachelor_course_category)
-master_classes = Semester.objects.filter(course_category = master_course_category)
+school_classes = Semester.objects.select_related('course_category','course').filter(course_category = school_course_category)
+plus_two_classes = Semester.objects.select_related('course_category','course').filter(course_category = plus_two_course_category)
+bachelor_classes = Semester.objects.select_related('course_category','course').filter(course_category = bachelor_course_category)
+master_classes = Semester.objects.select_related('course_category','course').filter(course_category = master_course_category)
 
 """Visit School Class"""
 

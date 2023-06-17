@@ -190,12 +190,11 @@ class ContentFilterForm(forms.Form):
         semester = Semester.objects.get(pk = semester_id)
         if semester.course is None:
             self.fields['course'].widget = forms.HiddenInput()
-        self.fields['course'].queryset = Course.objects.filter(semester = get_object_or_404(Semester , pk = semester_id))
-        self.fields['section'].queryset = Section.objects.filter(semester = get_object_or_404(Semester , pk = semester_id))
-        self.fields['subject'].queryset = Subject.objects.filter(semester =  get_object_or_404(Semester , pk = semester_id))
+        self.fields['course'].queryset = Course.objects.select_related('course_category','department').filter(semester = get_object_or_404(Semester , pk = semester_id))
+        self.fields['section'].queryset = Section.objects.select_related('course_category','course','semester','staff').filter(semester = get_object_or_404(Semester , pk = semester_id))
+        self.fields['subject'].queryset = Subject.objects.select_related('course_category','course','semester').filter(semester =  get_object_or_404(Semester , pk = semester_id))
         # self.fields['teacher'].queryset = SemesterTeacher.objects.filter(semester =  get_object_or_404(Semester , pk = semester_id))
          
-
 class SectionWiseFilter(forms.Form):
     # course_category = forms.ModelChoiceField(label= '',empty_label = 'Choose Course Category',
     #                                   queryset = CourseCategory.objects.all())
@@ -211,6 +210,9 @@ class SectionWiseFilter(forms.Form):
         section = kwargs.pop('section', None)
         semester = Semester.objects.get(pk = semester_id)
         self.fields['section'].queryset = Section.objects.filter(semester = get_object_or_404(Semester , pk = semester_id))
+
+
+        
 
 class SubjectWiseFilter(forms.Form):
     # course_category = forms.ModelChoiceField(label= '',empty_label = 'Choose Course Category',
