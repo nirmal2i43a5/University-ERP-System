@@ -1312,7 +1312,7 @@ def student_assignment(request):
     query = request.GET.get('subject')
 
     if query:
-        student_assignments =  Assignment.objects.filter(Subject=query)
+        student_assignments =  Assignment.objects.select_related('course_category','course','semester','section','Subject','teacher').filter(Subject=query)
         context = {
             'assignments': student_assignments,
             'form': form,
@@ -1321,8 +1321,8 @@ def student_assignment(request):
         }
         return render(request, 'academic/assignments/student_assignment.html', context)
 
-    student_completed_assignments = Grade.objects.filter(student=request.user.id, assignment_status='Completed')
-    student_assigned_assignments =  Assignment.objects.filter(semester= request.user.student.semester, draft = False,
+    student_completed_assignments = Grade.objects.select_related('student','assignment').filter(student=request.user.id, assignment_status='Completed')
+    student_assigned_assignments =  Assignment.objects.select_related('course_category','course','semester','section','Subject','teacher').filter(semester= request.user.student.semester, draft = False,
                                                               section=request.user.student.section).exclude(student = request.user.id)
 
     context = {

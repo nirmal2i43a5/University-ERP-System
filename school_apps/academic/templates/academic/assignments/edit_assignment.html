@@ -1,15 +1,20 @@
 {% extends 'admin_templates/base_admin.html' %}
 
 {% load crispy_forms_tags %}
+{% load compress %}
 {% load static %}
  
   
   {% block main_content %}
+
   <!--for admin widget use-->
 <script src="{% url 'js-catlog' %}"></script>
+
+  {% compress js %}
 <script src="{% static '/admin/js/core.js' %}"></script>
 <link rel="stylesheet" href="{% static 'admin/css/base.css' %}">
 <link rel="stylesheet" href="{% static 'admin/css/widgets.css' %}">
+{% endcompress %}
       <!-- Main content -->
       <section class="content">
         <div class="container-fluid">

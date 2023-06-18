@@ -187,12 +187,15 @@ class ContentFilterForm(forms.Form):
         section = kwargs.pop('section', None)
         subject = kwargs.pop('subject', None)
         course = kwargs.pop('course', None)
-        semester = Semester.objects.get(pk = semester_id)
+        semester = Semester.objects.filter(pk = semester_id).first()
         if semester.course is None:
             self.fields['course'].widget = forms.HiddenInput()
-        self.fields['course'].queryset = Course.objects.select_related('course_category','department').filter(semester = get_object_or_404(Semester , pk = semester_id))
-        self.fields['section'].queryset = Section.objects.select_related('course_category','course','semester','staff').filter(semester = get_object_or_404(Semester , pk = semester_id))
-        self.fields['subject'].queryset = Subject.objects.select_related('course_category','course','semester').filter(semester =  get_object_or_404(Semester , pk = semester_id))
+        self.fields['course'].queryset = Course.objects.select_related('course_category','department').\
+        filter(semester = semester)
+        self.fields['section'].queryset = Section.objects.select_related('course_category','course','semester','staff').\
+        filter(semester = semester)
+        self.fields['subject'].queryset = Subject.objects.select_related('course_category','course','semester').\
+        filter(semester =  semester)
         # self.fields['teacher'].queryset = SemesterTeacher.objects.filter(semester =  get_object_or_404(Semester , pk = semester_id))
          
 class SectionWiseFilter(forms.Form):
@@ -208,8 +211,9 @@ class SectionWiseFilter(forms.Form):
         super(SectionWiseFilter,self).__init__(*args, **kwargs)
         
         section = kwargs.pop('section', None)
-        semester = Semester.objects.get(pk = semester_id)
-        self.fields['section'].queryset = Section.objects.filter(semester = get_object_or_404(Semester , pk = semester_id))
+        semester = Semester.objects.filter(pk = semester_id).first()
+
+        self.fields['section'].queryset = Section.objects.filter(semester = semester)
 
 
         
@@ -227,8 +231,9 @@ class SubjectWiseFilter(forms.Form):
         super(SubjectWiseFilter,self).__init__(*args, **kwargs)
         
         subject = kwargs.pop('subject', None)
-        semester = Semester.objects.get(pk = semester_id)
-        self.fields['subject'].queryset = Subject.objects.filter(semester = get_object_or_404(Semester , pk = semester_id))
+        semester = Semester.objects.filter(pk = semester_id).first()
+        
+        self.fields['subject'].queryset = Subject.objects.filter(semester = semester)
 
 
 
@@ -280,7 +285,8 @@ class EnotesFilterForm(forms.Form):
             self.fields['semester'].widget = forms.HiddenInput()
 
         if user.groups.filter(name='Super-Admin') or user.is_superuser:
-            self.fields['subject'].queryset = Subject.objects.filter(semester =  get_object_or_404(Semester , pk = semester))
+            semester_instance = Semester.objects.filter(pk = semester).first()
+            self.fields['subject'].queryset = Subject.objects.filter(semester = semester_instance )
     
          
 

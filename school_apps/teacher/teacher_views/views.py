@@ -102,10 +102,9 @@ def add_teacher(request):
                'staff_form': staff_form}
     return render(request, 'teachers/add_staff.html', context)
 
-
 @permission_required('student_management_app.view_teacher', raise_exception=True)
 def manage_teacher(request):
-    staffs = Staff.objects.all()  
+    staffs = Staff.objects.select_related('staff_user','department').all()
 
     context = {'staffs': staffs,
                'title':'Manage Teacher'

@@ -31,18 +31,17 @@ master_classes = Semester.objects.select_related('course_category','course').fil
 
 """Visit School Class"""
 
-
-
 def attendance_chart_data(request,semester):
     semester_instance = get_object_or_404(Semester, pk = semester.pk)
     course = semester_instance.course
-    present_status_count =  AttendanceReport.objects.filter(attendance__semester=semester_instance, status='Present',
+
+    present_status_count =  AttendanceReport.objects.select_related('attendance','student','staff','extra_user').filter(attendance__semester=semester_instance, status='Present',
                                                                 attendance__attendance_date = datetime.today())\
                                                                 .annotate(count=Count('status')).count()
-    absent_informed_status_count =  AttendanceReport.objects.filter(attendance__semester=semester_instance, status='Absent(Informed)',
+    absent_informed_status_count =  AttendanceReport.objects.select_related('attendance','student','staff','extra_user').filter(attendance__semester=semester_instance, status='Absent(Informed)',
                                                                 attendance__attendance_date = datetime.today())\
                                                                 .annotate(count=Count('status')).count()
-    absent_not_informed_status_count =  AttendanceReport.objects.filter(attendance__semester=semester_instance, status='Absent(Not Informed)',
+    absent_not_informed_status_count =  AttendanceReport.objects.select_related('attendance','student','staff','extra_user').filter(attendance__semester=semester_instance, status='Absent(Not Informed)',
                                                                 attendance__attendance_date = datetime.today())\
                                                                 .annotate(count=Count('status')).count()
     return course,present_status_count,absent_informed_status_count,absent_not_informed_status_count
@@ -51,6 +50,7 @@ def attendance_chart_data(request,semester):
 def total_students_chart_data(request,semester):
     semester_instance = get_object_or_404(Semester, pk = semester.pk)
     students = semester_instance.student_set.all().count()
+    
     course = semester_instance.course
     return course,semester_instance,students
 
@@ -59,10 +59,10 @@ def total_students_chart_data(request,semester):
 def classroom(request):
     
     url_name = resolve(request.path).url_name
-    school_class_list = Semester.objects.filter(course_category  = school_course_category )
-    plus_two_class_list = Semester.objects.filter(course_category  = plus_two_course_category )
-    bachelor_class_list = Semester.objects.filter(course_category  = bachelor_course_category )
-    master_class_list = Semester.objects.filter(course_category  = master_course_category )
+    school_class_list = Semester.objects.select_related('course_category','course').filter(course_category  = school_course_category )
+    plus_two_class_list = Semester.objects.select_related('course_category','course').filter(course_category  = plus_two_course_category )
+    bachelor_class_list = Semester.objects.select_related('course_category','course').filter(course_category  = bachelor_course_category )
+    master_class_list = Semester.objects.select_related('course_category','course').filter(course_category  = master_course_category )
     student_attendance_dataset = []
     class_student_dataset = []
 
@@ -87,9 +87,9 @@ def classroom(request):
         
         
         '''For data count'''
-        active_students = Student.objects.filter(course_category = school_course_category,student_user__is_active = True)
-        inactive_students = Student.objects.filter(course_category = school_course_category,student_user__is_active = False)
-        teachers = Staff.objects.filter(courses = school_course_category)
+        active_students = Student.objects.select_related('student_user', 'course_category','semester', 'section', 'guardian').filter(course_category = school_course_category,student_user__is_active = True)
+        inactive_students = Student.objects.select_related('student_user', 'course_category','semester', 'section', 'guardian').filter(course_category = school_course_category,student_user__is_active = False)
+        teachers = Staff.objects.prefetch_related('courses').filter(courses = school_course_category)
         
         
     '''--------------------------------------------For Plus Two Dashboard--------------------------------------------'''
@@ -119,6 +119,7 @@ def classroom(request):
        
     '''--------------------------------------------For Bachelor Dashboard--------------------------------------------'''
     if url_name == 'bachelor-classroom':
+
         '''For attendance chart data'''
         for semester in bachelor_class_list:
             course,present_status_count,absent_informed_status_count,absent_not_informed_status_count = attendance_chart_data(request,semester)

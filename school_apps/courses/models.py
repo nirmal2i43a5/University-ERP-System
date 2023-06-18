@@ -210,6 +210,31 @@ def create_exams_and_application_forms(sender, instance, created, **kwargs):
             application_form.objects.get_or_create(application_id = application_id, term=instance, student=student, semester=student.semester)
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # exams = []
 #    app_obj = application_form(application_id=app_id, student=student, term=term, semester=student.semester)
 

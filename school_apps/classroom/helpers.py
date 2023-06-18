@@ -66,9 +66,9 @@ def assignment_handed_status(request):
 
 
 def manage_assignment(request,semester_id):
-    semester_instance = get_object_or_404(Semester, pk = semester_id)
+    semester_instance = Semester.objects.filter(pk = semester_id).values_list('id',flat=True).first()
     draft_assignments = Assignment.objects.select_related('course_category','course','semester','section','Subject','teacher').\
-    filter(teacher_id=request.user.id,semester = semester_instance.pk, draft=True)
+    filter(teacher_id=request.user.id,semester = semester_instance, draft=True)
     assignment_submitted_status = assignment_handed_status(request)
 
     # for submitted_assignment in Grade.objects.select_related('student','assignment').all():
@@ -78,9 +78,9 @@ def manage_assignment(request,semester_id):
     student, assignment = zip(*submitted_assignments)
   
     subject_id = request.GET.get('subject')
-    subject_instance  = get_object_or_404(Subject, pk = subject_id) if subject_id else None
+    subject_instance  = Subject.objects.filter(pk = subject_id).first() if subject_id else None
     section_id = request.GET.get('section')
-    section_instance  = get_object_or_404(Section, pk = section_id) if section_id else None
+    section_instance  = Section.objects.filter(pk = section_id).first() if section_id else None
     # teacher_id = request.GET.get('teacher')
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
@@ -137,12 +137,13 @@ def manage_syllabus(request,semester_id):
 def manage_routine(request,semester_id):
 
     routine_search_form = forms.SectionWiseFilter(semester_id)
-    semester_instance = get_object_or_404(Semester, pk =  semester_id)
+    semester_instance = Semester.objects.filter(pk = semester_id).first()
+
     search_routines = Routine.objects.select_related('course_category','course','semester','section').filter(semester=semester_instance)
     
   
     section_id = request.GET.get('section')
-    section_instance = get_object_or_404(Section , pk = section_id) if section_id else None
+    section_instance = Section.objects.filter(pk = section_id).first() if section_id else None
 
     if section_instance:
         search_routines = Routine.objects.select_related('course_category','course','semester','section').filter(semester=semester_instance,section = section_instance)
@@ -161,7 +162,7 @@ def manage_enotes(request,semester_id):
     end_date = request.GET.get('end_date')
     subject_id = request.GET.get('subject')
     category = request.GET.get('category')
-    subject_instance = get_object_or_404(Subject , pk = subject_id) if subject_id else None
+    subject_instance = Subject.objects.filter(pk = subject_id).first() if subject_id else None
 
     if   subject_id or category or start_date or end_date :
        
@@ -184,9 +185,12 @@ def manage_enotes(request,semester_id):
 
                                                     #    teacher = teacher_instance
                                                        )
-        enote_search_form = forms.EnotesFilterForm(semester_id,request.user,initial = {
+        enote_search_form = forms.EnotesFilterForm(
+            semester_id,request.user,
+            initial = {
          'subject': subject_id,'category': category,'start_date': start_date,'end_date': end_date
-                                         })
+                                         }
+                                         )
     
         return search_enotes,enote_search_form 
         

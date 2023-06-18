@@ -1,24 +1,18 @@
 from django import template
 from django.contrib.auth.models import Group 
+from django.core.cache import cache
 
 register = template.Library()
 
-@register.filter(name='has_group')
-def has_group(user, group_name): 
-    group = Group.objects.get(name=group_name) 
-    return True if group in user.groups.all() else False
-
-
-# from django import template
-# from django.contrib.auth.models import Group
-
-# register = template.Library()
-
 # @register.filter(name='has_group')
-# def has_group(user, group_name):
-#     try:
-#         group =  Group.objects.get(name=group_name)
-#     except Group.DoesNotExist:
-#         return False
+# def has_group(user, group_name): 
+#     return user.groups.filter(name=group_name).exists()
 
-#     return group in user.groups.all()
+@register.filter(name='has_group')
+def has_group(user, group_name):
+    cache_key = f"has_group_{user.pk}_{group_name}"
+    result = cache.get(cache_key)
+    if result is None:
+        result = user.groups.filter(name=group_name).exists()
+        cache.set(cache_key, result)
+    return result
