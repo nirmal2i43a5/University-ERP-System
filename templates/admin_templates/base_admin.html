@@ -435,6 +435,7 @@ $("#id_filter_course").change(function(){
       data:{'course':course_id},
       success:function(data){
           $("#id_filter_semester").html(data);
+          $("#id_semester").html(data);
       }
   })
 })
@@ -505,13 +506,11 @@ $("#id_semester").change(function(){
 
 $("#id_filter_semester").change(function(){
   var semester_id = $(this).val();
-  {% comment %} var semester_text = $(this).find(':selected').text(); {% endcomment %}
   
   
   $.ajax({
       url:" {% url 'attendance_app:fill_section_select' %}",
       data:{'semester':semester_id,
-      {% comment %} 'semester_text':semester_text {% endcomment %}
     },
       success:function(data){
           $("#id_section").html(data);
@@ -532,6 +531,7 @@ $("#id_semester").change(function(){
     },
       success:function(data){
           $("#id_subject").html(data);
+          // $("#id_filter_subject").html(data);
           $("#id_subject_id").html(data);
       }
   })

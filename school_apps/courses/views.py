@@ -5,7 +5,7 @@ from django.db.models import Q
 from django.http.response import HttpResponse, JsonResponse
 from django.contrib import messages 
 from django.shortcuts import redirect, render, get_object_or_404
-from student_management_app.models import Section, Semester, Staff, Student, Subject, SubjectTeacher
+from student_management_app.models import CourseCategory, Section, Semester, Staff, Student, Subject, SubjectTeacher
 from .models import  Term, application_form, selectedcourses, studentgrades, term_ranking
 from .models import Exams
 from school_apps.academic.forms import StudentFormSearch
@@ -484,15 +484,23 @@ def printexamreport(request, pk):
 #add exam marks
 
 def addexammarks(request):
-    print(request.user)
+    
     terms = Term.objects.all()#filter(course_category=request.user.adminuser.course_category)
     semesters = Semester.objects.all()
     subjects = Subject.objects.all()
     sections = Section.objects.all()
     courses = Course.objects.all()
+    if request.user.groups.filter(name='Teacher').exists():
+        course_category = request.user.staff.courses.all()
+    elif request.user.is_superuser or request.user.groups.filter(name='Super-Admin').exists():
+        course_category = CourseCategory.objects.all()
+        
+            
+            
     print(terms)
     context = {'terms':terms,'sections':sections,
                'classes':semesters, 'subjects':subjects,
+               'course_category':course_category,
                'courses':courses
                }
 
@@ -505,10 +513,15 @@ def addremarks(request):
     semester = Semester.objects.all()#filter(course_category=request.user.adminuser.course_category)
     sections = Section.objects.all()
     courses = Course.objects.all()
+    if request.user.groups.filter(name='Teacher').exists():
+        course_category = request.user.staff.courses.all()
+    elif request.user.is_superuser or request.user.groups.filter(name='Super-Admin').exists():
+        course_category = CourseCategory.objects.all()
     context = {
             'terms':terms,
             'classes':semester,
             'sections':sections,
+            'course_category':course_category,
             'courses':courses
 
         }

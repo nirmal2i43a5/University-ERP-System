@@ -12,8 +12,18 @@
     <div class="card-body">
       <form id="exam_form">
         <div class="row">
+          <div class="col-md-3 mt-2">
+            <select name="id_course_category" id="id_course_category" class="form-control">
+              <option value="">Select CourseCategory</option>
+
+              {% for item in course_category %}
+
+              <option value="{{item.pk}}">{{ item }}</option>
+              {% endfor %}
+            </select>
+          </div>
           <div class="col-md-2 mt-2">
-            <select name="id_course" id="id_course" class="form-control">
+            <select name="id_filter_course" id="id_filter_course" class="form-control">
               <option value="">Select Course</option>
 
               {% for item in courses %}
@@ -105,6 +115,8 @@
                 }
             })
         })*/
+ 
+        
   $("#exam_form").submit(function (e) {
     e.preventDefault();
     section_id = $("#id_section").val();

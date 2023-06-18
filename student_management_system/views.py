@@ -474,12 +474,6 @@ def exam_home(request):
 
 
 
-
-
-
-
-
-
 def error_404(request, exception):
     data = {}
     return render(request,'page-errors/page-404.html', data)

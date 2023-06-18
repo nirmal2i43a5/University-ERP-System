@@ -127,12 +127,19 @@ urlpatterns = [
     ),
 
     #api
-    
-    
-    
+
 ]#+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)+static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
 
-handler404 = 'student_management_system.views.error_404'
+
+from django.conf.urls import (
+        # handler400, 
+        # handler403, 
+        handler404,
+        # handler500
+)
+
+from .views import error_404
+handler404 = error_404
 
 
 
