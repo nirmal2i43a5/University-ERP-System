@@ -1,11 +1,12 @@
 {% load static %}
+{% load compress %}
 {% load auth_extras %}
 
 <!DOCTYPE html>
 <html>
 
 {% block head %}
-
+{% compress js %}
 <script
 type="text/javascript"
 src="{% static 'plugins/highcharts/highcharts.js' %}"
@@ -22,7 +23,7 @@ src="{% static 'plugins/highcharts/modules/export-data.js' %}"
 type="text/javascript"
 src="{% static 'plugins/highcharts/modules/accessibility.js' %}"
 ></script>
-
+{% endcompress %}
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
