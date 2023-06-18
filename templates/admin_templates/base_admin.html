@@ -74,7 +74,6 @@ href="{% static 'flipbook/pdfjs-flipbook/css/jquery.fancybox.min.css' %}"
 
     <!-- Navbar -->
 
-    {% if not request.user|has_group:'Teacher' or request.user|has_group:'Student'  or request.user|has_group:'Parent' %}
 
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
       <!-- Left navbar links -->
@@ -122,19 +121,8 @@ href="{% static 'flipbook/pdfjs-flipbook/css/jquery.fancybox.min.css' %}"
         </div><!-- /.container-fluid -->
       </div>
       <!-- /.content-header -->
-{% endif %}
-
-{% if  request.user|has_group:'Teacher' or request.user|has_group:'Student'  or request.user|has_group:'Parent' %}
-   
-<!-- Profile popup modal for details -->
-{% include 'includes/profile_modal.html' %}
 
 
-  {% comment %} App Responsive Footer  {% endcomment %}
-
-{% include 'includes/responsive_app_footer.html' %}
-  
-{% endif %}
 
       {% block main_content %}{% endblock main_content %}
       {% block content %}{% endblock content %}

@@ -47,7 +47,8 @@
           
          
          
-            <table   id="example" ellspacing="0" width="100%" class=" table table-sm  table-striped table-bordered table-hover  text-nowrap  no-footer">
+            <table id="example"  cellspacing="0" width="100%" class=" table table-sm  table-striped table-bordered table-hover  text-nowrap  no-footer">
+
               <thead>
                 <tr>
                   {% comment %} <th></th> {% endcomment %}
@@ -115,39 +116,4 @@
 
 {% endblock main_content %}
 
-{% block custom_js %}
-<!-- <script>
-  $("#id_semester").change(function(){
-    var class_id = $(this).val();
-    
-    $.ajax({
-        url:" {% url 'courses:fill_section_select'%}",
-        data:{'class':class_id},
-        success:function(data){
-            $("#id_section").html(data);
-        }
-    })
-})
-</script> -->
- <script>
 
-$(function () {
-  $('#example').DataTable({
-      dom: 'lrftip',
-      responsive: true,
-      language: {
-        info: ""
-    }
-
-      
-     
-  });
-});
-
-
-
-
-</script>
-
-
-{% endblock custom_js %}
