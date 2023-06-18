@@ -12,7 +12,7 @@ from school_apps.academic.forms import StudentFormSearch
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from .forms import  ExamsForm, TermForm,CourseForm, DepartmentForm
-from student_management_app.models import Staff
+from student_management_app.models import Staff,Course
 from school_apps.attendance.models import Attendance, AttendanceReport
 import datetime
 from datetime import datetime as dtime
@@ -489,9 +489,12 @@ def addexammarks(request):
     semesters = Semester.objects.all()
     subjects = Subject.objects.all()
     sections = Section.objects.all()
+    courses = Course.objects.all()
     print(terms)
     context = {'terms':terms,'sections':sections,
-               'classes':semesters, 'subjects':subjects}
+               'classes':semesters, 'subjects':subjects,
+               'courses':courses
+               }
 
     return render(request, 'courses/addexamgrades.html', context)
 
@@ -501,10 +504,12 @@ def addremarks(request):
     terms = Term.objects.all()#filter(course_category=request.user.adminuser.course_category)
     semester = Semester.objects.all()#filter(course_category=request.user.adminuser.course_category)
     sections = Section.objects.all()
+    courses = Course.objects.all()
     context = {
             'terms':terms,
             'classes':semester,
-            'sections':sections
+            'sections':sections,
+            'courses':courses
 
         }
     

@@ -13,6 +13,16 @@
           {% csrf_token %}
           <div class="row">
             <div class="col-md-2 mt-2">
+              <select name="id_course" id="id_course" class="form-control">
+                <option value="">Select Course</option>
+  
+                {% for item in courses %}
+  
+                <option value="{{item.pk}}">{{ item }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-md-2 mt-2">
               <select name="semester" id="id_semester" class="form-control">
                 <option value="">Select Class</option>
   

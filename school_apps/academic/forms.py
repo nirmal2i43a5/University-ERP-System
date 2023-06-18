@@ -377,8 +377,6 @@ class SubjectSearchForm(forms.Form):
 
 class RoutineSearchForm(forms.Form):
  
-
-
     # filter_semester = forms.ModelChoiceField(label = '',empty_label="Select Semester", queryset = Semester.objects.all())
     # section = forms.ModelChoiceField(label = '',empty_label="Select Section", queryset = Section.objects.none())
    
