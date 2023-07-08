@@ -11,6 +11,7 @@ from functools import partial as curry
 from school_apps.notifications.models import Notification
 
 
+
 class UserLoggingMiddleware(object):
     ip_address = None
     def __init__(self, get_response):
