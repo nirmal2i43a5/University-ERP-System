@@ -1,17 +1,4 @@
-Bulk data upload for student
-OTP SMS with sparrow(https://docs.sparrowsms.com/sms/outgoing_sendsms/)
-Compressor
-Design with dynamic Color (card design like edulaya and many more)
-Namespace manage for dynamic sidebar(as in every request for sidebar multiple namespace is running)
-adding dynamic icons in popup menu 
-multitency 
-pwa/responsive(if possible)
-giving dynamic name for group
-nepali datepicker(and convert to english while logic development)
-For password(use mobile instead of mobile)
-proper notification
-automatic redirect by ajax keyword searching
-Individual dashboard 
+
 
 =>Keep refresh button on every page like as attendance
 =>change view pdf to download pdf because it is irresponsive(assignment, routine,e-notes,.......)
@@ -59,3 +46,5 @@ for student role : select class/semester  and for teacher
 Exam management system : 
 -----------------
 I am inspecting : http://127.0.0.1:8000/addexammarks/(while score submit)
+=======
+
