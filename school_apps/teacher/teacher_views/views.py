@@ -102,10 +102,9 @@ def add_teacher(request):
                'staff_form': staff_form}
     return render(request, 'teachers/add_staff.html', context)
 
-
 @permission_required('student_management_app.view_teacher', raise_exception=True)
 def manage_teacher(request):
-    staffs = Staff.objects.all()  
+    staffs = Staff.objects.select_related('staff_user','department').all()
 
     context = {'staffs': staffs,
                'title':'Manage Teacher'
@@ -369,30 +368,36 @@ def student_view_by_teacher(request):
         'course_category':course_category_query,'filter_course':course_query,
         'filter_semester':semester_query,'section':section_query})
     if semester_query and section_query:
-        search_students = Student.objects.filter(semester = semester_instance,section = section_instance,student_user__is_active = 1)
+        search_students = Student.objects.select_related('student_user', 'semester', 'section', 'guardian').filter(semester = semester_instance,section = section_instance,student_user__is_active = 1)
         context = {'students': search_students,'form':search_form}
         return render(request,'teachers/students/student_list.html', context)
     
     if semester_query:
-        search_students = Student.objects.filter(semester = semester_instance,student_user__is_active = 1)
+        search_students = Student.objects.select_related('student_user', 'semester', 'section', 'guardian').filter(semester = semester_instance,student_user__is_active = 1)
         context = {'students': search_students,'form':search_form}
         return render(request,'teachers/students/student_list.html', context)
 
     else:
-        search_students = Student.objects.filter(semester = semester_instance,student_user__is_active = 1)
-        context = {'students': Student.objects.filter(student_user__is_active = 1),'form':search_form}
-        return render(request,'teachers/students/student_list.html', context)
-    #     students = []
-    #     for item in subjectteacher:
-    #         students = Student.objects.filter(semester = item.semester,section = item.section)
-    
-    #     context = {
-    #     'title':'Student Details',
-    #         'form':search_form,
-    #     'students':students
-        
-    # }
+       
+        # search_students = Student.objects. select_related('student_user', 'semester', 'section', 'guardian').filter(semester = semester_instance,student_user__is_active = 1)
+        # context = {'students': Student.objects. select_related('student_user', 'semester', 'section', 'guardian').filter(student_user__is_active = 1),'form':search_form}
         # return render(request,'teachers/students/student_list.html', context)
+        students = []
+        for item in subjectteacher:
+            students = Student.objects.filter(semester = item.semester,section = item.section)
+    
+        context = {
+        'title':'Student Details',
+            'form':search_form,
+        'students':students
+        
+    }
+        return render(request,'teachers/students/student_list.html', context)
     # ------------
     
   
+def teacher_attendance_home(request):
+    context = {
+        'title':'Attendance',
+                 }
+    return render(request, 'teachers/attendance_home.html', context)

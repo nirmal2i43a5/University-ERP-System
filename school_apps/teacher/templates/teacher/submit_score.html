@@ -1,4 +1,4 @@
-{% if students%}
+{% comment %} {% if students%} {% endcomment %}
     <hr>
     Please enter the score for the respective students.<br>
         <hr>
@@ -43,10 +43,10 @@
         </table>
         
         <hr>
-{% else %}
-<hr>
-    There are no students that have appeared in this exam yet.
-{% endif %}
+{% comment %} {% else %}
+<hr> {% endcomment %}
+    {% comment %} There are no students that have appeared in this exam yet.
+{% endif %} {% endcomment %}
 
 {% block javascript %}
     <script>

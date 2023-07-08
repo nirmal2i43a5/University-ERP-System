@@ -1,0 +1,302 @@
+{% extends 'admin_templates/base_admin.html' %}
+{% load static %}
+{% load auth_extras %}
+{% load crispy_forms_tags %}
+{% block title %}
+  {{title}}
+{% endblock title %}
+{% block main_content %}
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+  <!-- /.card-header -->
+  {% include "includes/messages.html" %}
+  
+    <div class="row">
+      <div class="col-12">
+
+
+        <div class="card " style="background-color: rgb(247, 245, 245);">
+          
+          <div class="card-header">
+
+            <ul class="nav nav-tabs nav-custom p-0">
+              <li class="nav-item"><a class="nav-link active" href="#assigned" data-toggle="tab">Assigned</a></li>
+              <li class="nav-item"><a class="nav-link" href="#draft" data-toggle="tab">Draft</a></li>
+
+              
+                <li>
+                  <form class="float-right"  role="search"  method="GET" >
+                    <div class="input-group">
+                   
+                
+                      {{ form|crispy }} 
+                  
+                      <div class="input-group-btn ml-1" style="margin-top:2rem;">
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> SEARCH</button>
+          
+                      </div>
+                    </div>
+                  </form>
+                </li>
+            <li>
+
+
+              {% if request.user.is_superuser or request.user|has_group:'Teacher'   %}
+              <div class="d-flex justify-content-end mb-4">
+
+                <div class="text-link">
+
+                  <a href="{% url 'academic:add_assignment' %}" class="add-link btn btn-xs ml-1" style="background:#435EBE;color:white;margin-top: 2.5rem;">
+                    <i class="fas fa-xs fa-plus"></i> <strong>Add assignment</strong></a>
+                  
+                </div>
+
+                <div>
+                 
+                </div>
+                
+             
+            </div>
+            {% endif %}
+            </li>
+              
+            </ul>
+        
+          </div>
+         
+          <!-- /.card-header -->
+          <div class="card-body table-responsive">
+            <div class="tab-content">
+
+              <div class="active tab-pane" id="assigned">
+                
+                {% for assignment,student_submit_status in assignment_submitted_status %}
+
+                {% include "academic/assignments/delete.html" %}
+    {% comment %} Assignment design start  {% endcomment %}
+               
+<div class="row">
+    <div class="col-md-0 mt-2 mb-1">
+      <span>
+  
+  
+        {% if assignment.file %}
+        <a href="{{ assignment.file.url }}">
+          <img src="{% static 'image/assignment.png' %}" alt="" style="width:70px;height:70px;" class="img-rectangle" />
+  
+        </a>
+        {% else %}
+  
+        <a href="">
+          <img src="{% static 'image/assignment.png' %}" alt="" style="width:70px;height:70px;" class="img-rectangle" />
+  
+        </a>
+        {% endif %}
+  
+  
+      </span>
+  
+    </div>
+    <div class="col-md-10">
+  
+  
+      <div class="card" style="border-radius:10px;">
+  
+        <div class="card-body ">
+  
+  
+          <div class="d-flex justify-content-between">
+  
+            <div>
+              {% if assignment.file %}
+              <a href="{{ assignment.file.url }}" class="text-capitalize">
+                <strong> {{ assignment.title }}</strong>
+  
+              </a>
+              {% else %}
+              <a href="" class="text-capitalize">
+                <strong> {{ assignment.title }}</strong>
+  
+              </a>
+              {% endif %}
+            </div>
+  
+  
+            <div>
+             Turned In <span class="badge badge-primary">
+                {{assignment.grade_set.all.count}}/{{assignment.semester.student_set.all.count}}
+              </span>
+            </div>
+  
+          </div>
+          <div class="d-flex justify-content-between">
+            <div>
+              <strong> {{ assignment.Subject }}</strong>, {{ assignment.section }} ,
+              <strong>Due : </strong>{{ assignment.deadline }}
+  
+            </div>
+  
+          
+            <div>
+              Checked  
+              <span class="badge badge-primary">
+                {{assignment.grade_set.count}}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+    </div>
+  
+  
+    <div class="col-md-0 mt-4" >
+      <div class="btn-group" role="group">
+        <button id="btnGroupDrop1" type="button" class="btn dropdown-toggle" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false" style="background:#435EBE;color:white;">
+          Action
+        </button>
+        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+          <a class="dropdown-item" href="{% url 'academic:student_assignment_grade' assignment.pk %}">Check Assignment</a>
+          <a class="dropdown-item" href="{% url 'academic:edit_assignment' assignment.id %}">Edit</a>
+          <button class="dropdown-item" data-target='#deleteAssignment-{{ assignment.id}}'
+            data-toggle="modal">Delete
+          </button>
+          <a class="dropdown-item" href="{% url 'academic:draft_publish_unpublish' assignment.id %}">Move to Draft</a>
+        </div>
+      </div>
+      <div class="d-flex flex-column mt-1">
+        
+  
+      </div>
+    </div>
+                 {% comment %} Assignment design end {% endcomment %}
+                   </div>
+                   {% empty %}
+                  
+                   <h3> No Assignments Found!</h3>
+                {% endfor %}
+    
+    
+                </div>
+
+              <div class="tab-pane" id="draft">
+                {% for assignment in draft_assignments %}
+
+                {% include "academic/assignments/delete.html" %}
+    
+                 {% include "academic/assignments/includes/draft_assignment.html" %}
+                   </div>
+                   {% empty %}
+                  
+                   <h3> No Assignments Found!</h3>
+                {% endfor %}
+                  
+               </div>
+            </div>
+
+
+           
+          
+          
+            </div>
+           
+          
+            
+           
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+    </div>
+  </div>
+  
+</section>
+<!-- /.content -->
+
+<style>
+  .nav-custom > li > a:hover{
+    color:black;
+  }
+  .nav-custom > li > a{
+    
+    font-weight: 600;
+    color:white;
+    padding: 8px 10px 8px 10px;
+    background-color:#435EBE ;
+    
+
+  }
+</style>
+{% endblock main_content %}
+
+{% block custom_js %}
+
+<script>
+  
+  $(document).ready(function () {
+
+    $("#id_course_category").change(function(){
+      var course_category_id = $(this).val();
+      
+      $.ajax({
+          url:" {% url 'attendance_app:fill_semester_select' %}",
+          data:{'course_category':course_category_id},
+          success:function(data){
+              $("#id_semester").html(data);
+          }
+      })
+  })
+  
+  
+  $("#id_semester").change(function(){
+    var semester_id = $(this).val();
+    
+    
+    $.ajax({
+        url:" {% url 'attendance_app:fill_section_select' %}",
+        data:{'semester':semester_id},
+        success:function(data){
+            $("#id_section").html(data);
+        }
+    })
+  })
+  
+  
+  $("#id_semester").change(function(){
+    var semester_id = $(this).val();
+    var course_category_id = $('#id_course_category').val();
+    
+    
+    $.ajax({
+        url:" {% url 'attendance_app:fill_subject_select' %}",
+        data:{'semester':semester_id,'course_category':course_category_id},
+        success:function(data){
+            $("#id_subject").html(data);
+        }
+    })
+  })
+ 
+  });
+</script>
+
+{% endblock custom_js %}
+
+<!-- 
+{% if request.user.is_superuser or request.user|has_group:'Admin' %}
+
+{% for assignment in assignments %}
+
+{% include "academic/assignments/delete.html" %}
+
+  {% include "academic/assignments/includes/assignment_list.html" %}
+    </div>
+    {% empty %}
+  
+    <h3> No Assignment Found!</h3>
+{% endfor %}
+
+{% endif %} -->

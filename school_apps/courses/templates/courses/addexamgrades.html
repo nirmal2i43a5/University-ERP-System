@@ -1,44 +1,88 @@
-{% extends 'admin_templates/base_admin.html' %}
-
-{% block headextra %}
+{% extends 'admin_templates/base_admin.html' %} {% block headextra %}
 <style>
-.greyba {
-    background-color:rgba(178,178,178,1.00);
-
-}
+  .greyba {
+    background-color: rgba(178, 178, 178, 1);
+  }
 </style>
-{% endblock %}
-
-{% block content %}
-<div style="margin-left: 25px; margin-right: 25px;">
-    <!-- <h4>Assign subjects to teacher</h4> -->
+{% endblock %} {% block content %}
+<div class="container">
+  <div class="card">
     {% include 'override_table/header.html' with card_title='Add Exam Grades' %}
-    <div style="margin-left: 10px; margin-right: 10px; margin-top: 15px;">
-        <form id="exam_form"> 
-            <label for="term_select">Select term: </label>
-            <select name="term_select" id="term_select">
-                <option value="">Select Term</option>
-                {% for item in terms %}
-                    <option value="{{item.pk}}">{{ item }}</option>
-                {% endfor %}
+
+    <div class="card-body">
+      <form id="exam_form">
+        <div class="row">
+          <div class="col-md-3 mt-2">
+            <select name="id_course_category" id="id_course_category" class="form-control">
+              <option value="">Select CourseCategory</option>
+
+              {% for item in course_category %}
+
+              <option value="{{item.pk}}">{{ item }}</option>
+              {% endfor %}
             </select>
-            <br>
-            <label for="exam_select">Select exam: </label>
-            <select name="exam_select" id="exam_select">
-                <option value="">Select Examination</option>
-            </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <button type="submit" class="btn btn-primary">Confirm</button>
-        </form>
-        <hr>
-        <div id="entryfield">
+          </div>
+          <div class="col-md-2 mt-2">
+            <select name="id_filter_course" id="id_filter_course" class="form-control">
+              <option value="">Select Course</option>
 
+              {% for item in courses %}
+
+              <option value="{{item.pk}}">{{ item }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-2 mt-2">
+            <select name="id_semester" id="id_semester" class="form-control">
+              <option value="">Select Class</option>
+
+              {% for item in classes %}
+
+              <option value="{{item.pk}}">{{ item }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-2 mt-2">
+            <select name="id_subject" id="id_subject" class="form-control">
+              <option value="">Select Subject</option>
+              {% for item in subjects %}
+              <option value="{{item.pk}}">{{ item }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-2 mt-2">
+            <select name="id_section" id="id_section" class="form-control">
+              <option value="">Select Section</option>
+              {% for item in sections %}
+              <option value="{{item.pk}}">{{ item }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-2 mt-2">
+            <select name="term_select" id="id_term" class="form-control">
+              <option value="">Select Term</option>
+              {% for item in terms %}
+              <option value="{{item.pk}}">{{ item }}</option>
+
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-2 mt-2">
+            <button type="submit" class="btn btn-primary mr-4" id="confirm">
+              Confirm
+            </button>
+          </div>
         </div>
+      </form>
     </div>
+  </div>
 
-{% endblock %}
+  <div id="entryfield"></div>
+</div>
 
-{% block javascript %}
-    <script>
+{% endblock %} {% block javascript %}
+<script>
+  /*
         $(function() {
             $('#exam_select').prop('disabled', 'disabled');
         });
@@ -57,8 +101,9 @@
                 $('#exam_select').prop('disabled', 'disabled');
                 $('#exam_select option:eq(0)').prop('selected', true)
             }
-        })
+        })*/
 
+  /*
         $('#exam_form').submit(function(e){
             e.preventDefault();
             exam_id = $("#exam_select").val();
@@ -69,6 +114,30 @@
                     $("#entryfield").html(data);
                 }
             })
-        })
-    </script>
+        })*/
+ 
+        
+  $("#exam_form").submit(function (e) {
+    e.preventDefault();
+    section_id = $("#id_section").val();
+    class_id = $("#id_semester").val();
+    subject_id = $("#id_subject").val();
+    term_id = $("#id_term").val();
+
+    $.ajax({
+      url: "{% url 'courses:examsAjax'%}",
+      data: {
+        section_id: section_id,
+        class_id: class_id,
+        term_id: term_id,
+
+        subject_id: subject_id,
+      },
+      success: function (data) {
+        $("#entryfield").html(data);
+        $("#confirm").prop("disabled", false);
+      },
+    });
+  });
+</script>
 {% endblock %}

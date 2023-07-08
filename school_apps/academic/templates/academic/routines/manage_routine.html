@@ -59,6 +59,15 @@
             
                 <div class="input-group-btn ">
                   <button type="submit" class="btn btn-primary"><strong>SEARCH</strong></button>
+                  {% if request.user|has_group:'Teacher' %}
+
+                <a
+                href="{% url 'mis_main_home' %}"
+                class="btn ml-2 btn-danger"
+              >
+                <strong>Back</strong>
+              </a>
+              {% endif %}
     
                 </div>
               </div>
@@ -200,15 +209,6 @@ $("#id_semester").change(function(){
 
 
 
-});
-$(function () {
-  $('#example').DataTable({
-      dom: 'lrftip',
-      responsive: true
-
-      
-     
-  });
 });
 
 </script>

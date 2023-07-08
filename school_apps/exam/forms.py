@@ -2,7 +2,7 @@ from django import forms
 from school_apps.courses.models import Exams
 from school_apps.exam.models import Question, QuestionPaper, QuestionGrade, SubQuestion
 from django.forms import inlineformset_factory
-from student_management_app.models import Semester, Section, Subject, SubjectTeacher
+from student_management_app.models import Semester, Section, Subject, SubjectTeacher,Course,CourseCategory
 
 
 
@@ -87,3 +87,15 @@ class StudentDetailsSearch(forms.Form):
     
 
 
+
+class SubjectAssignFilterForm(forms.Form):
+    course_category = forms.ModelChoiceField(label= '',empty_label = 'Choose Course Category',
+                                      queryset = CourseCategory.objects.all())
+    
+    filter_course = forms.ModelChoiceField(label= '',empty_label = 'Choose Course',
+                                      queryset = Course.objects.all())
+    
+    filter_semester = forms.ModelChoiceField(label= '',empty_label = 'Choose Class',
+                                      queryset = Semester.objects.none())
+    section = forms.ModelChoiceField(required = False, label= '',empty_label = 'Choose Section',
+                                     queryset = Section.objects.none())

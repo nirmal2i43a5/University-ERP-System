@@ -81,6 +81,7 @@
                   <th data-data="image">Image</th>
                   <th data-data="stu_id">Student Id</th>
                   <th data-data="full_name">Full Name</th>
+
                   <th data-data="semester">Class</th>
                   <th data-data="section">Section</th>
                   <th data-data="father_phone">Parent Contact</th>
@@ -112,7 +113,7 @@
 
         
     <script>
-
+  
       $("#id_semester").change(function(){
         var class_id = $(this).val();
         
@@ -155,7 +156,7 @@
                 if (row.image) {
                   return ` <img src="${row.image}" alt="" style="width:35px;height:35px;" class="img-circle" />`;
                 } else {
-                  return ` <img src="{% static 'image/default_profile.png' %}" alt="" style="width:35px;height:35px;" class="img-circle" />`;
+                  return ` <img src="{% static 'image/admin.png' %}" alt="" style="width:35px;height:35px;" class="img-circle" />`;
                 }
       
               },

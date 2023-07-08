@@ -4,6 +4,7 @@
 {% extends 'admin_templates/base_admin.html' %}
 {% load scheduletags i18n %}
 {% load static %}
+{% load compress %}
 {% load auth_extras %}
 <!--for user group check-->
 
@@ -35,15 +36,7 @@ Dashboard
         <h3 class = "mt-1"style="text-align: center;"><strong>SUPERADMIN PORTAL</strong> </h3>
 
      
-   
-
-   
-
   
-  
-
-    
-      
     {% endif %}
     {% endif %}
 
@@ -60,6 +53,7 @@ Dashboard
 
 {% if url_name == 'dashboard' %}
 
+{% compress js %}
 <script
 type="text/javascript"
 src="{% static 'plugins/highcharts/highcharts.js' %}"
@@ -76,7 +70,7 @@ src="{% static 'plugins/highcharts/modules/export-data.js' %}"
 type="text/javascript"
 src="{% static 'plugins/highcharts/modules/accessibility.js' %}"
 ></script>
-
+{% endcompress %}
 <!-- Main content -->
 <section class="content">
   <div class="container-fluid">
@@ -227,6 +221,7 @@ src="{% static 'plugins/highcharts/modules/accessibility.js' %}"
     {% endblock %}
 
 
+    {% compress js %}
 
     {% block custom_js %}
   
@@ -241,3 +236,4 @@ src="{% static 'plugins/highcharts/modules/accessibility.js' %}"
     {% endblock custom_js %}
 
 
+{% endcompress %}

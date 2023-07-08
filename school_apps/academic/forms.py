@@ -17,7 +17,7 @@ from django.utils.translation import ugettext_lazy as _
 # 100MB 104857600
 # 250MB - 214958080
 # 500MB - 429916160
-MAX_UPLOAD_SIZE = "1048576"
+MAX_UPLOAD_SIZE = "5242880"
 
 
 
@@ -91,7 +91,16 @@ class AssignmentForm(forms.ModelForm):
     #                                  queryset = Subject.objects.all())
     course_category = forms.ModelChoiceField(queryset = CourseCategory.objects.all(), widget=forms.RadioSelect())
     # course_category.course = forms.ModelChoiceField(queryset = Course.objects.all(), widget=forms.RadioSelect())
-    deadline = forms.SplitDateTimeField(label = 'Deadline', widget=AdminSplitDateTime())
+    # deadline = forms.SplitDateTimeField(label = 'Deadline', widget=AdminSplitDateTime())
+    deadline = forms.DateTimeField(
+        widget=forms.DateInput(
+        attrs={
+
+            "type": "datetime-local", "class": "form-control"
+        },
+        ),
+            input_formats = ['%Y-%m-%dT%H:%M'] 
+        )
     title=forms.CharField(widget=forms.TextInput(attrs={"class":"form-control","placeholder": " Enter Title",}))
     description = forms.CharField( widget=forms.Textarea(attrs={'rows': 2, 'cols': 10,"placeholder": " Enter  Course Description",}))
     Subject = forms.ModelChoiceField(empty_label = 'Select Subject',
@@ -100,11 +109,9 @@ class AssignmentForm(forms.ModelForm):
 
     def clean(self):
         self.check_file()
-        print(":::I am inside clead------------")
         return self.cleaned_data
 
     def check_file(self):
-        print("I am inside file check--------------------------")
         content = self.cleaned_data["file"]
         content_type = content.content_type.split('/')[0]
         if content.size > int(MAX_UPLOAD_SIZE):
@@ -114,11 +121,12 @@ class AssignmentForm(forms.ModelForm):
     class Meta:
         model = Assignment
         fields = '__all__'
-        exclude = ('created_by','student','teacher',)
+        exclude = ('created_by','student','teacher','draft',)
 
         
     def __init__(self, *args, user=None, **kwargs):
         super().__init__(*args, **kwargs)
+        # self.fields["deadline"].input_formats = ("%Y-%m-%dT%H:%M",)
         if user.groups.filter(name='Teacher'):
             course_category = self.fields['course_category']
             course_category.queryset = user.staff.courses.all()
@@ -131,7 +139,7 @@ class SemesterSectionSearchForm(forms.Form):
     # course_category = forms.ModelChoiceField(empty_label = 'Choose Course Category',
     #                                   queryset = CourseCategory.objects.all())
     
-    semester = forms.ModelChoiceField(required = False, label = 'Semester',empty_label = '------------------Choose Class------------------',
+    semester = forms.ModelChoiceField(required = False, label = 'Class',empty_label = '------------------Choose Class------------------',
                                       queryset = Semester.objects.all())
     section = forms.ModelChoiceField(required = False, empty_label = 'Choose Section',
                                      queryset = Section.objects.all())
@@ -148,6 +156,7 @@ class SemesterSectionSearchForm(forms.Form):
         filter_semester = self.fields['semester']
         # course_category = self.fields['course_category']
         # course_category.queryset = user.staff.course.all()
+            
         filter_semester.queryset = user.semester_set.all()
         subject.queryset = user.subject_set.all()
 
@@ -178,15 +187,17 @@ class ContentFilterForm(forms.Form):
         section = kwargs.pop('section', None)
         subject = kwargs.pop('subject', None)
         course = kwargs.pop('course', None)
-        semester = Semester.objects.get(pk = semester_id)
+        semester = Semester.objects.filter(pk = semester_id).first()
         if semester.course is None:
             self.fields['course'].widget = forms.HiddenInput()
-        self.fields['course'].queryset = Course.objects.filter(semester = get_object_or_404(Semester , pk = semester_id))
-        self.fields['section'].queryset = Section.objects.filter(semester = get_object_or_404(Semester , pk = semester_id))
-        self.fields['subject'].queryset = Subject.objects.filter(semester =  get_object_or_404(Semester , pk = semester_id))
+        self.fields['course'].queryset = Course.objects.select_related('course_category','department').\
+        filter(semester = semester)
+        self.fields['section'].queryset = Section.objects.select_related('course_category','course','semester','staff').\
+        filter(semester = semester)
+        self.fields['subject'].queryset = Subject.objects.select_related('course_category','course','semester').\
+        filter(semester =  semester)
         # self.fields['teacher'].queryset = SemesterTeacher.objects.filter(semester =  get_object_or_404(Semester , pk = semester_id))
          
-
 class SectionWiseFilter(forms.Form):
     # course_category = forms.ModelChoiceField(label= '',empty_label = 'Choose Course Category',
     #                                   queryset = CourseCategory.objects.all())
@@ -200,8 +211,12 @@ class SectionWiseFilter(forms.Form):
         super(SectionWiseFilter,self).__init__(*args, **kwargs)
         
         section = kwargs.pop('section', None)
-        semester = Semester.objects.get(pk = semester_id)
-        self.fields['section'].queryset = Section.objects.filter(semester = get_object_or_404(Semester , pk = semester_id))
+        semester = Semester.objects.filter(pk = semester_id).first()
+
+        self.fields['section'].queryset = Section.objects.filter(semester = semester)
+
+
+        
 
 class SubjectWiseFilter(forms.Form):
     # course_category = forms.ModelChoiceField(label= '',empty_label = 'Choose Course Category',
@@ -216,8 +231,9 @@ class SubjectWiseFilter(forms.Form):
         super(SubjectWiseFilter,self).__init__(*args, **kwargs)
         
         subject = kwargs.pop('subject', None)
-        semester = Semester.objects.get(pk = semester_id)
-        self.fields['subject'].queryset = Subject.objects.filter(semester = get_object_or_404(Semester , pk = semester_id))
+        semester = Semester.objects.filter(pk = semester_id).first()
+        
+        self.fields['subject'].queryset = Subject.objects.filter(semester = semester)
 
 
 
@@ -242,27 +258,35 @@ class EnotesFilterForm(forms.Form):
     # section = forms.ModelChoiceField(required = False,label = '', empty_label = 'Choose Section',
     #                                  queryset = Section.objects.all())
     
-
-    subject = forms.ModelChoiceField(empty_label = 'Choose Subject',
+    semester = forms.ModelChoiceField(required = False,label = "Class", empty_label = 'Choose Class',
+                                     queryset = Semester.objects.none())
+    subject = forms.ModelChoiceField(required = False,empty_label = 'Choose Subject',
                                      queryset = Subject.objects.none())
 
-    category=forms.ChoiceField(choices=category_choices,
+    category=forms.ChoiceField(required = False,choices=category_choices,
                         )
     start_date = forms.DateField(required = False, label = 'From', widget=forms.DateInput(attrs = {'type':'date','class':''}))
     end_date = forms.DateField(required = False,label = 'To',widget=forms.DateInput(attrs = {'type':'date','class':''}))
 
     
-    def __init__(self,semester = None, user = None, *args, **kwargs):
+    def __init__(self,
+                 semester = None, 
+                 user = None, *args, **kwargs):
         super(EnotesFilterForm,self).__init__(*args, **kwargs)
         
         subject = kwargs.pop('subject', None)
         if user.groups.filter(name='Teacher'):
             print("satecher:::")
             self.fields['subject'].queryset = user.subjectteacher_set.all()
+            self.fields['semester'].queryset = user.semesterteacher_set.all()
+
         if user.groups.filter(name='Student'):
             self.fields['subject'].queryset = Subject.objects.filter(semester =  user.student.semester)
+            self.fields['semester'].widget = forms.HiddenInput()
+
         if user.groups.filter(name='Super-Admin') or user.is_superuser:
-            self.fields['subject'].queryset = Subject.objects.filter(semester =  get_object_or_404(Semester , pk = semester))
+            semester_instance = Semester.objects.filter(pk = semester).first()
+            self.fields['subject'].queryset = Subject.objects.filter(semester = semester_instance )
     
          
 
@@ -353,8 +377,6 @@ class SubjectSearchForm(forms.Form):
 
 class RoutineSearchForm(forms.Form):
  
-
-
     # filter_semester = forms.ModelChoiceField(label = '',empty_label="Select Semester", queryset = Semester.objects.all())
     # section = forms.ModelChoiceField(label = '',empty_label="Select Section", queryset = Section.objects.none())
    
@@ -385,8 +407,8 @@ class RoutineSearchForm(forms.Form):
         
         
 class SubjectForm(forms.ModelForm):
-    course_category = forms.ModelChoiceField(queryset = CourseCategory.objects.all(), widget=forms.RadioSelect())
-    semester = forms.ModelChoiceField(queryset = Semester.objects.all())
+    course_category = forms.ModelChoiceField(required = False,queryset = CourseCategory.objects.all(), widget=forms.RadioSelect())
+    semester = forms.ModelChoiceField(required = False,queryset = Semester.objects.all())
     course = forms.ModelChoiceField(required = False, queryset = Course.objects.all())
     subject_name = forms.CharField(required = True, widget=forms.TextInput(
         attrs={'placeholder': 'Enter Your Subject Name'}))
@@ -396,7 +418,13 @@ class SubjectForm(forms.ModelForm):
         attrs={'rows': 2, 'cols': 10, "placeholder": " Enter  Course Description", }))
     class Meta:
         model=Subject
-        fields = ('course_category','course','semester','subject_name','subject_code','description')
+        fields = (
+            'course_category',
+            'course',
+            'semester',
+                  'subject_name',
+                  'subject_code',
+                  'description')
  
 
 

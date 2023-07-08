@@ -2,7 +2,7 @@
 
 
 
-{% extends 'admin_templates/base_admin.html' %}
+{% extends 'teacher_base.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
 
@@ -12,6 +12,7 @@
   
 
 {% block main_content %}
+
 
 <section class="content">
   <div class="container-fluid">
@@ -23,24 +24,24 @@
     <div class="row">
       <div class="col-md-12">
    
-        <div class="card card-info">
+        <div class="card pb-4" style="background:#f2f2f2;" >
           <div class="card-header" style="background:#435EBE;">
-            <h3 class="card-title  text-white">TEACHER HOME</h3>
+            <h3 class="card-title  text-white text-uppercase" > {{request.user.user_type}} HOME</h3>
           </div>
         
          <br><br>
           <!-- /.card-header -->
 
        
-          <div class="row ml-4">
+          <div class="row ml-4" id="teacher_responsive_card_container">
          
             <div class="col-md-3">
+              
               <div class="container">
-              <a href="">
+              <a href="{% url 'teacher:teacher_attendance_home' %}">
                 
                 <img src="{% static 'image/attendance.png' %}" alt="" style="" class="img-fluid img-rectangle" />
 
-                 
                     <span >
                       <strong>Attendance  </strong>
                     </span>
@@ -51,7 +52,7 @@
 
             <div class="col-md-3">
               <div class="container">
-              <a href="">
+              <a href="{% url 'academic:manage_routine' %}">
                 
                 <img src="{% static 'image/routine.png' %}" alt="" style="" class="img-fluid img-rectangle" />
 
@@ -65,7 +66,7 @@
             </div>
             <div class="col-md-3">
               <div class="container">
-              <a href="">
+              <a href="{% url 'academic:manage_assignment' %}">
                 
                 <img src="{% static 'image/assignment2.png' %}" alt="" style="" class="img-fluid img-rectangle" />
 
@@ -79,7 +80,7 @@
             </div>
             <div class="col-md-3">
               <div class="container">
-              <a href="">
+              <a href="{% url 'academic:manage_enote' %}">
                 
                 <img src="{% static 'image/enotes2.png' %}" alt="" style="" class="img-fluid img-rectangle" />
 
@@ -92,24 +93,24 @@
               </div>
             </div>
 
-            <div class="col-md-3">
+            <!-- <div class="col-md-3">
               <div class="container">
-              <a href="">
+              <a href="{% url 'teacher_grade_home' %}">
                 
                 <img src="{% static 'image/exam.png' %}" alt="" style="" class="img-fluid img-rectangle" />
 
                  
-                    <span >
-                      <strong>Grades  </strong>
+                    <span claass="card-text" >
+                      <strong>Exam/Grades  </strong>
                     </span>
               </a>
 
               </div>
-            </div>
+            </div> -->
 
             <div class="col-md-3">
               <div class="container">
-              <a href="">
+              <a href="{% url 'manage_event' %}">
                 
                 <img src="{% static 'image/events.png' %}" alt="" style="" class="img-fluid img-rectangle" />
 
@@ -122,7 +123,7 @@
               </div>
             </div>
 
-            <div class="col-md-3">
+            <!-- <div class="col-md-3">
               <div class="container">
               <a href="">
                 
@@ -135,10 +136,10 @@
               </a>
 
               </div>
-            </div>
+            </div> -->
 
 
-            <div class="col-md-3">
+            <!-- <div class="col-md-3">
               <div class="container">
               <a href="">
                 
@@ -151,7 +152,7 @@
               </a>
 
               </div>
-            </div>
+            </div> -->
 
 
         </div>
@@ -161,152 +162,26 @@
 
     </div>
   </div>
-  <footer class="bottom-nav">
-    <nav class="bottom-nav__nav">
-      <ul class="bottom-nav__list">
-        <li class="bottom-nav__item">
-          <a href="#" class="bottom-nav__link">
-            <i class="fa fa-home"></i>
-            <span class="bottom-nav__text">Home</span>
-          </a>
-        </li>
-        <li class="bottom-nav__item">
-          <a href="#" class="bottom-nav__link">
-            <i class="fas fa-tachometer-alt"></i>
-            <span class="bottom-nav__text">Dashboard</span>
-          </a>
-        </li>
-        <li class="bottom-nav__item">
-          <a href="#" class="bottom-nav__link">
-            <i class="fa fa-bell"></i>
-            <span class="bottom-nav__text">Notice</span>
-          </a>
-        </li>
-        <li class="bottom-nav__item">
-          <a href="#" class="bottom-nav__link">
-            <i class="fas fa-ellipsis-h"></i>
 
-            <span class="bottom-nav__text">More</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
-  </footer>
+{% comment %} More profile cli {% endcomment %}
+<!-- Button to trigger modal -->
+
+
+<!-- Modal -->
+
+<!-- Profile popup modal for details -->
+{% include 'includes/profile_modal.html' %}
+
+
+  {% comment %} Footer  {% endcomment %}
+
+
+{% include 'includes/responsive_app_footer.html' %}
+  
   
 </section>
 
-<style>
 
-	.col-md-3{
-		border-radius: 2rem;
-	    border: none;
-	    -webkit-box-shadow: 0 0 15px 0 #ddd;
-	    box-shadow: 0 0 15px 0 #ddd;
-	    text-align: center;
-	    background: #fff;
-	 	 padding:1.5rem 0rem;
-    margin-bottom:1rem;
-    margin-right:2rem;
-	}
-  .col-md-3 a{
-    color: #007bff;
-    text-decoration: none;
-    background-color: transparent;
-    margin-right: 9rem;
-  }
-  .col-md-3 img{
-    width:35px;height:35px;margin-right:1rem;
-
-  }
-
-.container {
-  position: relative;
-  /* 16:9 aspect ratio */
-}
-    .col-md-3 .container img {
-      position: absolute;
-      margin-left:1rem;
-      top: 0;
-      left: 0;
-      width:35px;height:35px;
-    }
-    
-    .col-md-3 .container span {
-      position: absolute;
-      bottom: 0;
-      text-transform: uppercase;
-      top:3px;
-      left: 0;
-      width: 70%;
-    }
-  
-
-    {% comment %} Css for bottom navbar like app {% endcomment %}
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      background-color: #f2f2f2;
-      box-shadow: 0px -1px 10px rgba(0, 0, 0, 0.2);
-      z-index: 999;
-    }
-    
-    .bottom-nav__nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      height: 60px;
-    }
-    
-    .bottom-nav__list {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-    }
-    
-    .bottom-nav__item {
-      width: 33.33%;
-      text-align: center;
-    }
-    
-    .bottom-nav__link {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      color: #333;
-      text-decoration: none;
-    }
-    
-    .bottom-nav__text {
-      font-size: 0.8rem;
-      margin-top: 0.2rem;
-    }
-    
-    .bottom-nav__link:hover {
-      color: #007bff;
-    }
-    
-    @media (max-width: 575px) {
-      .bottom-nav__nav {
-        flex-direction: column;
-        height: auto;
-      }
-      
-      .bottom-nav__item {
-        width: 100%;
-        margin: 0.2rem 0;
-      }
-    }
-    .bottom-nav__link i{
-      color:gray;
-    }
-</style>
 
 {% endblock main_content %}
 

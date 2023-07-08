@@ -47,7 +47,8 @@
           
          
          
-            <table   id="example" ellspacing="0" width="100%" class=" table table-sm  table-striped table-bordered table-hover  text-nowrap  no-footer">
+            <table id="example"  cellspacing="0" width="100%" class=" table table-sm  table-striped table-bordered table-hover  text-nowrap  no-footer">
+
               <thead>
                 <tr>
                   {% comment %} <th></th> {% endcomment %}
@@ -76,7 +77,7 @@
                  <a href="{{ student.image.url }}">   <img src="{{ student.image.url }}" alt="" style="width:35px;height:35px;" class="img-circle" /></a>
 
                     {% else %}
-                    <img src="{% static 'image/default_profile.png' %}" alt="" style="width:35px;height:35px;" class="img-circle" />
+                    <img src="{% static 'image/admin.png' %}" alt="" style="width:35px;height:35px;" class="img-circle" />
                     {% endif %}
 
                   </td>
@@ -115,39 +116,4 @@
 
 {% endblock main_content %}
 
-{% block custom_js %}
-<!-- <script>
-  $("#id_semester").change(function(){
-    var class_id = $(this).val();
-    
-    $.ajax({
-        url:" {% url 'courses:fill_section_select'%}",
-        data:{'class':class_id},
-        success:function(data){
-            $("#id_section").html(data);
-        }
-    })
-})
-</script> -->
- <script>
 
-$(function () {
-  $('#example').DataTable({
-      dom: 'lrftip',
-      responsive: true,
-      language: {
-        info: ""
-    }
-
-      
-     
-  });
-});
-
-
-
-
-</script>
-
-
-{% endblock custom_js %}

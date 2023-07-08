@@ -27,8 +27,8 @@ class StudentForm(forms.ModelForm):
     status = forms.ChoiceField(choices=status_choices, widget=forms.RadioSelect())
     shift = forms.ChoiceField(choices=shift, widget=forms.RadioSelect())
     gender = forms.ChoiceField(choices=gender_choices, widget=forms.RadioSelect())
-    stu_id = forms.CharField(label='Student Id', widget=forms.TextInput(
-        attrs={"class": "form-control", "placeholder": " Enter Student Id", }))
+    stu_id = forms.CharField(label='Matrix Number', widget=forms.TextInput(
+        attrs={"class": "form-control", "placeholder": " Enter Student Martix Number", }))
    
     temporary_address = forms.CharField(required=False, widget=forms.TextInput(
         attrs={"class": "form-control", "placeholder": " Enter Temporary Address", }))

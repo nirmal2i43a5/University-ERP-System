@@ -37,9 +37,9 @@ class ExamsForm(ModelForm):
     )
 
     semester = forms.ModelChoiceField(label='Class',queryset=Semester.objects.all())
-    date = forms.DateField(
+    date = forms.DateField(required  =False, 
         widget=forms.DateInput(attrs={'type': 'date', }))
-    time = forms.TimeField(
+    time = forms.TimeField(required = False, 
         widget=forms.TimeInput(attrs={'type': 'time', }))
     # exam_type=forms.ChoiceField(
     #     widget=forms.RadioSelect(), choices=exam_choices)
@@ -63,9 +63,10 @@ class TermForm(ModelForm):
         ('Unit','Unit Test'),
         ('Term', 'Terminal Examination')
     ]
-    start_date = forms.DateField(
+    start_date = forms.DateField(required = False, 
         widget=forms.DateInput(attrs={'type': 'date', }))
-    end_date = forms.DateField(
+    
+    end_date = forms.DateField(required = False, 
         widget=forms.DateInput(attrs={'type': 'date', }))
     type=forms.ChoiceField(
         widget=forms.RadioSelect(), choices=exam_choices)

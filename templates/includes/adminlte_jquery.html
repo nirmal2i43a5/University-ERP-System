@@ -1,9 +1,9 @@
 
-
 {% load static %}
+{% load compress %}
 
 
-
+{% compress js %}
 <!-- jQuery -->
 <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
 
@@ -27,6 +27,7 @@
 <!-- jQuery Knob Chart -->
 <script src="{% static 'plugins/jquery-knob/jquery.knob.min.js' %}"></script>
 <!-- daterangepicker --> 
+
 <script src="{% static 'plugins/moment/moment.min.js' %}"></script>
 <script src="{% static 'plugins/daterangepicker/daterangepicker.js' %}"></script>
 <!-- Tempusdominus Bootstrap 4 -->
@@ -42,3 +43,4 @@
 <script src="{% static 'dist/js/pages/dashboard.js' %}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{% static 'dist/js/demo.js' %}"></script>
+{% endcompress %}

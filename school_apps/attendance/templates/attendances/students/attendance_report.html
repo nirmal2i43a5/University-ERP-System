@@ -4,6 +4,8 @@
 
 {% extends 'admin_templates/base_admin.html' %}
 {% load static %}
+{% load auth_extras %}
+
 {% load crispy_forms_tags %}
 
 {% block title %}
@@ -20,48 +22,80 @@
 
    {% include "includes/messages.html" %}
 
+  
+
+
     <div class="row">
       <div class="col-md-12">
    
-        <div class="card card-info">
-          {% include 'override_table/header.html' with card_title='Student attendance report' %}
+        <div class="card pb-2" style="background:#f2f2f2;" >
+          <div class="card-header" style="background:#435EBE;">
+            <h3 class="card-title  text-white text-uppercase" > 
+              {% if request.user|has_group:'Teacher' %}
+
+              <a
+              href="{% url 'teacher:teacher_attendance_home' %}"
+              class="btn btn-sm btn-rounded"
+            >
+              <strong><i class="fas fa-backward text-capitalize"></i> Back </strong>
+            </a>
+            {% endif %}
+              
+              STUDENT ATTENDANCE REPORT</h3>
+          </div>
+        
          <br><br>
           <!-- /.card-header -->
 
        
-          <div class="row ml-4 mb-4">
+          <div class="row ml-4 mb-4 mr-2" id="teacher_responsive_card_container">
 
+         
             <div class="col-md-3">
+              
+              <div class="container" id="attendance_report_card">
               <a href="{% url 'attendance_app:student_daily_attendance' %}">
+                <img src="{% static 'image/attendance.png' %}" alt="" style="" class="img-fluid img-rectangle" />
+                
 
-                 
-                    <span>
-                      <strong>Fetch daily attendance </strong>
+                    <span style="width:90%">
+                      <strong>Daily Attendance   </strong>
                     </span>
               </a>
 
               </div>
-              <div class="col-md-3">
-                <a href="{% url 'attendance_app:student_monthly_attendance' %}">
+            </div>
 
-                   
-                      <span>
-                        <strong>Fetch monthly attendance  </strong>
-                      </span>
-                </a>
-
-                </div>
-                <div class="col-md-3">
-									<a href="{% url 'attendance_app:student_attendance_list' %}">
-
-											
-												<span>
-													<strong>Fetch individual student attendance </strong>
-												</span>
-									</a>
-
-									</div>
+            <div class="col-md-3">
+              
+              <div class="container">
+              <a href="{% url 'attendance_app:student_monthly_attendance' %}">
                 
+                <img src="{% static 'image/attendance.png' %}" alt="" style="" class="img-fluid img-rectangle" />
+
+                    <span style="width:90%">
+                      <strong>Monthly Attendance </strong>
+                    </span>
+              </a>
+
+              </div>
+            </div>
+            <div class="col-md-3">
+              
+              <div class="container">
+              <a href="{% url 'attendance_app:student_attendance_list' %}">
+                <img src="{% static 'image/attendance.png' %}" alt="" style="" class="img-fluid img-rectangle" />
+                
+
+                    <span style="width:90%">
+                      <strong>Individual Student   </strong>
+                    </span>
+              </a>
+
+              </div>
+            </div>
+          </div>
+
            
 
 
@@ -76,29 +110,20 @@
 
 <style>
 
-	.col-md-3{
-		border-radius: 50rem;
-	    border: none;
-	    -webkit-box-shadow: 0 0 15px 0 #ddd;
-	    box-shadow: 0 0 15px 0 #ddd;
-	    text-align: center;
-	    background: #fff;
-	 	 padding:3rem 0rem;
-	  	margin:10px 7px 0px 20px;
 
-	}
-span{
-  text-transform: uppercase;
+/* Media query for screens smaller than 768px (mobile screens) */
+
+@media (max-width: 767px) {
+  #attendance_report_card  span {}
 }
-	.custom-icon i{
-	    padding: 20px;
-	    font-size: 50px;
-	    text-align: center;
-	    color: #115c8d;
-		padding-top:inherit;
-		padding-bottom: 1px;
-		margin-bottom:0.7rem;
-	}
+
+
+/* Media query for screens larger than 768px (desktop screens) */
+
+@media (min-width: 768px) {
+  #attendance_report_card  span {}
+}
+
 
 </style>
 

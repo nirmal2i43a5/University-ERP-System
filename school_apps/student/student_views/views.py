@@ -25,7 +25,7 @@ from student_management_app.models import *
 from school_apps.attendance.models import Attendance, AttendanceReport
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import  permission_required
-
+import pandas as pd
 
 @permission_required('student_management_app.add_student', raise_exception=True)
 def add_student(request):
@@ -59,7 +59,6 @@ def add_student(request):
             father_instance = CustomUser.objects.create_user(
                 username=father_username, password='password', user_type=parent_role, full_name = parent_form.cleaned_data["father_name"]
             )
-            print(father_instance)
             father_instance.parent.father_name = parent_form.cleaned_data['father_name']
             father_instance.parent.mother_name = parent_form.cleaned_data['mother_name']
             father_instance.parent.father_phone = parent_form.cleaned_data['father_phone']
@@ -162,12 +161,19 @@ def student_file_upload(request):
     if request.method == "GET":
         return render(request, 'students/file_upload.html')
     else:
-        csv_file = request.FILES['studentfile']
+        excel_file = request.FILES["studentfile"]
+        data_frame = pd.read_excel(excel_file)
+
+    csv_file = 'studentrecord.csv'
+    data_frame.to_csv(csv_file, index=False)
+    
+    # if not csv_file.name.endswith('.csv'):
+    #     print("Invalid file")
+
         
-    if not csv_file.name.endswith('.csv'):
-        print("Invalid file")
-        
-    data_set = csv_file.read().decode('latin-1')
+    # data_set = pd.read_csv(csv_file, encoding='latin-1')
+    with open(csv_file, 'r', encoding='latin-1') as f:
+        data_set = f.read()
     io_string = io.StringIO(data_set)
     next(io_string)
     
@@ -176,7 +182,10 @@ def student_file_upload(request):
     for column in file_data:
         batch = column[1]
         join_year = batch[0:4]
-        student_id = column[2]
+        if column[2] != "":
+            str_to_float = float(column[2])
+        student_id = int(str_to_float)
+        print(student_id,":::::::::::::::")
         roll_no = column[3]
         fullName = column[4]
         gender = column[5]
@@ -190,22 +199,8 @@ def student_file_upload(request):
         program = column[10]
         status = column[11]
         home_phone = column[12]
-        contact = column[13]
-        permanent_address = column[20]
-        temporary_address = column[21]
-        
-        dob_es_parse=""
-        if (column[22]!="" ):
-            dob_es_parse = parse(column[22]).date() #this change from 8/10/2020 to 2020-8-10 i.e in python format
-        
-        dob_bs_parse=""
-        if (column[23]!="" ):
-            dob_bs_parse = parse(column[23]).date()
-        blood_group = column[24]
-        # optional_subject = column[26]
-        gpa = column[26]
-        previous_school =  column[27]  
-        # dob_es_parse = datetime.datetime.strptime(dob_es, "%Y-%m-%d")
+        contact = column[13]#this is for  mobile no (field in my csv file)
+       
     
         
         home_phone = home_phone,
@@ -218,18 +213,40 @@ def student_file_upload(request):
         local_guardian_name=column[18],
         local_guardian_phone=column[19]
 
+        permanent_address = column[20]
+        temporary_address = column[21]
+        
+        dob_es_parse = ""
+        if (column[22]!="" ):
+            dob_es_parse = parse(column[22]).date() #this change from 8/10/2020 to 2020-8-10 i.e in python format
+        
+        dob_bs_parse=""
+        if (column[23]!="" ):
+            dob_bs_parse = parse(column[23]).date()
+        blood_group = column[24]
+        optional_subject = column[25]
+        gpa = column[26]
+        previous_school =  column[27]  
+        # dob_es_parse = datetime.datetime.strptime(dob_es, "%Y-%m-%d")
+
         father_name = ''.join(father_name)
         father_phone = ''.join(father_phone)
         mother_name = ''.join(mother_name)
         mother_phone = ''.join(mother_phone)
         local_guardian_name = ''.join(local_guardian_name)
         local_guardian_phone = ''.join(local_guardian_phone)
-        fname = column[4].split()[0]
+        if column[4] != "":
+            fname = column[4].split()[0]
+        else:
+            fname = ''
         
         student_username = fname.lower() + f'{student_id}'
         parent_role = Group.objects.get(name='Parent')
         father_username = "p" + student_username 
-        Father_object = CustomUser.objects.create_user(
+        if CustomUser.objects.filter(username = father_username).exists():
+            print("Already exists")
+        else:
+            Father_object = CustomUser.objects.create_user(
             username=father_username, password='password', user_type=parent_role, full_name = father_name
         )
         
@@ -243,16 +260,20 @@ def student_file_upload(request):
         Father_object.groups.add(parent_role)
         Father_object.parent.save()
         
-        sem_obj, created= Semester.objects.get_or_create(
-            name=batch,
-            course_category = request.user.adminuser.course_category
-        )
+        # sem_obj, created= Semester.objects.get_or_create(
+        #     name=batch,
+        #     course_category = request.user.adminuser.course_category
+        # )
 
-        sem = sem_obj
+        # sem = sem_obj
         role = Group.objects.get(name = 'Student')
         # ---
-        username_from_file = column[28]  
-        customuser_object = CustomUser.objects.create_user(username = username_from_file,
+        # username_from_file = column[28]  
+        # student_username = f'{student_id}'
+        if CustomUser.objects.filter(username = student_username).exists():
+            print("Already exists")
+        else:
+            customuser_object = CustomUser.objects.create_user(username = student_id,
                                                            password='password', 
                                                            email=email,
                                                            user_type=role,
@@ -266,13 +287,15 @@ def student_file_upload(request):
         customuser_object.student.roll_no = roll_no
         customuser_object.student.gender = gender
         customuser_object.student.shift = shift
-        customuser_object.student.semester =  Semester.objects.get(name = batch, course_category = request.user.adminuser.course_category)
+        customuser_object.student.semester =  Semester.objects.get(name = batch, 
+                                                                #    course_category = request.user.adminuser.course_category
+                                                                   )
         
-        if (column[7]!=""):
-            section_obj, created = Section.objects.get_or_create(semester = sem_obj, section_name = section, course_category = sem_obj.course_category)
-            customuser_object.student.section =  section_obj
+        # if (column[7]!=""):
+        #     section_obj, created = Section.objects.get_or_create(semester = sem_obj, section_name = section, course_category = sem_obj.course_category)
+        #     customuser_object.student.section =  section_obj
        
-        customuser_object.student.course = course
+        # customuser_object.student.course = course
         customuser_object.student.faculty = column[10]
         customuser_object.student.program = program
         customuser_object.student.status = status
@@ -531,7 +554,6 @@ def student_attendance_view(request, student_id):
         attendance = Attendance.objects.filter(attendance_date__range=(start_data_parse, end_data_parse)
                                             #    , subject = subject_id
                                                )
-        print(attendance,':::::::::::::::::::::::::')
         # i add course in student  so access subject for student based on course in the collge only.
         student_attendance = AttendanceReport.objects.filter(student=student_id, attendance__in = attendance)  # or filter(student = student_id, attendance__attendance_date = month)
         total_present=AttendanceReport.objects.filter(student=student_id, attendance__in = attendance,status = 'Present').count()
@@ -580,7 +602,6 @@ def teacher_attendance_view(request, teacher_id):
         
         attendance = Attendance.objects.filter(attendance_date__range=(start_data_parse, end_data_parse)
                                                )
-        print(attendance,':::::::::::::::::::::::::')
         # i add course in teacher  so access subject for teacher based on course in the collge only.
         teacher_attendance = AttendanceReport.objects.filter(staff=teacher_id, attendance__in = attendance)  
         total_present=AttendanceReport.objects.filter(staff=teacher_id, attendance__in = attendance,status = 'Present').count()
@@ -796,7 +817,7 @@ def inactive_students(request):
 @permission_required('student_management_app.view_student', raise_exception=True)
 def manage_student(request):
 
-    students = Student.objects.filter(student_user__is_active = 1)
+    # students = Student.objects.filter(student_user__is_active = 1)
     
     # if request.user.adminuser.course_category == a_level_course_category:
     #     search_form = StudentFormSearch(user = request.user)
@@ -835,7 +856,7 @@ def manage_student(request):
     # else:
     context = {
         'title':'Manage Student',
-        'students': students,
+        # 'students': students,
             'form':search_form,
             'status':True
             }

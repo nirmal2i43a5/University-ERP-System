@@ -1,3 +1,7 @@
+
+{% load compress %}
+
+{% compress js %}
 <script>
 
   function getDataTableConfig({
@@ -145,3 +149,4 @@
     );
   }
 </script>
+{% endcompress %}

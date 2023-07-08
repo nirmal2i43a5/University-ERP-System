@@ -1,7 +1,23 @@
 <hr>
-<h5>Select semester to view details.</h5>
-    <hr>
+
 {% if exams %}
+    <table class = 'table table-hover'>
+        <thead style="background:#435EBE;color:white;"><tr>
+            <th> Exam </th>
+            <th> Time </th>
+            <th>  Center </th>
+        </tr></thead>
+        {%for exam in exams%}
+            <tr><td>{{ exam.exam_title}}</td>
+            <td>{{ exam.date}} {{ exam.time}}</td>
+            <td>{{ exam.exam_centre}}</td></tr>
+        {% endfor %}
+    </table>
+{% else %}
+<h4>No exam details found.</h4>
+{% endif %}
+{% comment %} Below code is for specific but I am using above for common without application process {% endcomment %}
+{% comment %} {% if exams %}
     <table class = 'table table-hover'>
         <thead style="background:#435EBE;color:white;"><tr>
             <th> Exam </th>
@@ -16,4 +32,4 @@
     </table>
 {% else %}
 <h4>No exam details found.</h4>
-{% endif %}
+{% endif %} {% endcomment %}

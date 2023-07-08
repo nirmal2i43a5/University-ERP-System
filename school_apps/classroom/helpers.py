@@ -7,12 +7,13 @@ from django.urls import resolve
 from student_management_app.models import (Section,Semester,Subject,Staff,CustomUser)
 from django.contrib.auth.decorators import permission_required
 from student_management_app.models import Student
-from django.db.models import Q
+from django.db.models import Q,Count
+# from django.db import connection
 
 def assignment_handed_status(request):
     assignment_submitted_status = []
 
-    for assignment in Assignment.objects.all():
+    for assignment in Assignment.objects.select_related('course_category','course','semester','section','Subject','teacher').prefetch_related('grade_set').all():
         assignment_submitted_by_student = assignment.grade_set.all()#filter(assignment_status = 'Completed').count()
         # print(assignment_submitted_by_student)
         # for grade in assignment_grades:
@@ -41,12 +42,12 @@ def assignment_handed_status(request):
     #                                             semester = semester_instance, 
     #                                             section = section_instance).count()
         assignment_reviewed_by_teacher = Grade.objects.filter(
-            grade_status = True,
-            assignment__semester = assignment.semester,
-            assignment__section = assignment.section,
-           assignment__Subject = assignment.Subject,
-           assignment__pk = assignment.pk
-           ).count()
+        grade_status=True,
+        assignment__semester=assignment.semester,
+        assignment__section=assignment.section,
+        assignment__Subject=assignment.Subject,
+        assignment=assignment
+    ).aggregate(review_count=Count('pk'))['review_count']
     #     assignment_remained_to_check = Grade.objects.filter(
     #         grade_status = False,
     #         assignment__semester = assignment.semester,
@@ -60,27 +61,26 @@ def assignment_handed_status(request):
                                             #  'total_students':total_students,
                                             #  'assignment_remained_to_check':assignment_remained_to_check
                                              })
-    print(assignment_submitted_status)
     return assignment_submitted_status
 
 
 
 def manage_assignment(request,semester_id):
-    semester_instance = get_object_or_404(Semester, pk = semester_id)
-    draft_assignments = Assignment.objects.filter(teacher_id=request.user.id,semester = semester_instance, draft=True)
+    semester_instance = Semester.objects.filter(pk = semester_id).values_list('id',flat=True).first()
+    draft_assignments = Assignment.objects.select_related('course_category','course','semester','section','Subject','teacher').\
+    filter(teacher_id=request.user.id,semester = semester_instance, draft=True)
     assignment_submitted_status = assignment_handed_status(request)
 
-    student = []
-    assignment = []
-    for submitted_assignment in Grade.objects.all():
-        student.append(submitted_assignment.student_id)
-        assignment.append(submitted_assignment.assignment_id)
- 
+    # for submitted_assignment in Grade.objects.select_related('student','assignment').all():
+    #     student.append(submitted_assignment.student_id)
+    #     assignment.append(submitted_assignment.assignment_id)
+    submitted_assignments = Grade.objects.select_related('student','assignment').values_list('student_id', 'assignment_id')
+    student, assignment = zip(*submitted_assignments)
   
     subject_id = request.GET.get('subject')
-    subject_instance  = get_object_or_404(Subject, pk = subject_id) if subject_id else None
+    subject_instance  = Subject.objects.filter(pk = subject_id).first() if subject_id else None
     section_id = request.GET.get('section')
-    section_instance  = get_object_or_404(Section, pk = section_id) if section_id else None
+    section_instance  = Section.objects.filter(pk = section_id).first() if section_id else None
     # teacher_id = request.GET.get('teacher')
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
@@ -95,7 +95,7 @@ def manage_assignment(request,semester_id):
         start_date_parse = datetime.strptime(str(start_date), "%Y-%m-%d").date()
         end_date_parse = datetime.strptime(str(end_date), "%Y-%m-%d").date()
     
-        search_assignments = Assignment.objects.filter(
+        search_assignments = Assignment.objects.select_related('course_category','course','semester','section','Subject','teacher').filter(
                                                     Subject = subject_instance,
                                                         created_at__range=(
                                                             start_date_parse, 
@@ -104,7 +104,7 @@ def manage_assignment(request,semester_id):
                                                     )
         return search_assignments,draft_assignments,assignment_search_form,assignment_submitted_status
     if subject_id:
-        search_assignments = Assignment.objects.filter(
+        search_assignments = Assignment.objects.select_related('course_category','course','semester','section','Subject','teacher').filter(
                                                     Subject = subject_instance,
                                                 #    teacher = teacher_instance
                                                     )
@@ -120,14 +120,14 @@ def manage_assignment(request,semester_id):
 def manage_syllabus(request,semester_id):
     syllabus_search_form = forms.SubjectWiseFilter(semester_id)
     semester_instance = get_object_or_404(Semester, pk =  semester_id)
-    search_syllabus = Syllabus.objects.filter(semester=semester_instance)
-    
+    search_syllabus = Syllabus.objects.select_related('course','semester','subject').filter(semester=semester_instance)
+   
     
     subject_id = request.GET.get('subject')
     subject_instance = get_object_or_404(Subject , pk = subject_id) if subject_id else None
 
     if subject_instance:
-        search_syllabus = Syllabus.objects.filter(semester=semester_instance,subject = subject_instance)
+        search_syllabus = Syllabus.objects.select_related('course','semester','subject').filter(semester=semester_instance,subject = subject_instance)
         return search_syllabus,syllabus_search_form 
   
     return search_syllabus,syllabus_search_form 
@@ -137,15 +137,16 @@ def manage_syllabus(request,semester_id):
 def manage_routine(request,semester_id):
 
     routine_search_form = forms.SectionWiseFilter(semester_id)
-    semester_instance = get_object_or_404(Semester, pk =  semester_id)
-    search_routines = Routine.objects.filter(semester=semester_instance)
+    semester_instance = Semester.objects.filter(pk = semester_id).first()
+
+    search_routines = Routine.objects.select_related('course_category','course','semester','section').filter(semester=semester_instance)
     
-    
+  
     section_id = request.GET.get('section')
-    section_instance = get_object_or_404(Section , pk = section_id) if section_id else None
+    section_instance = Section.objects.filter(pk = section_id).first() if section_id else None
 
     if section_instance:
-        search_routines = Routine.objects.filter(semester=semester_instance,section = section_instance)
+        search_routines = Routine.objects.select_related('course_category','course','semester','section').filter(semester=semester_instance,section = section_instance)
         return search_routines,routine_search_form 
   
     return search_routines,routine_search_form 
@@ -161,7 +162,7 @@ def manage_enotes(request,semester_id):
     end_date = request.GET.get('end_date')
     subject_id = request.GET.get('subject')
     category = request.GET.get('category')
-    subject_instance = get_object_or_404(Subject , pk = subject_id) if subject_id else None
+    subject_instance = Subject.objects.filter(pk = subject_id).first() if subject_id else None
 
     if   subject_id or category or start_date or end_date :
        
@@ -170,7 +171,7 @@ def manage_enotes(request,semester_id):
             start_data_parse = datetime.strptime(str(start_date), "%Y-%m-%d").date()
             end_data_parse = datetime.strptime(str(end_date), "%Y-%m-%d").date()
      
-            search_enotes = Enotes.objects.filter(
+            search_enotes = Enotes.objects.select_related('course_category','course','semester','section','subject').filter(
                                                         subject = subject_instance,
                                                          note_category = category,
                                                          created_at__range=(start_data_parse,
@@ -178,15 +179,18 @@ def manage_enotes(request,semester_id):
                                                                             )
                                                        )
         else:
-            search_enotes = Enotes.objects.filter(
+            search_enotes = Enotes.objects.select_related('course_category','course','semester','section','subject').filter(
                                                        subject = subject_instance,
                                                        note_category = category,
 
                                                     #    teacher = teacher_instance
                                                        )
-        enote_search_form = forms.EnotesFilterForm(semester_id,request.user,initial = {
+        enote_search_form = forms.EnotesFilterForm(
+            semester_id,request.user,
+            initial = {
          'subject': subject_id,'category': category,'start_date': start_date,'end_date': end_date
-                                         })
+                                         }
+                                         )
     
         return search_enotes,enote_search_form 
         
@@ -197,4 +201,3 @@ def manage_enotes(request,semester_id):
 
 
    
- 

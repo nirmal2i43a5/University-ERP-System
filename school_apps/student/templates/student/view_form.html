@@ -2,14 +2,15 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-{% if exams %}
+{% comment %} {% if exams %} {% endcomment %}
 <div id="application-form">
     <form action="{% url 'student:student_application' %}" method="POST">
         {% csrf_token %}
         <div id="form-serial-no">
             <div id="serial-no">
                 <Label for="student-id-label">Form no:</Label>
-                <input type="text" readonly style="border: none; background:none" value="{{term.term_id}}.{{student.student_user.username}}" name="application_id">
+                <input type="text" readonly style="border: none; background:none" value="{{term.term_id}}.{{student.student_user.username}}" 
+                name="application_id">
             </div>
         </div>
 
@@ -98,7 +99,7 @@
           </div>
     </form>
 </div>
-{% else %}
+{% comment %} {% else %} {% endcomment %}
 <h5>There are no exam application forms available right now.</h5>
-{% endif %}
+{% comment %} {% endif %} {% endcomment %}
 {% endblock %}

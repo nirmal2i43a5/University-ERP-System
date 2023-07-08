@@ -93,7 +93,6 @@ def examapplication(request):
         return render(request, 'student/examapplication.html', {'student':student, })
 
     current_application=application_form.objects.none()
-    print(latest_term, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~latest term~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
     
     if (datetime.timedelta(0)<=latest_term.start_date-today<=datetime.timedelta(15)):
@@ -133,10 +132,13 @@ def examapplication(request):
                 if exam in exams:
                     exams.remove(exam)
                     
-            return render(request, 'student/examapplication.html', {'student':student, 'term':latest_term, 'exams':exams, 'already_selected':current_exams})
+            return render(request, 'student/examapplication.html', {'student':student,
+                                                                     'term':latest_term,
+                                                                     'exams':exams,
+                                                                     'already_selected':current_exams})
     else:
         print("nothing")
-        return render(request, 'student/examapplication.html', {'student':student,})
+        return render(request, 'student/examapplication.html', {'student':student})
 
 
 
@@ -159,15 +161,17 @@ def examslist(request):
     
 def examdetails(request):
     student = get_object_or_404(Student, student_user = request.user.id)
-    # exams = studentgrades.objects.all().filter(application_id__student_id = student)
-    applications = application_form.objects.filter(student=student)
-    terms = []
+    '''I commented this to show term directly w/o application_form process'''
+    # applications = application_form.objects.filter(student=student)
+    # terms = []
 
-    for item in applications:
-        terms.append(item.term)
+    # for item in applications:
+    #     terms.append(item.term)
     
-    terms_set = set(terms)
-    terms = list(terms_set)
+    # terms_set = set(terms)
+    # terms = list(terms_set)
+    terms = Term.objects.all()
+
     print(terms,"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
     context = {'student': student,
@@ -213,7 +217,9 @@ def postGrades(request):
 def postExams(request):
     student = get_object_or_404(Student, student_user = request.user.id)
     term = Term.objects.get(pk = request.GET.get('term'))
-    exams_data = studentgrades.objects.all().filter(Q(application_id__student_id = student)& Q(application_id__term=term))
+    # exams_data = studentgrades.objects.all().filter(Q(application_id__student_id = student)& Q(application_id__term=term))
+    exams_data = term.exams_set.all()
+    print(exams_data)
     return render(request, 'student/exams.html', {'exams': exams_data})
 
 
@@ -318,6 +324,7 @@ def student_application(request):
     student = get_object_or_404(Student, student_user = request.user.id)
     term = get_object_or_404(Term, pk=request.POST['term'])
     count = int(request.POST['count'])
+    print(count,"::::::::::::::::::::::::::;;")
     app_id = request.POST['application_id']
     exams=[]
     i=0
@@ -328,6 +335,7 @@ def student_application(request):
     if (application_form.objects.filter(application_id=app_id).exists()):
 
         while(i<count):
+
             exams.append(get_object_or_404(Exams, pk=request.POST[str(i)]))
             i+=1
     
@@ -335,7 +343,8 @@ def student_application(request):
         for item in exams:
             if item not in app_obj.exam.all():
                 print(str(item))
-            app_obj.exam.add(item, through_defaults={'exam_type':True, 'passed':False})
+                '''I make this passed = true as I dont want admin to verify for appliation form '''
+            app_obj.exam.add(item, through_defaults={'exam_type':True, 'passed':True})#
         
         app_obj.save()
 
@@ -349,12 +358,14 @@ def student_application(request):
             i+=1
     
         for item in exams:
-            app_obj.exam.add(item, through_defaults={'exam_type':True, 'passed':False})
+            app_obj.exam.add(item, through_defaults={'exam_type':True, 'passed':True})
         
         app_obj.save()
         
         messages.success(request, 'Application successful. Print form <a href="printapplicationform">here</a>', extra_tags='safe')
         return HttpResponseRedirect(reverse('home'))
+
+
 
 def printresults(request, form_id):
     # student = get_object_or_404(Student, student_id = request.session['user_id'])
@@ -365,6 +376,7 @@ def printresults(request, form_id):
             'grades':grades
              }
     return render (request, 'student/print_results.html', context)
+
 
 def printadmitcard(request):
     latest_term = Term.objects.latest('start_date')

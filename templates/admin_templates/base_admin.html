@@ -1,4 +1,6 @@
 {% load static %}
+{% load compress %}
+
 {% load auth_extras %}
 
 <!DOCTYPE html>
@@ -17,6 +19,7 @@
   {% include "includes/adminlte_css.html" %}
   {% include "includes/datatables_css.html" %}
  
+  {% compress css %}
   <link
   rel="stylesheet"
   href="{% static 'plugins/select2-bootstrap4-theme/select2-bootstrap4.css' %}"
@@ -26,7 +29,21 @@
   href="{% static 'plugins/select2/css/select2.css' %}"
 />
 
-<link href="{% static 'main_dashboard/css/loader.css' %}" rel="stylesheet">
+  <!------------------- Custom Common Css For all ------------->
+
+  <link href="{% static 'main_dashboard/css/loader.css' %}" rel="stylesheet">
+  <link href="{% static 'main_dashboard/css/common.css' %}" rel="stylesheet">
+<link href="{% static 'teachers/css/main_home.css' %}" rel="stylesheet">
+
+<link
+rel="stylesheet"
+type="text/css"
+href="{% static 'flipbook/pdfjs-flipbook/css/jquery.fancybox.min.css' %}"
+/>
+{% endcompress %}
+    <!------------------- Custom Common Css End -------------------->
+
+
 <link rel="stylesheet" href="https://unpkg.com/nepali-date-picker@2.0.1/dist/nepaliDatePicker.min.css" crossorigin="anonymous" />
 
   <title> {% block title %} {% endblock %}</title>
@@ -56,6 +73,8 @@
   <div class="wrapper">
 
     <!-- Navbar -->
+
+
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
       <!-- Left navbar links -->
       <ul class="navbar-nav">
@@ -64,6 +83,7 @@
         </li>
       </ul>
       <h5 style="margin-left: 10px;margin-top: 5px;">SCHOOL MIS</h5>
+    
 
  <!----------------------------------------------------------------- Right navbar links --------------------------------------------------->
                             {% include "includes/right_navbar.html" %}
@@ -71,10 +91,13 @@
  {% include "includes/include_admin/erp_components.html" %}
  {% include "includes/include_admin/classroom_popup.html" %}
 
-    <!-- Main Sidebar Container -->
+    <!-------------------------- Main Sidebar Container -------------------------------------------------------------------------->
+      
     {% include 'includes/include_admin/admin_sidebar.html'%}
 
-    <!-- Content Wrapper. Contains page content -->
+       <!-------------------------- Main Sidebar Ends -------------------------------------------------------------------------->
+
+        <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
       <!-- Content Header (Page header) -->
       <div class="content-header">
@@ -98,6 +121,8 @@
         </div><!-- /.container-fluid -->
       </div>
       <!-- /.content-header -->
+
+
 
       {% block main_content %}{% endblock main_content %}
       {% block content %}{% endblock content %}
@@ -164,16 +189,13 @@
   </div>
 </body>
 
+{% compress js %}
 <script
 type="text/javascript"
 src="{% static 'flipbook/pdfjs-flipbook/js/jquery.fancybox.min.js' %}"
 ></script>
   <!-- flipbook js -->
-  <link
-  rel="stylesheet"
-  type="text/css"
-  href="{% static 'flipbook/pdfjs-flipbook/css/jquery.fancybox.min.css' %}"
-/>
+ 
 
 <script src="{% static 'plugins/toastr/toastr.min.js' %}"></script>
 <script src="{% static 'plugins/select2/js/select2.min.js' %}"></script>
@@ -183,8 +205,10 @@ src="{% static 'flipbook/pdfjs-flipbook/js/jquery.fancybox.min.js' %}"
 <script src="{% static 'plugins/jquery-mousewheel/jquery.mousewheel.js' %}"></script>
 <script src="{% static 'plugins/raphael/raphael.min.js' %}"></script>
 <script src="{% static 'plugins/jquery-mapael/jquery.mapael.min.js' %}"></script>
+{% endcompress %}
 {% comment %} Nepali date picker {% endcomment %}
 <script src="https://unpkg.com/nepali-date-picker@2.0.1/dist/jquery.nepaliDatePicker.min.js" crossorigin="anonymous"></script>
+{% compress js %}
 
 <script>
   
@@ -255,9 +279,7 @@ $(".date-picker").on("dateSelect", function (event) {
 
   
 
-</script>
 
-<script>
   function Confirmation(message='',callback,confirm_action='delete'){
     $('#confirm-modal').modal('toggle');
     $('#confirm-modal').find('.confirm-message').html(message);
@@ -413,6 +435,7 @@ $("#id_filter_course").change(function(){
       data:{'course':course_id},
       success:function(data){
           $("#id_filter_semester").html(data);
+          $("#id_semester").html(data);
       }
   })
 })
@@ -483,13 +506,11 @@ $("#id_semester").change(function(){
 
 $("#id_filter_semester").change(function(){
   var semester_id = $(this).val();
-  {% comment %} var semester_text = $(this).find(':selected').text(); {% endcomment %}
   
   
   $.ajax({
       url:" {% url 'attendance_app:fill_section_select' %}",
       data:{'semester':semester_id,
-      {% comment %} 'semester_text':semester_text {% endcomment %}
     },
       success:function(data){
           $("#id_section").html(data);
@@ -510,6 +531,8 @@ $("#id_semester").change(function(){
     },
       success:function(data){
           $("#id_subject").html(data);
+          // $("#id_filter_subject").html(data);
+          $("#id_subject_id").html(data);
       }
   })
 })
@@ -541,50 +564,12 @@ $("#id_semester").change(function(){
     
 </script>
 
+{% endcompress %}
+
 {% include "static_includes/fullcalendar_cdn.html" %}
+
 <style>
-{% comment %} For inline radion botton {% endcomment %}
-  .form-check,.custom-control, .form-check-input{
-    display:inline-block;
-    }
-    .form-check,.custom-control{
-     margin-left:1.5rem;
-   }
-  .nav-sidebar .nav-link p {
-  font-family: "Source Sans Pro";
-  margin-top:10px;
- 
-} 
-a,p,th,td,tr,h1,h2,h3,h4,h5,h6,div,span,i,li,ol,ul{
-  font-family: "Source Sans Pro";
-
-}
-.card ,.card-header{
-  border-radius:1rem;
-}
-{% comment %} For active hover {% endcomment %}
-
-.nav-item.nav-link.active{
-  background-color: #fff;
-  color:#7650B9;
-   }
-   
-   .nav-item.nav-link.active>p
-   {
-     background-color: #fff;
-     color:#7650B9;
-
-   }
-   .nav-item.nav-link.active>i
-   {
-     background-color: #fff;
-      color:#7650B9;
-   }
-   
- 
-.nav-pills .nav-link{
-  color:white;
-}
+  
 
 </style>
  {% if messages %}

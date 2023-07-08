@@ -107,7 +107,8 @@ class CustomUser(AbstractUser):  # use this for extending deafult django auth sy
     full_name = models.CharField(max_length=255)
     user_type = models.ForeignKey(Group, on_delete=models.CASCADE, null=True)
     email = models.EmailField(_('email address'), blank=True, null=True)
-
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     class Meta:
         db_table = 'tbl_Customuser'
         verbose_name = _("customuser")
@@ -135,6 +136,8 @@ class CustomUser(AbstractUser):  # use this for extending deafult django auth sy
 class SessionYear(models.Model):
     session_start_year = models.DateField()
     session_end_year = models.DateField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = 'tbl_Sessionyear'
@@ -148,7 +151,7 @@ class SessionYear(models.Model):
 class CourseCategory(models.Model):  # i also want to see subject for particular course
     course_name = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
     def __str__(self):
@@ -360,7 +363,7 @@ class Subject(models.Model):
     course_category = models.ForeignKey(CourseCategory, on_delete=models.CASCADE,null = True, blank=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE, null= True, blank=True)
     
-    semester = models.ForeignKey(Semester, verbose_name = 'Class', on_delete=models.CASCADE)
+    semester = models.ForeignKey(Semester, verbose_name = 'Class', on_delete=models.CASCADE,null = True, blank=True)
     faculty = models.CharField(_('Group'), max_length=50,choices = faculty_choices,blank = True)
     subject_name = models.CharField(max_length=255)
     subject_code = models.CharField(max_length=255,blank=True, null = True)
@@ -368,7 +371,7 @@ class Subject(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     
-
+    
     class Meta:
         db_table = 'tbl_Subject'
         verbose_name = _("subject")
@@ -565,7 +568,7 @@ class Student(models.Model):
     course_category = models.ForeignKey(CourseCategory, on_delete=models.CASCADE,null = True, blank=True)
     program = models.CharField(max_length=250, null=True,blank=True)
     status = models.CharField(max_length=50,choices = status_choices)
-    contact = models.CharField(max_length=30, blank=True,unique = True)
+    contact = models.CharField(max_length=30, blank=True)
     guardian = models.ForeignKey(Parent, on_delete=models.DO_NOTHING,null=True, blank=True)
     permanent_address = models.CharField(max_length=255, blank=True)
     temporary_address = models.CharField(max_length=255, blank=True)

@@ -24,7 +24,7 @@ from django.views.generic.base import RedirectView
 from django.views.i18n import JavaScriptCatalog
 from student_management_system.views import get_user_by_role_ajax
 from student_management_system.views import home as main_home
-from student_management_system.views import (redirect_home,teacher_main_home,
+from student_management_system.views import (redirect_home,mis_main_home,teacher_grade_home,
 # a_level_home,bachelor_home,master_home,
                                              mass_delete
                                             )
@@ -45,7 +45,10 @@ urlpatterns = [
     # path('home/', admin_home,name = 'admin-home'),
     
     path('dashboard/', main_home.as_view(), name ="dashboard"),
-    path('teacher/home/', teacher_main_home, name ="teacher_main_home"),
+    path('mis/home/', mis_main_home, name ="mis_main_home"),
+    path('teacher/exam-grade/home/', teacher_grade_home, name ="teacher_grade_home"),
+
+    
 
     path('', redirect_home,name = 'home'),
     
@@ -124,24 +127,30 @@ urlpatterns = [
     ),
 
     #api
-    
-    
-    
+
 ]#+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)+static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
 
-handler404 = 'student_management_system.views.error_404'
+
+from django.conf.urls import (
+        # handler400, 
+        # handler403, 
+        handler404,
+        # handler500
+)
+
+from .views import error_404
+handler404 = error_404
+
+
 
 if settings.DEBUG:
-    # import debug_toolbar
-    # urlpatterns = [path('__debug__/', include('debug_toolbar.urls'))] + urlpatterns
-    
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    # if apps.is_installed("silk"):
-    # urlpatterns = [path("silk/", include("silk.urls",namespace='silk'))] + urlpatterns
-    
-    
-    
+    urlpatterns += static(settings.STATIC_URL,
+                      document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL,
+                      document_root=settings.MEDIA_ROOT)
+    urlpatterns += [path('silk/', include('silk.urls', namespace='silk'))]
+    import debug_toolbar
 
-    
-    
+    urlpatterns += [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ]

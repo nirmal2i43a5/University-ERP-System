@@ -1,7 +1,7 @@
 
 """It receives signal from ready function use in apps.py"""
 
-from student_management_app.models import CustomUser,AdminUser,Staff,Student,Parent,ExtraUser,CourseCategory,Semester
+from student_management_app.models import CustomUser,AdminUser,Staff,Student,Parent,ExtraUser,CourseCategory,Semester,Subject
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import Group
@@ -10,7 +10,7 @@ from django.shortcuts import get_object_or_404
 from schedule.models import Calendar
 
 school_classes_choices = [
-                            'Class Montessori',
+                        'Class Montessori',
                           'Class Nursery',
                           'Class LKG',
                           'Class UKG',
@@ -25,7 +25,13 @@ school_classes_choices = [
                           'Class Nine',
                           'Class Ten'
                           ]
+# subjects_choices = [    'Nepali',    'English',    'Mathematics',    'Science',    'Social Studies', 'Computer Science' , 'Health,Population,& Environment', 
+#                       'Moral Education',   'Creative Arts', ' Optional Mathematics',
+#                         'Sanskrit (Optional)'
+#                           ]
 
+               
+        
        
 def populate_models(sender, **kwargs):
     a_level_admin, created = Group.objects.get_or_create(name='Admin')#a level admin
@@ -35,8 +41,8 @@ def populate_models(sender, **kwargs):
     student_group, created = Group.objects.get_or_create(name='Student')
     parent_group, created = Group.objects.get_or_create(name='Parent')
     super_admin_group, created = Group.objects.get_or_create(name='Super-Admin')
-    procurement_group, created = Group.objects.get_or_create(name='Procurement')
-    finance_group, created = Group.objects.get_or_create(name='Finance')
+    # procurement_group, created = Group.objects.get_or_create(name='Procurement')
+    # finance_group, created = Group.objects.get_or_create(name='Finance')
     school_level, created = CourseCategory.objects.get_or_create(course_name="School")
     plus_two_level, created = CourseCategory.objects.get_or_create(course_name="Plus-Two")
     a_level, created = CourseCategory.objects.get_or_create(course_name="A-Level")
@@ -45,13 +51,27 @@ def populate_models(sender, **kwargs):
     setting_object, created = MisSetting.objects.get_or_create(version='1.0')
     calendar_slug, created = Calendar.objects.get_or_create(name='event')
    
+    one_to_ten_class = Semester.objects.filter(course_category= CourseCategory.objects.get(course_name = 'School')).exclude(name__in=['Class Montessori',
+                          'Class Nursery',
+                          'Class LKG',
+                          'Class UKG',])
+    
+    # if not Subject.objects.filter(subject_name__in = subjects_choices):
+    #     for item in one_to_ten_class:
+    #         '''if montessari, lkg, ukg and others assign from subject to class'''
+    #         Subject.objects.bulk_create(
+    #                                             [
+    #                                                 Subject(
+    #                                                     course_category = get_object_or_404(CourseCategory,course_name = "School"), 
+    #                                                     semester = Semester.objects.get(pk = item.pk),
+    #                                                     subject_name=subject
+    #                                             ) 
+    #                                                 for subject in subjects_choices]                              )
+    
+        
 
-    # ''' Assigning superuser to admin(Although they are same but in this system we are rendering user to dashboard based on coursecategory 
-    # For instance : request.adminuser.coursecategory.
-    # '''
-    # for user in CustomUser.objects.filter(is_superuser = True):
-    #     adminuser = AdminUser.objects.get_or_create(admin_user= user)
 
+    '''Creating class from 1 to 10 directly'''
     if Semester.objects.filter(course_category = get_object_or_404(CourseCategory, course_name = 'School')).exists():
         pass
     else:
@@ -90,6 +110,8 @@ def create_user_profile(sender, instance, created, **kwargs):
         else:
             ExtraUser.objects.create(extra_user=instance)
     
+
+
 @receiver(post_save, sender=CustomUser)
 def save_user_profile(sender, instance, **kwargs):
     group = populate_models(sender)
