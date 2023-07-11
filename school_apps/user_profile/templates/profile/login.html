@@ -1,5 +1,6 @@
 {% load static %}
 {% load crispy_forms_tags %}
+{% load compress %}
 
 <!DOCTYPE html>
 <html>
@@ -23,10 +24,12 @@
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+
   <!-- Bootstrap 4 -->
+  {% compress js %}
 <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
   <script src="{% static 'plugins/toastr/toastr.min.js' %}"></script>
-
+{% endcompress %}
   
 </head>
 
@@ -40,16 +43,15 @@
   </script>
   {% endfor %}
   {% endif %}
-<div class="container register">
+<div class=" register">
                 <div class="row">
                     <div class="col-md-6 register-left">
                       <img src="{% static 'image/easy-academy-login.png' %}" style="width:200px;height:115px;border-radius: 20px;" class="img-rectangle ">
                         <h3>Welcome To Easy Academy</h3>
                         <p>We are here to serve you every learning components.</p>
-                        <input type="submit" name="" value=""/>
                         <br/>
                     </div>
-                    <div class="col-md-6 register-right">
+                    <div class="col-md-4 register-right">
                         <!-- <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Employee</a>
@@ -86,7 +88,7 @@
                                         </div>
                               
                               
-                                        <button type="submit" class="btn btn-block text-white " style="background:-webkit-linear-gradient(left, #3931af, #00c6ff)"><strong>Sign In</strong></button>
+                                        <button type="submit" class="btn btn-block text-white " style="background:#435EBE"><strong>Sign In</strong></button>
                                       </form>
                                     </div>
                                   
@@ -95,6 +97,8 @@
                            
                         </div>
                     </div>
+                     <div class="col-md-2">
+                     </div>
                 </div>
 
             </div>
@@ -104,6 +108,9 @@
 </body>
 
 </html>
+  {% compress css %}
+
 <link rel="stylesheet" href="{% static 'profile/css/style.css'%}">
+{% endcompress %}
 
 

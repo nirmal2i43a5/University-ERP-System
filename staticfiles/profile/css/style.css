@@ -14,7 +14,7 @@
 /* for login template */
 
 .register{
-    background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+    background: #435EBE;
     /* margin-top: 3%; */
     padding: 3% 1% 3% 3%;
     height: 100%;
@@ -37,9 +37,16 @@
     margin-bottom: 3%;
     cursor: pointer;
 }
-.register-right{
+/* .register-right{
     background: #f8f9fa;
   border-radius: 5rem;
+} */
+.register-right {
+    background: #f8f9fa;
+    border-radius: 5rem;
+    margin-top: 6rem;
+    padding-bottom: 2rem;
+    height: 80%;
 }
 .register-left img{
     margin-top: 15%;
