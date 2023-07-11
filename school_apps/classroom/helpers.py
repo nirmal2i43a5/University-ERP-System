@@ -75,7 +75,12 @@ def manage_assignment(request,semester_id):
     #     student.append(submitted_assignment.student_id)
     #     assignment.append(submitted_assignment.assignment_id)
     submitted_assignments = Grade.objects.select_related('student','assignment').values_list('student_id', 'assignment_id')
-    student, assignment = zip(*submitted_assignments)
+    
+    if submitted_assignments:
+        student, assignment = zip(*submitted_assignments)
+    else:
+        student = []
+        assignment = []
   
     subject_id = request.GET.get('subject')
     subject_instance  = Subject.objects.filter(pk = subject_id).first() if subject_id else None

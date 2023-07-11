@@ -4,12 +4,14 @@ from .base import *
 
 DEBUG = True
 # ALLOWED_HOSTS = []
-INSTALLED_APPS += ["debug_toolbar", "silk"]
+INSTALLED_APPS += ["debug_toolbar",
+                    # "silk"
+                    ]
 
 
 
 MIDDLEWARE.insert(0, "debug_toolbar.middleware.DebugToolbarMiddleware")
-MIDDLEWARE.insert(0, "silk.middleware.SilkyMiddleware")
+# MIDDLEWARE.insert(0, "silk.middleware.SilkyMiddleware")
 
 
 # ==============================================================================
