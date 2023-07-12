@@ -149,6 +149,8 @@ def member_list(request):
     memberlist = LibraryMemberProfile.objects.all()
     return render(request, 'catalog/member_list.html', {'memberlist': memberlist})
 
+
+
 def add_member(request):
     if not request.user.is_superuser:
         return redirect('login')
@@ -191,6 +193,10 @@ def edit_member(request, pk):
         'form':form,
     }
     return render(request, 'catalog/edit_member.html', context=context)
+
+
+
+
 
 def member_detail(request, pk):
     if not request.user.is_superuser:

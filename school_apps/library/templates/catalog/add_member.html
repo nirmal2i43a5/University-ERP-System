@@ -39,9 +39,10 @@
                     <div class="card-body">
                         <form action="#" method="post" novalidate="novalidate" enctype="multipart/form-data">
                             {% csrf_token %} {% crispy form %}
-                            <button id="payment-button" type="submit" class="btn btn-lg btn-info btn-block">
-                                    <span id="payment-button-amount">Add Member</span>
-                                </button>
+                             <a href="{% url 'library:library-management' %}" class="btn btn-sm btn-danger">Back</a>
+                                        <button type="submit" class="btn btn-sm text-white " style="background:#435EBE"><strong>Submit</strong></button>
+
+                            
                     </div>
                     </form>
                 </div>

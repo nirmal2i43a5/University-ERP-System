@@ -35,75 +35,47 @@ user_type_choice = (
 
 class LibraryMemberProfile(models.Model):
     user_type = models.CharField(max_length=30, choices=user_type_choice)
+    matrix_number = models.CharField(max_length=20, null=True, blank=True)
     member=models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='library_member_details', null=True, blank=True,)
-    first_name = models.CharField(max_length=200)
-    middle_name = models.CharField(max_length=200, null=True, blank=True)
-    last_name = models.CharField(max_length=200)
     status = models.CharField(max_length=30, choices=profile_status_choice, default='pending')
-    user_photo = models.ImageField(upload_to = 'books/libraryprofile/', null=True, blank=True)
-    permanent_address = models.CharField(max_length=300)
-    temporary_address = models.CharField(max_length=300)
-    country = models.CharField(max_length=100)
-    city = models.CharField(max_length=200)
-    telephone_no = models.CharField(max_length=15, null=True, blank=True)
-    mobile_no = models.CharField(max_length=15, unique=True)
-    email = models.EmailField(unique=True)
-    gender = models.CharField(max_length=30, choices=gender_choice)
-    occupation = models.CharField(max_length=300)
-    birth_of_date = models.DateField()
-    subject = models.CharField(max_length=300, null=True, blank=True)
-    academic_year = models.CharField(max_length=20, null=True, blank=True)
     faculty = models.CharField(max_length=100, null=True, blank=True)
-    roll_no = models.CharField(max_length=100, null=True, blank=True)
     library_card_no = models.CharField(max_length=100, null=True, blank=True)
-    membership_started_at = models.DateTimeField(null=True, blank=True)
-    membership_ended_at = models.DateTimeField(null=True, blank=True)
-    OPAC_id = models.CharField(max_length=100, null=True, blank=True)
-    OPAC_password = models.CharField(max_length=100, null=True, blank=True)
-    qr_code = models.ImageField(null=True, blank=True, upload_to='books/library_profile_qr_image')
     created_at = models.DateTimeField(auto_now_add=True)
-    approved_by = models.CharField(max_length=250, blank=True, null=True)
-    approved_at = models.DateTimeField(null=True, blank=True)
-    rejected_by = models.CharField(max_length=250, blank=True, null=True)
-    rejected_at = models.DateTimeField(null=True, blank=True)
-    remarks = models.CharField(max_length=500, null=True, blank=True)
-    rejected_remarks = models.CharField(max_length=500, null=True, blank=True)
-    borrowed_books = models.PositiveIntegerField(default=0)
-
-    def __str__(self):
-        return self.first_name + self.middle_name + self.last_name
+    updated_at = models.DateTimeField(auto_now=True)
+    # def __str__(self):
+    #     return self.first_name + self.middle_name + self.last_name
     
 
 
-@receiver(post_save, sender=LibraryMemberProfile)
-def postsave_data(sender, instance, created, *args, **kwargs):
-    if created:
-        if instance.user_type == 'Staff':
-            try:
-                max_num = 4
-                instance.borrowed_books = max_num + instance.borrowed_books
-                instance.save()
-            except Exception as e:
-                print("error occured:::: ", e)
+# @receiver(post_save, sender=LibraryMemberProfile)
+# def postsave_data(sender, instance, created, *args, **kwargs):
+#     if created:
+#         if instance.user_type == 'Staff':
+#             try:
+#                 max_num = 4
+#                 instance.borrowed_books = max_num + instance.borrowed_books
+#                 instance.save()
+#             except Exception as e:
+#                 print("error occured:::: ", e)
 
-        elif instance.user_type == 'Student':
-            try:
-                max_num = 5
-                instance.borrowed_books = max_num + instance.borrowed_books
-                instance.borrowed_books.save()
-            except Exception as e:
-                print("error occured:::: ", e)
+#         elif instance.user_type == 'Student':
+#             try:
+#                 max_num = 5
+#                 instance.borrowed_books = max_num + instance.borrowed_books
+#                 instance.borrowed_books.save()
+#             except Exception as e:
+#                 print("error occured:::: ", e)
 
-        elif instance.user_type == 'Public User':
-            try:
-                max_num = 2
-                instance.borrowed_books = max_num + instance.borrowed_books
-                instance.save()
-            except Exception as e:
-                print("error occured:::: ", e)
+#         elif instance.user_type == 'Public User':
+#             try:
+#                 max_num = 2
+#                 instance.borrowed_books = max_num + instance.borrowed_books
+#                 instance.save()
+#             except Exception as e:
+#                 print("error occured:::: ", e)
 
-        else:
-            print("Given Instances does not match")
+#         else:
+#             print("Given Instances does not match")
 
 class Issue(models.Model):
     member=models.ForeignKey(LibraryMemberProfile, on_delete=models.CASCADE)
@@ -209,6 +181,9 @@ class BookRenew(models.Model):
 
     def __str__(self):
         return str(self.title) + "[" + str(self.isbn) + ']'
+
+
+
 
 class Barcode(models.Model):
     name = models.CharField(max_length=100)

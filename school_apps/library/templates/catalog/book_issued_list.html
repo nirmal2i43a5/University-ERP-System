@@ -3,7 +3,10 @@
 <section class="content">
 	<div class="container-fluid">
 		<!-- /.card-header -->
-
+<a class="btn btn-secondary" href="{% url 'library:member_list' %}"><i
+    class="fas fa-plus"></i>Existing Member</a>
+<a class="btn btn-primary" href="{% url 'library:add_member' %}"><i
+    class="fas fa-plus"></i> Add New Member</a> 
 		<div class="row">
 			<div class="col-12">
 				{% include "includes/messages.html" %}
@@ -13,6 +16,7 @@
 
 					<!-- /.card-header -->
 					<div class="card-body table-responsive">
+					
 						<table
 							id="dataTable"
 							class="table table-sm table-striped table-bordered table-hover text-nowrap dataTable no-footer"

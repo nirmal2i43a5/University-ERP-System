@@ -69,10 +69,11 @@ BookIssueReturnFormset=inlineformset_factory(Issue, BookReturn, form=BookReturnF
 
 
 class AddMemberForm(forms.ModelForm):
+
     class Meta:
         model = LibraryMemberProfile
         fields = '__all__'
-        exclude = ('user','member',)
+        exclude = ('member',)
 
     # full_name = forms.CharField(widget=forms.TextInput(attrs={
     #     'class': 'form-control',
