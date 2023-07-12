@@ -554,14 +554,13 @@ class Student(models.Model):
     )
  
 
-    # id = models.CharField(max_length=100, primary_key = True)#doing this give error for : foreign key mismatch - "courses_application_form" referencing "tbl_Student" 
     join_year = models.CharField(_('Join Year'),max_length = 50, default=datetime.datetime.now().year, null = True,blank = True)#this is same as batch
-    stu_id = models.CharField(max_length=50,unique=True)
-    roll_no = models.CharField(max_length=10,null=True,blank=True)
-    # full_name = models.CharField(max_length=,null=True,blank=True)
+    roll_no = models.CharField(max_length=100,null=True,blank=True)
+    # stu_id = models.CharField(max_length=100,unique=True)#matrix number of students
+    matrix_no = models.CharField(max_length=100,unique=True)#matrix number of students
     student_user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, null = True, blank = True)
-    gender = models.CharField(max_length=20, choices=gender_choice,null = True, default='Male')
-    shift = models.CharField(max_length=20,  choices=shift,  null=True,blank=True)
+    gender = models.CharField(max_length=100, choices=gender_choice,null = True, default='Male')
+    shift = models.CharField(max_length=100,  choices=shift,  null=True,blank=True)
     section = models.ForeignKey(Section, on_delete=models.CASCADE, null=True,blank = True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE,null = True, blank=True)
     faculty = models.CharField(max_length=50,choices = faculty_choices,null = True, blank = True)
@@ -580,7 +579,7 @@ class Student(models.Model):
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE, null=True)
     image = models.ImageField( upload_to='student_images', null=True, blank=True)
     barcode = models.ImageField( upload_to='student_barcodes/', blank=True)
-    # qr_code = models.ImageField( upload_to='student_Qrcodes/', blank=True)
+    qr_code = models.ImageField( upload_to='student_Qrcodes/', blank=True)
     
     transport = models.ForeignKey(Transport, on_delete=models.CASCADE, null=True, blank=True)
     subject = models.ForeignKey( Subject, on_delete=models.CASCADE, null=True, blank=True)#I am using attendance based on subject
@@ -594,7 +593,6 @@ class Student(models.Model):
     group = models.ForeignKey( StudentGroup, on_delete=models.CASCADE, null=True, blank=True)#for college group union
     # session_year = models.ForeignKey( SessionYear, on_delete=models.CASCADE, null=True, blank=True)
     state = models.CharField(max_length=255,null=True, blank=True)
-    # country = CountryField(blank_label='(select country)',null=True, blank=True)
     country = models.CharField(max_length = 50, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -628,6 +626,7 @@ class Student(models.Model):
         barcode.base.Barcode.default_writer_options['write_text'] = False# this line remove footer text or number
         self.barcode.save(f'{self.student_user.full_name}.png',File(rv), save=False)
         return super().save(*args, **kwargs)
+        
     
     
     def save(self, *args, **kwargs):          # overriding save() 
@@ -776,6 +775,7 @@ class SocialLink(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
+
 class UserRole(models.Model):
     role = models.CharField(max_length=100)
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
@@ -793,11 +793,3 @@ class UserRole(models.Model):
         super().save(*args, **kwargs)
 
 
-
-# >>> a_level = CourseCategory.objects.get(course_name = 'A-Level')
-# >>> a_level
-# <CourseCategory: A-Level>
-# >>> for i in sem:
-# ...     i.course_category = a_level
-# ...     i.save()
-# ... 

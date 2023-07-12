@@ -11,7 +11,8 @@ import barcode
 from barcode.writer import ImageWriter
 from io import BytesIO
 from django.core.files import File
-from student_management_app.models import CustomUser
+from student_management_app.models import CustomUser,Student
+from django.contrib.auth.models import Group
 
 
 
@@ -34,17 +35,11 @@ user_type_choice = (
 
 
 class LibraryMemberProfile(models.Model):
-    user_type = models.CharField(max_length=30, choices=user_type_choice)
-    matrix_number = models.CharField(max_length=20, null=True, blank=True)
-    member=models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='library_member_details', null=True, blank=True,)
+    member=models.ForeignKey(Student, on_delete=models.CASCADE, related_name='library_member_details', null=True, blank=True)
     status = models.CharField(max_length=30, choices=profile_status_choice, default='pending')
-    faculty = models.CharField(max_length=100, null=True, blank=True)
     library_card_no = models.CharField(max_length=100, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    # def __str__(self):
-    #     return self.first_name + self.middle_name + self.last_name
-    
 
 
 # @receiver(post_save, sender=LibraryMemberProfile)

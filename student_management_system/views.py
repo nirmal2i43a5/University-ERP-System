@@ -61,6 +61,21 @@ class HistoryLogs(View):
         students = Student.objects.get(id=10).delete().history.all()
         return render(request, 'logs/index.html')
 
+def get_user_by_user_type(request):
+    user_type_id = request.GET['user_type_id']
+    users = CustomUser.objects.filter(user_type = user_type_id).all()
+    context = {'users': users}
+    return render(request, "attendances/auto_fill_select/users.html", context)
+
+
+
+def get_user_by_role_ajax(request):
+    role = request.GET['role']
+    users = CustomUser.objects.filter(user_type=role).all()
+    context = {
+        'users': users
+    }
+    return render(request, 'customusers/get_user_by_role.html', context)
 
 
 @login_required
@@ -259,15 +274,6 @@ class home(FullCalendarView, View):
 #     a_level.course_category = get_object_or_404(CourseCategory, course_name = 'Master')
 #     a_level.save()
 #     return redirect('dashboard')
-
-def get_user_by_role_ajax(request):
-    role = request.GET['role']
-    users = CustomUser.objects.filter(user_type=role).all()
-    context = {
-        'users': users
-    }
-    return render(request, 'customusers/get_user_by_role.html', context)
-
 
 
 

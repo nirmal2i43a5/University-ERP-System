@@ -24,9 +24,9 @@ class StudentForm(forms.ModelForm):
         required = False,empty_label="Select Section ", queryset=Section.objects.all())
     dob = forms.DateField(label='Date of Birth', widget=forms.DateInput(
         attrs={'type': 'date', "class": "form-control"}))
-    status = forms.ChoiceField(choices=status_choices, widget=forms.RadioSelect())
-    shift = forms.ChoiceField(choices=shift, widget=forms.RadioSelect())
-    gender = forms.ChoiceField(choices=gender_choices, widget=forms.RadioSelect())
+    status = forms.ChoiceField(choices=status_choices, widget=forms.RadioSelect(),initial = 'Running')
+    shift = forms.ChoiceField(choices=shift, widget=forms.RadioSelect(),initial = 'Morning')
+    gender = forms.ChoiceField(choices=gender_choices, widget=forms.RadioSelect(),initial = 'Male')
     stu_id = forms.CharField(label='Matrix Number', widget=forms.TextInput(
         attrs={"class": "form-control", "placeholder": " Enter Student Martix Number", }))
    

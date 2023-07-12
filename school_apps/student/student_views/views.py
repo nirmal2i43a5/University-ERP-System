@@ -71,8 +71,10 @@ def add_student(request):
             
             
             fname = full_name.split()[0]
-            student_username = fname.lower() + f'{student_id}'
+            # student_username = fname.lower() + f'{student_id}'
+            student_username = f'{student_id}'
             role = Group.objects.get(name='Student')
+           
             user = CustomUser.objects.create_user(
                 username=student_username, password='password', email=email, user_type=role, full_name = full_name)
                   
@@ -91,7 +93,7 @@ def add_student(request):
         #     'permanent_address','temporary_address','dob','blood_group','gpa','previous_school_name','image',
         # )
             # print(student_form.cleaned_data['course_category'],":::::::::::::::::course cate")
-           
+            print("*******************************************",student_form.cleaned_data['stu_id'],"************************************************")
             user.student.course_category = get_object_or_404(CourseCategory, course_name = student_form.cleaned_data['course_category'])
             user.student.semester = student_form.cleaned_data['semester']
             user.student.course = student_form.cleaned_data['course']
@@ -713,11 +715,13 @@ def edit_student(request, student_id):
 
     if request.method == 'POST':
         student_form = StudentForm(request.POST, request.FILES, instance=student_form_instance)
+        print(request.POST['stu_id'],request.POST['roll_no'],"***************************************************************")
         custom_form = EditCustomUserForm(request.POST, instance=custom_form_instance)
         parent_form = ParentForm(request.POST, instance=parent_form_instance)
         
         try:
             if student_form.is_valid() and custom_form.is_valid() and parent_form.is_valid():
+                print("*****************************Inside **********************************")
                 student_form.save()
                 custom_form.save()
                 parent_form.save()

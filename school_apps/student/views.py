@@ -489,14 +489,21 @@ def check_email_exist(request):
 
 
 def student_ajax_autocomplete(request):
-    student = request.GET.get('student')
-    student_data = []
-    if student:
-        students = Student.objects.filter(student_user__username__contains = student)
+    stu_id = request.GET.get('student')
+    student_datas = []
+    if stu_id:
+        students = Student.objects.filter(stu_id__icontains = stu_id)
         
         for student in students:
-            print(student,"00000000000000000")
-            student_data.append(student.student_user.username)
+            image_url = student.image.url if student.image else None
+            student_data = {
+                            'image':image_url,
+                            'stu_id':student.stu_id,
+                            'name': student.student_user.full_name
+                            }
+            student_datas.append(student_data)
 
+    # import json
+    # response_data = json.dumps(student_datas)
 
-    return JsonResponse({'status' : 200 , 'data' : student_data})
+    return JsonResponse({'status' : 200 , 'data' : student_datas})

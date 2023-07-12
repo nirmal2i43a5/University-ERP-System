@@ -26,7 +26,7 @@ from student_management_system.views import get_user_by_role_ajax
 from student_management_system.views import home as main_home
 from student_management_system.views import (redirect_home,mis_main_home,teacher_grade_home,
 # a_level_home,bachelor_home,master_home,
-                                             mass_delete
+                                             mass_delete,get_user_by_user_type
                                             )
 from django.contrib.auth import views as auth_views
 from django.contrib import admin
@@ -60,7 +60,10 @@ urlpatterns = [
     # path('a_level_home/',a_level_home,name = "a_level_home"),
     # path('bachelor_home/',bachelor_home,name = "bachelor_home"),
     # path('master_home/',master_home,name = "master_home"),
+    
     path('get_user_by_role/', get_user_by_role_ajax, name ="get_user_by_role"),
+    path('get_user_by_user_type/', get_user_by_user_type, name ="get_user_by_user_type"),
+
     path('',include('student_management_app.urls',namespace='admin_app')),
     path('',include('school_apps.teacher.urls',namespace='teacher')),
     path('',include('school_apps.student.urls',namespace='student')),

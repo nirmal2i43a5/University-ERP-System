@@ -15,31 +15,11 @@ from django.contrib.auth.models import User
 from school_apps.library.models import LibraryMemberProfile
 
 
-#----------------------------------------- login and logour views --------------------------------------
-# def login_page(request):
-#     forms = LoginForm()
-#     if request.method == 'POST':
-#         forms = LoginForm(request.POST)
-#         if forms.is_valid():
-#             username = forms.cleaned_data['username']
-#             password = forms.cleaned_data['password']
-#             user = authenticate(username=username, password=password)
-#             if user:
-#                 login(request, user)
-#                 return redirect('dashboard')
-#     context = {'form': forms}
-#     return render(request, 'users/login.html', context)
 
-
-# def logout_page(request):
-#     logout(request)
-#     return redirect('login')
-
-
-# ---------------------------Book Category Crud Views -------------------------------------
 def category_list(request):
     category_list = Category.objects.all()
     return render(request, 'catalog/book_category/category_list.html', {'category_list': category_list})
+
 
 def CategoryAddView(request):
     if not request.user.is_superuser:
@@ -54,6 +34,7 @@ def CategoryAddView(request):
         'form': form
     }
     return render(request, 'catalog/book_category/category_add.html', context=context)
+
 
 def CategoryFullView(request, pk):
     if not request.user.is_superuser:
@@ -85,7 +66,7 @@ class CategoryDeleteView(DeleteView):
     template_name = 'catalog/confirm_delete.html'
     success_url = reverse_lazy('category_list')
 
-# ----------------------------- Book CRUD views ------------------------------------------
+
 def book_list(request):
     book_list = BookEntry.objects.all().order_by('-isbn')
     category_list = Category.objects.all()
@@ -95,6 +76,7 @@ def book_list(request):
     }
     return render(request, 'catalog/book_info/book_list.html', context)
     
+
 def add_book(request):
     if not request.user.is_superuser:
         return redirect('login')
@@ -108,6 +90,7 @@ def add_book(request):
         'form':form
     }
     return render(request, 'catalog/book_info/add_book.html', context=context)
+
 
 def edit_book(request, pk):
     if not request.user.is_superuser:
@@ -124,9 +107,13 @@ def edit_book(request, pk):
     }
     return render(request, 'catalog/book_info/book_edit.html', context=context)
 
+
+
 def book_list(request):
     book_list = BookEntry.objects.all()
     return render(request, 'catalog/book_info/book_list.html', {'book_list':book_list})
+
+
 
 def view_book(request, pk):
     if not request.user.is_superuser:
@@ -138,43 +125,35 @@ def view_book(request, pk):
     }
     return render(request, 'catalog/book_info/book_detail.html', context=context)
 
+
+
 class BookDeleteView(DeleteView):
     model = BookEntry
     template_name = 'catalog/confirm_delete.html'
     success_url = reverse_lazy('book_list')
 
 
-# ----------------------------- Library member CRUD views ------------------------------------------
+
 def member_list(request):
     memberlist = LibraryMemberProfile.objects.all()
+
     return render(request, 'catalog/member_list.html', {'memberlist': memberlist})
 
 
 
 def add_member(request):
-    if not request.user.is_superuser:
-        return redirect('login')
     form = AddMemberForm()
     if request.method == 'POST':
         form = AddMemberForm(request.POST, request.FILES)
         if form.is_valid():   
-            full_name = form.cleaned_data['full_name']
-            email = form.cleaned_data['email']
-            avatar = form.cleaned_data['avatar']
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            retype_password = form.cleaned_data['retype_password']
-            if password == retype_password:
-                print("---------1----------------")
-                member_user = User.objects.create_user(username=username, password=password)
-                print(member_user,"-----I am user----------------")
-                print("---------2----------------")
-                LibraryMemberProfile.objects.create(user = member_user, full_name = full_name, email = email ,avatar = avatar)
-                return redirect('library:member_list')
+            form.save()
+            return redirect('library:member_list')
     context = {
         'form':form,
     }
     return render(request, 'catalog/add_member.html', context=context)
+
+
 
 def edit_member(request, pk):
     if not request.user.is_superuser:
@@ -184,17 +163,12 @@ def edit_member(request, pk):
     if request.method == 'POST':
         form = EditMemberForm(request.POST, request.FILES, instance=member_instance)
         if form.is_valid():   
-            full_name = form.cleaned_data['full_name']
-            email = form.cleaned_data['email']
-            avatar = form.cleaned_data['avatar']
             form.save()
             return redirect('library:member_list')
     context = {
         'form':form,
     }
     return render(request, 'catalog/edit_member.html', context=context)
-
-
 
 
 
@@ -208,6 +182,8 @@ def member_detail(request, pk):
     }
     return render(request, 'catalog/member_detail.html', context=context)  
 
+
+
 class MemberDeleteView(DeleteView):
     model = LibraryMemberProfile
     template_name = 'catalog/confirm_delete.html'
@@ -218,6 +194,8 @@ class MemberDeleteView(DeleteView):
 def book_issue_list(request):
     book_issue = Issue.objects.all()
     return render(request, 'catalog/book_issued_list.html', {'book_issue': book_issue})
+
+
 
 class BookIssueCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Issue
@@ -264,6 +242,8 @@ class BookIssueCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         initial['member']=LibraryMemberProfile.objects.get(pk=self.kwargs['pk'])
         return initial
 
+
+
 # def book_issue(request):
 #     if not request.user.is_superuser:
 #         return redirect('login')
@@ -289,6 +269,7 @@ class BookIssueCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
 #     }
 #     return render(request, 'catalog/book_issue.html', context=context)
 
+
 def book_issue_edit(request, issue_id):
     book_instance = Issue.objects.get(id=issue_id)
     form = IssueForm(request.POST,instance=book_instance)
@@ -306,6 +287,7 @@ def book_issue_edit(request, issue_id):
     return render(request, 'catalog/book_issue_edit.html', {'form': form, 'formset': formset})
 
 
+
 class book_issue_detail(LoginRequiredMixin,DetailView):
     model = Issue
     template_name = 'catalog/book_issue_detail.html'
@@ -313,6 +295,8 @@ class book_issue_detail(LoginRequiredMixin,DetailView):
     def get_context_data(self, **kwargs):
         context = super(book_issue_detail, self).get_context_data(**kwargs)
         return context
+
+
 
 class BookIssueDeleteView(DeleteView):
     model = Issue
@@ -325,10 +309,11 @@ def book_return_list(request):
     book_return = Issue.objects.all()
     return render(request, 'catalog/book_return_list.html', {'book_return': book_return})
 
+
+
 def book_return(request):
     book_return = BookReturn.objects.all()
     return render(request, 'catalog/return_info/book_return.html', {'book_return': book_return})
-
 
 
 
@@ -348,9 +333,9 @@ class BookReturnView(LoginRequiredMixin,DetailView,CreateView):
     def form_valid(self, form):
         context = self.get_context_data()
         print(context)
-        full_name=LibraryMemberProfile.objects.get(pk=self.kwargs['pk'])
-        user_id=User.objects.get(username=full_name)
-        member_id=LibraryMemberProfile.objects.get(user=user_id)
+        member_id=LibraryMemberProfile.objects.get(pk=self.kwargs['pk'])
+        user_id=User.objects.get(username=member_id)
+        member_id=LibraryMemberProfile.objects.get(member=user_id)
         # issue_id = Issue.objects.get(member_id=member_id)
         items = context['items']
         with transaction.atomic():
@@ -401,6 +386,8 @@ class BookReturnView(LoginRequiredMixin,DetailView,CreateView):
 #     }
 #     return render(request, 'catalog/add_book_return.html', context=context)
 
+
+
 def book_return_edit(request, pk):
     if not request.user.is_superuser:
         return redirect('login')
@@ -416,6 +403,8 @@ def book_return_edit(request, pk):
     }
     return render(request, 'catalog/book_return_edit.html', context=context)
 
+
+
 def book_return_detail(request, pk):
     if not request.user.is_superuser:
         return redirect('login')
@@ -425,6 +414,8 @@ def book_return_detail(request, pk):
         'form':form
     }
     return render(request, 'catalog/book_return_detail.html', context=context)  
+
+
 
 class BookReturnDeleteView(DeleteView):
     model = BookReturn
@@ -436,6 +427,8 @@ class BookReturnDeleteView(DeleteView):
 def book_renew_list(request):
     book_renew = BookRenew.objects.all()
     return render(request, 'catalog/book_renew_list.html', {'book_renew':book_renew})
+
+
 
 def book_renew(request):
     if not request.user.is_superuser:
@@ -450,6 +443,8 @@ def book_renew(request):
         'form':form
     }
     return render(request, 'catalog/add_book_renew.html', context=context)
+
+
 
 def book_renew_edit(request, pk):
     if not request.user.is_superuser:
@@ -466,6 +461,8 @@ def book_renew_edit(request, pk):
     }
     return render(request, 'catalog/book_renew_edit.html', context=context)
 
+
+
 def book_renew_detail(request, pk):
     if not request.user.is_superuser:
         return redirect('login')
@@ -475,6 +472,8 @@ def book_renew_detail(request, pk):
         'form':form
     }
     return render(request, 'catalog/book_renew_detail.html', context=context)  
+
+
 
 class BookRenewDeleteView(DeleteView):
     model = BookRenew

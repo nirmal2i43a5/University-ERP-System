@@ -65,9 +65,10 @@
               <li class="list-group-item">
                 <b>Section</b> <a class="float-right text-sm">{{ student.section.section_name }}</a>
               </li>
-              <li class="list-group-item">
-                <b>Group</b> <a class="float-right text-sm">{{ student.faculty }}</a>
-              </li>
+                          {% comment %} <img src="{{ student.barcode.url }}" alt=""   /> {% endcomment %}
+
+
+           
             </ul>
 
 

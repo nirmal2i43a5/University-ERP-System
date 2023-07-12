@@ -69,48 +69,13 @@ BookIssueReturnFormset=inlineformset_factory(Issue, BookReturn, form=BookReturnF
 
 
 class AddMemberForm(forms.ModelForm):
-
+    # user_type = forms.ModelChoiceField(
+    #     empty_label="Select User Type ", queryset=Group.objects.exclude(name__in = ['Parent','Super-Admin','Bachelor-Admin','Master-Admin','Admin']))
+    
     class Meta:
         model = LibraryMemberProfile
         fields = '__all__'
-        exclude = ('member',)
 
-    # full_name = forms.CharField(widget=forms.TextInput(attrs={
-    #     'class': 'form-control',
-    #     'id': 'full_name',
-    #     'data-val': 'true',
-    #     'data-val-required': 'Please enter first name',
-    # }))
-    # email = forms.CharField(widget=forms.EmailInput(attrs={
-    #     'class': 'form-control',
-    #     'id': 'email',
-    #     'data-val': 'true',
-    #     'data-val-required': 'Please enter email',
-    # }))
-    # avatar = forms.ImageField(widget=forms. FileInput(attrs={
-    #     'class': 'form-control',
-    #     'id': 'email',
-    #     'data-val': 'true',
-    #     'data-val-required': 'Please enter email',
-    # }))
-    # username = forms.CharField(widget=forms.TextInput(attrs={
-    #     'class': 'form-control',
-    #     'id': 'username',
-    #     'data-val': 'true',
-    #     'data-val-required': 'Please enter username',
-    # }))
-    # password = forms.CharField(widget=forms.PasswordInput(attrs={
-    #     'class': 'form-control',
-    #     'id': 'password',
-    #     'data-val': 'true',
-    #     'data-val-required': 'Please enter password',
-    # }))
-    # retype_password = forms.CharField(widget=forms.PasswordInput(attrs={
-    #     'class': 'form-control',
-    #     'id': 'retype_password',
-    #     'data-val': 'true',
-    #     'data-val-required': 'Please enter retype_password',
-    # }))
 
 class EditMemberForm(forms.ModelForm):
     class Meta:
