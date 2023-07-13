@@ -61,8 +61,9 @@
             {% comment %} <th>Year</th> {% endcomment %}
          
 
+           {% comment %} <th>Program</th>  {% endcomment %}
            <th>Course Category</th> 
-           <th>Course</th> 
+
             <th>Description</th>
             <th>Action</th>
           </tr>
@@ -78,10 +79,10 @@
             <tr>
               <td></td>
               <td>{{ forloop.counter }}</td>
-                <td>{{ semester.name }}</td>
+                <td>{{ semester.name }}( <div class="badge badge-info"> <strong>{{ semester.course }} </strong></div>)</td>
+                {% comment %} <td> </td> {% endcomment %}
              
                 <td>  <div class="badge badge-info"> <strong>{{ semester.course_category }} </strong></div></td>
-                <td>  <div class="badge badge-info"> <strong>{{ semester.course }} </strong></div></td>
               <td>{{ semester.description }}</td>
               <!-- <td>
                 {{ semester.get_teachers }}

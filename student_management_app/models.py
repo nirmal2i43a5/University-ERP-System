@@ -555,8 +555,8 @@ class Student(models.Model):
  
 
     join_year = models.CharField(_('Join Year'),max_length = 50, default=datetime.datetime.now().year, null = True,blank = True)#this is same as batch
-    roll_no = models.CharField(max_length=100,unique=True)#this is stu_id(I am doing this because of ununual error that )
-    stu_id = models.CharField(max_length=100,null=True,blank=True)#this is roll_no
+    roll_no = models.CharField(max_length=100,null=True,blank=True)
+    stu_id = models.CharField(max_length=100,unique=True)
     student_user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, null = True, blank = True)
     gender = models.CharField(max_length=100, choices=gender_choice,null = True, default='Male')
     shift = models.CharField(max_length=100,  choices=shift,  null=True,blank=True)
@@ -615,52 +615,55 @@ class Student(models.Model):
         )
 
     def __str__(self):
-        return f'{self.student_user.full_name} : (Student Id : {self.roll_no})'
+        return f'{self.student_user.full_name} : ({self.stu_id})'
 
     
-    def student_barcode(self,first_place,  *args, **kwargs):
-        COD128 = barcode.get_barcode_class('code128')
-        rv = BytesIO()
-        code = COD128(f'{first_place}{self.roll_no}', writer=ImageWriter()).write(rv)
-        barcode.base.Barcode.default_writer_options['write_text'] = False# this line remove footer text or number
-        self.barcode.save(f'{self.student_user.full_name}.png',File(rv), save=False)
-        return super().save(*args, **kwargs)
+    # def student_barcode(self,first_place,  *args, **kwargs):
+    #     COD128 = barcode.get_barcode_class('code128')
+    #     rv = BytesIO()
+    #     code = COD128(f'{first_place}{self.roll_no}', writer=ImageWriter()).write(rv)
+    #     barcode.base.Barcode.default_writer_options['write_text'] = False# this line remove footer text or number
+    #     self.barcode.save(f'{self.student_user.full_name}.png',File(rv), save=False)
+    #     return super().save(*args, **kwargs)
         
     
     
-    def save(self, *args, **kwargs):          # overriding save() 
-        # -- for placing digits number in barcode-----------
-        student_id = f'{self.roll_no}'
+    # def save(self, *args, **kwargs):          # overriding save() 
+    #     # -- for placing digits number in barcode-----------
+    #     student_id = f'{self.roll_no}'
         
-        if(len(student_id) == 1):
-            first_place = '000000'
-            self.student_barcode(first_place)
+    #     if(len(student_id) == 1):
+    #         first_place = '000000'
+    #         self.student_barcode(first_place)
             
-        elif len(student_id) == 2:
-            first_place = '00000'
-            self.student_barcode(first_place)
+    #     elif len(student_id) == 2:
+    #         first_place = '00000'
+    #         self.student_barcode(first_place)
             
-        elif len(student_id) == 3:
-            first_place = '0000'
-            self.student_barcode(first_place)
+    #     elif len(student_id) == 3:
+    #         first_place = '0000'
+    #         self.student_barcode(first_place)
             
-        elif len(student_id) == 4:
-            first_place = '000'
-            self.student_barcode(first_place)
+    #     elif len(student_id) == 4:
+    #         first_place = '000'
+    #         self.student_barcode(first_place)
             
-        elif len(student_id) == 5:
-            first_place = '00'
-            self.student_barcode(first_place)
+    #     elif len(student_id) == 5:
+    #         first_place = '00'
+    #         self.student_barcode(first_place)
             
-        elif len(student_id) == 6:
-            first_place = '0'
-            self.student_barcode(first_place)
+    #     elif len(student_id) == 6:
+    #         first_place = '0'
+    #         self.student_barcode(first_place)
             
-        elif len(student_id) == 7:
-            first_place = ''
-            self.student_barcode(first_place)
+    #     elif len(student_id) == 7:
+    #         first_place = ''
+    #         self.student_barcode(first_place)
+    #     else:
+    #         first_place = ''
+    #         self.student_barcode(first_place)
             
-        # --
+        
       
     
 # def upload_location(instance, filename):

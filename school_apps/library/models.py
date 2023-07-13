@@ -35,8 +35,8 @@ user_type_choice = (
 
 
 class LibraryMemberProfile(models.Model):
-    member=models.ForeignKey(Student, on_delete=models.CASCADE, related_name='library_member_details', null=True, blank=True)
-    status = models.CharField(max_length=30, choices=profile_status_choice, default='pending')
+    member=models.ForeignKey(Student, on_delete=models.CASCADE, related_name='library_member_details')
+    status = models.CharField(max_length=30, choices=profile_status_choice, default='pending',blank=True, null=True)
     library_card_no = models.CharField(max_length=100, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -109,16 +109,15 @@ class BookEntry(models.Model):
     class Meta:
         verbose_name_plural = 'Book Entry'
     title = models.CharField(max_length=200)
-    author = models.CharField(max_length=100)
-    summary = models.TextField(max_length=1000)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE,null=True, blank=True)
     isbn = models.IntegerField(primary_key=True)
+    quantity = models.IntegerField(null=True, blank=True)
+
+    author = models.CharField(max_length=100,null=True, blank=True)
+    summary = models.TextField(max_length=1000,null=True, blank=True)
     # genre = models.TextField(max_length=20, help_text="For example: science, History, Technical, Enclyclopedia, etc.", null=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    language = models.TextField(max_length=20)
-    quantity = models.IntegerField()
+    language = models.TextField(max_length=20,blank=True, null=True)
     price = models.FloatField(null=True, blank=True)
-    # pic = models.ImageField(blank=True, null=True, upload_to='book_image')
-    # published_year = models.DateField(null=True)
     created_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):

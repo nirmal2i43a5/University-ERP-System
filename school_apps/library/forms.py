@@ -35,16 +35,15 @@ class CategoryAddForm(forms.ModelForm):
 class BookAddForm(forms.ModelForm):
     class Meta:
         model = BookEntry
-        fields = '__all__'
+        exclude = ('price','language',)
         widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-control', 'id': 'title'}),
-            'author': forms.TextInput(attrs={'class': 'form-control', 'id': 'author'}),
-            'summary': forms.TextInput(attrs={'class': 'form-control', 'id': 'summary'}),
-            'isbn': forms.NumberInput(attrs={'class': 'form-control', 'id': 'isbn'}),
-            'language': forms.TextInput(attrs={'class': 'form-control', 'id': 'language'}),
-            'category': forms.Select(attrs={'class': 'form-control', 'id': 'category'}),
-            'quantity': forms.NumberInput(attrs={'class': 'form-control', 'id': 'quantity'}),
-            'price': forms.NumberInput(attrs={'class': 'form-control', 'id': 'price'}),
+            'title': forms.TextInput(attrs={'class': 'form-control','placeholder':'Enter Book Title', 'id': 'title'}),
+            'author': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'Enter Author Name','id': 'author'}),
+            'isbn': forms.NumberInput(attrs={'class': 'form-control','placeholder':'Enter Book ISBN', 'id': 'isbn'}),
+            'language': forms.TextInput(attrs={'class': 'form-control','placeholder':'Enter Language of the book', 'id': 'language'}),
+            'category': forms.Select(attrs={'class': 'form-control','placeholder':'Select Category', 'id': 'category'}),
+            'quantity': forms.NumberInput(attrs={'class': 'form-control','placeholder':'Enter Book QUantity', 'id': 'quantity'}),
+            # 'price': forms.NumberInput(attrs={'class': 'form-control', 'placeholder':'Enter Book Price','id': 'price'}),
         }
 
 class IssueForm(ModelForm):
@@ -74,7 +73,7 @@ class AddMemberForm(forms.ModelForm):
     
     class Meta:
         model = LibraryMemberProfile
-        fields = '__all__'
+        exclude = ('library_card_no',)
 
 
 class EditMemberForm(forms.ModelForm):

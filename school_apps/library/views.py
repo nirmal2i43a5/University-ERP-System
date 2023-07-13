@@ -9,6 +9,8 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import DetailView
 from django.forms import widgets
 from django.forms import inlineformset_factory
+
+from student_management_app.models import Semester
 from .models import *
 from .forms import *
 from django.contrib.auth.models import User
@@ -22,8 +24,7 @@ def category_list(request):
 
 
 def CategoryAddView(request):
-    if not request.user.is_superuser:
-        return redirect('login')
+  
     form = CategoryAddForm()
     if request.method == 'POST':
         form = CategoryAddForm(data=request.POST, files=request.FILES)
@@ -37,8 +38,7 @@ def CategoryAddView(request):
 
 
 def CategoryFullView(request, pk):
-    if not request.user.is_superuser:
-        return redirect('login')
+  
     category_instance = Category.objects.get(id=pk)
     form = CategoryAddForm(instance= category_instance)
     context = {
@@ -47,8 +47,7 @@ def CategoryFullView(request, pk):
     return render(request, 'catalog/book_category/category_detail.html', context=context)
 
 def CategoryUpdateView(request, pk):
-    if not request.user.is_superuser:
-        return redirect('login')
+  
     category_instance = Category.objects.get(id=pk)
     form = CategoryAddForm(instance=category_instance)
     if request.method == 'POST':
@@ -78,8 +77,7 @@ def book_list(request):
     
 
 def add_book(request):
-    if not request.user.is_superuser:
-        return redirect('login')
+  
     form = BookAddForm()
     if request.method == 'POST':
         form = BookForm(data=request.POST, files=request.FILES)
@@ -93,15 +91,14 @@ def add_book(request):
 
 
 def edit_book(request, pk):
-    if not request.user.is_superuser:
-        return redirect('login')
+  
     book_instance = BookEntry.objects.get(isbn=pk)
     form = BookAddForm(instance= book_instance)
     if request.method == 'POST':
         form = BookForm(data=request.POST, files=request.FILES, instance=book_instance)
         if form.is_valid():
             form.save()
-            return redirect('book_list')
+            return redirect('library:book_list')
     context = {
         'form':form
     }
@@ -116,8 +113,7 @@ def book_list(request):
 
 
 def view_book(request, pk):
-    if not request.user.is_superuser:
-        return redirect('login')
+  
     book_instance = BookEntry.objects.get(isbn=pk)
     form = BookAddForm(instance= book_instance)
     context = {
@@ -145,36 +141,42 @@ def add_member(request):
     form = AddMemberForm()
     if request.method == 'POST':
         form = AddMemberForm(request.POST, request.FILES)
+        member_id = request.POST['member']
+        student_instance = Student.objects.get(pk=member_id)
+        library_number = f'{student_instance.stu_id}-{student_instance.join_year}' 
         if form.is_valid():   
-            form.save()
+            instance = form.save(commit = False)
+            instance.library_card_no = library_number
+            instance.save()
+            
             return redirect('library:member_list')
     context = {
         'form':form,
+        'classes':Semester.objects.all()
     }
     return render(request, 'catalog/add_member.html', context=context)
 
 
 
 def edit_member(request, pk):
-    if not request.user.is_superuser:
-        return redirect('login')
+   
     member_instance = LibraryMemberProfile.objects.get(id=pk)
-    form = EditMemberForm(instance=member_instance)
+    form = AddMemberForm(instance=member_instance)
     if request.method == 'POST':
-        form = EditMemberForm(request.POST, request.FILES, instance=member_instance)
+        form = AddMemberForm(request.POST, request.FILES, instance=member_instance)
         if form.is_valid():   
             form.save()
             return redirect('library:member_list')
     context = {
         'form':form,
+        'member_instance':member_instance
     }
-    return render(request, 'catalog/edit_member.html', context=context)
+    return render(request, 'catalog/add_member.html', context=context)
 
 
 
 def member_detail(request, pk):
-    if not request.user.is_superuser:
-        return redirect('login')
+  
     member_instance = LibraryMemberProfile.objects.get(id=pk)
     form = MemberDetailForm(instance= member_instance)
     context = {
@@ -389,8 +391,7 @@ class BookReturnView(LoginRequiredMixin,DetailView,CreateView):
 
 
 def book_return_edit(request, pk):
-    if not request.user.is_superuser:
-        return redirect('login')
+  
     book_instance = BookReturn.objects.get(id=pk)
     form = BookReturnForm(instance=book_instance)
     if request.method == 'POST':
@@ -406,8 +407,7 @@ def book_return_edit(request, pk):
 
 
 def book_return_detail(request, pk):
-    if not request.user.is_superuser:
-        return redirect('login')
+  
     book_instance = BookReturn.objects.get(id=pk)
     form = BookReturnForm(instance= book_instance)
     context = {
@@ -431,8 +431,7 @@ def book_renew_list(request):
 
 
 def book_renew(request):
-    if not request.user.is_superuser:
-        return redirect('login')
+  
     form = BookRenewForm()
     if request.method == 'POST':
         form = BookRenewForm(request.POST, request.FILES)
@@ -447,8 +446,7 @@ def book_renew(request):
 
 
 def book_renew_edit(request, pk):
-    if not request.user.is_superuser:
-        return redirect('login')
+  
     book_instance = BookRenew.objects.get(id=pk)
     form = BookRenewForm(instance=book_instance)
     if request.method == 'POST':
@@ -464,8 +462,7 @@ def book_renew_edit(request, pk):
 
 
 def book_renew_detail(request, pk):
-    if not request.user.is_superuser:
-        return redirect('login')
+  
     book_instance = BookRenew.objects.get(id=pk)
     form = BookRenewForm(instance= book_instance)
     context = {

@@ -2,162 +2,6 @@
 
 
 {% extends 'admin_templates/base_admin.html' %}
-{% load static %}
-    
-{% block content %}
-<link rel="stylesheet" href="https://unpkg.com/@trevoreyre/autocomplete-js/dist/style.css" />
-{% include "includes/messages.html" %}
-<div style="margin-left: 25px; margin-right: 25px;">
-    <!-- <h4>Assign subjects to teacher</h4> -->
-    {% include 'override_table/header.html' with card_title='Drop subject' %}
-    <div>
-        <form id='student_form'>
-
-
-            <div class="container ">
-
-                <div id="autocomplete" class="autocomplete">
-                    <input type="text"  class="autocomplete-input mt-4 mr-4" name="student_id" id="student_id" placeholder="Enter Student Username">
-                    <ul class="autocomplete-result-list"></ul>
-
-                          <button type="submit" class='btn btn-primary mt-2'>Confirm</button>
-
-                </div>
-        
-            </div>
-       
-        </form>
-
-
-        <!-- <div class="student_data"></div> -->
-      
-        <div id="subjectlist" style="margin-top: 15px;">
-        </div>
-    </div>
-
-    
-
-    <script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>
-   
-{% endblock %}
-
-{% block javascript %}
-    <!-- <script>
-        $("#student_form").submit(function(e){
-            e.preventDefault();
-            var student_id = $('#student_id').val();
-            
-            $.ajax({
-                url:"{% url 'academic:return_student_subject'%}",
-                data: {'student':student_id},
-                statusCode:{
-                    500:function(data){
-                        alert(data['message'])
-                    },
-                    201:function(data){
-                        $('#subjectlist').html(data);
-                    }
-                }
-            })
-
-        })
-
-        //
-        $("#student_id").keyup(function(){
-            var student_id = $(this).val();
-            
-            $.ajax({
-                url:" {% url 'student:student_ajax_autocomplete'%}",
-                data:{'student':student_id},
-                success:function(data){
-
-                    $(".student_data").html(data);
-                }
-            })
-        })
-
-//-----------------------------
-       
-          
-    </script> -->
-
-    <script>
-
-        /*
-        For subject retrieve call*/
- 
-        /*
-        for autocomplet js*/
-        new Autocomplete('#autocomplete', {
-
-            search: input => {
-                console.log(input)
-                const url = `/student_autocomplete/?student=${(input)}`
-                return new Promise(resolve => {
-                    fetch(url)
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log(data)
-                            resolve(data.data)
-                        })
-                })
-            },
-
-
-            renderResult: (result, props) => {
-                console.log(props)
-        
-                let group = ''
-                if (result.index % 3 === 0) {
-                    group = `<li class="group" >Group</li>`
-                }
-                //this return result
-            return `
-                ${group}
-                <li ${props}>
-    <div class="container">
-  <div class="row">
-    <div class="col-md-3">
-      <div class="student-info">
-        <div class="student-details">
-          <span class="student-image">
-          {% if result.image %}
-
-         <img src="${result.image}" alt="" style="width:35px;height:35px;" class="img-circle" />
-
-          {% else %}  
-                    <img src="{% static 'image/admin.png' %}" alt="" style="width:35px;height:35px;" class="img-circle" />
-            {% endif %}
-         
-          </span>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-9">
-      <div class="student-info">
-        <div class="student-name">${result.name}</div>
-        <div class="student-details">
-          <span class="student-id">${result.stu_id}</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-  </li>
-                `
-            },
-
-
-        })
-    </script>
-    
-{% endblock %}
-
-
-
-
-{% comment %} 
-{% extends 'admin_templates/base_admin.html' %}
 
 {% load crispy_forms_tags %}
 
@@ -176,13 +20,27 @@ Create Book Category
       <div class="col-md-12">
         <!-- general form elements -->
         <div class="card">
+        {% if member_instance %}
+          {% include 'override_table/header.html' with card_title='Update Member' %}
+        {% else %}
           {% include 'override_table/header.html' with card_title='Create Member' %}
+        {% endif %}
           <!-- /.card-header -->
           <!-- form start -->
-          <form method="post" enctype="multipart/form-data">
+          <form method="post" class = "col-md-6" enctype="multipart/form-data" >
             <!--using this id = "staff-modelform"  for solving form conflict in formhelper in crispy form -->
             {% csrf_token %}
             <div class="card-body">
+            <select name="batch" id = "id_batch" class="form-control select">
+                <option value="">Select Batch</option>
+                {% for item in classes %}
+                <option  value="{{ item.id }}">{{ item.name }}({{ item.course.course_name }})</option>
+            {% endfor %}
+            </select>
+            <br>
+            <br>
+            <br>
+
               {% crispy form %}
                              <a href="{% url 'library:library-management' %}" class="btn btn-sm btn-danger">Back</a>
 
@@ -207,6 +65,15 @@ Create Book Category
   </div>
 </section>
 <!-- /.content -->
-{% endblock main_content %} {% endcomment %}
 
 
+{% endblock main_content %} 
+
+{% block custom_js %}
+<script>
+    $(function(){
+        $('.select').select2({theme: 'bootstrap4'});
+        $('.selectmultiple').select2({theme: 'bootstrap4'});
+    });
+</script>
+{% endblock custom_js %}

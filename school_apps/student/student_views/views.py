@@ -35,13 +35,14 @@ def add_student(request):
         custom_form = AddCustomUserForm(request.POST)
         student_form = StudentForm(request.POST, request.FILES)
         parent_form = ParentForm(request.POST, request.FILES)
+
         if custom_form.is_valid() and student_form.is_valid() and parent_form.is_valid():
 
             # parent = parent_form.save()
             email = custom_form.cleaned_data["email"]
             full_name = custom_form.cleaned_data['full_name']
-            student_id = student_form.cleaned_data['stu_id']#this  is roll no
-            roll_no = student_form.cleaned_data['roll_no']#this is student_id
+            student_id = student_form.cleaned_data['stu_id']
+            roll_no = student_form.cleaned_data['roll_no']
 
 
             date_of_birth = str(request.POST.get('dob'))
@@ -57,7 +58,7 @@ def add_student(request):
             
             # father_fname = parent_form.cleaned_data["father_name"].split()[0]
             fname = full_name.split()[0]
-            father_username = "p"  + f'{roll_no}' 
+            father_username = "p"  +  f'{student_id}' 
             father_instance = CustomUser.objects.create_user(
                 username=father_username, password='password', user_type=parent_role, full_name = parent_form.cleaned_data["father_name"]
             )
@@ -73,15 +74,16 @@ def add_student(request):
             
             fname = full_name.split()[0]
             # student_username = fname.lower() + f'{student_id}'
-            student_username = f'{roll_no}'
+            student_username = f'{student_id}'
             role = Group.objects.get(name='Student')
            
             user = CustomUser.objects.create_user(
                 username=student_username, password='password', email=email, user_type=role, full_name = full_name)
-                  
+            
             user.student.course_category = get_object_or_404(CourseCategory, course_name = student_form.cleaned_data['course_category'])
+            # print("************************************************",student_form,"******************************************************")
             user.student.semester = student_form.cleaned_data['semester']
-            user.student.course = student_form.cleaned_data['course']#this is program like BICT, MBA
+            user.student.course =  student_form.cleaned_data['course']#this is program like BICT, MBA
 
             user.student.section = student_form.cleaned_data['section']
             user.student.join_year =  student_form.cleaned_data["join_year"]
@@ -100,9 +102,12 @@ def add_student(request):
             user.student.gpa = student_form.cleaned_data['gpa']
             user.student.previous_school_name = student_form.cleaned_data["previous_school_name"]
             user.student.guardian = father_instance.parent
+            print(user,"************************************************",user.student,"******************************************************")
             if image_url != None:
                 user.student.image = image_url
             user.save()
+            print(user,"************************************************",user.student,"******************************************************")
+
             user.groups.add(role)
             
 
@@ -157,8 +162,8 @@ def student_file_upload(request):
         batch = join_year[0:4]
         if column[2] != "":
             str_to_float = float(column[2])
-        roll_no = int(str_to_float)#it has matrix_no on csv file
-        student_id = column[3]# it has roll_no  on csv file
+        student_id = int(str_to_float)
+        roll_no = column[3]
         fullName = column[4]
         gender = column[5]
         shift = column[6]
@@ -206,7 +211,7 @@ def student_file_upload(request):
             fname = ''
         
         # student_username = fname.lower() + f'{student_id}'
-        student_username = f'{roll_no}'#this is student_id
+        student_username = f'{student_id}'#this is student_id
 
         parent_role = Group.objects.get(name='Parent')
         father_username = "p" +  student_username 
@@ -235,7 +240,7 @@ def student_file_upload(request):
         role = Group.objects.get(name = 'Student')
         # ---
         # username_from_file = column[28]  
-        student_username = f'{roll_no}'
+        student_username = f'{student_id}'
         if CustomUser.objects.filter(username = student_username).exists():
             print("Already exists")
         else:

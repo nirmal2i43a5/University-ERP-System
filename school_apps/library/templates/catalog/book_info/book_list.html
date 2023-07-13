@@ -46,10 +46,12 @@ Book List
                 <tr>
                     <th class="serial">#</th>
                     <th>Title</th>
-                    <th>Author</th>
-                    <th>Book Type</th>
+                    <th>Category</th>
                     
-                    <th>Status</th>
+                    <th>Author</th>
+                     <th>Quantity</th>
+                    <th>Available</th>
+
                     <th>Created At</th>
                     <th>Action</th>
                 </tr>
@@ -60,14 +62,17 @@ Book List
                     {% for booklist in book_list %}
                     <td class="serial">{{ forloop.counter }}</td>
                     <td>{{ booklist.title }}</td>
+                    <td>{{ booklist.category }}</td>
                     <td>{{ booklist.author }}</td>
-                    <td>{{ booklist.genre }}</td>
-                    <td>total: {{ booklist.total_copies}} copies <br> available: {{ booklist.available_copies}} copies</td>
+                    <td>{{ booklist.quantity }}</td>
+                    <td></td>
+
+
                     <td>{{ booklist.created_at }}</td>
                     <td>
-                        <a href="{% url 'library:view_book' booklist.isbn %}" class="btn btn-xs btn-info"><strong>view</strong></a>
-                        <a href="{% url 'library:edit_book' booklist.isbn %}" class="btn btn-xs btn-success"><i class="fas fa-edit"></i></a>
-                        <a href="{% url 'library:del_book' booklist.isbn %}" class="btn btn-xs btn-danger"><i class="fas fa-trash-alt"></i></a>
+                        {% comment %} <a href="{% url 'library:view_book' booklist.isbn %}" class="btn btn-xs btn-info"><strong>view</strong></a> {% endcomment %}
+                        <a href="{% url 'library:edit_book' booklist.isbn %}" class="btn btn-sm btn-success"><i class="fas fa-edit"></i> Edit</a>
+                        <a href="{% url 'library:del_book' booklist.isbn %}" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i> Delete</a>
                     </td>
                 </tr>
                 {% endfor %} {% else %}

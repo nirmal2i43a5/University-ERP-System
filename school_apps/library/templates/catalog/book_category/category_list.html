@@ -49,9 +49,8 @@ Book Category
                     <td>{{ categorylist.name }}</td>
                     <td>{{ categorylist.created_at }}</td>
                     <td>
-                        <a href="{% url 'library:view_categories' categorylist.id%}" class="btn btn-xs btn-info"><strong>View Details</strong></a>
-                        <a href="{% url 'library:edit_categories' categorylist.id%}" class="btn btn-xs btn-success"><i class="fas fa-edit"></i></a>
-                        <a href="{% url 'library:del_categories' categorylist.id%}" class="btn btn-xs btn-danger"><i class="fas  fa-trash-alt"></i></a>
+                        <a href="{% url 'library:edit_categories' categorylist.id%}" class="btn btn-sm btn-success"><i class="fas fa-edit"></i> Edit</a>
+                        <a href="{% url 'library:del_categories' categorylist.id%}" class="btn btn-sm btn-danger"><i class="fas  fa-trash-alt"></i> Delete</a>
                     </td>
                 </tr>
                 {% endfor %} {% else %}

@@ -24,7 +24,7 @@
 
             <span>{{title}}</span>
 
-            <form class="float-right mb-2" role="search"  method="GET" >
+            {% comment %} <form class="float-right mb-2" role="search"  method="GET" >
               <div class="input-group">
              
           
@@ -35,7 +35,7 @@
     
                 </div>
               </div>
-            </form>
+            </form> {% endcomment %}
           
 
           </div>
@@ -79,15 +79,16 @@
                   <th data-data="id">id</th>
                   <th data-data="id">#</th>
                   <th data-data="image">Image</th>
-                  <th data-data="roll_no">Student Id</th>
+                  <th data-data="stu_id">Student Id</th>
                   <th data-data="full_name">Full Name</th>
 
                   <th data-data="semester">Class</th>
                   <th data-data="section">Section</th>
-                  <th data-data="father_phone">Parent Contact</th>
                   <th data-data="contact">Student Contact</th>
                     <th data-data="email">Email</th>
                   <th data-data="username">Username</th>
+                  <th data-data="father_phone">Parent Contact</th>
+
                   <th data-data="Action">Action</th>
                 </tr>
               </thead>
@@ -165,7 +166,7 @@
             
             {
               targets: 11,//number of field i want to show in datatables(from id to Username = 10)
-              "visible": false,
+            // "visible": false,
             },
             ]
           }));

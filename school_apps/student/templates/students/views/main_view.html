@@ -54,13 +54,13 @@
 
             <ul class="list-group list-group-unbordered mb-3">
               <li class="list-group-item">
-                <b>Student Id</b> <a class="float-right text-sm">{{ student.roll_no }}</a>
+                <b>Student Id</b> <a class="float-right text-sm">{{ student.stu_id }}</a>
               </li>
               <li class="list-group-item">
                 <b>Roll </b> <a class="float-right text-sm">{{ student.roll_no }}</a>
               </li>
               <li class="list-group-item">
-                <b>Class</b> <a class="float-right text-sm">{{ student.semester.name }}</a>
+                <b>Class</b> <a class="float-right text-sm">{{ student.semester.name }}({{ student.course }})</a>
               </li>
               <li class="list-group-item">
                 <b>Section</b> <a class="float-right text-sm">{{ student.section.section_name }}</a>

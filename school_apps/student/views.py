@@ -492,16 +492,18 @@ def student_ajax_autocomplete(request):
     stu_id = request.GET.get('student')
     student_datas = []
     if stu_id:
-        students = Student.objects.filter(roll_no__icontains = stu_id)
+        students = Student.objects.filter(stu_id__icontains = stu_id)
         
         for student in students:
-            image_url = student.image.url if student.image else None
-            student_data = {
-                            'image':image_url,
-                            'stu_id':student.roll_no,
-                            'name': student.student_user.full_name
-                            }
-            student_datas.append(student_data)
+            # image_url = student.image.url if student.image else None
+            # student_data = {
+            #                 'image':image_url,
+            #                 'stu_id':student.stu_id,
+            #                 'name': student.student_user.full_name,
+            #                   'class': student.semester.name,
+            #                      'program': student.course.course_name,
+            #                 }
+            student_datas.append(student.stu_id)
 
     # import json
     # response_data = json.dumps(student_datas)

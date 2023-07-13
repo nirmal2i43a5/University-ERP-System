@@ -678,6 +678,12 @@ def fill_section_select(request):
     sections = Section.objects.filter(semester = semester)
     context = {'sections': sections}
     return render(request, "attendances/auto_fill_select/sections.html", context)
+
+def fill_student_select(request):
+    semester = Semester.objects.get(pk = request.GET['batch'])
+    students = Student.objects.filter(semester = semester)
+    context = {'students': students}
+    return render(request, "attendances/auto_fill_select/students.html", context)
     
     
 def fill_subject_select(request):

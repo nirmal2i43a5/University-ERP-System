@@ -9,22 +9,22 @@ from school_apps.school_settings.models import MisSetting
 from django.shortcuts import get_object_or_404
 from schedule.models import Calendar
 
-school_classes_choices = [
-                        'Class Montessori',
-                          'Class Nursery',
-                          'Class LKG',
-                          'Class UKG',
-                          'Class One',
-                          'Class Two',
-                          'Class Three',
-                          'Class Four',
-                          'Class Five',
-                          'Class Six',
-                          'Class Seven',
-                          'Class Eight',
-                          'Class Nine',
-                          'Class Ten'
-                          ]
+# school_classes_choices = [
+#                         'Class Montessori',
+#                           'Class Nursery',
+#                           'Class LKG',
+#                           'Class UKG',
+#                           'Class One',
+#                           'Class Two',
+#                           'Class Three',
+#                           'Class Four',
+#                           'Class Five',
+#                           'Class Six',
+#                           'Class Seven',
+#                           'Class Eight',
+#                           'Class Nine',
+#                           'Class Ten'
+#                           ]
 # subjects_choices = [    'Nepali',    'English',    'Mathematics',    'Science',    'Social Studies', 'Computer Science' , 'Health,Population,& Environment', 
 #                       'Moral Education',   'Creative Arts', ' Optional Mathematics',
 #                         'Sanskrit (Optional)'
@@ -51,38 +51,26 @@ def populate_models(sender, **kwargs):
     setting_object, created = MisSetting.objects.get_or_create(version='1.0')
     calendar_slug, created = Calendar.objects.get_or_create(name='event')
    
-    one_to_ten_class = Semester.objects.filter(course_category= CourseCategory.objects.get(course_name = 'School')).exclude(name__in=['Class Montessori',
-                          'Class Nursery',
-                          'Class LKG',
-                          'Class UKG',])
-    
-    # if not Subject.objects.filter(subject_name__in = subjects_choices):
-    #     for item in one_to_ten_class:
-    #         '''if montessari, lkg, ukg and others assign from subject to class'''
-    #         Subject.objects.bulk_create(
-    #                                             [
-    #                                                 Subject(
-    #                                                     course_category = get_object_or_404(CourseCategory,course_name = "School"), 
-    #                                                     semester = Semester.objects.get(pk = item.pk),
-    #                                                     subject_name=subject
-    #                                             ) 
-    #                                                 for subject in subjects_choices]                              )
-    
+    # one_to_ten_class = Semester.objects.filter(course_category= CourseCategory.objects.get(course_name = 'School')).exclude(name__in=['Class Montessori',
+    #                       'Class Nursery',
+    #                       'Class LKG',
+    #                       'Class UKG',])
+  
         
 
 
-    '''Creating class from 1 to 10 directly'''
-    if Semester.objects.filter(course_category = get_object_or_404(CourseCategory, course_name = 'School')).exists():
-        pass
-    else:
-        Semester.objects.bulk_create(
-                                        [
-                                            Semester(
-                                                course_category = get_object_or_404(CourseCategory,course_name = "School"), 
-                                                name=school_class
-                                           ) 
-                                            for school_class in school_classes_choices]
-                                 )
+    # '''Creating class from 1 to 10 directly'''
+    # if Semester.objects.filter(course_category = get_object_or_404(CourseCategory, course_name = 'School')).exists():
+    #     pass
+    # else:
+    #     Semester.objects.bulk_create(
+    #                                     [
+    #                                         Semester(
+    #                                             course_category = get_object_or_404(CourseCategory,course_name = "School"), 
+    #                                             name=school_class
+    #                                        ) 
+    #                                         for school_class in school_classes_choices]
+    #                              )
     return [
             a_level_admin, 
             bachelor_admin_group, 

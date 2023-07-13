@@ -24,7 +24,7 @@ Create Book
           {% include 'override_table/header.html' with card_title='Create Book' %}
           <!-- /.card-header -->
           <!-- form start -->
-          <form method="post" enctype="multipart/form-data">
+          <form method="post" enctype="multipart/form-data" class = "col-md-6">
             <!--using this id = "staff-modelform"  for solving form conflict in formhelper in crispy form -->
             {% csrf_token %}
             <div class="card-body">

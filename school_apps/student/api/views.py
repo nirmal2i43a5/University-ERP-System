@@ -19,11 +19,16 @@ class StudentGlobalFilter(DatatablesFilterSet):
     """Filter name, artist and genre by name with icontains"""
 
     stu_id = GlobalCharFilter(field_name='stu_id', lookup_expr='icontains')#for this i need to use student_user in serializer to assume it as foreign key
-
+    roll_no = GlobalCharFilter(field_name='roll_no', lookup_expr='icontains')
     full_name = GlobalCharFilter(field_name='student_user__full_name', lookup_expr='icontains')#for this i need to use student_user in serializer to assume it as foreign key
     username = GlobalCharFilter(field_name='student_user__username', lookup_expr='icontains')
     email = GlobalCharFilter(field_name='student_user__email', lookup_expr='icontains')
     semester = GlobalCharFilter(field_name='semester__name', lookup_expr='icontains')
+    email = GlobalCharFilter(field_name='student_user__email', lookup_expr='icontains')
+    course = GlobalCharFilter(field_name='course__course_name', lookup_expr='icontains')
+    contact = GlobalCharFilter(field_name='contact', lookup_expr='icontains')
+    father_phone = GlobalCharFilter(field_name='guardian__father_phone', lookup_expr='icontains')
+
 
     class Meta:
         model = Student

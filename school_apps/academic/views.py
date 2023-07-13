@@ -686,7 +686,7 @@ def manage_class(request):
     
     form = SemesterForm()
     class_search_form = ClassSearchForm()
-    
+    classes =  Semester.objects.all()#.exclude(course_category = CourseCategory.objects.get(course_name = 'School'))
     course_category_id = request.GET.get('course_category')
     course_id = request.GET.get('filter_course')
     if course_category_id and course_id:        
@@ -740,6 +740,7 @@ def manage_class(request):
                'title': 'Class',
                'class_search_form':class_search_form,
                'title': 'Class',
+               'classes':classes
                
            
                }
