@@ -666,7 +666,7 @@ def student_details(request):
     else:
         student=Student.objects.none()
         try:
-            student = Student.objects.get(stu_id = request.POST['student_id'])
+            student = Student.objects.get(roll_no = request.POST['student_id'])
         except:
             print("ERROR HERE~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
             messages.error(request, "Student not found.")

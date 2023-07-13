@@ -1,3 +1,4 @@
+from cProfile import label
 import datetime
 from dis import code_info
 from django.utils.translation import gettext_lazy as _
@@ -469,7 +470,6 @@ class OptionalSubject(models.Model):
 
 class Parent(models.Model):
     
-    home_phone = models.CharField(max_length=30,null = True, blank=True)
     father_name = models.CharField(max_length=100, null = True, blank=True)#full_namei.e customuser retrieve from this is placed in father name
     father_phone = models.CharField(max_length=30,null = True, blank=True)
     mother_name = models.CharField(max_length=100,null = True, blank=True)
@@ -555,9 +555,8 @@ class Student(models.Model):
  
 
     join_year = models.CharField(_('Join Year'),max_length = 50, default=datetime.datetime.now().year, null = True,blank = True)#this is same as batch
-    roll_no = models.CharField(max_length=100,null=True,blank=True)
-    # stu_id = models.CharField(max_length=100,unique=True)#matrix number of students
-    matrix_no = models.CharField(max_length=100,unique=True)#matrix number of students
+    roll_no = models.CharField(max_length=100,unique=True)#this is stu_id(I am doing this because of ununual error that )
+    stu_id = models.CharField(max_length=100,null=True,blank=True)#this is roll_no
     student_user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, null = True, blank = True)
     gender = models.CharField(max_length=100, choices=gender_choice,null = True, default='Male')
     shift = models.CharField(max_length=100,  choices=shift,  null=True,blank=True)
@@ -616,13 +615,13 @@ class Student(models.Model):
         )
 
     def __str__(self):
-        return f'{self.student_user.full_name} : (Student Id : {self.stu_id})'
+        return f'{self.student_user.full_name} : (Student Id : {self.roll_no})'
 
     
     def student_barcode(self,first_place,  *args, **kwargs):
         COD128 = barcode.get_barcode_class('code128')
         rv = BytesIO()
-        code = COD128(f'{first_place}{self.stu_id}', writer=ImageWriter()).write(rv)
+        code = COD128(f'{first_place}{self.roll_no}', writer=ImageWriter()).write(rv)
         barcode.base.Barcode.default_writer_options['write_text'] = False# this line remove footer text or number
         self.barcode.save(f'{self.student_user.full_name}.png',File(rv), save=False)
         return super().save(*args, **kwargs)
@@ -631,7 +630,7 @@ class Student(models.Model):
     
     def save(self, *args, **kwargs):          # overriding save() 
         # -- for placing digits number in barcode-----------
-        student_id = f'{self.stu_id}'
+        student_id = f'{self.roll_no}'
         
         if(len(student_id) == 1):
             first_place = '000000'

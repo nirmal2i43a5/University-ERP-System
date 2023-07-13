@@ -27,9 +27,10 @@ class StudentForm(forms.ModelForm):
     status = forms.ChoiceField(choices=status_choices, widget=forms.RadioSelect(),initial = 'Running')
     shift = forms.ChoiceField(choices=shift, widget=forms.RadioSelect(),initial = 'Morning')
     gender = forms.ChoiceField(choices=gender_choices, widget=forms.RadioSelect(),initial = 'Male')
-    stu_id = forms.CharField(label='Matrix Number', widget=forms.TextInput(
-        attrs={"class": "form-control", "placeholder": " Enter Student Martix Number", }))
-   
+    stu_id = forms.CharField(label='Roll No.',required = False, widget=forms.TextInput(
+        attrs={"class": "form-control", "placeholder": " Enter Roll No", }))
+    roll_no = forms.CharField(label='Student Id.',required=True, widget=forms.TextInput(
+        attrs={"placeholder": " Enter Matrix Number", }))
     temporary_address = forms.CharField(required=False, widget=forms.TextInput(
         attrs={"class": "form-control", "placeholder": " Enter Temporary Address", }))
     
@@ -41,8 +42,7 @@ class StudentForm(forms.ModelForm):
         attrs={"class": "form-control", "placeholder": " Enter Your Past School Name", }))
     contact = forms.CharField(required=False, widget=forms.TextInput(
         attrs={"class": "form-control", "placeholder": " Enter Student Mobile Number", }))
-    roll_no = forms.CharField(required=False, widget=forms.TextInput(
-        attrs={"placeholder": " Enter Roll No", }))
+   
 
     semester = forms.ModelChoiceField(
         label='Class', empty_label="Select Class ", queryset=Semester.objects.all())
@@ -51,7 +51,10 @@ class StudentForm(forms.ModelForm):
     class Meta:
         model = Student
         fields = (
-           'course_category', 'course','semester','section','join_year','stu_id','roll_no','gender','shift','faculty','program','status','contact',
+           'course_category', 'course','semester','section','join_year','stu_id','roll_no','gender',
+           'shift',
+           'faculty','program',
+           'status','contact',
             'permanent_address','temporary_address','dob','blood_group','gpa','previous_school_name','image',
         )
 
@@ -76,9 +79,10 @@ class StudentForm(forms.ModelForm):
                 css_class='form-row'
             ),
             Row(
-                         Column('stu_id', css_class='form-group col-md-4 mb-0'),
+                        
                 
                 Column('roll_no', css_class='form-group col-md-4 mb-0'),
+                 Column('stu_id', css_class='form-group col-md-4 mb-0'),
                 Column('gender', css_class='form-group col-md-4 mb-0'),
                 
                 css_class='form-row'

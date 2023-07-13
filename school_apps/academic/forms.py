@@ -430,8 +430,8 @@ class SubjectForm(forms.ModelForm):
 
 class SemesterForm(forms.ModelForm):#for a-level
     course_category = forms.ModelChoiceField(queryset = CourseCategory.objects.exclude(course_name__in = ['School']), widget=forms.RadioSelect())
-    name = forms.CharField(required = False, widget=forms.TextInput(
-        attrs={'placeholder': 'Enter Your Class Name'}))
+    name = forms.CharField(label = 'Year',required = True, widget=forms.TextInput(
+        attrs={'placeholder': 'Enter Batch'}))
     # semester_value = forms.IntegerField(required = False, widget=forms.NumberInput(
     #     attrs={'placeholder': 'Enter Semester Value'}))
     description = forms.CharField(required=False, widget=forms.Textarea(

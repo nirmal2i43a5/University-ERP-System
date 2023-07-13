@@ -40,7 +40,9 @@ def add_student(request):
             # parent = parent_form.save()
             email = custom_form.cleaned_data["email"]
             full_name = custom_form.cleaned_data['full_name']
-            student_id = student_form.cleaned_data['stu_id']
+            student_id = student_form.cleaned_data['stu_id']#this  is roll no
+            roll_no = student_form.cleaned_data['roll_no']#this is student_id
+
 
             date_of_birth = str(request.POST.get('dob'))
             dob = datetime.datetime.strptime(
@@ -55,7 +57,7 @@ def add_student(request):
             
             # father_fname = parent_form.cleaned_data["father_name"].split()[0]
             fname = full_name.split()[0]
-            father_username = "p" + fname.lower() + f'{student_id}' 
+            father_username = "p"  + f'{roll_no}' 
             father_instance = CustomUser.objects.create_user(
                 username=father_username, password='password', user_type=parent_role, full_name = parent_form.cleaned_data["father_name"]
             )
@@ -65,54 +67,36 @@ def add_student(request):
             father_instance.parent.mother_phone = parent_form.cleaned_data['mother_phone']
             father_instance.parent.local_guardian_name = parent_form.cleaned_data['local_guardian_name']
             father_instance.parent.local_guardian_phone =  parent_form.cleaned_data['local_guardian_phone']
-            father_instance.parent.home_phone = parent_form.cleaned_data['home_phone']
             father_instance.groups.add(parent_role)
             father_instance.parent.save()
             
             
             fname = full_name.split()[0]
             # student_username = fname.lower() + f'{student_id}'
-            student_username = f'{student_id}'
+            student_username = f'{roll_no}'
             role = Group.objects.get(name='Student')
            
             user = CustomUser.objects.create_user(
                 username=student_username, password='password', email=email, user_type=role, full_name = full_name)
                   
-            # bachelor_group = Group.objects.get(name = 'Bachelor-Admin')
-            # master_group = Group.objects.get(name = 'Master-Admin')
-            # user_type = request.user.adminuser
-            # if request.user.is_superuser and request.user.groups.filter(name = bachelor_group).exists():
-            #     user.student.category = 'Bachelor'
-            # if request.user.is_superuser and request.user.groups.filter(name = master_group).exists():
-            #     user.student.category = 'Master'
-            # if request.user.is_superuser and not request.user.groups.filter(name = bachelor_group).exists()\
-            #                             and not request.user.groups.filter(name = master_group).exists() :
-            #     user.student.category = 'A-Level'
-        #     fields = (
-        #     'join_year','stu_id','roll_no','gender','shift','semester','section','course','faculty','program','status','contact',
-        #     'permanent_address','temporary_address','dob','blood_group','gpa','previous_school_name','image',
-        # )
-            # print(student_form.cleaned_data['course_category'],":::::::::::::::::course cate")
-            print("*******************************************",student_form.cleaned_data['stu_id'],"************************************************")
             user.student.course_category = get_object_or_404(CourseCategory, course_name = student_form.cleaned_data['course_category'])
             user.student.semester = student_form.cleaned_data['semester']
-            user.student.course = student_form.cleaned_data['course']
+            user.student.course = student_form.cleaned_data['course']#this is program like BICT, MBA
+
             user.student.section = student_form.cleaned_data['section']
             user.student.join_year =  student_form.cleaned_data["join_year"]
-            user.student.stu_id = student_form.cleaned_data['stu_id']
-            user.student.roll_no = student_form.cleaned_data['roll_no']
+            user.student.stu_id = student_id
+            user.student.roll_no = roll_no
             user.student.gender = student_form.cleaned_data['gender']
             user.student.shift = student_form.cleaned_data["shift"]
-            user.student.course = student_form.cleaned_data['course']
-            user.student.faculty = student_form.cleaned_data['faculty']
-            user.student.program = student_form.cleaned_data['program']
+            # user.student.faculty = student_form.cleaned_data['faculty']
+            # user.student.program = student_form.cleaned_data['program']
             user.student.status = student_form.cleaned_data['status']
             user.student.contact = student_form.cleaned_data['contact']
             user.student.permanent_address = student_form.cleaned_data['permanent_address']
             user.student.temporary_address = student_form.cleaned_data['temporary_address']
             user.student.dob = dob
             user.student.blood_group = student_form.cleaned_data['blood_group']
-            # user.student.optional_subject = student_form.cleaned_data['optional_subject']
             user.student.gpa = student_form.cleaned_data['gpa']
             user.student.previous_school_name = student_form.cleaned_data["previous_school_name"]
             user.student.guardian = father_instance.parent
@@ -122,19 +106,6 @@ def add_student(request):
             user.groups.add(role)
             
 
-            # selectedcourses.objects.create(
-            #     student_id=user.student,
-            #     subject_id = student_form.cleaned_data['optional_subject'],
-            #     semester = student_form.cleaned_data['semester']
-            # )
-
-            # user.student.state = student_form.cleaned_data['state']
-            # user.student.country = student_form.cleaned_data['country']
-            # # user.student.group = group
-            # # user.student.optional_subject = optional_subject
-            # # user.student.register_no = register_no
-            # # user.student.extra_activities = student_form.cleaned_data['extra_curricular_activities']
-            # # user.student.remarks = student_form.cleaned_data['remarks']
             messages.success(request, "Successfully Added Student")
             return redirect('admin_app:manage_student')
 
@@ -182,53 +153,45 @@ def student_file_upload(request):
     file_data = csv.reader(io_string, delimiter=',', quotechar="|")
     
     for column in file_data:
-        batch = column[1]
-        join_year = batch[0:4]
+        join_year = column[1]
+        batch = join_year[0:4]
         if column[2] != "":
             str_to_float = float(column[2])
-        student_id = int(str_to_float)
-        print(student_id,":::::::::::::::")
-        roll_no = column[3]
+        roll_no = int(str_to_float)#it has matrix_no on csv file
+        student_id = column[3]# it has roll_no  on csv file
         fullName = column[4]
         gender = column[5]
         shift = column[6]
         section = column[7]
-        course = column[8]
-        faculty_first = column[9]
-        email = column[9]      
-        faculty_second = column[10]
-        faculty = f'{faculty_first},{faculty_second}'#faculty column contain two column because comman separate one col to multi column
-        program = column[10]
-        status = column[11]
-        home_phone = column[12]
-        contact = column[13]#this is for  mobile no (field in my csv file)
+        program = column[8]
+        status = column[9]
+        student_contact = column[10]#this is for  mobile no (field in my csv file)
+        student_email  = column[11]
        
     
-        
-        home_phone = home_phone,
+        father_name=column[12],
+        father_phone=column[13],
         # home_phone[3:len-3] 
-        father_name=column[14],
-        father_phone=column[15],
-        # home_phone[3:len-3] 
-        mother_name=column[16],
-        mother_phone=column[17],
-        local_guardian_name=column[18],
-        local_guardian_phone=column[19]
+        mother_name=column[14],
+        mother_phone=column[15],
+      
 
-        permanent_address = column[20]
-        temporary_address = column[21]
+        permanent_address = column[16]
+        temporary_address = column[17]
         
         dob_es_parse = ""
-        if (column[22]!="" ):
-            dob_es_parse = parse(column[22]).date() #this change from 8/10/2020 to 2020-8-10 i.e in python format
+        if (column[18]!="" ):
+            dob_es_parse = parse(column[18]).date() #this change from 8/10/2020 to 2020-8-10 i.e in python format
         
         dob_bs_parse=""
-        if (column[23]!="" ):
-            dob_bs_parse = parse(column[23]).date()
-        blood_group = column[24]
-        optional_subject = column[25]
-        gpa = column[26]
-        previous_school =  column[27]  
+        if (column[19]!="" ):
+            dob_bs_parse = parse(column[19]).date()
+        blood_group = column[20]
+        gpa = column[21]
+        previous_school =  column[22]  
+        optional_subject = column[23]
+        local_guardian_name=column[24],
+        local_guardian_phone=column[25]
         # dob_es_parse = datetime.datetime.strptime(dob_es, "%Y-%m-%d")
 
         father_name = ''.join(father_name)
@@ -242,15 +205,17 @@ def student_file_upload(request):
         else:
             fname = ''
         
-        student_username = fname.lower() + f'{student_id}'
+        # student_username = fname.lower() + f'{student_id}'
+        student_username = f'{roll_no}'#this is student_id
+
         parent_role = Group.objects.get(name='Parent')
-        father_username = "p" + student_username 
-        if CustomUser.objects.filter(username = father_username).exists():
-            print("Already exists")
-        else:
-            Father_object = CustomUser.objects.create_user(
-            username=father_username, password='password', user_type=parent_role, full_name = father_name
-        )
+        father_username = "p" +  student_username 
+        # if CustomUser.objects.filter(username = father_username).exists():
+        #     print("Already exists")
+        # else:
+        Father_object = CustomUser.objects.create_user(
+        username=father_username, password='password', user_type=parent_role, full_name = father_name
+    )
         
         Father_object.parent.father_name = father_name
         Father_object.parent.mother_name = mother_name
@@ -258,7 +223,6 @@ def student_file_upload(request):
         Father_object.parent.mother_phone = mother_phone
         Father_object.parent.local_guardian_name = local_guardian_name
         Father_object.parent.local_guardian_phone =  local_guardian_phone
-        Father_object.parent.home_phone = home_phone
         Father_object.groups.add(parent_role)
         Father_object.parent.save()
         
@@ -271,13 +235,13 @@ def student_file_upload(request):
         role = Group.objects.get(name = 'Student')
         # ---
         # username_from_file = column[28]  
-        # student_username = f'{student_id}'
+        student_username = f'{roll_no}'
         if CustomUser.objects.filter(username = student_username).exists():
             print("Already exists")
         else:
-            customuser_object = CustomUser.objects.create_user(username = student_id,
+            customuser_object = CustomUser.objects.create_user(username = student_username,
                                                            password='password', 
-                                                           email=email,
+                                                           email=student_email,
                                                            user_type=role,
                                                            full_name=fullName
                                                            )
@@ -289,19 +253,21 @@ def student_file_upload(request):
         customuser_object.student.roll_no = roll_no
         customuser_object.student.gender = gender
         customuser_object.student.shift = shift
-        customuser_object.student.semester =  Semester.objects.get(name = batch, 
-                                                                #    course_category = request.user.adminuser.course_category
-                                                                   )
+        semester_object = Semester.objects.get(name = batch, course = Course.objects.get(course_name = program))
+        customuser_object.student.semester =  semester_object
         
-        # if (column[7]!=""):
-        #     section_obj, created = Section.objects.get_or_create(semester = sem_obj, section_name = section, course_category = sem_obj.course_category)
-        #     customuser_object.student.section =  section_obj
+        if (section != ""): 
+            section_obj, created = Section.objects.get_or_create(semester = semester_object, 
+                                                                 section_name = section, 
+                                                                #  course_category = sem_obj.course_category
+                                                                 )
+            customuser_object.student.section =  section_obj
        
         # customuser_object.student.course = course
-        customuser_object.student.faculty = column[10]
-        customuser_object.student.program = program
+        # customuser_object.student.faculty = column[10]
+        customuser_object.student.course = Course.objects.get(course_name = program)
         customuser_object.student.status = status
-        customuser_object.student.contact = contact
+        customuser_object.student.contact = student_contact
         customuser_object.student.permanent_address = permanent_address
         customuser_object.student.temporary_address = temporary_address
         
@@ -316,7 +282,7 @@ def student_file_upload(request):
         customuser_object.student.gpa = gpa
         customuser_object.student.previous_school_name = previous_school
         customuser_object.student.guardian = Father_object.parent
-        customuser_object.student.join_year = batch[0:4]
+        customuser_object.student.join_year = batch
         customuser_object.save()
         customuser_object.groups.add(role)
 
@@ -715,13 +681,12 @@ def edit_student(request, student_id):
 
     if request.method == 'POST':
         student_form = StudentForm(request.POST, request.FILES, instance=student_form_instance)
-        print(request.POST['stu_id'],request.POST['roll_no'],"***************************************************************")
+    
         custom_form = EditCustomUserForm(request.POST, instance=custom_form_instance)
         parent_form = ParentForm(request.POST, instance=parent_form_instance)
         
         try:
             if student_form.is_valid() and custom_form.is_valid() and parent_form.is_valid():
-                print("*****************************Inside **********************************")
                 student_form.save()
                 custom_form.save()
                 parent_form.save()

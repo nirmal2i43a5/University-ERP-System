@@ -381,7 +381,7 @@ def app_enroll(request, pk):
                                                         user_type=role,
                                                         full_name=application_obj.name)
 
-    customuser_object.student.stu_id = student_username
+    customuser_object.student.roll_no = student_username
     print('before', customuser_object.student)
     # customuser_object.student.roll_no = roll_no
     customuser_object.student.gender = application_obj.sex

@@ -50,7 +50,7 @@
                   <td></td>
                   <td>{{ forloop.counter }}</td>
                   <td>{{ certificate.student.student_user }}</td>
-                  <td>{{ certificate.student.stu_id }}</td>
+                  <td>{{ certificate.student.roll_no }}</td>
                   <td>{{ certificate.certificate_number }}</td>
                   <td>     <a href="{% url 'certificate:print_character_certificate' certificate.id certificate.student_id %}" class="btn btn-xs btn-success"><i class = "fas fa-print"></i> Print</a></td>
                   </td>

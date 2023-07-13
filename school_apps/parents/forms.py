@@ -57,10 +57,9 @@ class ParentForm(forms.ModelForm):
                                  widget=forms.TextInput(attrs={"class":"form-control", "placeholder": " Enter Parent Main Contact",}))
     mother_phone=forms.CharField(label = "Parent Additional Contact",required = False, widget=forms.TextInput(attrs={"class":"form-control", "placeholder": " Enter  Parent Additional Contact",}))
     local_guardian_phone=forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"form-control", "placeholder": " Enter Local Guardian Mobile Number",}))
-    home_phone=forms.CharField(required = False, widget=forms.TextInput(attrs={"class":"form-control", "placeholder": " Enter  Home Mobile Number",}))
     class Meta:
         model = Parent
-        fields = ('home_phone','father_name',"father_phone",'local_guardian_name','local_guardian_phone','mother_name','mother_phone',)                
+        fields = ('father_name',"father_phone",'local_guardian_name','local_guardian_phone','mother_name','mother_phone',)                
  
     def __init__(self, *args, **kwargs):
         super(ParentForm,self).__init__(*args, **kwargs)
@@ -88,7 +87,6 @@ class ParentForm(forms.ModelForm):
                     Column('local_guardian_name', css_class='form-group col-md-6 mb-0'),
                     Column('local_guardian_phone', css_class='form-group col-md-6 mb-0'),
 
-                # Column('home_phone', css_class='form-group col-md-6 mb-0'),
                                  
                     css_class='form-row'
             ),
