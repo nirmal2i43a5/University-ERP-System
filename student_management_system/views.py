@@ -10,6 +10,7 @@ from student_management_app.models import (
     Staff, Student, Course, Subject, CustomUser, Semester, Student,CourseCategory
 
 )
+from school_apps.library.models import LibraryMemberProfile,BookIssue,BookReturn,BookEntry,BookRenew,Category,LibraryFine
 from django.views import View
 from schedule.views import FullCalendarView
 from django.contrib.auth.decorators import login_required
@@ -22,7 +23,9 @@ from django.contrib.contenttypes.models import ContentType
 from django.utils import timezone
 from django.contrib.auth.decorators import  permission_required
 from django.http import HttpResponse
-from django.db.models import Count,Q
+from django.db.models import Count,Q,Sum
+from datetime import timedelta
+
 
 
 # @login_required
@@ -142,6 +145,7 @@ class home(FullCalendarView, View):
             inactive_students = Student.objects.filter( student_user__is_active = 0).count()
             active_students = Student.objects.filter( student_user__is_active = 1).count()
             total_subjects = Subject.objects.count()
+            # library_member_count = LibraryMemberProfile.objects.count()
         except:
             try:
                 categories = request.user.staff.courses.all()
@@ -215,7 +219,6 @@ class home(FullCalendarView, View):
             teachers_count = len(teachers_list_final)
         else:
             teachers_count =  Staff.objects.aggregate(total_count=Count('id'))['total_count']
-
         context = {
 
             # 'teachers_count':  Staff.objects.filter(courses__course_name__contains=request.user.adminuser.course_category.course_name).count(),
@@ -224,6 +227,7 @@ class home(FullCalendarView, View):
             'students_count': active_students,  # for active students,
             'inactive_students_count': inactive_students,  # for active students
             'nonscience_faculty_count': nonscience_faculty,
+            
             'science_faculty_count': science_faculty,
             'subjects_count':total_subjects,
             'semester_student_dataset':semester_student_dataset,
@@ -248,6 +252,9 @@ class home(FullCalendarView, View):
                'master_course_category':master_course_category,
             # for calendar
             # 'calendar_slug':calendar_slug,'events':events
+          
+
+
 
         }
         return render(request, 'admin_templates/dashboard.html', context)
@@ -378,10 +385,65 @@ def attendance_home(request):
     return render(request,'attendances/students/attendance_report.html', context)
 
 def library_home(request):
+    categories_book_dataset = []
+    for category in Category.objects.all():
+        category_instance = get_object_or_404(Category, pk = category.pk)
+        books = category_instance.bookentry_set.aggregate(total_count=Count('isbn'))['total_count']
+        categories_book_dataset.append({'category_name':category,'book_count':books})
+    print(categories_book_dataset)
+
+    # start_date = current_date - timedelta(days=14)
+
+    # renewals = BookRenew.objects.filter(renew_date__gte=start_date, renew_date__lte=current_date)
+    renew_count = BookRenew.objects.filter(is_renewed = 1).count()
+    not_renew_count = BookRenew.objects.filter(is_renewed = 0).count()
+
+    current_year = datetime.now().year
+
+    fine_datasets = []
+
+    for month in range(1, 13):  # Months are numbered from 1 to 12
+        # Calculate the first and last day of the month
+        first_day_of_month = datetime(current_year, month, 1)
+        last_day_of_month = first_day_of_month + timedelta(days=31)
+
+        # Query fines for the current month and calculate total paid and not paid fines
+        fines_for_month = LibraryFine.objects.filter(
+            payment_date__gte=first_day_of_month,
+            payment_date__lt=last_day_of_month
+        ).values('is_paid').annotate(total_fine=Sum('fine_amount'))
+
+        # Get the total paid and not paid fines for the current month
+        paid_fine = fines_for_month.filter(is_paid=True).first()
+        paid_amount = paid_fine['total_fine'] if paid_fine else 0
+
+        not_paid_fine = fines_for_month.filter(is_paid=False).first()
+        not_paid_amount = not_paid_fine['total_fine'] if not_paid_fine else 0
+
+        # Create a JSON object for the current month
+        month_json = {
+            'month': first_day_of_month.strftime('%B'),
+            'total_fine': paid_amount + not_paid_amount,
+            'paid_amount': paid_amount,
+            'not_paid_amount': not_paid_amount,
+        }
+
+        # Append the JSON object to the fine statistics list
+        fine_datasets.append(month_json)
+    # print(fine_datasets)
     context = {
         'title':'Library Management',
+          'library_member_count': LibraryMemberProfile.objects.count(),
+            'book_issue_count':BookIssue.objects.count(),
+            'book_return_count':BookReturn.objects.count(),
+            'renew_count':renew_count,
+            'not_renew_count':not_renew_count,
+
+            'categories_book_dataset':categories_book_dataset,
+            'fine_datasets':fine_datasets
                  }
     return render(request, 'admin_templates/dashboard.html', context)
+
 
 def email_services_home(request):
     context = {
