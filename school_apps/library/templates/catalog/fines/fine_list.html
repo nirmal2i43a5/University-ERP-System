@@ -1,0 +1,94 @@
+
+{% extends 'admin_templates/base_admin.html' %}
+{% load static %}
+{% block title %}
+Fine Manage
+{% endblock title %}
+{% block main_content %}
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+
+    <!-- /.card-header -->
+
+    <div class="row">
+      <div class="col-12">
+
+        {% include "includes/messages.html" %}
+
+        <div class="card">
+          {% include 'override_table/header.html' with card_title='Fine Manage' %}
+        
+
+          <!-- /.card-header -->
+          <div class="card-body table-responsive">
+
+        
+            {% url 'library:add_library_fine' as button_url %}
+
+                {% include 'override_table/header_button.html' with button_title='book fine' button_url=button_url %}
+
+            <table id="dataTable"
+              class="table table-sm  table-striped table-bordered table-hover text-nowrap dataTable no-footer">
+              <thead>
+                <tr>
+                    <th class="serial">#</th>
+                    <th>Member</th>
+                    <th>Book</th>
+                    <th>Fine Amount</th>
+                    <th>Status</th>
+
+
+                    <th>Fine created</th>
+    
+    
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    {% for library_fine in library_fine %}
+                    <td class="serial">{{ forloop.counter }}</td>
+                    <td>{{ library_fine.fine_member }}</td>
+                    <td>{{ library_fine.book }}</td>
+                    <td>{{ library_fine.fine_amount }}</td>
+                    {% if library_fine.is_paid == 1 %}
+
+                    <td>Paid</td>
+                    {% else %}
+                    <td>Not Paid</td>
+                    {% endif %}
+
+
+
+                    <td>{{ library_fine.payment_date }}</td>
+                    <td>
+                        <a href="{% url 'library:edit_library_fine' library_fine.id%}" class="btn btn-sm btn-success"><i class="fas fa-edit"></i> Edit</a>
+                        <a href="{% url 'library:del_library_fine' library_fine.id%}" class="btn btn-sm btn-danger"><i class="fas  fa-trash-alt"></i> Delete</a>
+                    </td>
+                </tr>
+                {% endfor %} 
+            </tbody>
+            </table>
+
+ 
+
+
+
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+    </div>
+
+  </div>
+</section>
+<!-- /.content -->
+
+<!-- Delete Modal Form -->
+
+
+
+{% endblock main_content %}

@@ -534,6 +534,8 @@ $("#id_batch").change(function(){
       data:{'batch':batch},
       success:function(data){
           $("#id_issue_member").html(data);
+          $("#id_fine_member").html(data);
+
 
       }
   })

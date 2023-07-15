@@ -1,0 +1,75 @@
+
+
+
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+Book Fine
+{% endblock title %}
+
+{% block main_content %}
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+
+    {% include "includes/messages.html" %}
+
+    <div class="row">
+      <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="card">
+          {% include 'override_table/header.html' with card_title='Create Fine' %}
+          <!-- /.card-header -->
+          <!-- form start -->
+          <form method="post" class = "col-md-6" enctype="multipart/form-data" >
+            <!--using this id = "staff-modelform"  for solving form conflict in formhelper in crispy form -->
+            {% csrf_token %}
+            <div class="card-body">
+            <select name="batch" id = "id_batch" class="form-control select">
+                <option value="">Select Batch</option>
+                {% for item in classes %}
+                <option  value="{{ item.id }}">{{ item.name }}({{ item.course.course_name }})</option>
+            {% endfor %}
+            </select>
+            <br>
+            <br>
+            <br>
+
+              {% crispy form %}
+                             <a href="{% url 'library:library-management' %}" class="btn btn-sm btn-danger">Back</a>
+
+              <button  type="submit" class="btn btn-sm btn-success">
+                Submit
+              </button>
+
+            
+             
+            
+            <!-- /.card-body -->
+
+        
+          </form>
+        </div>
+        <!-- /.card -->
+
+
+
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+
+
+{% endblock main_content %} 
+
+{% block custom_js %}
+<script>
+    $(function(){
+        $('.select').select2({theme: 'bootstrap4'});
+        $('.selectmultiple').select2({theme: 'bootstrap4'});
+    });
+</script>
+{% endblock custom_js %}
