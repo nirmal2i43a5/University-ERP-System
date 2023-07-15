@@ -30,17 +30,25 @@ urlpatterns = [
 
     #----------------------------------- book issue url ---------------------------------------------- 
     path('book_issue_list/', book_issue_list, name='book_issue_list'),
-    path('issue/create/<int:pk>/',BookIssueCreateView.as_view(),name='bookissue-create'),#pk for member
-    # path('book_issue/', book_issue, name='book_issue'),
+    # path('issue/create/<int:pk>/',BookIssueCreateView.as_view(),name='bookissue-create'),#pk for member
+    # path('issue_member_list/', issue_member_list, name='issue_member_list'),
+    path('renew_issue/', renew_issue, name='renew_issue'),
+    path('return_issue/', return_issue, name='return_issue'),
+
+
+
+
+    path('book_issue/', book_issue, name='book_issue'),
     path('book_issue_edit/<int:issue_id>/', book_issue_edit, name='book_issue_edit'),
     path('book_issue_detail/<int:pk>/', book_issue_detail.as_view(), name='book_issue_detail'),
     path('del_book_issue/<int:pk>/', BookIssueDeleteView.as_view(), name='del_book_issue'),
 
     #------------------------------------ book return url ---------------------------------------------
-    # path('book_return/', book_return, name='book_return'),
-    path('<int:pk>/return/',BookReturnView.as_view(),name='book-return'),
+    # path('<int:pk>/return/',BookReturnView.as_view(),name='book-return'),#pk is member
     path('book_return_list/', book_return_list, name = 'book_return_list'),
-    path('book_return/', book_return, name='book_return'),
+    path('issue_list_for_return/<int:pk>/', issue_list_for_return, name='issue_list_for_return'),
+
+    path('book_return/<int:pk>/', book_return, name='book_return'),
 
     path('book_return_edit/<int:pk>/', book_return_edit, name='book_return_edit'),
     path('book_return_detail/<int:pk>/', book_return_detail, name='book_return_detail'),
@@ -48,10 +56,12 @@ urlpatterns = [
 
     # ------------------------------------ book renew url -----------------------------------------------
     path('book_renew_list/', book_renew_list, name='book_renew_list'),
-    path('book_renew/', book_renew, name='book_renew'),
+    path('issue_list_for_renew/<int:pk>/', issue_list_for_renew, name='issue_list_for_renew'),
     path('book_renew_edit/<int:pk>/', book_renew_edit, name='book_renew_edit'),
     path('book_renew_detail/<int:pk>/', book_renew_detail, name='book_renew_detail'),
     path('del_book_renew/<int:pk>/', BookRenewDeleteView.as_view(), name='del_book_renew'),
+    path('book_renew/<int:pk>/', book_renew, name='book_renew'),
+
     
     path('library-management/',library_home,name = 'library-management'),
 ]

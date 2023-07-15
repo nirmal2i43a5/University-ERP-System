@@ -13,6 +13,7 @@ from django.views.decorators.csrf import  csrf_exempt
 from django.contrib.auth.models import Group
 from school_apps.academic.forms import StudentFormSearch,StudentSearch
 from django.contrib.auth.decorators import  permission_required
+from school_apps.library.models import LibraryMemberProfile
 
 
 @permission_required('attendance.add_attendancereport', raise_exception=True)
@@ -684,6 +685,12 @@ def fill_student_select(request):
     students = Student.objects.filter(semester = semester)
     context = {'students': students}
     return render(request, "attendances/auto_fill_select/students.html", context)
+
+def fill_library_issue_member_select(request):
+    semester = Semester.objects.get(pk = request.GET['batch'])
+    students = LibraryMemberProfile.objects.filter(member__semester = semester)
+    context = {'students': students}
+    return render(request, "attendances/auto_fill_select/library_issue_members.html", context)
     
     
 def fill_subject_select(request):

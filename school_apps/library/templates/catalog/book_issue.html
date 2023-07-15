@@ -1,46 +1,38 @@
-{% extends 'admin_templates/base_admin.html'  %} {% block title %}Book Issue{% endblock title %} {% block breadcrumbs %}
-<div class="breadcrumbs">
-    <div class="breadcrumbs-inner">
-        <div class="row m-0">
-            <div class="col-sm-4">
-                <div class="page-header float-left">
-                    <div class="page-title">
-                        <h1>Dashboard</h1>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-8">
-                <div class="page-header float-right">
-                    <div class="page-title">
-                        <ol class="breadcrumb text-right">
-                            <li><a href="#">Dashboard</a></li>
-                            <li><a href="#">Issue</a></li>
-                            <li class="active">Add</li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-{% endblock breadcrumbs %} {% block content %}
+{% extends 'admin_templates/base_admin.html'  %} {% block title %}Book Issue Edit{% endblock title %} 
+{% load crispy_forms_tags %}
+
+ {% block content %}
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
-            <div class="card-header">
-                <strong class="card-title">Issue book</strong>
-            </div>
+           <div class="card-header" style="background:#435EBE;">
+    <h3 class="card-title  text-white">Issue Book</h3>
+  </div>
+  {% include "includes/messages.html" %}
+
+
             <div class="card-body">
                 <!-- Credit Card -->
                 <div id="pay-invoice">
                     <div class="card-body">
-                        <form action="#" method="post" novalidate="novalidate">
-                            {% csrf_token %} {{form}}
+
+                        <select name="batch" id = "id_batch" class="form-control select col-md-5">
+                <option value="">Select Batch</option>
+                {% for item in classes %}
+                <option  value="{{ item.id }}">{{ item.name }}({{ item.course.course_name }})</option>
+            {% endfor %}
+            </select>
+            <br>
+            <br>
+            <br>
+                        <form action="#" method="post" novalidate="novalidate" class = "col-md-5" enctype="multipart/form-data">
+                            {% csrf_token %} {{form|crispy}}
                             <div>
-                                <button id="payment-button" type="submit" class="btn btn-lg btn-info btn-block">
-                                    <span id="payment-button-amount">Issue</span>
-                                </button>
-                            </div>
+                             <a href="{% url 'library:book_issue_list' %}" class="btn btn-sm btn-danger">Back</a>
+
+              <button  type="submit" class="btn btn-sm btn-success">
+                Submit
+              </button>
                         </form>
                     </div>
                 </div>
@@ -53,3 +45,12 @@
     <!--/.col-->
 </div>
 {% endblock content %}
+
+{% block custom_js %}
+<script>
+    $(function(){
+        $('.select').select2({theme: 'bootstrap4'});
+        $('.selectmultiple').select2({theme: 'bootstrap4'});
+    });
+</script>
+{% endblock custom_js %}

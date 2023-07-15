@@ -156,6 +156,7 @@ TEMPLATES = [
             ],
              'libraries':{
             'check_namespace': 'student_management_system.templatetags.check_namespace',
+
             
             }
         },

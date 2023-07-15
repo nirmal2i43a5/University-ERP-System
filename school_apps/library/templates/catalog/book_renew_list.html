@@ -20,7 +20,7 @@ Renew Book
         {% include "includes/messages.html" %}
 
         <div class="card">
-          {% include 'override_table/header.html' with card_title='Renew Book' %}
+          {% include 'override_table/header.html' with card_title='Renew Book List' %}
         
 
           <!-- /.card-header -->
@@ -39,31 +39,23 @@ Renew Book
                     <th>Title</th>
                     <th>Member</th>
                     <th>Renew Date</th>
-                    <th>created_at</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                {% if book_renew %}
                 <tr>
                     {% for bookrenew in book_renew %}
                     <td>{{ forloop.counter }}</td>
-                    <td>{{ bookrenew.title }}</td>
-                    <td>{{ bookrenew.member_name }}</td>
+                    <td>{{ bookrenew.book_issue.title }}</td>
+                    <td>{{ bookrenew.member_id.member }}</td>
                     <td>{{ bookrenew.renew_date}}</td>
-                    <td>{{ bookrenew.created_at}}</td>
                     <td>
                         
-                        <a href="{% url 'library:book_renew_detail' bookrenew.id %}" class="btn btn-xs btn-success"><i class="fas fa-info"></i></a>
-                        <a href="{% url 'library:book_renew_edit' bookrenew.id%}" class="btn btn-xs btn-warning"><i class="fas fa-edit"></i></a>
-                        <a href="{% url 'library:del_book_renew' bookrenew.id %}" class="btn btn-xs btn-danger"><i class="fas fa-xs fa-trash-alt"></i></a>
+                        <a href="{% url 'library:book_renew_edit' bookrenew.id%}" class="btn btn-sm btn-success"><i class="fas fa-edit"></i> Edit</a>
+                        <a href="{% url 'library:del_book_renew' bookrenew.id %}" class="btn btn-sm btn-danger"><i class="fas fa-xs fa-trash-alt"></i> Delete</a>
                     </td>
                 </tr>
-                {% endfor %} {% else %}
-                <tr>
-                    <td>No Book Return Data Found</td>
-                </tr>
-                {% endif %}
+                {% endfor %} 
             </tbody>
             </table>
 

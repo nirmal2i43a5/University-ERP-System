@@ -52,19 +52,31 @@ class IssueForm(ModelForm):
         fields = '__all__'
 
 class BookIssueForm(ModelForm):
+  
     class Meta:
         model=BookIssue
-        fields = '__all__'
-        # exclude = ['member_name',]
+        # fields = '__all__'
+        exclude = ['isbn','expirydate']
+       
+
+class BookIssueEditForm(ModelForm):
+    class Meta:
+        model=BookIssue
+        # fields = '__all__'
+        exclude = ['isbn','expirydate','issue_id']
         
-BookIssueFormset=inlineformset_factory(Issue, BookIssue, form=BookIssueForm,extra=1)
+# BookIssueFormset=inlineformset_factory(Issue, BookIssue, form=BookIssueForm,extra=1)
 
 class BookReturnForm(ModelForm):
     class Meta:
         model = BookReturn
         fields="__all__"
 
-BookIssueReturnFormset=inlineformset_factory(Issue, BookReturn, form=BookReturnForm,extra=1)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['book_issue'].disabled = True
+
+# BookIssueReturnFormset=inlineformset_factory(Issue, BookReturn, form=BookReturnForm,extra=1)
 
 
 class AddMemberForm(forms.ModelForm):
@@ -132,4 +144,8 @@ class MemberDetailForm(forms.ModelForm):
 class BookRenewForm(forms.ModelForm):
     class Meta:
         model = BookRenew
-        fields="__all__"
+        exclude = ('expirydate',)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['book_issue'].disabled = True
+        self.fields['member_id'].disabled = True

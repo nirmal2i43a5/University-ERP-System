@@ -6,40 +6,91 @@
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <li class="nav-item has-treeview">
+               
+                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-table"></i>
                         <p>
-                            Book Transaction
+                            Issue Management
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                     <li class="nav-item">
+                            <a href="{% url 'library:book_issue' %}" class="nav-link">
+                                <i class="nav-icon fas fa-cart-plus"></i>
+                                <p>Create Issue</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'library:book_issue_list' %}" class="nav-link">
+                                <i class="nav-icon fas fa-cart-plus"></i>
+                                <p>Issue List</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                 <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-table"></i>
+                        <p>
+                            Renew Management
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                       <li class="nav-item">
+                            <a href="{% url 'library:renew_issue' %}" class="nav-link">
+                               
+                               <i class="nav-icon fas fa-history"></i> Renew Book</p>
+                            </a>
+                        </li>
+                         <li class="nav-item">
+                            <a href="{% url 'library:book_renew_list' %}" class="nav-link">
+                                <i class="nav-icon fas fa-history"></i>
+                                <p>Renewed List</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                  <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-table"></i>
+                        <p>
+                            Return Management
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{% url 'library:book_issue_list' %}" class="nav-link">
-                                <i class="nav-icon fas fa-cart-plus"></i>
-                                <p>Issue</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{% url 'library:book_return' %}" class="nav-link">
+                            <a href="{% url 'library:return_issue' %}" class="nav-link">
                                 <i class="nav-icon fas fa-long-arrow-alt-left"></i>
-                                <p>Return</p>
+                                <p>Return Book
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{% url 'library:book_renew_list' %}" class="nav-link">
+                            <a href="{% url 'library:book_return_list' %}" class="nav-link">
                                 <i class="nav-icon fas fa-history"></i>
-                                <p>Renew</p>
+                                <p>Returned List</p>
                             </a>
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item">
+                
+                        <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-table"></i>
+                        <p>
+                            Member Management
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                     <li class="nav-item">
                     <a href="{% url 'library:add_member' %}" class="nav-link">
                         <i class="nav-icon fa fa-archive"></i>
                         <p>
-                            Add member
+                            Create member
                         </p>
                     </a>
                 </li>
@@ -47,16 +98,77 @@
                     <a href="{% url 'library:member_list' %}" class="nav-link">
                         <i class="nav-icon fa fa-users"></i>
                         <p>
-                            Members
+                           Manage Members
                         </p>
                     </a>
                 </li>
-              
+                    </ul>
+                </li>
+                                   <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-table"></i>
+                        <p>
+                            Book  Management
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                       <li class="nav-item">
+                    <a href="{% url 'library:add_book' %}" class="nav-link">
+                        <i class="nav-icon fa fa-archive"></i>
+                        <p>
+                            Create book
+                        </p>
+                    </a>
+                </li>
                 <li class="nav-item">
+                    <a href="{% url 'library:book_list' %}" class="nav-link">
+                        <i class="nav-icon fa fa-archive"></i>
+                        <p>
+                           Manage Books
+                        </p>
+                    </a>
+                </li>
+                    </ul>
+                </li>
+ <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-table"></i>
+                        <p>
+                            Fine Management
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                     <li class="nav-item">
+                            <a href="{% url 'library:book_issue' %}" class="nav-link">
+                                <i class="nav-icon fas fa-cart-plus"></i>
+                                <p>Create Fine</p>
+                            </a>
+                        </li>
+                      
+                         <li class="nav-item">
+                            <a href="{% url 'library:book_renew_list' %}" class="nav-link">
+                                <i class="nav-icon fas fa-history"></i>
+                                <p>Manage Fine</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-table"></i>
+                        <p>
+                            Book Category Management
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                      <li class="nav-item">
                     <a href="{% url 'library:add_categories' %}" class="nav-link">
                         <i class="nav-icon fa fa-archive"></i>
                         <p>
-                            Add category
+                            Create category
                         </p>
                     </a>
                 </li>
@@ -68,22 +180,11 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{% url 'library:add_book' %}" class="nav-link">
-                        <i class="nav-icon fa fa-archive"></i>
-                        <p>
-                            Add book
-                        </p>
-                    </a>
+                    </ul>
                 </li>
-                <li class="nav-item">
-                    <a href="{% url 'library:book_list' %}" class="nav-link">
-                        <i class="nav-icon fa fa-archive"></i>
-                        <p>
-                            Books
-                        </p>
-                    </a>
-                </li>
+              
+               
+             
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

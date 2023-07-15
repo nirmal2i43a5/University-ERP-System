@@ -1,71 +1,77 @@
-{% extends 'admin_templates/base_admin.html'  %} {% block title %}Return Book{% endblock title %} {% block breadcrumb %}
-<a class="btn btn-primary" href="{% url 'library:book_return' %}"><i
-    class="fas fa-plus"></i> Return Book</a> {% endblock breadcrumb %} {% block content %}
+{% extends 'admin_templates/base_admin.html' %} {% block title %}Issue Book{% endblock title %} {% block main_content %}
+
+<section class="content">
+	<div class="container-fluid">
+		<!-- /.card-header -->
 
 
-    <section class="content">
-        <div class="container-fluid">
-            <!-- /.card-header -->
-    
-            <div class="row">
-                <div class="col-12">
-                    {% include "includes/messages.html" %}
-    
-                    <div class="card">
-                        {% include 'override_table/header.html' with card_title='Issue Book' %}
-    
-                        <!-- /.card-header -->
-                        <div class="card-body table-responsive">
-                          
-                            <table
-                            id="dataTable"
-                            class="table table-sm table-striped table-bordered table-hover text-nowrap dataTable no-footer"
-                                                >
-                            <thead>
-                                <tr>
-                                    <th class="serial">ID</th>
-                                    <th>Title</th>
-                                    <th>Member</th>
-                                    <th>Return Date</th>
-                                    <th>created_at</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                    
-                                {% if book_return %}
-                                <tr class='clickable-row' data-href="#">
-                                    {% for bookreturnlist in book_return %}
-                                    <td class="serial">{{ forloop.counter }}</td>
-                                    <td>{{ bookreturnlist.title }}</td>
-                                    <td>{{ bookreturnlist.member_name }}</td>
-                                    <td>{{ bookreturnlist.return_date}}</td>
-                                    <td>{{ bookreturnlist.created_at}}</td>
-                                    <td>
-                                        <a href="{% url 'library:book_return_detail' bookreturnlist.id %}" class="btn btn-xs btn-success"><i class="fas fa-info"></i></a>
-                                        <a href="{% url 'library:book_return_edit' bookreturnlist.id%}" class="btn btn-xs btn-warning"><i class="fas fa-edit"></i></a>
-                                        <a href="{% url 'library:del_book_return' bookreturnlist.id %}" class="btn btn-xs btn-danger"><i class="fas fa-xs fa-trash-alt"></i></a>
-                                    </td>
-                                </tr>
-                                {% endfor %} {% else %}
-                                <tr>
-                                    <td>No Book Return Data Found</td>
-                                </tr>
-                                {% endif %}
-                            </tbody>
-                        </table>
-                        </div>
-                        <!-- /.card-body -->
-                    </div>
-                    <!-- /.card -->
-                </div>
-            </div>
-        </div>
-    </section>
+		<div class="row">
+			<div class="col-12">
+				{% include "includes/messages.html" %}
 
-{% endblock content %} {% block morejs %}
-<script>
-    $('#librarytable').DataTable({});
-</script>
+				<div class="card">
+					{% include 'override_table/header.html' with card_title='Return Book' %}
 
-{% endblock morejs %}
+					<!-- /.card-header -->
+					<div class="card-body table-responsive">
+
+					
+
+
+					  
+
+					
+						<table
+							id="dataTable"
+							class="table table-sm table-striped table-bordered table-hover text-nowrap dataTable no-footer"
+						>
+							<thead>
+								<tr>
+								  <th></th>
+									<th class="serial">ID</th>
+									<th>Member Name.</th>
+									<th>Library Card No.</th>
+									<th>Title</th>
+									<th>Issue Quantity</th>
+									<th>Issued Date</th>
+										<th>Return  Date</th>
+									{% comment %} <th>Expiry  Date</th> {% endcomment %}
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody>
+							{% for book_return in book_return %}
+								<tr>
+									<td></td>
+									<td class="serial">{{ forloop.counter }}</td>
+									<td>{{ book_return.book_issue.issue_member.member.student_user.full_name }}</td>
+									<td>{{ book_return.book_issue.issue_member.library_card_no }}</td>
+
+									<td>{{ book_return.book_issue.title }}</td>
+									<td>{{ book_return.quantity }}</td>
+
+
+									<td>{{ book_return.book_issue.issue_date}}</td>
+									<td>{{ book_return.return_date}}</td>
+
+									{% comment %} <td>{{ book_return.expirydate}}</td> {% endcomment %}
+
+									<td>
+										
+										  <a href="{% url 'library:book_return_edit' book_return.id%}" class="btn btn-sm btn-success"><i class="fas fa-edit"></i> Edit</a>
+                        <a href="{% url 'library:del_book_return' book_return.id %}" class="btn btn-sm btn-danger"><i class="fas fa-xs fa-trash-alt"></i> Delete</a>
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<!-- /.card-body -->
+				</div>
+				<!-- /.card -->
+			</div>
+		</div>
+	</div>
+</section>
+
+{% endblock main_content %} 

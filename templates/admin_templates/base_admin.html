@@ -523,10 +523,21 @@ $("#id_batch").change(function(){
       data:{'batch':batch},
       success:function(data){
           $("#id_member").html(data);
+
       }
   })
 })
+$("#id_batch").change(function(){
+  var batch = $(this).val();
+  $.ajax({
+      url:" {% url 'attendance_app:fill_library_issue_member_select' %}",
+      data:{'batch':batch},
+      success:function(data){
+          $("#id_issue_member").html(data);
 
+      }
+  })
+})
 $("#id_filter_semester").change(function(){
   var semester_id = $(this).val();
   

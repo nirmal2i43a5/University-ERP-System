@@ -6,6 +6,9 @@
                  {% include 'override_table/header.html' with card_title='Member List' %}
           <!-- /.card-header -->
             <div class="card-body mx-2">
+            	<a href=" {% url 'library:add_member' %}" class="btn btn-sm btn-outline float-right text-white " style="background:#435EBE;"  >
+						<span> <strong>+ Add Member</strong></span>
+					</a>
                 <div class="table-stats order-table ov-h">
                      <table id="dataTable"
               class="table table-sm  table-striped table-bordered table-hover text-nowrap dataTable no-footer">
@@ -46,8 +49,10 @@
 
                                 <td>
                                     {% comment %} <a href="{% url 'library:member_detail' member_list.id %}" class="btn btn-xs btn-success">View details</a> {% endcomment %}
-                                    <a href="{% url 'library:edit_member' member_list.id %}" class="btn btn-sm btn-success"><i class="fas fa-edit"></i>Edit </a>
-                                    <a href="{% url 'library:del_member' member_list.id %}" class="btn btn-sm btn-danger"><i class="fas fa-xs fa-trash-alt"></i>Delete</a>
+                                    {% comment %} <a href="" class="btn btn-sm btn-primary"><i class="nav-icon fas fa-cart-plus"></i> <strong>Issue Book</strong> </a> {% endcomment %}
+
+                                    <a href="{% url 'library:edit_member' member_list.id %}" class="btn btn-sm btn-success"><i class="fas fa-edit"></i><strong>Edit</strong>  </a>
+                                    <a href="{% url 'library:del_member' member_list.id %}" class="btn btn-sm btn-danger"><i class="fas fa-xs fa-trash-alt"></i><strong>Delete</strong> </a>
                                 </td>
                             </tr>
                             {% endfor %} {% else %}

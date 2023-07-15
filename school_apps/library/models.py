@@ -41,6 +41,9 @@ class LibraryMemberProfile(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self) -> str:
+        return f'{self.member} - Card No : {self.library_card_no}'
+
 
 # @receiver(post_save, sender=LibraryMemberProfile)
 # def postsave_data(sender, instance, created, *args, **kwargs):
@@ -121,7 +124,7 @@ class BookEntry(models.Model):
     created_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.title
+        return f'{self.title}(ISBN: {self.isbn})'
 
     @staticmethod
     def get_all_books():
@@ -140,7 +143,7 @@ def get_expiry():
 class BookIssue(models.Model):
     class Meta:
         verbose_name_plural = 'Book Issue'
-    issue_id = models.ForeignKey(Issue, on_delete=models.CASCADE)
+    issue_member = models.ForeignKey(LibraryMemberProfile, on_delete=models.CASCADE)
     title = models.ForeignKey(BookEntry, on_delete=models.CASCADE)
     isbn = models.CharField(max_length=200)
     quantity = models.IntegerField()
@@ -155,29 +158,49 @@ class BookIssue(models.Model):
 
 
 class BookReturn(models.Model):
-    issue_id = models.ForeignKey(Issue, on_delete=models.CASCADE,null=True)
-    title = models.ForeignKey(BookEntry, on_delete=models.CASCADE)
-    isbn = models.CharField(max_length=200)
+    book_issue = models.ForeignKey(BookIssue, on_delete=models.CASCADE,related_name='bookreturns')
+
+    # title = models.ForeignKey(BookEntry, on_delete=models.CASCADE)
+    # isbn = models.CharField(max_length=200)
     quantity = models.IntegerField()
+    is_returned = models.BooleanField(default=False)
     return_date = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return str(self.title)
+    # def __str__(self):
+    #     return str(self.title)
 
 class BookRenew(models.Model):
-    title = models.CharField(max_length=200)
-    isbn = models.ForeignKey(BookIssue, on_delete=models.CASCADE)
-    quantity = models.IntegerField()
-    member_name = models.CharField(max_length=200)
+    book_issue = models.ForeignKey(BookIssue, on_delete=models.CASCADE,related_name='bookrenew')
     member_id = models.ForeignKey(LibraryMemberProfile, on_delete=models.CASCADE)
     renew_date = models.DateTimeField(auto_now_add=True)
     expirydate = models.DateField(default=get_expiry)
+    is_renewed = models.BooleanField(default=False)
+
+    # def __str__(self):
+    #     return str(self.title) + "[" + str(self.isbn) + ']'
+
+
+class Fine(models.Model):
+    member = models.ForeignKey(LibraryMemberProfile, on_delete=models.CASCADE,blank=True, null=True)
+    book = models.ForeignKey(BookEntry, on_delete=models.CASCADE,blank=True, null=True)
+    fine_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    is_paid = models.BooleanField(default=False)
+    # fine_date = models.DateField()
+    payment_date =  models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return str(self.title) + "[" + str(self.isbn) + ']'
+        return f"Fine for {self.member} - Book: {self.book}"
 
+'''
+id 
+memebr id 
+book id
+fine amount 
+fine status(paid or)
+fine date  = The date when the fine was incurred.
+payment date = The date when the fine was paid (if applicable).
 
-
+'''
 
 class Barcode(models.Model):
     name = models.CharField(max_length=100)

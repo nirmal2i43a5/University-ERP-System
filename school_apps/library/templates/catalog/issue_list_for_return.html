@@ -1,5 +1,4 @@
-{% extends 'admin_templates/base_admin.html' %} {% block title %}Issue Book{% endblock title %}
- {% block main_content %}
+{% extends 'admin_templates/base_admin.html' %} {% block title %}Issue Book{% endblock title %} {% block main_content %}
 
 <section class="content">
 	<div class="container-fluid">
@@ -44,7 +43,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								 {% for book_issue,renew_detail in book_issue %}
+								{% if book_issue %} {% for book_issue in book_issue %}
 								<tr>
 									<td></td>
 									<td class="serial">{{ forloop.counter }}</td>
@@ -54,30 +53,29 @@
 
 
 									<td>{{ book_issue.issue_date}}</td>
-									<td>{{ book_issue.expirydate}} </td>
+									<td>{{ book_issue.expirydate}}</td>
 
 									<td>
 
-								{% if renew_detail.is_renewed == 1 %}
+								{% if book_issue.quantity == 0 %}
 
 									<button type = "button" class="btn btn-sm btn-success">
-										<i class="nav-icon fas fa-history"></i
-										>  <strong>Renewed</strong>
+									<strong>Already Returned</strong>
 											</button>
 
 								{% else %}
-								 <form action = "{% url 'library:book_renew' member.pk %}" method = "post">
+								 <form action = "{% url 'library:book_return' member.pk %}" method = "post">
 									  										{% csrf_token %}
 										<input  type = "hidden" name="bookissue_id" value = "{{book_issue.pk}}" >
 										<input  type = "hidden" name="book_id" value = "{{book_issue.title.isbn}}" >
-										<input  type = "hidden" name="existing_expiry_date" value = "{{book_issue.expirydate}}" >
 
 
+										<input type = "number"  name="quantity" placeholder = "Quantity to Return" required >
                                			 <button type = "submit"
-											class="btn btn-sm btn-danger"
+											class="btn btn-sm btn-success"
 											>
-											<i class="nav-icon fas fa-history"></i
-										>  <strong>Not Renewed</strong>
+											<i class="nav-icon fas fa-long-arrow-alt-left"></i
+										>  Return
 											</button>
 										
 
@@ -91,8 +89,11 @@
 										
 									</td>
 								</tr>
-								{% endfor %}
-								
+								{% endfor %} {% else %}
+								<tr>
+									<td>No Book issued</td>
+								</tr>
+								{% endif %}
 							</tbody>
 						</table>
 					</div>
