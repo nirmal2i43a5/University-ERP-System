@@ -1,0 +1,60 @@
+{% extends 'admin_templates/base_admin.html'  %} {% block title %}Issue Member List{% endblock title %} 
+ {% block main_content %}
+<div class="row">
+    <div class="col-xl-12 ml-2">
+        <div class="card">
+                 {% include 'override_table/header.html' with card_title='Issue Member List' %}
+          <!-- /.card-header -->
+            <div class="card-body mx-2">
+            	
+                <div class="table-stats order-table ov-h">
+                     <table id="dataTable"
+              class="table table-sm  table-striped table-bordered table-hover text-nowrap dataTable no-footer">
+                        <thead>
+                            <tr>
+                                <th class="serial">#</th>
+                                <th>Full Name</th>
+                                 <th>Library Id</th>
+
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if members %} {% for member_list in members %}
+                            <tr>
+                                <td class="serial">{{ forloop.counter }}</td>
+                                <td>{{ member_list.member.student_user.full_name }}</td>
+
+                                <td>{{ member_list.library_card_no}}</td>
+
+                            
+                        
+                                <td>
+                              
+
+                                    <a href="{% url 'library:issue_list_for_return'  member_list.pk %}" class="btn btn-sm btn-success"> <i class="nav-icon fas fa-long-arrow-alt-left"></i> <strong> Return</strong>  </a>
+                               
+                                    {% comment %} <a href="{% url 'library:issue_list_for_renew'  member_list.pk %}" class="btn btn-sm btn-success"><strong>Renew Book</strong>  </a> {% endcomment %}
+                               
+                               
+                                </td>
+                            </tr>
+                            {% endfor %} {% else %}
+                            <tr>
+                                <td>No Member Data</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.table-stats -->
+            </div>
+        </div>
+        <!-- /.card -->
+    </div>
+    <!-- /.col-lg-8 -->
+
+
+</div>
+{% endblock main_content %}
+
