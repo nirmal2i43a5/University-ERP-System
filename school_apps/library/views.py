@@ -1,22 +1,15 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse, reverse_lazy
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.messages.views import SuccessMessageMixin
+from django.shortcuts import render, redirect
+from django.urls import  reverse_lazy
 from django.contrib import messages
-from django.db import transaction
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import  DeleteView
 from django.views.generic import DetailView
-from django.forms import widgets
-from django.forms import inlineformset_factory
-from datetime import datetime
 from student_management_app.models import Semester
 from .models import *
 from .forms import *
-from django.contrib.auth.models import User
 from school_apps.library.models import LibraryMemberProfile
 from django.contrib.auth.decorators import  permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
+
 
 @permission_required('library.view_category', raise_exception=True)
 def category_list(request):
@@ -26,7 +19,7 @@ def category_list(request):
 
 
 @permission_required('library.add_category', raise_exception=True)
-def CategoryAddView(request):
+def add_category(request):
   
     form = CategoryAddForm()
     if request.method == 'POST':
@@ -42,7 +35,7 @@ def CategoryAddView(request):
 
 
 @permission_required('library.view_category', raise_exception=True)
-def CategoryFullView(request, pk):
+def view_category(request, pk):
   
     category_instance = Category.objects.get(id=pk)
     form = CategoryAddForm(instance= category_instance)
@@ -54,7 +47,7 @@ def CategoryFullView(request, pk):
 
 
 @permission_required('library.change_category', raise_exception=True)
-def CategoryUpdateView(request, pk):
+def update_category(request, pk):
   
     category_instance = Category.objects.get(id=pk)
     form = CategoryAddForm(instance=category_instance)
@@ -454,7 +447,7 @@ def book_renew_edit(request, pk):
   
     book_instance = BookRenew.objects.get(id=pk)
     form = BookRenewForm(instance=book_instance)
-    
+
     if request.method == 'POST':
         form = BookRenewForm(data=request.POST, files=request.FILES, instance=book_instance)
         if form.is_valid():
