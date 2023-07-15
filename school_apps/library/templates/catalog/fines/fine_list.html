@@ -33,6 +33,7 @@ Fine Manage
               class="table table-sm  table-striped table-bordered table-hover text-nowrap dataTable no-footer">
               <thead>
                 <tr>
+
                     <th class="serial">#</th>
                     <th>Member</th>
                     <th>Book</th>
@@ -49,6 +50,7 @@ Fine Manage
             <tbody>
                 <tr>
                     {% for library_fine in library_fine %}
+
                     <td class="serial">{{ forloop.counter }}</td>
                     <td>{{ library_fine.fine_member }}</td>
                     <td>{{ library_fine.book }}</td>
@@ -64,8 +66,8 @@ Fine Manage
 
                     <td>{{ library_fine.payment_date }}</td>
                     <td>
-                        <a href="{% url 'library:edit_library_fine' library_fine.id%}" class="btn btn-sm btn-success"><i class="fas fa-edit"></i> Edit</a>
-                        <a href="{% url 'library:del_library_fine' library_fine.id%}" class="btn btn-sm btn-danger"><i class="fas  fa-trash-alt"></i> Delete</a>
+                        <a href="{% url 'library:edit_library_fine' library_fine.id %}" class="btn btn-sm btn-success"><i class="fas fa-edit"></i> Edit</a>
+                        <a href="{% url 'library:del_library_fine' library_fine.id %}" class="btn btn-sm btn-danger"><i class="fas  fa-trash-alt"></i> Delete</a>
                     </td>
                 </tr>
                 {% endfor %} 

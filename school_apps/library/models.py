@@ -189,7 +189,7 @@ class LibraryFine(models.Model):
     payment_date =  models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Fine for {self.member} - Book: {self.book}"
+        return f"Fine for {self.fine_member} - Book: {self.book}"
 
 '''
 id 
