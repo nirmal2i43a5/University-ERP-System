@@ -9,6 +9,9 @@ from .forms import *
 from school_apps.library.models import LibraryMemberProfile
 from django.contrib.auth.decorators import  permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from .models import LibraryMemberProfile, BookIssue, LibraryFine
+from datetime import datetime
+
 
 
 @permission_required('library.view_category', raise_exception=True)
@@ -142,12 +145,17 @@ def add_member(request):
         member_id = request.POST['member']
         student_instance = Student.objects.get(pk=member_id)
         library_number = f'{student_instance.stu_id}-{student_instance.join_year}' 
-        if form.is_valid():   
-            instance = form.save(commit = False)
-            instance.library_card_no = library_number
-            instance.save()
-            
+        if LibraryMemberProfile.objects.filter(member = student_instance).exists():
+            messages.error(request, 'Member already exist')
             return redirect('library:member_list')
+        else:
+            if form.is_valid():   
+                instance = form.save(commit = False)
+                instance.library_card_no = library_number
+                instance.save()
+                messages.success(request, 'Member added successfully')
+                
+                return redirect('library:member_list')
     context = {
         'form':form,
         'classes':Semester.objects.all()
@@ -164,6 +172,8 @@ def edit_member(request, pk):
         form = AddMemberForm(request.POST, request.FILES, instance=member_instance)
         if form.is_valid():   
             form.save()
+            messages.success(request, 'Member updated successfully')
+
             return redirect('library:member_list')
     context = {
         'form':form,
@@ -186,7 +196,8 @@ def member_detail(request, pk):
 class MemberDeleteView(PermissionRequiredMixin,DeleteView):
     model = LibraryMemberProfile
     template_name = 'catalog/confirm_delete.html'
-    success_url = reverse_lazy('member_list')
+    success_url = reverse_lazy('library:member_list')
+    # success_message = 'Member deleted successfully'
     permission_required = 'library.delete_librarymemberprofile'
 
 
@@ -481,21 +492,42 @@ class BookRenewDeleteView(PermissionRequiredMixin,DeleteView):
     permission_required = 'library.delete_bookrenew'
 
 
-@permission_required('library.add_libraryfine', raise_exception=True)
-def add_library_fine(request):
-    form = LibraryFineForm()
-    if request.method == 'POST':
-        form = LibraryFineForm(request.POST, request.FILES)
-        if form.is_valid():   
-            form.save()
-            messages.success(request, 'Fine created successfully')
+# @permission_required('library.add_libraryfine', raise_exception=True)
+# def add_library_fine(request):
+#         # Get the current date
+#     current_date = datetime.now().date()
 
-            return redirect('library:library_fine_list')
-    context = {
-        'form':form,
-        'classes':Semester.objects.all()
-    }
-    return render(request, 'catalog/fines/add_fine.html', context=context)
+#     # Get all LibraryMemberProfile objects using an iterator
+#     users = LibraryMemberProfile.objects.iterator()
+
+#     # Loop through each user
+#     for user in users:
+#         # Get the books issued by the user
+#         issued_books = BookIssue.objects.filter(member_id=user)
+
+#         # Check the expiry date of each book and create fines if needed
+#         for issued_book in issued_books:
+#             if issued_book.expirydate < current_date:
+#                 # Create the LibraryFine instance for the overdue book
+#                 fine = LibraryFine.objects.create(
+#                     fine_member=user,
+#                     book=issued_book.book,
+#                     fine_amount=10.00,  # Set the default fine amount as needed
+#                     is_paid=False,  # Set the default is_paid value as needed
+#                 )
+#     # form = LibraryFineForm()
+#     # if request.method == 'POST':
+#     #     form = LibraryFineForm(request.POST, request.FILES)
+#     #     if form.is_valid():   
+#     #         form.save()
+#     #         messages.success(request, 'Fine created successfully')
+
+#     #         return redirect('library:library_fine_list')
+#     context = {
+#         # 'form':form,
+#         # 'classes':Semester.objects.all()
+#     }
+#     return render(request, 'catalog/fines/add_fine.html', context=context)
 
 
 
@@ -532,3 +564,61 @@ class LibraryFineDeleteView(PermissionRequiredMixin,DeleteView):
     success_url = reverse_lazy('library:library_fine_list')
     permission_required = 'library.delete_libraryfine'
 
+
+
+@permission_required('library.add_libraryfine', raise_exception=True)
+def set_default_fine(request):
+    fine_instance  = SetFine.objects.get(pk = 1)
+    form = SetFineForm(instance = fine_instance)
+    if request.method == 'POST':
+        form = SetFineForm(request.POST,instance = fine_instance)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Fine set successfully')
+            return redirect('library:set_fine')
+    context = {
+        'form':form,
+
+    }
+    return render(request, 'catalog/fines/set_fine.html', context=context)
+
+
+@permission_required('library.add_libraryfine', raise_exception=True)
+def add_library_fine(request):
+
+    if request.method == 'POST':
+
+        current_date = datetime.now().date()
+
+        # Get all LibraryMemberProfile objects who have issued books
+        users_with_issued_books = LibraryMemberProfile.objects.filter(bookissue__isnull=False).distinct()
+
+        # Loop through each user with issued books
+        for user in users_with_issued_books:
+            # Get the books issued by the user
+            issued_books = BookIssue.objects.filter(issue_member=user)
+
+            # Process each issued book and update/create fines as needed
+            for issued_book in issued_books:
+                if issued_book.expirydate < current_date:
+                    # Calculate the fine amount for the overdue book
+                    fine_amount = (current_date - issued_book.expirydate).days * 5.00  # Assuming Rs. 5 per day
+
+                    # Check if a fine already exists for this book
+                    try:
+                        fine = LibraryFine.objects.get(book_issue=issued_book, fine_member=user)
+                        fine.fine_amount = fine_amount
+                        fine.payment_date = current_date
+                        fine.save()
+                    except LibraryFine.DoesNotExist:
+                        fine = LibraryFine.objects.create(
+                            fine_member=user,
+                            book_issue=issued_book,
+                            fine_amount=fine_amount,
+                            is_paid=False,
+                            # payment_date=current_date
+                        )
+        messages.success(request, 'Fine created successfully')
+
+
+    return render(request, 'catalog/fines/add_fine.html')

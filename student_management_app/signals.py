@@ -8,6 +8,7 @@ from django.contrib.auth.models import Group
 from school_apps.school_settings.models import MisSetting
 from django.shortcuts import get_object_or_404
 from schedule.models import Calendar
+from school_apps.library.models import SetFine
 
 # school_classes_choices = [
 #                         'Class Montessori',
@@ -52,6 +53,8 @@ def populate_models(sender, **kwargs):
     master, created = CourseCategory.objects.get_or_create(course_name="Master")
     setting_object, created = MisSetting.objects.get_or_create(version='1.0')
     calendar_slug, created = Calendar.objects.get_or_create(name='event')
+    set_library_fine, created = SetFine.objects.get_or_create(amount = 5.00)
+
    
     # one_to_ten_class = Semester.objects.filter(course_category= CourseCategory.objects.get(course_name = 'School')).exclude(name__in=['Class Montessori',
     #                       'Class Nursery',

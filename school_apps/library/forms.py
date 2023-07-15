@@ -100,6 +100,11 @@ class MemberDetailForm(forms.ModelForm):
         model = LibraryMemberProfile
         fields = '__all__'
 
+class SetFineForm(forms.ModelForm):
+    class Meta:
+        model = SetFine
+        fields = '__all__'
+
 class LibraryFineForm(forms.ModelForm):
     class Meta:
         model = LibraryFine

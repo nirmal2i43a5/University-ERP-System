@@ -179,28 +179,22 @@ class BookRenew(models.Model):
     # def __str__(self):
     #     return str(self.title) + "[" + str(self.isbn) + ']'
 
+class SetFine(models.Model):
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+
 
 class LibraryFine(models.Model):
     fine_member = models.ForeignKey(LibraryMemberProfile, on_delete=models.CASCADE,blank=True, null=True)
-    book = models.ForeignKey(BookEntry, on_delete=models.CASCADE,blank=True, null=True)
+    book_issue = models.ForeignKey(BookIssue, on_delete=models.CASCADE,blank=True, null=True)
     fine_amount = models.DecimalField(max_digits=10, decimal_places=2)
     is_paid = models.BooleanField(default=False)
     # fine_date = models.DateField()
     payment_date =  models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return f"Fine for {self.fine_member} - Book: {self.book}"
+    # def __str__(self):
+    #     return f"Fine for {self.fine_member} - Book: {self.book}"
 
-'''
-id 
-memebr id 
-book id
-fine amount 
-fine status(paid or)
-fine date  = The date when the fine was incurred.
-payment date = The date when the fine was paid (if applicable).
 
-'''
 
 class Barcode(models.Model):
     name = models.CharField(max_length=100)
@@ -220,4 +214,7 @@ class Barcode(models.Model):
         self.barcode.save(f'{self.name}.png', File(buffer), save=False)
         return super().save(*args, **kwargs)
     
+
+
+
 

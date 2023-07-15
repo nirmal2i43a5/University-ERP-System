@@ -60,7 +60,9 @@ urlpatterns = [
     path('del_book_renew/<int:pk>/', BookRenewDeleteView.as_view(), name='del_book_renew'),
     path('book_renew/<int:pk>/', book_renew, name='book_renew'),
    # ------------------------------------ Fine Management url -----------------------------------------------
+     path('set_default_fine/', set_default_fine, name='set_default_fine'),
      path('add_library_fine/', add_library_fine, name='add_library_fine'),
+
      path('library_fine_list/', library_fine_list, name='library_fine_list'),
 
     path('edit_library_fine/<int:pk>/', edit_library_fine, name='edit_library_fine'),
