@@ -9,7 +9,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import DetailView
 from django.forms import widgets
 from django.forms import inlineformset_factory
-
+from datetime import datetime
 from student_management_app.models import Semester
 from .models import *
 from .forms import *
@@ -126,7 +126,7 @@ def view_book(request, pk):
 class BookDeleteView(DeleteView):
     model = BookEntry
     template_name = 'catalog/confirm_delete.html'
-    success_url = reverse_lazy('book_list')
+    success_url = reverse_lazy('library:book_list')
 
 
 
@@ -194,99 +194,161 @@ class MemberDeleteView(DeleteView):
 
 # ----------------------------- Book issue CRUD views ------------------------------------------
 def book_issue_list(request):
-    book_issue = Issue.objects.all()
-    return render(request, 'catalog/book_issued_list.html', {'book_issue': book_issue})
+    book_issue = BookIssue.objects.all()
+
+    return render(request, 'catalog/book_issued_list.html', {'book_issue': book_issue,
+                                                             })
 
 
 
-class BookIssueCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
-    model = Issue
-    template_name = "catalog/issue_info/book_issue_form.html"
-    fields = '__all__'
-    success_message = "Book Issued added successfully."
+# class BookIssueCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+#     model = Issue
+#     template_name = "catalog/issue_info/book_issue_form.html"
+#     fields = '__all__'
+#     success_message = "Book Issued added successfully."
 
-    def get_success_message(self, cleaned_data):
-        print(cleaned_data)
-        print('Book added successfully!')
-        return "Book Issued Successfully! "
+#     def get_success_message(self, cleaned_data):
+#         print(cleaned_data)
+#         print('Book added successfully!')
+#         return "Book Issued Successfully! "
 
-    def get_context_data(self, **kwargs):
-        data = super(BookIssueCreateView, self).get_context_data(**kwargs)
-        if self.request.POST:
-            data['items'] = BookIssueFormset(self.request.POST)
-        else:
-            data['items'] = BookIssueFormset()
-        return data
+#     def get_context_data(self, **kwargs):
+#         data = super(BookIssueCreateView, self).get_context_data(**kwargs)
+#         if self.request.POST:
+#             data['items'] = BookIssueFormset(self.request.POST)
+#         else:
+#             data['items'] = BookIssueFormset()
+#         return data
 
-    def form_valid(self, form):
-        context = self.get_context_data()
-        items = context['items']
-        with transaction.atomic():
-            if items.is_valid():
-                items.instance = form.save(commit=False)
-                for i in items:
-                    title=i.cleaned_data['title']
-                    qt=i.cleaned_data['quantity']
-                    book_quantity = BookEntry.objects.get(title=title)
-                    if book_quantity.quantity < qt:
-                        form.errors['value']='Your entered quantity exceeds book quantity'
-                        return self.form_invalid(form)
-                    else:
-                        book_quantity.quantity -=qt
-                        book_quantity.save()
-                        form.save()
-                        items.save()
-                # sold_item.save()
-        return super(BookIssueCreateView, self).form_valid(form)
+#     def form_valid(self, form):
+#         context = self.get_context_data()
+#         items = context['items']
+#         with transaction.atomic():
+#             if items.is_valid():
+#                 items.instance = form.save(commit=False)
+#                 for i in items:
+#                     title=i.cleaned_data['bookissue_set-0-title']
+#                     qt=i.cleaned_data['quantity']
+#                     book_quantity = BookEntry.objects.get(title=title)
+#                     if book_quantity.quantity < qt:
+#                         form.errors['value']='Your entered quantity exceeds book quantity'
+#                         return self.form_invalid(form)
+#                     else:
+#                         book_quantity.quantity -=qt
+#                         book_quantity.save()
+#                         form.save()
+#                         items.save()
+#                 # sold_item.save()
+#         return super(BookIssueCreateView, self).form_valid(form)
 
-    def get_initial(self):
-        initial=super(BookIssueCreateView,self).get_initial()
-        initial['member']=LibraryMemberProfile.objects.get(pk=self.kwargs['pk'])
-        return initial
+#     def get_initial(self):
+#         initial=super(BookIssueCreateView,self).get_initial()
+#         initial['member']=LibraryMemberProfile.objects.get(pk=self.kwargs['pk'])
+#         return initial
 
 
+# def issue_member_list(request):
+#     member_ids = BookIssue.objects.values_list('issue_member', flat=True).distinct()
 
-# def book_issue(request):
-#     if not request.user.is_superuser:
-#         return redirect('login')
-#     form = BookIssueForm()
-#     if request.method == 'POST':
-#         form = BookIssueForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             title=form.cleaned_data['issue_book_name']
-#             qt=form.cleaned_data['quantity']
-#             print(title)
-#             print(qt)
-#             book_quantity = BookEntry.objects.get(title=title)
-#             if book_quantity.quantity < qt:
-#                 form.errors['value']='Your entered quantity exceeds book quantity'
-#                 return self.form_invalid(form)
-#             else:
-#                 book_quantity.quantity -=qt
-#                 book_quantity.save()
-#                 form.save()
-#             return redirect('library:book_issue_list')
+#     members = LibraryMemberProfile.objects.filter(id__in=member_ids)
 #     context = {
-#         'form':form
+#     'members':members
 #     }
-#     return render(request, 'catalog/book_issue.html', context=context)
+
+#     return render(request, 'catalog/issue_member_list.html', context=context)
+
+def renew_issue(request):
+    member_ids = BookIssue.objects.values_list('issue_member', flat=True).distinct()
+
+    members = LibraryMemberProfile.objects.filter(id__in=member_ids)
+    context = {
+    'members':members
+    }
+
+    return render(request, 'catalog/renew_issue.html', context=context)
+
+def return_issue(request):
+    member_ids = BookIssue.objects.values_list('issue_member', flat=True).distinct()
+
+    members = LibraryMemberProfile.objects.filter(id__in=member_ids)
+    context = {
+    'members':members
+    }
+
+    return render(request, 'catalog/return_issue.html', context=context)
+    
+def issue_list_for_return(request,pk):
+    member = LibraryMemberProfile.objects.get(pk = pk)
+    book_issue = member.bookissue_set.all()
+    # for book_issue in book_issue:
+    #     book_issue_instance = BookIssue.objects.get(pk = book_issue.pk)
+    #     return_status = book_issue_instance.bookreturn_set.values_list('is_returned', flat=True)
+    
+
+    context = {
+    'book_issue':book_issue,
+    'member':member
+    }
+    return render(request, 'catalog/issue_list_for_return.html', context=context)
+
+
+def book_issue(request):
+  
+    form = BookIssueForm()
+    if request.method == 'POST':
+        form = BookIssueForm(request.POST, request.FILES)
+        if form.is_valid():
+            # member_id = form.cleaned_data['member']
+            book_instance=form.cleaned_data['title']
+            quantity=form.cleaned_data['quantity']
+            book_quantity = BookEntry.objects.get(isbn=book_instance.isbn)
+            if book_quantity.quantity < quantity:
+                messages.error(request, f'Your entered quantity exceeds book quantity.There is only {book_quantity.quantity} books left')
+
+                return redirect('library:book_issue')
+
+            else:
+                book_quantity.quantity -= quantity
+                book_quantity.save()
+                form.save()
+                messages.success(request, 'Book issued successfully')
+            return redirect('library:book_issue_list')
+    context = {
+        'form':form,
+         'classes':Semester.objects.all()
+
+    }
+    return render(request, 'catalog/book_issue.html', context=context)
 
 
 def book_issue_edit(request, issue_id):
-    book_instance = Issue.objects.get(id=issue_id)
-    form = IssueForm(request.POST,instance=book_instance)
-    ItemFormset = inlineformset_factory(Issue, BookIssue, form=IssueForm, extra=0)
+    book_instance = BookIssue.objects.get(id=issue_id)
+   
     if request.method == 'POST':
-        formset = ItemFormset(data = request.POST, files = request.FILES, instance=book_instance)
+        form = BookIssueEditForm(request.POST,instance=book_instance)
         if form.is_valid():
-            form.save()
-            formset.save()
+            quantity = form.cleaned_data['quantity']
+            book_instance=form.cleaned_data['title']
+            book_quantity = BookEntry.objects.get(isbn=book_instance.isbn)
+            if book_quantity.quantity < quantity:
+                messages.error(request, f'Your entered quantity exceeds book quantity.There is only {book_quantity.quantity} books left')
+                return redirect('library:book_issue_edit',issue_id=issue_id)
+
+            else:
+                book_quantity.quantity -= quantity
+                book_quantity.save()
+                form.save()
+                messages.success(request, 'Book issued Updated successfully')
+
             return redirect('library:book_issue_list')
     else:
-        form = IssueForm(instance=book_instance)
-        formset = ItemFormset(instance=book_instance)
+        form = BookIssueEditForm(instance=book_instance)
+        # formset = ItemFormset(instance=book_instance)
 
-    return render(request, 'catalog/book_issue_edit.html', {'form': form, 'formset': formset})
+    return render(request, 'catalog/book_issue_edit.html', {'form': form, 
+                                                            # 'formset': formset
+                                                            }
+                                                            )
 
 
 
@@ -301,92 +363,48 @@ class book_issue_detail(LoginRequiredMixin,DetailView):
 
 
 class BookIssueDeleteView(DeleteView):
-    model = Issue
+    model = BookIssue
     template_name = 'catalog/confirm_delete.html'
     success_url = reverse_lazy('library:book_issue_list')
 
 
 # ----------------------------- Book return CRUD views ------------------------------------------
 def book_return_list(request):
-    book_return = Issue.objects.all()
+    book_return = BookReturn.objects.all()
     return render(request, 'catalog/book_return_list.html', {'book_return': book_return})
 
 
 
-def book_return(request):
-    book_return = BookReturn.objects.all()
-    return render(request, 'catalog/return_info/book_return.html', {'book_return': book_return})
 
+def book_return(request,pk):
+   
 
+    if request.method == 'POST':
 
-class BookReturnView(LoginRequiredMixin,DetailView,CreateView):
-    model = Issue
-    fields='__all__'
-    template_name = 'catalog/book_return_update.html'
+        quantity = request.POST.get('quantity')
+        bookissue_id = request.POST.get('bookissue_id')
+        isbn = request.POST.get('book_id')
 
-    def get_context_data(self, **kwargs):
-        data = super(BookReturnView, self).get_context_data(**kwargs)
-        if self.request.POST:
-            data['items'] = BookIssueReturnFormset(self.request.POST)
+        book_issue_instance = BookIssue.objects.get(pk=bookissue_id)
+        book_quantity = BookEntry.objects.get(pk=isbn)
+
+        if book_quantity.quantity < int(quantity):
+            messages.error(request, f'Your entered quantity exceeds book quantity.There is only {book_quantity.quantity} books left')
+            return redirect('library:issue_list_for_return',pk)
         else:
-            data['items'] = BookIssueReturnFormset()
-        return data
+            book_quantity.quantity += int(quantity)
+            book_issue_instance.quantity -= int(quantity)
+            book_quantity.save()
+            book_issue_instance.save()
+            book_return = BookReturn.objects.create(book_issue = book_issue_instance, quantity = quantity,is_returned = True)
+            book_return.save()
+            messages.success(request, 'Book returned successfully')
 
-    def form_valid(self, form):
-        context = self.get_context_data()
-        print(context)
-        member_id=LibraryMemberProfile.objects.get(pk=self.kwargs['pk'])
-        user_id=User.objects.get(username=member_id)
-        member_id=LibraryMemberProfile.objects.get(member=user_id)
-        # issue_id = Issue.objects.get(member_id=member_id)
-        items = context['items']
-        with transaction.atomic():
-            if items.is_valid():
-                items.instance = form.save()
-                items.save()
-                for i in items:
-                    title = i.cleaned_data['title']
-                    qt=i.cleaned_data['quantity']
-                    isbn=i.cleaned_data['isbn']
-                    # issue_item_id = BookIssue.objects.filter(issue_id_id=issue_id, isbn=isbn)
-                    # for i in issue_item_id:
-                    #     i.quantity -= qt
-                    #     i.save()
-                    issued_item=BookEntry.objects.get(title=title)
-                    issued_item.quantity +=qt
-                    issued_item.save()
-        return super(BookReturnView, self).form_valid(form)
-
-    # def get_initial(self):
-    #     initial=super(BookReturnView,self).get_initial()
-    #     initial['member']=LibraryMemberProfile.objects.get(pk=self.kwargs['pk'])
-    #     return initial
+        return redirect('library:issue_list_for_return',pk)
+   
+    return render(request, 'catalog/issue_list_for_return.html')
 
 
-# def book_return(request):
-#     if not request.user.is_superuser:
-#         return redirect('login')
-#     form = BookReturnForm()
-#     if request.method == 'POST':
-#         form = BookReturnForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             title=form.cleaned_data['title']
-#             qt=form.cleaned_data['quantity']
-#             print(title)
-#             print(qt)
-#             book_quantity = BookEntry.objects.get(title=title)
-#             if book_quantity.quantity < qt:
-#                 form.errors['value']='Your entered quantity exceeds book quantity'
-#                 return self.form_invalid(form)
-#             else:
-#                 book_quantity.quantity += qt
-#                 book_quantity.save()
-#                 form.save()
-#             return redirect('library:book_return_list')
-#     context = {
-#         'form':form
-#     }
-#     return render(request, 'catalog/add_book_return.html', context=context)
 
 
 
@@ -420,7 +438,7 @@ def book_return_detail(request, pk):
 class BookReturnDeleteView(DeleteView):
     model = BookReturn
     template_name = 'catalog/confirm_delete.html'
-    success_url = reverse_lazy('book_return_list')
+    success_url = reverse_lazy('library:book_return_list')
 
 
 # ----------------------------- Book renew CRUD views ------------------------------------------
@@ -429,19 +447,61 @@ def book_renew_list(request):
     return render(request, 'catalog/book_renew_list.html', {'book_renew':book_renew})
 
 
+from django.db.models import Prefetch, Subquery
+def issue_list_for_renew(request,pk):
+    member = LibraryMemberProfile.objects.get(pk = pk)
+    all_book_issues = member.bookissue_set.all()
+    prefetch = Prefetch(
+    'bookrenew',
+    queryset=BookRenew.objects.order_by('-expirydate').only('expirydate', 'is_renewed'),
+    to_attr='latest_renewal'
+)
 
-def book_renew(request):
-  
-    form = BookRenewForm()
-    if request.method == 'POST':
-        form = BookRenewForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('library:book_renew_list')
+# Apply the prefetch to BookIssue queryset
+    book_issues = all_book_issues.prefetch_related(prefetch)
+
+    # Access latest expiry date and is_renewed status for each BookIssue
+    book_renew_details = []
+    for book_issue in book_issues:
+        latest_renewal = book_issue.latest_renewal[0] if book_issue.latest_renewal else None
+        print(latest_renewal)
+        expiry_date = latest_renewal.expirydate if latest_renewal else None
+        is_renewed = latest_renewal.is_renewed if latest_renewal else None
+    
+            # print(days_late_to_renew,"********************88")
+        book_renew_details.append({"expiry_date": expiry_date, "is_renewed": is_renewed,
+                                #    'days_late_to_renew':days_late_to_renew
+                                   })
+    print(book_renew_details)
+    
     context = {
-        'form':form
+        'book_issue': zip(all_book_issues,book_renew_details),
+    # 'book_issue':book_issues,
+    'member':member
     }
     return render(request, 'catalog/add_book_renew.html', context=context)
+    
+
+  
+def book_renew(request,pk):
+
+    if request.method == 'POST':
+
+        bookissue_id = request.POST.get('bookissue_id')
+        member_instance = LibraryMemberProfile.objects.get(pk = pk)
+        book_issue_instance = BookIssue.objects.get(pk=bookissue_id)
+        book_renew = BookRenew.objects.create(book_issue = book_issue_instance, member_id = member_instance,is_renewed = True)
+        book_renew.save()
+        print(book_renew.expirydate)
+        book_issue_instance.expirydate = book_renew.expirydate
+        book_issue_instance.save()
+        print(book_issue_instance.expirydate)
+        messages.success(request, 'Book renewed successfully')
+
+        return redirect('library:issue_list_for_renew',pk)
+
+
+    return render(request, 'catalog/issue_list_for_renew.html')
 
 
 
@@ -475,7 +535,7 @@ def book_renew_detail(request, pk):
 class BookRenewDeleteView(DeleteView):
     model = BookRenew
     template_name = 'catalog/confirm_delete.html'
-    success_url = reverse_lazy('book_renew_list')
+    success_url = reverse_lazy('library:book_renew_list')
 
 
 
