@@ -31,6 +31,8 @@ def loginView(request):
 	form = LoginForm()
 
 	if request.method == "POST":
+		print("Indise:::::::::::::::::::::::::::::::::")
+
 		username = request.POST.get("username")
 		password = request.POST.get("password")
 		user = authenticate(request, username=username, password=password)
@@ -38,27 +40,37 @@ def loginView(request):
 		password_exists = CustomUser.objects.filter(password=password).exists()
 
 		if user is not None:
+			print("::::Inside user is not none:::::::::::::::::::")
 			login(request, user)
 			group = None
 
 			if request.user.groups.exists():
 				group = request.user.groups.all()[0].name
+				print(group,"::::::::::::::::::Group")
 
 			if group == 'Super-Admin' or request.user.is_superuser:
 				return redirect('dashboard')
+			
 			elif group == 'Teacher':# or request.user.is_superuser:
 				return redirect('dashboard')
+			
+			elif group == 'Library':
+				print("Inside library test:::::::::::::::::::::::::::::::::")
+				return redirect('library:library-management')
 			
 			else:
 				# i case i choose wrong role based on username and password
 				messages.error(request, "Invalid User")
 				return redirect('login')
+			
 		elif not username_exists and password_exists:
 			messages.error(request, "Invalid Username")
 			return redirect('login')
+		
 		elif not password_exists and username_exists:
 			messages.error(request, "Invalid Password")
 			return redirect('login')
+		
 		else:
 			# in case of username and password error
 			messages.error(request, "Invalid Username and Password")
