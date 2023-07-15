@@ -93,54 +93,27 @@ class EditMemberForm(forms.ModelForm):
         model = LibraryMemberProfile
         fields = '__all__'
         exclude = ('user','member',)
-    # full_name = forms.CharField(widget=forms.TextInput(attrs={
-    #     'class': 'form-control',
-    #     'id': 'full_name',
-    #     'data-val': 'true',
-    #     'data-val-required': 'Please enter first name',
-    # }))
-    # email = forms.CharField(widget=forms.EmailInput(attrs={
-    #     'class': 'form-control',
-    #     'id': 'email',
-    #     'data-val': 'true',
-    #     'data-val-required': 'Please enter email',
-    # }))
-    # avatar = forms.ImageField(widget=forms. FileInput(attrs={
-    #     'class': 'form-control',
-    #     'id': 'email',
-    #     'data-val': 'true',
-    #     'data-val-required': 'Please enter email',
-    # }))
+
 
 class MemberDetailForm(forms.ModelForm):
     class Meta:
         model = LibraryMemberProfile
         fields = '__all__'
-    first_name = forms.CharField(widget=forms.TextInput(attrs={
-        'class': 'form-control',
-        'id': 'first_name',
-        'data-val': 'true',
-        'data-val-required': 'Please enter first name',
-    }))
-    last_name = forms.CharField(widget=forms.TextInput(attrs={
-        'class': 'form-control',
-        'id': 'last_name',
-        'data-val': 'true',
-        'data-val-required': 'Please enter last name',
-    }))
-    email = forms.CharField(widget=forms.EmailInput(attrs={
-        'class': 'form-control',
-        'id': 'email',
-        'data-val': 'true',
-        'data-val-required': 'Please enter email',
-    }))
-    avatar = forms.ImageField(widget=forms. FileInput(attrs={
-        'class': 'form-control',
-        'id': 'email',
-        'data-val': 'true',
-        'data-val-required': 'Please enter email',
-    }))
-    
+
+class LibraryFineForm(forms.ModelForm):
+    class Meta:
+        model = LibraryFine
+        fields = '__all__'
+
+class UpdateLibraryFineForm(forms.ModelForm):
+    class Meta:
+        model = LibraryFine
+        fields = '__all__'
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['fine_member'].disabled = True
+        self.fields['book'].disabled = True
+     
 class BookRenewForm(forms.ModelForm):
     class Meta:
         model = BookRenew
