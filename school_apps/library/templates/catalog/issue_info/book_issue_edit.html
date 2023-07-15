@@ -50,7 +50,7 @@
     <input type="submit" class="btn btn-primary" value="Update"> {% endif %}
 </form>
 
-{% endblock content %} {% block morejs %}
+{% endblock content %} {% block javascript %}
 <script src="{% static 'dist/js/formset/jquery.formset.js' %}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
 <script type="text/javascript">
@@ -66,4 +66,4 @@
     $('select').select2()
 </script>
 
-{% endblock morejs %}
+{% endblock javascript %}
