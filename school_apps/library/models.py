@@ -180,8 +180,8 @@ class BookRenew(models.Model):
     #     return str(self.title) + "[" + str(self.isbn) + ']'
 
 
-class Fine(models.Model):
-    member = models.ForeignKey(LibraryMemberProfile, on_delete=models.CASCADE,blank=True, null=True)
+class LibraryFine(models.Model):
+    fine_member = models.ForeignKey(LibraryMemberProfile, on_delete=models.CASCADE,blank=True, null=True)
     book = models.ForeignKey(BookEntry, on_delete=models.CASCADE,blank=True, null=True)
     fine_amount = models.DecimalField(max_digits=10, decimal_places=2)
     is_paid = models.BooleanField(default=False)
