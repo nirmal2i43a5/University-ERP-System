@@ -3,10 +3,8 @@
 <section class="content">
 	<div class="container-fluid">
 		<!-- /.card-header -->
-<a class="btn btn-secondary" href="{% url 'library:member_list' %}"><i
-    class="fas fa-plus"></i>Existing Member</a>
-<a class="btn btn-primary" href="{% url 'library:add_member' %}"><i
-    class="fas fa-plus"></i> Add New Member</a> 
+
+
 		<div class="row">
 			<div class="col-12">
 				{% include "includes/messages.html" %}
@@ -16,44 +14,64 @@
 
 					<!-- /.card-header -->
 					<div class="card-body table-responsive">
+
+					<a href=" {% url 'library:book_issue' %}" class="btn btn-sm btn-outline float-right text-white " style="background:#435EBE;"  >
+						<span> <strong>+ Book Issue</strong></span>
+					</a>
+
+
+
+					  
+
 					
 						<table
 							id="dataTable"
 							class="table table-sm table-striped table-bordered table-hover text-nowrap dataTable no-footer"
-							data-page-length="100"
 						>
 							<thead>
 								<tr>
+								  <th></th>
 									<th class="serial">ID</th>
+									<th>Member Name.</th>
+									<th>Library Card No.</th>
 									<th>Title</th>
-									<th>Member</th>
+									<th>Issue Quantity</th>
 									<th>Issued Date</th>
+									<th>Expiry  Date</th>
 									<th>Action</th>
 								</tr>
 							</thead>
 							<tbody>
 								{% if book_issue %} {% for book_issue in book_issue %}
 								<tr>
+									<td></td>
 									<td class="serial">{{ forloop.counter }}</td>
-									<td>{{ book_issue.issue_book_name }}</td>
-									<td>{{ book_issue.member_name }}</td>
+									<td>{{ book_issue.issue_member.member.student_user.full_name }}</td>
+									<td>{{ book_issue.issue_member.library_card_no }}</td>
+
+									<td>{{ book_issue.title }}</td>
+									<td>{{ book_issue.quantity }}</td>
+
+
 									<td>{{ book_issue.issue_date}}</td>
+									<td>{{ book_issue.expirydate}}</td>
+
 									<td>
-										<a
+										{% comment %} <a
 											href="{% url 'library:book_issue_detail' book_issue.id %}"
 											class="btn btn-xs btn-success"
 											><i class="fas fa-info"></i
-										></a>
+										></a> {% endcomment %}
 										<a
 											href="{% url 'library:book_issue_edit' book_issue.id %}"
-											class="btn btn-xs btn-warning"
+											class="btn btn-sm btn-success"
 											><i class="fas fa-edit"></i
-										></a>
+										> Edit</a>
 										<a
 											href="{% url 'library:del_book_issue' book_issue.id %}"
-											class="btn btn-xs btn-danger"
+											class="btn btn-sm btn-danger"
 											><i class="fas fa-xs fa-trash-alt"></i
-										></a>
+										> Delete</a>
 									</td>
 								</tr>
 								{% endfor %} {% else %}
