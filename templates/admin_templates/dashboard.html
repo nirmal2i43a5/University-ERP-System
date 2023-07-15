@@ -6,7 +6,6 @@
 {% load static %}
 {% load compress %}
 {% load auth_extras %}
-<!--for user group check-->
 
 {% block title %}
 Dashboard
@@ -47,12 +46,6 @@ Dashboard
 {% include "includes/include_admin/erp_components.html" %}
 
 {% include "includes/include_admin/classroom_popup.html" %}
-
-<!---------------------------------------------Admin dashboard start----------------------------------------------------------------->
-{% if request.user.is_superuser %}
-
-{% if url_name == 'dashboard' %}
-
 {% compress js %}
 <script
 type="text/javascript"
@@ -71,6 +64,26 @@ type="text/javascript"
 src="{% static 'plugins/highcharts/modules/accessibility.js' %}"
 ></script>
 {% endcompress %}
+
+{% if not url_name == 'dashboard' %}
+
+
+ {% if  request.user.is_superuser  or request.user|has_group:'Library'  %}
+
+    {% include "includes/include_admin/include_dashboard/library_dashboard.html" %}
+    {% endif %}
+    
+{% endif %}
+
+<!---------------------------------------------Admin dashboard start----------------------------------------------------------------->
+
+
+
+{% if request.user.is_superuser %}
+ 
+{% if url_name == 'dashboard' %}
+
+
 <!-- Main content -->
 <section class="content">
   <div class="container-fluid">
@@ -191,13 +204,7 @@ src="{% static 'plugins/highcharts/modules/accessibility.js' %}"
     <!---------------------------------------------Student dashboard end----------------------------------------------------------------->
 
 
-    <!---------------------------------------------parent dashboard start----------------------------------------------------------------->
 
-    {% elif request.user|has_group:'Parent' %}
-
-    {% include "includes/include_admin/include_dashboard/parent_dashboard.html" %}
-
-    {% include "includes/include_admin/notice.html" %}
 
     <!---------------------------------------------parent dashboard end----------------------------------------------------------------->
 
@@ -209,7 +216,17 @@ src="{% static 'plugins/highcharts/modules/accessibility.js' %}"
     {% include "includes/include_admin/include_dashboard/teacher_dashboard.html" %}
     {% include "includes/calendar.html" %}
     
- 
+
+     <!---------------------------------------------library dashboard start----------------------------------------------------------------->
+  
+    
+     <!---------------------------------------------parent dashboard start----------------------------------------------------------------->
+
+    {% elif request.user|has_group:'Parent' %}
+
+    {% include "includes/include_admin/include_dashboard/parent_dashboard.html" %}
+
+    {% include "includes/include_admin/notice.html" %}
 
     <!---------------------------------------------Teacher dashboard end----------------------------------------------------------------->
 
