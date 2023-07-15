@@ -513,6 +513,8 @@ def book_renew_edit(request, pk):
         form = BookRenewForm(data=request.POST, files=request.FILES, instance=book_instance)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Book renew edited successfully')
+
             return redirect('library:book_renew_list')
     context = {
         'form':form
@@ -538,4 +540,51 @@ class BookRenewDeleteView(DeleteView):
     success_url = reverse_lazy('library:book_renew_list')
 
 
+
+def add_library_fine(request):
+    form = LibraryFineForm()
+    if request.method == 'POST':
+        form = LibraryFineForm(request.POST, request.FILES)
+        if form.is_valid():   
+            form.save()
+            messages.success(request, 'Fine created successfully')
+
+            return redirect('library:library_fine_list')
+    context = {
+        'form':form,
+        'classes':Semester.objects.all()
+    }
+    return render(request, 'catalog/fines/add_fine.html', context=context)
+
+
+
+def edit_library_fine(request,pk):
+    library_fine_instance = LibraryFine.objects.get(id=pk)
+
+    form = UpdateLibraryFineForm(instance = library_fine_instance)
+    if request.method == 'POST':
+        form = UpdateLibraryFineForm(request.POST, request.FILES,instance = library_fine_instance)
+        if form.is_valid():   
+            form.save()
+            messages.success(request, 'Fine edited successfully')
+
+            return redirect('library:library_fine_list')
+    context = {
+        'form':form,
+        'classes':Semester.objects.all(),
+        'fine_instance':library_fine_instance
+    }
+    return render(request, 'catalog/fines/edit_fine.html', context=context)
+
+
+def library_fine_list(request):
+    library_fine = LibraryFine.objects.all()
+    return render(request, 'catalog/fines/fine_list.html', {'library_fine': library_fine})
+
+
+
+class LibraryFineDeleteView(DeleteView):
+    model = LibraryFine
+    template_name = 'catalog/confirm_delete.html'
+    success_url = reverse_lazy('library:library_fine_list')
 
