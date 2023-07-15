@@ -1,6 +1,30 @@
-{% extends 'admin_templates/base_admin.html'  %} {% block title %} {% endblock title %} {% block content %}
 
-<form action="" method="POST">
+
+
+
+{% extends 'admin_templates/base_admin.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+Delete
+{% endblock title %}
+
+{% block main_content %}
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+
+    {% include "includes/messages.html" %}
+
+    <div class="row">
+      <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="card">
+          {% include 'override_table/header.html' with card_title='Delete' %}
+          <!-- /.card-header -->
+          <!-- form start -->
+          <form action="" method="POST">
     {% csrf_token %}
 
     <div class="alert">
@@ -8,9 +32,17 @@
         <p>All contents attached will be deleted.</p>
     </div>
 
-    <input type="submit" class="btn btn-primary" value="Confirm">
+    <input type="submit" class="btn btn-primary mx-2 my-1" value="Confirm">
 
 </form>
+        </div>
+        <!-- /.card -->
 
 
-{% endblock content %}
+
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+{% endblock main_content %}
