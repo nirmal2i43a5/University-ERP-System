@@ -190,8 +190,8 @@ class EditCustomUserForm(forms.ModelForm):
 # this is for other user like driver,receptionist,accountant and others
 class ExtraUserForm(forms.ModelForm):
 
-    # role = forms.ModelChoiceField(
-    #     empty_label="Select Branch ", queryset=Group.objects.exclude(name__in = ['Admin','Student','Teacher','Parent']), label="Branch")
+    role = forms.ModelChoiceField(
+        empty_label="Select Branch ", queryset=Group.objects.exclude(name__in = ['Admin','Student','Teacher','Parent','Super-Admin','Bachelor-Admin','Master-Admin']), label="Branch")
     dob = forms.DateField(required=False, label='Date of Birth',
                           widget=forms.DateInput(attrs={'type': 'date', }))
     join_date = forms.DateField(
@@ -220,7 +220,9 @@ class ExtraUserForm(forms.ModelForm):
 
         self.helper.layout = Layout(
             Row(
-                Column('branch', css_class='form-group col-md-6 mb-0'),
+                # Column('branch', css_class='form-group col-md-6 mb-0'),
+                Column('role', css_class='form-group col-md-6 mb-0'),
+
                   Row(
             #  Column(HTML('<button type="button" class="btn btn-primary" style="margin-top: 30px;" data-toggle="modal" data-target="#exampleModal">+</button>')),
         ),

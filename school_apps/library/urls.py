@@ -3,15 +3,13 @@ from .views import *
 from student_management_system.views import library_home
 app_name = 'library'
 urlpatterns = [
-    #-------------------------------- login logout url -----------------------------------------
-    # path('login/', login_page, name='login'),
-    # path('logout/', logout_page, name='logout'),
+
 
     # ---------------------------------- Book categories ------------------------------------------
     path('book/category/', category_list, name='category_list'),
-    path('add_categories/', CategoryAddView, name='add_categories'),
-    path('edit_categories/<int:pk>', CategoryUpdateView, name='edit_categories'),
-    path('view_category/<int:pk>', CategoryFullView, name='view_categories'),
+    path('add_categories/', add_category, name='add_categories'),
+    path('edit_categories/<int:pk>', view_category, name='edit_categories'),
+    path('view_category/<int:pk>', update_category, name='view_categories'),
     path('del_categories/<int:pk>', CategoryDeleteView.as_view(), name='del_categories'),
 
     #--------------------------------- book url --------------------------------------------------

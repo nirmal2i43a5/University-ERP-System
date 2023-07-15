@@ -1,0 +1,38 @@
+
+
+<script>
+  Highcharts.chart('fine_details-container', {
+      chart: {
+          type: 'column'
+      },
+      title: {
+          text: 'Fine Status'
+      },
+      xAxis: {
+          categories: [
+            {% for entry in fine_datasets %}'{{ entry.month }} '{% if not forloop.last %}, {% endif %}{% endfor %}
+          ]
+      },
+      series: [{
+          name: 'Total Fine',
+          data: [
+            {% for entry in fine_datasets %}{{ entry.total_fine }}{% if not forloop.last %}, {% endif %}{% endfor %}
+          ],
+          color: '#999DF1'
+      },
+        {
+          name: 'Paid',
+          data: [
+            {% for entry in fine_datasets %}{{ entry.paid_amount }}{% if not forloop.last %}, {% endif %}{% endfor %}
+          ],
+          color: '#A3EDBA'
+      }, {
+          name: 'Not Paid',
+          data: [
+            {% for entry in fine_datasets %}{{ entry.not_paid_amount }}{% if not forloop.last %}, {% endif %}{% endfor %}
+          ],
+          color: '#ff757f'
+      }]
+  });
+</script>
+

@@ -1,0 +1,32 @@
+<script>
+
+
+    Highcharts.chart('categories_books-container', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Categories and Books'
+        },
+        yAxis: {
+            title: {
+                text: 'Total Books'
+            }
+    
+        },
+        xAxis: {
+            categories: [
+           {% for category in categories_book_dataset %}'{{ category.category_name }}'{% if not forloop.last %}, {% endif %}{% endfor %}
+            ]
+
+        },
+        series: [{
+            name: 'Categories',
+            color:'#999DF1',
+            data: [
+           {% for book in categories_book_dataset %}{{ book.book_count }}{% if not forloop.last %}, {% endif %}{% endfor %}
+            ]
+        }, ]
+    });
+
+</script>

@@ -41,6 +41,8 @@ def populate_models(sender, **kwargs):
     student_group, created = Group.objects.get_or_create(name='Student')
     parent_group, created = Group.objects.get_or_create(name='Parent')
     super_admin_group, created = Group.objects.get_or_create(name='Super-Admin')
+    library_group, created = Group.objects.get_or_create(name='Library')
+
     # procurement_group, created = Group.objects.get_or_create(name='Procurement')
     # finance_group, created = Group.objects.get_or_create(name='Finance')
     school_level, created = CourseCategory.objects.get_or_create(course_name="School")
@@ -79,6 +81,7 @@ def populate_models(sender, **kwargs):
             student_group,
             parent_group,
             super_admin_group,
+            library_group
             ]
     
     
@@ -111,6 +114,9 @@ def save_user_profile(sender, instance, **kwargs):
         instance.student.save()
     if instance.user_type == group[5]:
         instance.parent.save()
+    if instance.user_type == group[7]:
+        instance.extrauser.save()
+ 
    
 
 

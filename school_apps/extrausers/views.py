@@ -40,13 +40,19 @@ def add_user(request):
                 image_url = request.FILES['image']
             else:
                 image_url = None
-                
-            # group, created = Group.objects.get_or_create(name=user_role)
-            branch = extra_user_form.cleaned_data['branch']
-            print(branch, type(branch))
+
+            role = extra_user_form.cleaned_data['role']
+            print(role,"role::::::::::::::::::::::::::::")
+            # group = Group.objects.get(name=user_role)
+            # branch = extra_user_form.cleaned_data['branch']
+            # print(branch, type(branch))
             try:
-                group = Group.objects.get(name=branch.name)
-                print('group:', Group, 'group:', group, 'typeof:' ,type(group),"~~~~~~~~~~~~~~~~~~~~~~~")
+                print("INside of try:::::::::::::")
+                group = Group.objects.get(
+                    name = role
+                    # name=branch.name
+                    )
+                print( group,"~~~~~~~~~~~~~~~~~~~~~~~")
             except:
                 group= Group.objects.none()
                 print("in except")
@@ -57,20 +63,22 @@ def add_user(request):
             test_username = full_name.lower().replace(" ","_")
             user = CustomUser.objects.create_user(
                 username=test_username, password='password', email=email, 
+                user_type = group,
             full_name=full_name)
-            # user.extrauser.role = extra_user_form.cleaned_data['role']
+            print(user.user_type)
+            user.extrauser.role = group
             user.extrauser.address = extra_user_form.cleaned_data["address"]  
             user.extrauser.contact = extra_user_form.cleaned_data['contact']
             user.extrauser.gender = extra_user_form.cleaned_data['gender']  
             user.extrauser.religion = extra_user_form.cleaned_data['religion']
             user.extrauser.dob = dob  
             user.extrauser.join_date = join_date
-            user.extrauser.branch = branch
+            # user.extrauser.branch = branch
             if image_url != None:
                 user.extrauser.image = image_url
             user.save()
             user.extrauser.save()
-            # user.groups.add(group)
+            user.groups.add(group)
             messages.success(request, "Successfully Added User")
             return redirect('admin_app:manage_user')
             # except:

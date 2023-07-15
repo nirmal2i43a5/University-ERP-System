@@ -1,12 +1,14 @@
 
 
-
     <!-- Sidebar -->
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                
+                         {% if perms.library.add_bookissue or perms.library.view_bookissue  %}
+
+
                  <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-table"></i>
@@ -16,20 +18,32 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                         {% if perms.library.add_bookissue %}
+
                      <li class="nav-item">
                             <a href="{% url 'library:book_issue' %}" class="nav-link">
                                 <i class="nav-icon fas fa-cart-plus"></i>
                                 <p>Create Issue</p>
                             </a>
                         </li>
+                        {% endif %}
+                         {% if perms.library.view_bookissue %}
+
+
                         <li class="nav-item">
                             <a href="{% url 'library:book_issue_list' %}" class="nav-link">
                                 <i class="nav-icon fas fa-cart-plus"></i>
                                 <p>Issue List</p>
                             </a>
                         </li>
+                        {% endif %}
+
                     </ul>
                 </li>
+                        {% endif %}
+
+                {% if perms.library.add_bookrenew or perms.library.view_bookrenew  %}
+
                  <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-table"></i>
@@ -39,20 +53,31 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                         {% if perms.library.add_bookrenew %}
+
                        <li class="nav-item">
                             <a href="{% url 'library:renew_issue' %}" class="nav-link">
                                
                                <i class="nav-icon fas fa-history"></i> Renew Book</p>
                             </a>
                         </li>
+                        {% endif %}
+                         {% if perms.library.view_bookrenew %}
+
                          <li class="nav-item">
                             <a href="{% url 'library:book_renew_list' %}" class="nav-link">
                                 <i class="nav-icon fas fa-history"></i>
                                 <p>Renewed List</p>
                             </a>
                         </li>
+                        {% endif %}
+
                     </ul>
                 </li>
+                        {% endif %}
+
+                {% if perms.library.add_bookreturn or perms.library.view_bookreturn  %}
+
                   <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-table"></i>
@@ -62,20 +87,32 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                {% if perms.library.add_bookreturn   %}
+
                         <li class="nav-item">
                             <a href="{% url 'library:return_issue' %}" class="nav-link">
                                 <i class="nav-icon fas fa-long-arrow-alt-left"></i>
                                 Return Book
                             </a>
                         </li>
+                        {% endif %}
+                {% if  perms.library.view_bookreturn  %}
+
                         <li class="nav-item">
                             <a href="{% url 'library:book_return_list' %}" class="nav-link">
                                 <i class="nav-icon fas fa-history"></i>
                                 <p>Returned List</p>
                             </a>
                         </li>
+                        {% endif %}
+
                     </ul>
                 </li>
+  {% endif %}
+
+
+                {% if perms.library.add_librarymemberprofile or perms.library.view_librarymemberprofile  %}
+
                 
                         <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
@@ -86,6 +123,8 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                {% if perms.library.add_librarymemberprofile  %}
+
                      <li class="nav-item">
                     <a href="{% url 'library:add_member' %}" class="nav-link">
                         <i class="nav-icon fa fa-archive"></i>
@@ -94,6 +133,10 @@
                         </p>
                     </a>
                 </li>
+                        {% endif %}
+                {% if perms.library.view_librarymemberprofile  %}
+
+
                 <li class="nav-item">
                     <a href="{% url 'library:member_list' %}" class="nav-link">
                         <i class="nav-icon fa fa-users"></i>
@@ -102,8 +145,13 @@
                         </p>
                     </a>
                 </li>
+                        {% endif %}
+
                     </ul>
                 </li>
+                        {% endif %}
+                {% if perms.library.add_librarymemberprofile or perms.library.view_librarymemberprofile  %}
+
                                    <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-table"></i>
@@ -113,6 +161,8 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                {% if perms.library.add_bookentry  %}
+
                        <li class="nav-item">
                     <a href="{% url 'library:add_book' %}" class="nav-link">
                         <i class="nav-icon fa fa-archive"></i>
@@ -121,6 +171,9 @@
                         </p>
                     </a>
                 </li>
+                        {% endif %}
+                {% if perms.library.view_bookentry  %}
+
                 <li class="nav-item">
                     <a href="{% url 'library:book_list' %}" class="nav-link">
                         <i class="nav-icon fa fa-archive"></i>
@@ -129,9 +182,17 @@
                         </p>
                     </a>
                 </li>
+                        {% endif %}
+
                     </ul>
                 </li>
- <li class="nav-item has-treeview">
+
+                        {% endif %}
+
+                {% if perms.library.add_libraryfine or perms.library.view_libraryfine  %}
+
+
+            <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-table"></i>
                         <p>
@@ -140,12 +201,16 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                {% if perms.library.add_libraryfine   %}
+
                      <li class="nav-item">
                             <a href="{% url 'library:add_library_fine' %}" class="nav-link">
                                 <i class="nav-icon fas fa-cart-plus"></i>
                                 <p>Create Fine</p>
                             </a>
                         </li>
+                        {% endif %}
+                {% if  perms.library.view_libraryfine  %}
                       
                          <li class="nav-item">
                             <a href="{% url 'library:library_fine_list' %}" class="nav-link">
@@ -153,8 +218,16 @@
                                 <p>Manage Fine</p>
                             </a>
                         </li>
+                        {% endif %}
+
                     </ul>
                 </li>
+                        {% endif %}
+
+
+                {% if perms.library.add_category or perms.library.view_category  %}
+
+
                                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-table"></i>
@@ -164,6 +237,8 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                {% if perms.library.add_category  %}
+
                       <li class="nav-item">
                     <a href="{% url 'library:add_categories' %}" class="nav-link">
                         <i class="nav-icon fa fa-archive"></i>
@@ -172,6 +247,10 @@
                         </p>
                     </a>
                 </li>
+                        {% endif %}
+
+                {% if  perms.library.view_category  %}
+
                 <li class="nav-item">
                     <a href="{% url 'library:category_list' %}" class="nav-link">
                         <i class="nav-icon fa fa-archive"></i>
@@ -180,8 +259,12 @@
                         </p>
                     </a>
                 </li>
+                        {% endif %}
+
                     </ul>
                 </li>
+                        {% endif %}
+
               
                
              

@@ -1,0 +1,65 @@
+
+
+<script type="text/javascript">
+
+
+
+
+
+Highcharts.chart('issues_returns_members_total-container', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    title: {
+        text: 'Total Members, Issue, and Returns. '
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.y}</b>'
+    },
+    accessibility: {
+        point: {
+            valueSuffix: '%'
+        }
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: false
+            },
+            showInLegend: true
+        }
+    },
+    series: [{
+        name: 'Total',
+        colorByPoint: true,
+        data: [
+        {
+            name: 'Total Member',
+            y: {{library_member_count}},
+            color:'#435EBE',
+            sliced: true,
+            selected: true
+        }, 
+        {
+            name: 'Total Issue',
+            y: {{book_issue_count}},
+            color:'#A3EDBA',
+            sliced: true,
+            selected: true
+        }, 
+        {
+            name: 'Total Return',
+            color:'#999DF1',
+
+            y: {{book_return_count}},
+        }, 
+
+        ]
+    }]
+});
+</script>
