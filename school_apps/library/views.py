@@ -582,7 +582,7 @@ def set_default_fine(request):
     }
     return render(request, 'catalog/fines/set_fine.html', context=context)
 
-
+from django.utils import timezone
 @permission_required('library.add_libraryfine', raise_exception=True)
 def add_library_fine(request):
 

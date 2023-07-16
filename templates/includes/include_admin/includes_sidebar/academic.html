@@ -177,14 +177,36 @@
       </a>
     </li>
 
-    <li class="nav-item">
-      <a href="{% url 'academic:add_routine' %}" class="nav-link">
-        <i class="fas  fa-folder-open"></i>
+   <li class="nav-item">
+      <a href="#" class="nav-link">
+        <i class="fas  fa-book"></i>
         <p>
           Routine
-
+          <i class="right fas fa-angle-left"></i>
         </p>
       </a>
+
+      <ul class="nav nav-treeview">
+        <li class="nav-item ml-3">
+          <a href="{% url 'academic:add_routine' %}" class="nav-link">
+            <i class="fas  fa-book-open"></i>
+            <p>
+              Create Routine
+    
+            </p>
+          </a>
+        </li>
+        <li class="nav-item ml-3">
+          <a href="{% url 'academic:manage_routine' %}" class="nav-link">
+            <i class="fas  fa-book-open"></i>
+            <p>
+              Manage Routine
+    
+            </p>
+          </a>
+        </li>
+    
+      </ul>
     </li>
     <li class="nav-item">
       <a href="{% url 'academic:add_enote' %}" class="nav-link">

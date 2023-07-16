@@ -436,13 +436,15 @@ def library_home(request):
           'library_member_count': LibraryMemberProfile.objects.count(),
             'book_issue_count':BookIssue.objects.count(),
             'book_return_count':BookReturn.objects.count(),
+            'book_count':BookEntry.objects.count(),
+
             'renew_count':renew_count,
             'not_renew_count':not_renew_count,
 
             'categories_book_dataset':categories_book_dataset,
             'fine_datasets':fine_datasets
                  }
-    return render(request, 'admin_templates/dashboard.html', context)
+    return render(request, 'library/dashboard.html', context)
 
 
 def email_services_home(request):

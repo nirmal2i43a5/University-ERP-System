@@ -1,3 +1,61 @@
+
+
+ 
+{% extends 'admin_templates/base_admin.html' %}
+{% load scheduletags i18n %}
+{% load static %}
+{% load compress %}
+{% load auth_extras %}
+
+{% block title %}
+Dashboard
+
+{% endblock title %}
+
+{% block main_content %}
+
+
+<div class="card mx-4">
+  <div class="card-body" style="background:#435EBE;color:white;border-radius:10px;">
+      
+    {% if request.user|has_group:'Library' or request.user.is_superuser  %}
+    <h3 style="text-align: center;"><strong>Welcome To Library Portal</strong> </h3>
+    {% endif %}
+
+  </div>       
+</div>
+
+{% include "includes/include_admin/erp_components.html" %}
+
+{% include "includes/include_admin/classroom_popup.html" %}
+{% compress js %}
+<script
+type="text/javascript"
+src="{% static 'plugins/highcharts/highcharts.js' %}"
+></script>
+<script
+type="text/javascript"
+src="{% static 'plugins/highcharts/modules/exporting.js' %}"
+></script>
+<script
+type="text/javascript"
+src="{% static 'plugins/highcharts/modules/export-data.js' %}"
+></script>
+<script
+type="text/javascript"
+src="{% static 'plugins/highcharts/modules/accessibility.js' %}"
+></script>
+{% endcompress %}
+
+
+
+    
+<section class="content">
+  <div class="container-fluid">
+
+
+ {% if  request.user.is_superuser  or request.user|has_group:'Library'  %}
+
    
    
      <div class="row mx-3">
@@ -117,3 +175,43 @@
 
     {% include "includes/include_admin/charts/library_management/fine_details.html" %}
 
+
+
+
+
+ {% endif %}
+
+
+
+</div>
+
+</section>
+  
+
+
+
+
+
+
+
+
+
+    {% endblock %}
+
+
+    {% compress js %}
+
+    {% block custom_js %}
+  
+    {% include "fullcalendar_script.html" %}
+
+    <script type="text/javascript">
+      $(window).on('load', function () {
+        $('#noticeModal').modal('show');
+      });
+    </script>
+
+    {% endblock custom_js %}
+
+
+{% endcompress %}

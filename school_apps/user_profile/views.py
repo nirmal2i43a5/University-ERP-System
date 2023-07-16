@@ -46,7 +46,6 @@ def loginView(request):
 
 			if request.user.groups.exists():
 				group = request.user.groups.all()[0].name
-				print(group,"::::::::::::::::::Group")
 
 			if group == 'Super-Admin' or request.user.is_superuser:
 				return redirect('dashboard')
@@ -54,8 +53,10 @@ def loginView(request):
 			elif group == 'Teacher':# or request.user.is_superuser:
 				return redirect('dashboard')
 			
+			elif group == 'Student':
+				return redirect('dashboard')
+			
 			elif group == 'Library':
-				print("Inside library test:::::::::::::::::::::::::::::::::")
 				return redirect('library:library-management')
 			
 			else:
@@ -77,8 +78,6 @@ def loginView(request):
 			return redirect('login')
 
 	return render(request, 'profile/login.html', {'form': form})
-
-
 
 
 

@@ -38,7 +38,10 @@ Dashboard
   
     {% endif %}
     {% endif %}
-
+      
+    {% if request.user|has_group:'Library' %}
+    <h3 style="text-align: center;"><strong>Welcome To Library Portal</strong> </h3>
+    {% endif %}
 
   </div>       
 </div>
@@ -65,15 +68,7 @@ src="{% static 'plugins/highcharts/modules/accessibility.js' %}"
 ></script>
 {% endcompress %}
 
-{% if not url_name == 'dashboard' %}
 
-
- {% if  request.user.is_superuser  or request.user|has_group:'Library'  %}
-
-    {% include "includes/include_admin/include_dashboard/library_dashboard.html" %}
-    {% endif %}
-    
-{% endif %}
 
 <!---------------------------------------------Admin dashboard start----------------------------------------------------------------->
 
