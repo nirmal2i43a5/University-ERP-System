@@ -23,10 +23,11 @@ Set Fine
           {% include 'override_table/header.html' with card_title='Set Fine' %}
           <!-- /.card-header -->
           <!-- form start -->
-          <form method="post" class = "col-md-6" enctype="multipart/form-data" >
+         <form method="post" class = "col-md-6" enctype="multipart/form-data" >
             <!--using this id = "staff-modelform"  for solving form conflict in formhelper in crispy form -->
             {% csrf_token %}
-        
+            <div class="card-body">
+          
             <br>
 
               {% crispy form %}

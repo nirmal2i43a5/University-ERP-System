@@ -574,7 +574,7 @@ def set_default_fine(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Fine set successfully")
-            return redirect("library:set_fine")
+            return redirect("library:set_default_fine")
     context = {
         "form": form,
     }
