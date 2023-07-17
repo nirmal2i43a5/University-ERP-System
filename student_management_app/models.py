@@ -367,7 +367,7 @@ class Subject(models.Model):
     semester = models.ForeignKey(Semester, verbose_name = 'Class', on_delete=models.CASCADE,null = True, blank=True)
     faculty = models.CharField(_('Group'), max_length=50,choices = faculty_choices,blank = True)
     subject_name = models.CharField(max_length=255)
-    subject_code = models.CharField(max_length=255,blank=True, null = True)
+    subject_code = models.CharField(max_length=255,unique = True)
     staff_user = models.ManyToManyField(CustomUser, through='SubjectTeacher',  blank = True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
@@ -382,7 +382,7 @@ class Subject(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.subject_name
+        return f'{self.subject_name}({self.subject_code})'
     # def __str__(self):
     #     return f'{self.semester} : {self.subject_name} : ' + ' , '.join([str(teacher) for teacher in self.staff_user.all()])
     

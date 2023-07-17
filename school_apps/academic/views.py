@@ -253,6 +253,7 @@ def manage_subject(request):
     context = {'form': form,
               'subject_search_form':subject_search_form,
                'title': 'Subject',
+               'subjects':Subject.objects.all()
          
                }
 
@@ -721,19 +722,20 @@ def manage_class(request):
         name = request.POST['name']
         description = request.POST['description']
      
-        try:
-            semester = Semester.objects.create(name = name,
-                                               description = description, 
-                                               course_category = get_object_or_404(
-                                                CourseCategory,pk = course_category_id),
-                                               course = get_object_or_404(Course, pk = course_id)
-                                               )
-            
-            messages.success(request, "Class is Added Successfully.")
-            return redirect('academic:manage_class')
-        except:
-            messages.error(request, "Failed To Add Class.")
-            return redirect('academic:manage_class')
+        # try:
+        semester = Semester.objects.create(name = name,
+                                            description = description, 
+                                            course_category = get_object_or_404(
+                                            CourseCategory,pk = course_category_id),
+                                            course = get_object_or_404(Course, pk = course_id)
+                                            )
+        semester.save()
+        
+        messages.success(request, "Class is Added Successfully.")
+        return redirect('academic:manage_class')
+        # except:
+        #     messages.error(request, "Failed To Add Class.")
+        #     return redirect('academic:manage_class')
         
 
     context = {'form': form,

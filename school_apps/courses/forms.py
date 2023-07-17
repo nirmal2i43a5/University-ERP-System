@@ -25,7 +25,6 @@ class DepartmentForm(ModelForm):
     class Meta:
         model = Department
         fields = '__all__'
-        
 class ExamsForm(ModelForm):
 
     exam_choices = [
@@ -60,6 +59,8 @@ class ExamsForm(ModelForm):
         
 
 class TermForm(ModelForm):
+    course_category = forms.ModelChoiceField(required = True,queryset=CourseCategory.objects.all())
+
     exam_choices = [
         ('Unit','Unit Test'),
         ('Term', 'Terminal Examination')
@@ -74,4 +75,4 @@ class TermForm(ModelForm):
     class Meta:
         model = Term
         fields = '__all__'
-        exclude = ['is_published','term_id']
+        exclude = ['is_published']

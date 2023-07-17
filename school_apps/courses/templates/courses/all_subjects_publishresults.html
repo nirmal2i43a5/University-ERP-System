@@ -1,0 +1,173 @@
+{% extends 'admin_templates/base_admin.html' %} 
+{% load auth_extras %}
+
+
+{% block title %}Exam Results
+{% endblock %}
+
+ {% block content %}
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="card card-info">
+          {% include 'override_table/header.html' with card_title=' Select exam to view results:' %}
+
+          <!-- /.card-header -->
+          <!-- form start -->
+          <form
+            action="{% url 'courses:get_results_of_all_subjects' %}"
+            method="POST"
+            class="mt-4 ml-2 mb-2"
+          >
+            {% csrf_token%}
+
+             <select name="id_filter_course" id="id_term_filter_course" class="form-control col-md-3 select">
+              <option value="">Select Course</option>
+
+              {% for item in courses %}
+
+              <option value="{{item.pk}}">{{ item }}</option>
+              {% endfor %}
+            </select>
+    <br>
+              <br>
+              <select
+              name="semester"
+              id="id_semester"
+              class="form-control col-md-3 select" required
+            >
+              <option value="">Select Class</option>
+
+              {% for item in classes %}
+
+              <option value="{{item.pk}}">{{ item }}</option>
+              {% endfor %}
+            </select>
+            <br />
+    <br>
+            <select name="term" id="id_term"  class="form-control col-md-3 select" required>
+              <option>Select Exam Term</option>
+              {% for term in terms%}
+              <option name="option" value="{{ term.pk}}">
+                {{ term}}
+              </option>
+              {% endfor%}
+            </select>
+            <br />
+    <br>
+          
+            {% comment %} <select
+              name="subject"
+              id="id_subject"
+              class="form-control col-md-3 select"
+            >
+              <option value="">Select Subject</option>
+              {% for item in subjects %}
+              <option value="{{item.pk}}">{{ item }}</option>
+              {% endfor %}
+            </select>
+            <br />    <br> {% endcomment %}
+            {% comment %} <select
+              name="section"
+              id="id_section"
+              class="form-control col-md-3 select"
+            >
+              <option value="">Select Section</option>
+              {% for item in sections %}
+              <option value="{{item.pk}}">{{ item }}</option>
+              {% endfor %}
+            </select>
+            <br /> {% endcomment %}
+            <input type="submit" class="btn btn-success mt-3" />
+          </form>
+        </div>
+        <!-- /.card -->
+
+        <h4></h4>
+        <hr />
+        {% if students_data.items %}
+        <div class="card">
+          <div class="card-header" style="background: #435ebe">
+            <h3 class="card-title text-white">
+              Results for {{term_instance.term_name}}:{% if section_instance %}{{section_instance}}
+              {% else %}{{semester_instance}}
+              {% endif %}.{{subject_instance}}
+            </h3>
+          </div>
+          <div class="card-body">
+            <div class="card-title"></div>
+            <table  id="dataTable" class="table  table-striped table-bordered table-hover text-nowrap  no-footer">
+
+    <thead>
+      <tr>
+        <th></th>
+        <th>#</th>
+
+        <th>Student Name</th>
+        <th>Student Id</th>
+
+        {% for subject in subjects %}
+          <th>{{ subject.subject_name }}</th>
+        {% endfor %}
+        <th>Total Marks</th>
+
+           {% if request.user|has_group:'Student' %}
+
+
+          {% else %}
+                <th>Student Rank</th>
+
+
+
+          {% endif %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for student, data in students_data.items %}
+        <tr>
+               <td></td>
+        <td>{{forloop.counter}}</td>
+          <td>{{ student }}</td>
+          <td>{{ data.student_id }}</td>
+
+         {% for marks in data.subject_marks %}
+            <td>{{ marks|default_if_none:"-" }}</td>
+          {% endfor %}
+
+         
+          <td>{{ data.total_marks }}</td>
+
+           {% if request.user|has_group:'Student' %}
+
+
+          {% else %}
+          <td>{{ data.rank }}</td>
+
+
+          {% endif %}
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+          </div>
+        </div>
+          {% endif %} 
+
+        {% comment %} <div>Students with -1 marks are not graded yet.</div> {% endcomment %}
+         {% if term_instance %} No results for {{term_instance}} 
+          {% endif %} 
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block custom_js %}
+<script>
+    $(function(){
+        $('.select').select2({theme: 'bootstrap4'});
+        $('.selectmultiple').select2({theme: 'bootstrap4'});
+    });
+</script>
+{% endblock custom_js %}

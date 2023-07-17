@@ -1,22 +1,53 @@
 {% extends 'admin_templates/base_admin.html' %}
+{% block title%} Exam Toppers{% endblock %}
+
 {% block content %}
-    <h4>Choose Exam:</h4>
+
+
+<section class="content">
+  <div class="container-fluid">
+
+  {% include "includes/messages.html" %}
+
+    <div class="row">
+      <div class="col-12">
+
+        <div class="card" >
+          
+          <div class="card-header" style="background:#435EBE;color:white;" >
+       
+
+            <span>Choose Exam:</span>
+
+          
+
+          </div>
+
+          <!-- /.card-header -->
+          <div class="card-body table-responsive">
+
+
+            <h4></h4>
     <form action="{% url 'courses:examtoppers' %}" method="POST">
         {% csrf_token %}
-        <select name = "exam_id">
+        <select name = "exam_id"  class = "form-control col-md-6" >
             {% for exam in exams%}
             <option name="sub" value="{{exam.exam_id}}">{{exam.exam_title}}</option>
             {% endfor %}
         </select>
-        <input type="submit" value="Select">
+        <input type="submit" value="Filter" class= "btn btn-success mt-3">
     </form>
-    <hr>
+<br><br>
 
-    {% if students %}
-    <h4>{{selected_exam.exam_title}}</h4>
-        <table class ="table table-hover">
-            <thead class="thead-dark">
+        {% if students %}
+    <h4 class = "text-center">{{selected_exam.exam_title}}</h4>
+    <br>
+                   <table  id="dataTable" class="table  table-striped table-bordered table-hover text-nowrap  no-footer">
+
+            <thead >
             <tr>
+                  <th></th>
+                  <th>#</th>
                 <th>Student name</th>
                 <th>Marks obtained</th>
                 <th>Rank</th>
@@ -24,13 +55,38 @@
             </th></thead>
         {% for students in students%}
         <tr>
-        <td>{{ students.application_id.student.student_user.full_name}}</td> <td>{{ students.marks}}</td> <td>{{students.rank}}</td>
+        <td></td>
+        <td>{{forloop.counter}}</td>
+
+
+        <td>{{ students.student.student_user.full_name}}</td> 
+        <td>{{ students.marks}}</td> 
+        <td>{{students.rank}}</td>
         </tr>
         {%endfor%}
         </table>
     {% else %}
     <h4>There are no records for the selected exam.</h4>
     {% endif %}
+          
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+    </div>
+  </div>
+</section>
+<!-- /.content -->
+
+
+
+{% comment %} -------------------------------------------------- {% endcomment %}
+   
 {% endblock %}
 
-{% block title%} | Check score{% endblock %}
+
+{% block custom_js %}
+{% endblock custom_js %}
+
+

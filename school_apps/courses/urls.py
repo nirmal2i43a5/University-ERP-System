@@ -10,8 +10,12 @@ urlpatterns=[
     path('addterm/', views.addterm, name='addterm'),
     path('ajax/addexam_marks_ajax/', views.addexam_marks_ajax, name='addexam_marks_ajax'),
     path('viewterm/', views.viewterm, name='viewterm'),
-    path('checkterm_exams/<str:pk>', views.checkterm_exams, name='checkterm_exams'),
-    path('examresults/', views.examresults, name='examresults'),
+    path('checkterm_exams/<str:pk>/', views.checkterm_exams, name='checkterm_exams'),
+    path('results-each-subjects/', views.get_result_of_each_subject, name='get_result_of_each_subject'),
+    path('results-all-subjects/', views.get_results_of_all_subjects, name='get_results_of_all_subjects'),
+    path('student/get_result/', views.get_results_of_all_subjects, name='get_result_by_student'),
+
+
     path('publishresults/', views.publishresults, name='publishresults'),
     path('toggle_results/<str:pk>/', views.toggle_results, name="toggle_results"),
     path('examreport/', views.examreport, name='examreport'),

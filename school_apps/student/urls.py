@@ -5,7 +5,7 @@ from school_apps.student.student_views.views import *
 app_name = 'student'
 
 urlpatterns=[
-    path('checkscore/', views.checkscore, name='checkscore'),
+    path('student/checkscore/', views.checkscore, name='checkscore'),
     path('selectcourse/', views.selectcourse, name='addcourse'),
     path('registerexam/', views.registerexam, name='registerexam'),
     path('examapplication/', views.examapplication, name='examapplication'),

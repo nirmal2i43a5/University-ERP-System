@@ -1,11 +1,13 @@
 {% extends 'admin_templates/base_admin.html'  %}
+{% block title %}Exam Results{% endblock %}
 {% block content %}
 <section class="content">
   <div class="container-fluid">
 
 
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-12 col-sm-12">
+
         <!-- general form elements -->
         <div class="card card-info">
 
@@ -13,17 +15,20 @@
         
           <!-- /.card-header -->
           <!-- form start -->
-          <form action="{% url 'courses:examresults' %}" method='POST' class="mt-4 ml-2 mb-2 ">
+          <form action="{% url 'courses:get_result_of_each_subject' %}" method='POST' class="mt-4 ml-2 mb-2 ">
             {% csrf_token%}
-            <select name='term' class="form-control col-md-3" >
-              <option>Select Exam Term</option>
-              {% for term in terms%}
-              <option name='option' value='{{ term.pk}}' >{{ term.term_name}}</option>
-              {% endfor%}
-            </select>
-            <br>
 
-            <select name="semester" id="id_semester" class="form-control col-md-3">
+            <select name="id_filter_course" id="id_term_filter_course" class="form-control col-md-3 select">
+              <option value="">Select Course</option>
+
+              {% for item in courses %}
+
+              <option value="{{item.pk}}">{{ item }}</option>
+              {% endfor %}
+            </select>
+              <br>
+              <br>
+            <select name="semester" id="id_semester" class="form-control col-md-3 select" required>
                 <option value="">Select Class</option>
 
                 {% for item in classes %}
@@ -32,32 +37,49 @@
                 {% endfor %}
             </select>
             <br>
-            
-            <select name="subject" id="id_subject" class="form-control col-md-3">
+              <br>
+          
+          
+            <select name="subject" id="id_subject" class="form-control col-md-3 select" required>
                 <option value="">Select Subject</option>
                 {% for item in subjects %}
                     <option value="{{item.pk}}">{{ item }}</option>
                 {% endfor %}
             </select>
             <br>
-            <select name="section" id="id_section" class="form-control col-md-3">
+            <br>
+
+          
+            <select name='term' id = "id_term" class="form-control col-md-3 select" required >
+              <option>Select Exam Term</option>
+              {% for term in terms%}
+              <option name='option' value='{{ term.pk}}' >{{ term}}</option>
+              {% endfor%}
+            </select>
+            <br>
+             <br>
+
+          
+            {% comment %} <select name="section" id="id_section" class="form-control col-md-3 select">
                 <option value="">Select Section</option>
                 {% for item in sections %}
                     <option value="{{item.pk}}">{{ item }}</option>
                 {% endfor %}
             </select>
-            <br>
-            <input type='submit' class="btn btn-success mt-3" >
+            <br> {% endcomment %}
+            
+            <input type='submit' class="btn btn-success mt-3 select" >
           </form>
 
         </div>
         <!-- /.card -->
+    </div>
 
 
         {% if results %}
         <h4></h4>
         <hr>
-        <div class ="card">
+        <div class ="card col-md-12">
           <div class="card-header" style="background:#435EBE;">
             <h3 class="card-title  text-white">Results for {{term_instance.term_name}}:{% if section_instance %}{{section_instance}}{% else %}{{semester_instance}}{% endif %}.{{subject_instance}}</h3>
           </div>
@@ -67,19 +89,45 @@
             <div class ="card-title">
 
             </div>
-            <table id="example"  cellspacing="0" width="100%" class=" table table-sm  table-striped table-bordered table-hover  text-nowrap  no-footer">
+              <table  id="dataTable" class="table  table-striped table-bordered table-hover text-nowrap  no-footer">
+
               <thead>
                 <tr style=" text-align: center">
+                  <th></th>
+                  <th>#</th>
+
                   <th>Student Name</th>
+                  <th>Student Id</th>
+
+
+
                   <th>Marks</th>
                   <th>Rank</th>
                 </tr>
               </thead>
                 {% for result in results %}
                 <tr>
-                  <td style="width: 50%; text-align: center">{{result.student.student_user.full_name}}</td>
+  <td></td>
+  <td>{{forloop.counter}}</td>
+
+                {% if result.is_absent == 1 %}
+                  <td >{{result.student.student_user.full_name}}(<span class = "badge badge-danger">Absent</span>)</td>
+
+
+                {% else %}
+                  <td >{{result.student.student_user.full_name}}</td>
+
+                  {% endif %}
+                  <td >{{result.student.stu_id}}</td>
+
                   <td style="width: 25%; text-align: center">{{result.marks}}</td>
-                  <td style="width: 25%; text-align: center">{{result.rank}}</td>
+
+
+                  {% if result.rank == 1 %}
+                  <td style="width: 25%; text-align: center">{{result.rank}}st(<span class = "badge badge-success">Topper</span>)</td>
+                  {% else %}
+                  <td style="width: 25%; text-align: center">{{result.rank}}th</td>
+                  {% endif %}
     
                 </tr>
                 {% endfor%}
@@ -103,3 +151,12 @@
   </div>
 </section>
 {% endblock %}
+
+{% block custom_js %}
+<script>
+    $(function(){
+        $('.select').select2({theme: 'bootstrap4'});
+        $('.selectmultiple').select2({theme: 'bootstrap4'});
+    });
+</script>
+{% endblock custom_js %}

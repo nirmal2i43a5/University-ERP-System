@@ -426,6 +426,19 @@ $("#id_course").change(function(){
       }
   })
 })
+
+$("#id_course_exam").change(function(){
+  var course_id = $(this).val();
+  
+  
+  $.ajax({
+      url:"",
+      data:{'course':course_id},
+      success:function(data){
+          $("#id_term").html(data);
+      }
+  })
+})
 $("#id_user_type").change(function(){
   var user_type_id = $(this).val();
   
@@ -449,6 +462,19 @@ $("#id_filter_course").change(function(){
       success:function(data){
           $("#id_filter_semester").html(data);
           $("#id_semester").html(data);
+      }
+  })
+})
+
+$("#id_term_filter_course").change(function(){
+  var course_id = $(this).val();
+  
+  
+  $.ajax({
+      url:" {% url 'attendance_app:fill_term_from_course' %}",
+      data:{'course':course_id},
+      success:function(data){
+          $("#id_term").html(data);
       }
   })
 })

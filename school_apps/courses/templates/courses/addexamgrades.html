@@ -5,15 +5,20 @@
   }
 </style>
 {% endblock %} {% block content %}
-<div class="container">
+
+
+<section class="content">
+<div class="container-fluid ">
+ <div class="row">
+      <div class="col-md-12">
   <div class="card">
     {% include 'override_table/header.html' with card_title='Add Exam Grades' %}
 
     <div class="card-body">
       <form id="exam_form">
         <div class="row">
-          <div class="col-md-3 mt-2">
-            <select name="id_course_category" id="id_course_category" class="form-control">
+          {% comment %} <div class="col-md-3 mt-2">
+            <select name="id_course_category" id="id_course_category" class="form-control select">
               <option value="">Select CourseCategory</option>
 
               {% for item in course_category %}
@@ -21,9 +26,9 @@
               <option value="{{item.pk}}">{{ item }}</option>
               {% endfor %}
             </select>
-          </div>
-          <div class="col-md-2 mt-2">
-            <select name="id_filter_course" id="id_filter_course" class="form-control">
+          </div> {% endcomment %}
+          <div class="col-md-3 mt-2">
+            <select name="id_filter_course" id="id_term_filter_course" class="form-control select">
               <option value="">Select Course</option>
 
               {% for item in courses %}
@@ -32,8 +37,8 @@
               {% endfor %}
             </select>
           </div>
-          <div class="col-md-2 mt-2">
-            <select name="id_semester" id="id_semester" class="form-control">
+          <div class="col-md-3 mt-2">
+            <select name="id_semester" id="id_semester" class="form-control select" required>
               <option value="">Select Class</option>
 
               {% for item in classes %}
@@ -42,24 +47,24 @@
               {% endfor %}
             </select>
           </div>
-          <div class="col-md-2 mt-2">
-            <select name="id_subject" id="id_subject" class="form-control">
+          <div class="col-md-3 mt-2">
+            <select name="id_subject" id="id_subject" class="form-control select">
               <option value="">Select Subject</option>
               {% for item in subjects %}
               <option value="{{item.pk}}">{{ item }}</option>
               {% endfor %}
             </select>
           </div>
-          <div class="col-md-2 mt-2">
-            <select name="id_section" id="id_section" class="form-control">
+          {% comment %} <div class="col-md-2 mt-2">
+            <select name="id_section" id="id_section" class="form-control select">
               <option value="">Select Section</option>
               {% for item in sections %}
               <option value="{{item.pk}}">{{ item }}</option>
               {% endfor %}
             </select>
-          </div>
-          <div class="col-md-2 mt-2">
-            <select name="term_select" id="id_term" class="form-control">
+          </div> {% endcomment %}
+          <div class="col-md-3 mt-2">
+            <select name="term_select" id="id_term" class="form-control select">
               <option value="">Select Term</option>
               {% for item in terms %}
               <option value="{{item.pk}}">{{ item }}</option>
@@ -76,10 +81,12 @@
       </form>
     </div>
   </div>
+</div>
+</div>
 
   <div id="entryfield"></div>
 </div>
-
+</section>
 {% endblock %} {% block javascript %}
 <script>
   /*
@@ -119,7 +126,7 @@
         
   $("#exam_form").submit(function (e) {
     e.preventDefault();
-    section_id = $("#id_section").val();
+   // section_id = $("#id_section").val();
     class_id = $("#id_semester").val();
     subject_id = $("#id_subject").val();
     term_id = $("#id_term").val();
@@ -127,7 +134,7 @@
     $.ajax({
       url: "{% url 'courses:examsAjax'%}",
       data: {
-        section_id: section_id,
+      //  section_id: section_id,
         class_id: class_id,
         term_id: term_id,
 
@@ -140,4 +147,11 @@
     });
   });
 </script>
+<script>
+    $(function(){
+        $('.select').select2({theme: 'bootstrap4'});
+        $('.selectmultiple').select2({theme: 'bootstrap4'});
+    });
+</script>
 {% endblock %}
+

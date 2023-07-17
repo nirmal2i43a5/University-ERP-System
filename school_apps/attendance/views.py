@@ -14,6 +14,7 @@ from django.contrib.auth.models import Group
 from school_apps.academic.forms import StudentFormSearch,StudentSearch
 from django.contrib.auth.decorators import  permission_required
 from school_apps.library.models import LibraryMemberProfile
+from school_apps.courses.models import Term
 
 
 @permission_required('attendance.add_attendancereport', raise_exception=True)
@@ -658,6 +659,16 @@ def fill_semester_from_course(request):
     semesters = Semester.objects.filter(course=course)
     context = {'semesters': semesters}
     return render(request, "attendances/auto_fill_select/semesters.html", context)
+
+def fill_term_from_course(request):
+    course_id = request.GET['course']
+    print(course_id,"::::::::::::::::::::::::::::::::")
+    course = Course.objects.get(pk = course_id)
+    print(course.course_category,"_________________________")
+    terms = Term.objects.filter(course_category=course.course_category)
+    # print(terms)
+    context = {'terms': terms}
+    return render(request, "attendances/auto_fill_select/terms.html", context)
 
 
 

@@ -5,6 +5,8 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
+      {% include "includes/messages.html" %}
+
             <div class="d-flex bd-highlight">
                 <div class=" flex-grow-1 bd-highlight">
                 
@@ -19,30 +21,41 @@
                                 <tr>
                                     <th>Term</th>
                                     <th>Date</th>
-                                    <th>Published</th>
+                                    <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody class='text-center'>
                                 {% for item in terms %}
                                     <tr>
-                                        <td>{{item.pk}}</td>
+                                        <td>{{item.term_name}}</td>
                                       
                                        <td>
-                                        {% if item.start_date and item.end_date %}
+                                       {{item.created_at}}
+                                        {% comment %} {% if item.start_date and item.end_date %}
                                         {{item.start_date}} - {{item.end_date}}
 
                                         {% else %}
-                                        {% endif %}
+                                        {% endif %} {% endcomment %}
                                     </td>
                                    
-                                        <td>{% if item.is_published %}
-                                            Yes
-                                            {% else %}
-                                            No
-                                            {% endif %}
+                                        <td>
+                                        {% if item.is_published == 1 %}
+                                            <span class="badge badge-success">Published</span>
+                                        {% else %}
+                                            <span class="badge badge-danger">Not Published</span>
+                                            
+                                        {% endif %}
                                         </td>
-                                        <td><a href="{% url 'courses:toggle_results' item.pk %} " class="btn btn-primary btn-xs">Publish</a></td>
+                                        <td>
+                                            {% if item.is_published == 1 %}
+                                        
+                                        <a href="{% url 'courses:toggle_results' item.pk %} " class="btn btn-danger btn-xs">Undo Result</a>
+                                        {% else %}
+                                        <a href="{% url 'courses:toggle_results' item.pk %} " class="btn btn-success btn-xs">Publish Result</a>
+                                        {% endif %}
+
+                                        </td>
                                     </tr>
                                 {% endfor %}
                             </tbody>

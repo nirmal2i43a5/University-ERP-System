@@ -19,7 +19,7 @@
           {% include 'override_table/header.html' with card_title='Add Exam' %}
           <!-- /.card-header -->
           <!-- form start -->
-          <form role="form" action="{% url 'courses:addexam' %}" method="post">
+          <form role="form" action="{% url 'courses:addexam' %}" method="post" class = "col-md-6">
             {% csrf_token %}
 
             <div class="card-body">

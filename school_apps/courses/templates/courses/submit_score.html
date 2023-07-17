@@ -1,7 +1,8 @@
 {% comment %} {% if students%} {% endcomment %}
+{% load static %}
     <hr>
   
-        <h4>Term = {{term.term_name}}</h4>
+        <h4 class = "text-center">Term = {{term.term_name}}</h4>
         <hr>
         <div class="card">
             <div class="card-header" style="background:#435EBE;">
@@ -18,18 +19,47 @@
             
                         <input type="hidden" name="term_id" value="{{term_id}}">
                         <input type="hidden" name="class_id" value="{{class_id}}">
-                        <input type="hidden" name="section_id" value="{{section_id}}">
+                        {% comment %} <input type="hidden" name="section_id" value="{{section_id}}"> {% endcomment %}
                         <input type="hidden" name="subject_id" value="{{subject_id}}">
             
                         <table class="table table-hover">
+                             <thead>
+                                    <tr >
+                                    <th>#</th>
+                                    <th>Image</th>
+
+
+                                    <th>Student Name</th>
+                                    <th>Student Id</th>
+
+
+
+                                    <th>Entry</th>
+                                    <th>Present Status</th>
+                                    </tr>
+                                </thead>
             
                              {% for grade in studentgrades %}
     
                             <tr>
                                 <td>{{ forloop.counter }}</td>
+          <td>
+
+                    {% if grade.student.image %}
+
+                 <a href="{{ grade.student.image.url }}">   <img src="{{ grade.student.image.url }}" alt="" style="width:35px;height:35px;" class="img-circle" /></a>
+
+                    {% else %}
+                    <img src="{% static 'image/admin.png' %}" alt="" style="width:35px;height:35px;" class="img-circle" />
+                    {% endif %}
+
+                  </td>
+
                                 <td> {{grade.student.student_user.full_name}}</td>
+                                <td> {{grade.student.stu_id}}</td>
+
                                 <td class='holder'> 
-                                    <input type="number" min="-1" max="100" 
+                                    <input type="number" step = "0.1" min="-1" max="100" 
                                         class="marks_input px-2 py-1"    style="border-radius:1rem;" 
                                         name="{{grade.student.student_user.full_name}}" value="{{grade.marks}}"style="width: 150px; text-align: right; " 
                                     {% if grade.marks == -1 %}
@@ -51,7 +81,7 @@
                 {% endfor %}
     
             
-                        <tr><td colspan="3" align="center" ><button class="btn btn-primary" type="submit"> Submit</button></td>
+                        <tr><td colspan="3" align="center" ><button class="btn btn-lg btn-primary float-right " type="submit"> Update </button></td>
                         </form>
     
                     {% else %}
@@ -61,17 +91,48 @@
                 
                             <input type="hidden" name="term_id" value="{{term_id}}">
                             <input type="hidden" name="class_id" value="{{class_id}}">
-                            <input type="hidden" name="section_id" value="{{section_id}}">
+                            {% comment %} <input type="hidden" name="section_id" value="{{section_id}}"> {% endcomment %}
                             <input type="hidden" name="subject_id" value="{{subject_id}}">
                 
                             <table class="table table-hover">
+
+
+
+                               <thead>
+                                    <tr>
+                                    <th>#</th>
+                                    <th>Image</th>
+
+
+                                    <th>Student Name</th>
+                                    <th>Student Id</th>
+
+
+
+                                    <th>Entry</th>
+                                    <th>Present Status</th>
+                                    </tr>
+                                </thead>
                 
                             {% for stu in students %}
                                 <tr>
                                     <td>{{ forloop.counter }}</td>
+                                                           <td>
+
+                    {% if stu.student.image %}
+
+                 <a href="{{ stu.student.image.url }}">   <img src="{{ stu.student.image.url }}" alt="" style="width:35px;height:35px;" class="img-circle" /></a>
+
+                    {% else %}
+                    <img src="{% static 'image/admin.png' %}" alt="" style="width:35px;height:35px;" class="img-circle" />
+                    {% endif %}
+
+                  </td>
                                     <td> {{stu.student_user.full_name}}</td>
+                                    <td> {{stu.stu_id}}</td>
+
                                     <td class='holder'> 
-                                        <input type="number" min="-1" max="100" 
+                                        <input type="number" step="0.1" min="-1" max="100"
                                             class="marks_input px-2 py-1" style="border-radius:1rem;"    
                                             name="{{stu.student_user.full_name}}" value="{{stu.marks}}"style="width: 150px; text-align: right; " 
                                         {% if stu.marks == -1 %}
@@ -91,7 +152,7 @@
                                 </tr>
                             {%endfor%}
                 
-                            <tr><td colspan="3" align="center" ><button class="btn btn-primary" type="submit"> Submit</button></td>
+                            <tr><td colspan="3" align="center" ><button class="btn btn-lg btn-primary float-right" type="submit"> Submit</button></td>
                             </form>
                 {% endif %}
             </div>

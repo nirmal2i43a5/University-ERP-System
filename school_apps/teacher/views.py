@@ -55,11 +55,13 @@ def subscore(request):
 
 def submitscore(request):
     teacher = get_object_or_404(CustomUser, id = request.user.id)
-    term  = get_object_or_404(Term, term_id=request.POST['term_id'])
-    section_id = request.POST['section_id']
+    term_id = request.POST['term_id']
+    term  = get_object_or_404(Term, term_id= term_id) if term_id else None
+    # section_id = request.POST['section_id']
     subject_id = request.POST['subject_id']
-    class_instance = get_object_or_404(Semester , pk = request.POST['class_id'])
-    section_instance = get_object_or_404(Section , pk = section_id) if section_id else None
+    class_id = request.POST['class_id']
+    class_instance = get_object_or_404(Semester , pk = class_id) if class_id else None
+    # section_instance = get_object_or_404(Section , pk = section_id) if section_id else None
     subject_instance = get_object_or_404(Subject , pk = subject_id) if subject_id else None
 
     # if not section_instance:
@@ -78,6 +80,7 @@ def submitscore(request):
         grade = studentgrades(
             term = term , 
             subject = subject_instance, 
+            semester = class_instance,
             student = student_instance,
 
         )
@@ -103,17 +106,20 @@ def submitscore(request):
         print(grade.student,grade.marks)
 
 
-
-
-
     messages.success(request, "Marks entry for " +  " students successful")
     return HttpResponseRedirect(reverse('courses:addexammarks'))
    
+
+
 def editsubmitscore(request):
     term  = get_object_or_404(Term, term_id=request.POST['term_id'])
-    section_id = request.POST['section_id']
+    # section_id = request.POST['section_id']
     subject_id = request.POST['subject_id']
+    semester_id = request.POST['class_id']
+
     subject_instance = get_object_or_404(Subject , pk = subject_id) if subject_id else None
+    semester_instance = get_object_or_404(Semester , pk = semester_id) if semester_id else None
+
  
 
     students_ids = request.POST.getlist('student_ids')
@@ -126,6 +132,7 @@ def editsubmitscore(request):
             term = term , 
             subject = subject_instance, 
             student = student_instance,
+            semester = semester_instance
 
         )
         if student_instance.student_user.username in absent_student:

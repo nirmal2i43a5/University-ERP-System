@@ -40,10 +40,18 @@
         </li>
         
         <li class="nav-item">
-            <a href="{% url 'courses:examresults' %}" class="nav-link">
+            <a href="{% url 'courses:get_result_of_each_subject' %}" class="nav-link">
                   <i class="far fa-xs fa-circle"></i>
               <p>
-                 Exam results
+                 Each Subject results
+              </p>
+            </a>
+        </li>
+          <li class="nav-item">
+            <a href="{% url 'courses:get_results_of_all_subjects' %}" class="nav-link">
+                  <i class="far fa-xs fa-circle"></i>
+              <p>
+                 All Subject results
               </p>
             </a>
         </li>
@@ -57,14 +65,14 @@
           </a>
       </li>
 
-      <li class="nav-item">
+      {% comment %} <li class="nav-item">
         <a href="{% url 'courses:addremarks' %}" class="nav-link">
               <i class="far fa-xs fa-circle"></i>
           <p>
              Add Remarks
           </p>
         </a>
-      </li>
+      </li> {% endcomment %}
 
       <li class="nav-item">
         <a href="{% url 'courses:publishresults' %}" class="nav-link">
@@ -76,22 +84,22 @@
     </li>
 
 
-        <li class="nav-item">
+        {% comment %} <li class="nav-item">
            <a href="{% url 'courses:examtoppers' %}" class="nav-link">
                  <i class="far fa-xs fa-circle"></i>
              <p>
                Exam toppers
              </p>
            </a>
-         </li>
-         <li class="nav-item">
+         </li> {% endcomment %}
+         {% comment %} <li class="nav-item">
           <a href="{% url 'courses:bulkprintresults' %}" class="nav-link">
                 <i class="far fa-xs fa-circle"></i>
             <p>
               Print results
             </p>
           </a>
-        </li>
+        </li> {% endcomment %}
          <!-- <li class="nav-item">
            <a href="{% url 'courses:addstudentmarks' %}" class="nav-link">
                  <i class="far fa-xs fa-circle"></i>

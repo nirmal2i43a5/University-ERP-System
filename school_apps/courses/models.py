@@ -6,6 +6,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from student_management_app.models import   Student
 from django.utils.translation import gettext_lazy as _
+from django.db import transaction
 
 YEAR_CHOICES = [(r,r) for r in range(1990, datetime.date.today().year+1)]
 
@@ -15,7 +16,8 @@ class Term(models.Model):
         ('Term', 'Terminal Examination')
     ]
     course_category = models.ForeignKey(CourseCategory, on_delete=models.CASCADE,null = True, blank=True)
-    term_id = models.CharField(max_length=30, primary_key=True)
+    # term_id = models.CharField(max_length=30, primary_key=True)
+    term_id = models.BigAutoField(auto_created=True, primary_key=True)
     year = models.IntegerField(choices=YEAR_CHOICES, default=datetime.datetime.now().year)
     term_name = models.CharField(max_length=25)
     type = models.CharField(max_length=5, choices= exam_choices, default = 'Unit')
@@ -25,6 +27,7 @@ class Term(models.Model):
     end_date = models.DateField(null = True, blank=True)
     exam_centre = models.CharField(max_length=30,null = True, blank=True)
     is_published = models.BooleanField(default = False)
+    # publish_date = models.DateField(auto_now_add = True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -34,7 +37,7 @@ class Term(models.Model):
         return self.latest('start_date')
     
     def __str__(self):
-        return f'{self.term_name}'
+        return f'{self.term_name}-{self.year}({self.course_category})'
 
 
 
@@ -101,6 +104,8 @@ class studentgrades(models.Model):
     ]
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE,null=True, blank=True)
     student = models.ForeignKey(Student, on_delete=models.CASCADE,null=True, blank=True)
+    semester = models.ForeignKey(Semester, verbose_name = 'Class', on_delete=models.CASCADE,null = True, blank=True)
+    
     term = models.ForeignKey(Term, on_delete=models.CASCADE,null=True, blank=True)
     exam_id = models.ForeignKey(Exams, on_delete=models.CASCADE,null=True, blank=True)
     application_id = models.ForeignKey(application_form, on_delete=models.CASCADE,null=True, blank=True)
@@ -184,8 +189,10 @@ def create_exams_and_application_forms(sender, instance, created, **kwargs):
             full_marks = 100
         # print(instance.term_name,instance.subject__pk)
         '''Automatically creating exam for all the subjects when admin create term from 1 to 10 as exam type are almost similar'''
-        school_subjects = Subject.objects.filter(course_category = CourseCategory.objects.get(course_name = 'School'))
-        for subject in school_subjects:
+        # school_subjects = Subject.objects.filter(course_category = CourseCategory.objects.get(course_name = 'School'))
+        subjects = Subject.objects.all()#filter(course_category = CourseCategory.objects.get(course_name = 'School'))
+
+        for subject in subjects:
             exam_instance = Exams(
                 exam_id = f'{instance.term_name}.{subject.pk}.{subject.semester.pk}',
 
@@ -195,19 +202,42 @@ def create_exams_and_application_forms(sender, instance, created, **kwargs):
                 subject_id = Subject.objects.get(pk = subject.pk), 
                 exam_format = exam_format, 
                 pass_marks= pass_marks,
-                full_marks = full_marks
+                full_marks = full_marks,
+                created_at = timezone.now()
                 
                 
             )
             exam_instance.save()
         # '''Automatically create application form'''
-        students = Student.objects.all()
+        # students = Student.objects.select_related('student_user').all()
+        # term_id = instance.pk
 
-        for student in students:
-            term_id = instance.pk
-            student_username = student.student_user.username
-            application_id = f'{term_id}.{student_username}' 
-            application_form.objects.get_or_create(application_id = application_id, term=instance, student=student, semester=student.semester)
+        # application_forms_to_create = []
+        # for student in students:
+        #     student_username = student.student_user.username
+        #     application_id = f'{term_id}.{student_username}' 
+
+        #     application_form_obj = application_form(
+        #         application_id=application_id,
+        #         term=instance,
+        #         student=student,
+        #         semester=student.semester
+        #     )
+
+        #     application_forms_to_create.append(application_form_obj)
+
+        # with transaction.atomic():
+        #     application_form.objects.bulk_create(application_forms_to_create)
+
+# ----------------------or 
+
+        # students = Student.objects.all()#.values('student_user__username', 'pk', 'semester')
+
+        # for student in students:
+        #     term_id = instance.pk
+        #     student_username = student.student_user.username
+        #     application_id = f'{term_id}.{student_username}' 
+        #     application_form.objects.get_or_create(application_id = application_id, term=instance, student=student, semester=student.semester)
 
 
 

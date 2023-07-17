@@ -1,6 +1,8 @@
 {% extends 'admin_templates/base_admin.html' %}
+{% load static %}
 
 {% load crispy_forms_tags %}
+
 
 
 {% block title %}
@@ -31,12 +33,15 @@
             <a href = "{% url 'admin_app:manage_student' %}" class="btn btn-sm btn-danger ml-2 mt-2 mb-2">Back</a>
             <button type="submit" class="btn btn-sm btn-success ml-2 mt-2 mb-2">Upload</button>
         </form>
+
+
         {% if error_status %}
         <p>{{ error_message }}</p>
         {% endif %}
         </div>
         <!-- /.card -->
-
+        <span>Before you upload student .You should create Class(which course/program and which year).For example ,  <a href="{% url 'academic:manage_class' %}"  class = "btn btn-sm btn-success ml-2 mt-2 mb-2">Visit this</a></span><br>
+ <a href="{% static 'Student_Bulk_Upload_Sample.xls' %}"  class = "btn btn-lg btn-success ml-2 mt-2 mb-2" download>Download File Sample</a>
 
 
       </div>

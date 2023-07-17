@@ -17,6 +17,8 @@ from school_apps.attendance.models import Attendance, AttendanceReport
 import datetime
 from datetime import datetime as dtime
 import csv
+from django.contrib.auth.models import Group
+
 
 # # Create your views here.
 
@@ -33,13 +35,13 @@ def addterm(request):
         formdata = TermForm(request.POST)
         print(formdata)
         if formdata.is_valid():
-            formdata.save(commit=False)
-            formdata.course_category = request.user.adminuser.course_category
+            # formdata.save(commit=False)
+            # formdata.course_category = request.user.adminuser.course_category
             formdata.save()
             messages.success(request, 'Term info added.')
             return HttpResponseRedirect(reverse('courses:addterm'))
         else:
-            messages.error(request, "TermInformation info invalid. Please check your information and try again.")
+            messages.error(request, "Term Information info invalid. Please check your information and try again.")
             return render( request, 'courses/addterm.html', {'form':term_form})
     else:
         return render(request, 'courses/addterm.html', {'form':term_form})
@@ -95,26 +97,28 @@ def addexam_marks_ajax(request):
         full_marks = 25
     return JsonResponse({'p_marks':pass_marks, 'f_marks':full_marks})
 
-def examresults(request):
+def get_result_of_each_subject(request):
     today = datetime.date.today()
     # exams = Exams.objects.all()
     terms = Term.objects.all()
     semesters = Semester.objects.all()
     subjects = Subject.objects.all()
     sections = Section.objects.all()
+    courses = Course.objects.all()
 
     
     #for viewresult part
     if request.method == 'POST':
         subject_id = request.POST['subject']
         semester_id =request.POST['semester']
-        section_id = request.POST['section']
+        # section_id = request.POST['section']
+        term_id = request.POST['term']
         subject_instance = get_object_or_404(Subject, pk = subject_id) if subject_id else None
         semester_instance = Semester.objects.get(pk = semester_id) if semester_id else None
-        section_instance = Section.objects.get(pk = section_id) if section_id else None
+        # section_instance = Section.objects.get(pk = section_id) if section_id else None
 
 
-        term_instance = get_object_or_404(Term, pk = request.POST['term'])
+        term_instance = get_object_or_404(Term, pk = term_id) if term_id else None
         results = studentgrades.objects.filter(term = term_instance,
                                                subject = subject_instance
                                                ).order_by('-marks')
@@ -124,12 +128,100 @@ def examresults(request):
             'term_instance':term_instance,
             'subject_instance':subject_instance,
             'semester_instance':semester_instance,
-            'section_instance':section_instance,
+            # 'section_instance':section_instance,
+            'classes':semesters,'subjects':subjects,'sections':sections,
+            'courses':courses
             
         }
         return render(request, 'courses/publishresults.html',context)
+
     else:    
-        return render(request, 'courses/publishresults.html',{'terms':terms,'classes':semesters,'subjects':subjects,'sections':sections})
+
+        return render(request, 'courses/publishresults.html',{'terms':terms,     'courses':courses,'classes':semesters,'subjects':subjects,'sections':sections})
+
+
+
+
+def get_results_of_all_subjects(request):
+    today = datetime.date.today()
+    terms = Term.objects.all()
+    semesters = Semester.objects.all()
+    subjects = Subject.objects.all()
+    sections = Section.objects.all()
+    courses = Course.objects.all()
+
+
+ # for viewresult part
+    if request.method == 'POST':
+        subject_id = request.POST.get('subject')
+        semester_id = request.POST.get('semester')
+        section_id = request.POST.get('section')
+        term_id = request.POST.get('term')
+        subject_instance = get_object_or_404(Subject, pk=subject_id) if subject_id else None
+        semester_instance = Semester.objects.get(pk=semester_id) if semester_id else None
+        section_instance = Section.objects.get(pk=section_id) if section_id else None
+        subjects = Subject.objects.filter(semester = semester_instance)
+
+        term_instance = get_object_or_404(Term, pk=term_id) if term_id else None
+
+
+        group = Group.objects.get(name='Student')
+        student_role =  request.user.groups.filter(name=group)
+        if student_role.exists():
+            results = studentgrades.objects.filter(term=term_instance,student = request.user.student).select_related('student', 'subject')
+        else:
+
+            results = studentgrades.objects.filter(term=term_instance).select_related('student', 'subject')
+        
+        # Create a dictionary to map subject IDs to their indexes
+        subject_indexes = {subject.subject_id: idx for idx, subject in enumerate(subjects)}
+
+        students_data = {}
+
+        for result in results:
+            student_name = result.student.student_user.full_name
+            student_id = result.student.stu_id
+            subject_id = result.subject_id
+            marks = result.marks
+
+            if student_name not in students_data:
+                students_data[student_name] = {
+                    'total_marks': 0,
+                    'student_id': student_id,
+
+                    'subject_marks': [None] * len(subjects),
+                }
+
+            subject_index = subject_indexes.get(subject_id)
+            if subject_index is not None:
+                students_data[student_name]['subject_marks'][subject_index] = marks
+                students_data[student_name]['total_marks'] += marks if marks else 0
+        print(students_data)
+        # Calculate student ranks based on total marks
+        students_sorted = sorted(students_data.items(), key=lambda x: x[1]['total_marks'], reverse=True)
+        rank = 1
+        for student, data in students_sorted:
+            data['rank'] = rank
+            rank += 1
+        
+
+        context = {
+            'terms': terms,
+            'students_data': students_data,
+            'term_instance': term_instance,
+            'subject_instance': subject_instance,
+            'semester_instance': semester_instance,
+            'section_instance': section_instance,
+            'classes': semesters,
+            'subjects': subjects,
+            'sections': sections,
+            'courses':courses
+
+        }
+
+        return render(request, 'courses/all_subjects_publishresults.html', context)
+    else:
+        return render(request, 'courses/all_subjects_publishresults.html', {'terms': terms, 'courses':courses, 'classes': semesters, 'subjects': subjects, 'sections': sections})
 
 
 def viewresults(request):
@@ -144,22 +236,29 @@ def publishresults(request):
     terms = Term.objects.all()
     return render(request, 'courses/publishtermresults.html', {'terms':terms})
 
+
 def toggle_results(request,pk):
     terms = Term.objects.all()
     selected_term = Term.objects.get(pk=pk)
 
     if(selected_term.is_published):
         selected_term.is_published = False
+        selected_term.created_at = datetime.datetime.now()
         selected_term.save()
+        messages.error(request, 'Result publish is undo.')
+        return redirect('courses:publishresults')
     else:
         selected_term.is_published = True
+        selected_term.created_at = datetime.datetime.now()
         selected_term.save()
+        messages.success(request, 'Result is successfully published.')
+        return redirect('courses:publishresults')
 
-    return render(request, 'courses/publishtermresults.html', {'terms':terms})
+    # return render(request, 'courses/publishtermresults.html', {'terms':terms})
 
 def examtoppers(request):
     today = datetime.date.today()
-    exams = Exams.objects.filter(date__lte=today, term__course_category=request.user.adminuser.course_category)
+    exams = Exams.objects.all()#filter(date__lte=today, term__course_category=request.user.adminuser.course_category)
     if request.method=='GET':
         return render(request,'courses/examtoppers.html', {'exams':exams})
     else:
@@ -506,6 +605,51 @@ def addexammarks(request):
 
     return render(request, 'courses/addexamgrades.html', context)
 
+def examsAjax(request):
+    section_id = request.GET.get('section_id')
+    class_id = request.GET.get('class_id')
+    term_id = request.GET.get('term_id')
+    term_instance = Term.objects.get(pk = term_id) if term_id else None
+    subject_id = request.GET.get('subject_id')
+    semester_instance = Semester.objects.get(pk = class_id) if class_id else None
+    # section_instance = Section.objects.get(pk =  section_id) if section_id else None
+    subject_instance = Subject.objects.get(pk = subject_id) if subject_id else None
+
+    students = Student.objects.filter(semester = semester_instance)
+    # if not section_id:
+    #     students = Student.objects.filter(semester = semester_instance)
+    # if  section_id:
+    #     students = Student.objects.filter(section = section_instance)
+
+
+    grades = studentgrades.objects.filter(
+                                                term =term_instance ,
+                                                 semester = semester_instance, 
+                                                 subject = subject_instance
+                                                 )
+    
+    # selected_exam = get_object_or_404(Exams, exam_id=exam_id)
+
+    # student_data = studentgrades.objects.all()#filter(Q(exam_id=selected_exam))
+    # print(student_data)
+
+    return render (request, 'courses/submit_score.html', {'students':students,
+                                                        #   'section_id':section_id,
+                                                          'class_id':class_id,
+                                                          'term_id':term_id,
+                                                          'subject_id':subject_id,
+                                                          'studentgrades':grades,
+                                                          'term':term_instance
+
+                                                          
+                                                          }
+                #    {'students':student_data, 'term_id':term_id}
+                   )
+
+
+
+
+
 
 def addremarks(request):
 
@@ -584,41 +728,6 @@ def fill_exam_select(request):
     return render(request, 'courses/examlist.html', context)
 
 
-def examsAjax(request):
-    section_id = request.GET.get('section_id')
-    class_id = request.GET.get('class_id')
-    term_id = request.GET.get('term_id')
-    term_instance = Term.objects.get(pk = term_id)
-    subject_id = request.GET.get('subject_id')
-    print(section_id, class_id,term_id, subject_id)
-    semester_instance = Semester.objects.get(pk = class_id) if class_id else None
-    section_instance = Section.objects.get(pk =  section_id) if section_id else None
-    if not section_id:
-        students = Student.objects.filter(semester = semester_instance)
-    if  section_id:
-        students = Student.objects.filter(section = section_instance)
-    grades = studentgrades.objects.filter(
-                                                term =term_instance ,
-                                                #  semester = semester_instance, 
-                                                 subject = Subject.objects.get(pk = subject_id)
-                                                 )
-    # selected_exam = get_object_or_404(Exams, exam_id=exam_id)
-
-    # student_data = studentgrades.objects.all()#filter(Q(exam_id=selected_exam))
-    # print(student_data)
-
-    return render (request, 'courses/submit_score.html', {'students':students,
-                                                          'section_id':section_id,
-                                                          'class_id':class_id,
-                                                          'term_id':term_id,
-                                                          'subject_id':subject_id,
-                                                          'studentgrades':grades,
-                                                          'term':term_instance
-
-                                                          
-                                                          }
-                #    {'students':student_data, 'term_id':term_id}
-                   )
 
 
 def massexamapplication(request):
