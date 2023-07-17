@@ -142,22 +142,10 @@ def add_student(request):
                 "previous_school_name"
             ]
             user.student.guardian = father_instance.parent
-            print(
-                user,
-                "************************************************",
-                user.student,
-                "******************************************************",
-            )
+          
             if image_url is not None:
                 user.student.image = image_url
             user.save()
-            print(
-                user,
-                "************************************************",
-                user.student,
-                "******************************************************",
-            )
-
             user.groups.add(role)
 
             messages.success(request, "Successfully Added Student")
@@ -180,8 +168,19 @@ def add_student(request):
     return render(request, "students/add_student.html", context)
 
 
+
+
+
+
+
+from django.db import transaction
+
+
 @permission_required("student_management_app.student_bulk_upload",
                      raise_exception=True)
+
+
+
 def student_file_upload(request):
     if request.method == "GET":
         return render(request, "students/file_upload.html")
@@ -346,11 +345,7 @@ def student_file_upload(request):
         customuser_object.save()
         customuser_object.groups.add(role)
 
-        # selectedcourses.objects.create(#mainly for through table
-        #         student_id=customuser_object.student,
-        #         subject_id = customuser_object.student.optional_subject,
-        #         semester = customuser_object.student.semester
-        #     )
+    
 
     messages.success(request, "Students are successfully uploaded.")
     return redirect("admin_app:manage_student")
