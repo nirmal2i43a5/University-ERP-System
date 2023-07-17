@@ -5,20 +5,25 @@ import school_apps.exam.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('exam', '0004_alter_answersheet_graded_sheet'),
+        ("exam", "0004_alter_answersheet_graded_sheet"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='answersheet',
-            name='answer_upload',
-            field=models.FileField(blank=True, null=True, upload_to='Student_answers/student_answers'),
+            model_name="answersheet",
+            name="answer_upload",
+            field=models.FileField(
+                blank=True,
+                null=True,
+                upload_to="Student_answers/student_answers"),
         ),
         migrations.AlterField(
-            model_name='answersheet',
-            name='graded_sheet',
-            field=models.FileField(blank=True, null=True, upload_to='Student_answers/graded_sheets'),
+            model_name="answersheet",
+            name="graded_sheet",
+            field=models.FileField(
+                blank=True,
+                null=True,
+                upload_to="Student_answers/graded_sheets"),
         ),
     ]

@@ -165,7 +165,10 @@ class CreateOccurrenceView(OccurrenceEditMixin, CreateView):
     template_name = "schedule/edit_occurrence.html"
 
 
-class CancelOccurrenceView(OccurrenceEditMixin, ModelFormMixin, ProcessFormView):
+class CancelOccurrenceView(
+        OccurrenceEditMixin,
+        ModelFormMixin,
+        ProcessFormView):
     template_name = "schedule/cancel_occurrence.html"
 
     def post(self, request, *args, **kwargs):
@@ -235,7 +238,8 @@ class CreateEventView(EventEditMixin, CreateView):
     def form_valid(self, form):
         event = form.save(commit=False)
         event.creator = self.request.user
-        event.calendar = get_object_or_404(Calendar, slug=self.kwargs["calendar_slug"])
+        event.calendar = get_object_or_404(
+            Calendar, slug=self.kwargs["calendar_slug"])
         event.save()
         return HttpResponseRedirect(event.get_absolute_url())
 
@@ -289,8 +293,12 @@ def get_occurrence(
         event = get_object_or_404(Event, id=event_id)
         date = timezone.make_aware(
             datetime.datetime(
-                int(year), int(month), int(day), int(hour), int(minute), int(second)
-            ),
+                int(year),
+                int(month),
+                int(day),
+                int(hour),
+                int(minute),
+                int(second)),
             tzinfo,
         )
         occurrence = event.get_occurrence(date)
@@ -341,7 +349,6 @@ def api_occurrences(request):
 
 
 def _api_occurrences(start, end, calendar_slug, timezone):
-
     if not start or not end:
         raise ValueError("Start and end parameters are required")
     # version 2 of full calendar
@@ -355,7 +362,8 @@ def _api_occurrences(start, end, calendar_slug, timezone):
                     return datetime.datetime.strptime(ddatetime, "%Y-%m-%d")
                 except ValueError:
                     # try a different date string format first before failing
-                    return datetime.datetime.strptime(ddatetime, "%Y-%m-%dT%H:%M:%S")
+                    return datetime.datetime.strptime(
+                        ddatetime, "%Y-%m-%dT%H:%M:%S")
 
     else:
 

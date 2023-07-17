@@ -1,17 +1,42 @@
 from django.urls import path
 from .views import *
-# from .views import (loginView,logoutView,user_change_password,UpdateStudentProfile, 
+
+# from .views import (loginView,logoutView,user_change_password,UpdateStudentProfile,
 #                     UpdateTeacherProfile, UpdateAdminProfile, student_send_bulk_email,
-#                     teacher_send_bulk_email, particular_user_email,UpdateParentProfile,change_other_password,a_level_home)
+# teacher_send_bulk_email,
+# particular_user_email,UpdateParentProfile,change_other_password,a_level_home)
 
 urlpatterns = [
-    path('accounts/login/',loginView,name = "login"),
-    path('logout/',logoutView,name = "logout"),
- 
-    path('user_password_reset/', user_change_password, name="change_password"),
-    path('change_other_password/', change_other_password, name="change_other_password"),
-    path('student_profile_update/', UpdateStudentProfile, name="student_profile_update"),
-    path('teacher_profile_update/', UpdateTeacherProfile, name="teacher_profile_update"),
-    path('parent_profile_update/', UpdateParentProfile, name="parent_profile_update"),
-    path('profile_update/', UpdateAdminProfile, name="admin_profile_update"),
+    path(
+        "accounts/login/",
+        loginView,
+        name="login"),
+    path(
+        "logout/",
+        logoutView,
+        name="logout"),
+    path(
+        "user_password_reset/",
+        user_change_password,
+        name="change_password"),
+    path(
+        "change_other_password/",
+        change_other_password,
+        name="change_other_password"),
+    path(
+        "student_profile_update/",
+        UpdateStudentProfile,
+        name="student_profile_update"),
+    path(
+        "teacher_profile_update/",
+        UpdateTeacherProfile,
+        name="teacher_profile_update"),
+    path(
+        "parent_profile_update/",
+        UpdateParentProfile,
+        name="parent_profile_update"),
+    path(
+        "profile_update/",
+        UpdateAdminProfile,
+        name="admin_profile_update"),
 ]

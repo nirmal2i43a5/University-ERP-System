@@ -2,117 +2,166 @@ import os
 
 import json
 import datetime
-import csv,io
+import csv
+import io
 from dateutil.parser import parse
 from school_apps.courses.models import selectedcourses
 from django.shortcuts import render, HttpResponseRedirect, redirect, get_object_or_404
 from django.http import Http404
 from django.contrib import messages
 from django.http import HttpResponse, JsonResponse
-from django.db.models import Q,Count
+from django.db.models import Q, Count
 from django.views.decorators.csrf import csrf_exempt
-from student_management_app.django_forms.forms import AddCustomUserForm, DocumentFileForm, EditCustomUserForm
-from school_apps.attendance.forms import StudentAttendanceDateFilterForm,TeacherAttendanceDateFilterForm
-from school_apps.academic.forms import StudentFormSearch,StudentSearch
+from student_management_app.django_forms.forms import (
+    AddCustomUserForm,
+    DocumentFileForm,
+    EditCustomUserForm,
+)
+from school_apps.attendance.forms import (
+    StudentAttendanceDateFilterForm,
+    TeacherAttendanceDateFilterForm,
+)
+from school_apps.academic.forms import StudentFormSearch, StudentSearch
 from school_apps.student.forms import StudentForm
 from student_management_app.models import (
-    Course, CustomUser, Subject, Staff, SessionYear, Student,
-    DocumentFile, Parent, Semester
+    Course,
+    CustomUser,
+    Subject,
+    Staff,
+    SessionYear,
+    Student,
+    DocumentFile,
+    Parent,
+    Semester,
 )
-from school_apps.parents.forms import (ParentForm)
+from school_apps.parents.forms import ParentForm
 
 from student_management_app.models import *
 from school_apps.attendance.models import Attendance, AttendanceReport
 from django.contrib.auth.models import Group
-from django.contrib.auth.decorators import  permission_required
+from django.contrib.auth.decorators import permission_required
 import pandas as pd
 
-@permission_required('student_management_app.add_student', raise_exception=True)
-def add_student(request):
-    
-    if request.method == 'POST':
 
+@permission_required("student_management_app.add_student",
+                     raise_exception=True)
+def add_student(request):
+    if request.method == "POST":
         custom_form = AddCustomUserForm(request.POST)
         student_form = StudentForm(request.POST, request.FILES)
         parent_form = ParentForm(request.POST, request.FILES)
 
-        if custom_form.is_valid() and student_form.is_valid() and parent_form.is_valid():
-
+        if (
+            custom_form.is_valid()
+            and student_form.is_valid()
+            and parent_form.is_valid()
+        ):
             # parent = parent_form.save()
             email = custom_form.cleaned_data["email"]
-            full_name = custom_form.cleaned_data['full_name']
-            student_id = student_form.cleaned_data['stu_id']
-            roll_no = student_form.cleaned_data['roll_no']
+            full_name = custom_form.cleaned_data["full_name"]
+            student_id = student_form.cleaned_data["stu_id"]
+            roll_no = student_form.cleaned_data["roll_no"]
 
-
-            date_of_birth = str(request.POST.get('dob'))
+            date_of_birth = str(request.POST.get("dob"))
             dob = datetime.datetime.strptime(
-                date_of_birth, "%Y-%m-%d").date()  # parsing html date to python
+                date_of_birth, "%Y-%m-%d"
+            ).date()  # parsing html date to python
 
-            if request.FILES.get('image'):
-                image_url = request.FILES['image']
+            if request.FILES.get("image"):
+                image_url = request.FILES["image"]
             else:
                 image_url = None
 
-            parent_role = Group.objects.get(name='Parent')
-            
+            parent_role = Group.objects.get(name="Parent")
+
             # father_fname = parent_form.cleaned_data["father_name"].split()[0]
             fname = full_name.split()[0]
-            father_username = "p"  +  f'{student_id}' 
+            father_username = "p" + f"{student_id}"
             father_instance = CustomUser.objects.create_user(
-                username=father_username, password='password', user_type=parent_role, full_name = parent_form.cleaned_data["father_name"]
+                username=father_username,
+                password="password",
+                user_type=parent_role,
+                full_name=parent_form.cleaned_data["father_name"],
             )
-            father_instance.parent.father_name = parent_form.cleaned_data['father_name']
-            father_instance.parent.mother_name = parent_form.cleaned_data['mother_name']
-            father_instance.parent.father_phone = parent_form.cleaned_data['father_phone']
-            father_instance.parent.mother_phone = parent_form.cleaned_data['mother_phone']
-            father_instance.parent.local_guardian_name = parent_form.cleaned_data['local_guardian_name']
-            father_instance.parent.local_guardian_phone =  parent_form.cleaned_data['local_guardian_phone']
+            father_instance.parent.father_name = parent_form.cleaned_data["father_name"]
+            father_instance.parent.mother_name = parent_form.cleaned_data["mother_name"]
+            father_instance.parent.father_phone = parent_form.cleaned_data[
+                "father_phone"
+            ]
+            father_instance.parent.mother_phone = parent_form.cleaned_data[
+                "mother_phone"
+            ]
+            father_instance.parent.local_guardian_name = parent_form.cleaned_data[
+                "local_guardian_name"]
+            father_instance.parent.local_guardian_phone = parent_form.cleaned_data[
+                "local_guardian_phone"]
             father_instance.groups.add(parent_role)
             father_instance.parent.save()
-            
-            
+
             fname = full_name.split()[0]
             # student_username = fname.lower() + f'{student_id}'
-            student_username = f'{student_id}'
-            role = Group.objects.get(name='Student')
-           
-            user = CustomUser.objects.create_user(
-                username=student_username, password='password', email=email, user_type=role, full_name = full_name)
-            
-            user.student.course_category = get_object_or_404(CourseCategory, course_name = student_form.cleaned_data['course_category'])
-            # print("************************************************",student_form,"******************************************************")
-            user.student.semester = student_form.cleaned_data['semester']
-            user.student.course =  student_form.cleaned_data['course']#this is program like BICT, MBA
+            student_username = f"{student_id}"
+            role = Group.objects.get(name="Student")
 
-            user.student.section = student_form.cleaned_data['section']
-            user.student.join_year =  student_form.cleaned_data["join_year"]
+            user = CustomUser.objects.create_user(
+                username=student_username,
+                password="password",
+                email=email,
+                user_type=role,
+                full_name=full_name,
+            )
+
+            user.student.course_category = get_object_or_404(
+                CourseCategory, course_name=student_form.cleaned_data["course_category"])
+            # print("************************************************",student_form,"******************************************************")
+            user.student.semester = student_form.cleaned_data["semester"]
+            user.student.course = student_form.cleaned_data[
+                "course"
+            ]  # this is program like BICT, MBA
+
+            user.student.section = student_form.cleaned_data["section"]
+            user.student.join_year = student_form.cleaned_data["join_year"]
             user.student.stu_id = student_id
             user.student.roll_no = roll_no
-            user.student.gender = student_form.cleaned_data['gender']
+            user.student.gender = student_form.cleaned_data["gender"]
             user.student.shift = student_form.cleaned_data["shift"]
             # user.student.faculty = student_form.cleaned_data['faculty']
             # user.student.program = student_form.cleaned_data['program']
-            user.student.status = student_form.cleaned_data['status']
-            user.student.contact = student_form.cleaned_data['contact']
-            user.student.permanent_address = student_form.cleaned_data['permanent_address']
-            user.student.temporary_address = student_form.cleaned_data['temporary_address']
+            user.student.status = student_form.cleaned_data["status"]
+            user.student.contact = student_form.cleaned_data["contact"]
+            user.student.permanent_address = student_form.cleaned_data[
+                "permanent_address"
+            ]
+            user.student.temporary_address = student_form.cleaned_data[
+                "temporary_address"
+            ]
             user.student.dob = dob
-            user.student.blood_group = student_form.cleaned_data['blood_group']
-            user.student.gpa = student_form.cleaned_data['gpa']
-            user.student.previous_school_name = student_form.cleaned_data["previous_school_name"]
+            user.student.blood_group = student_form.cleaned_data["blood_group"]
+            user.student.gpa = student_form.cleaned_data["gpa"]
+            user.student.previous_school_name = student_form.cleaned_data[
+                "previous_school_name"
+            ]
             user.student.guardian = father_instance.parent
-            print(user,"************************************************",user.student,"******************************************************")
-            if image_url != None:
+            print(
+                user,
+                "************************************************",
+                user.student,
+                "******************************************************",
+            )
+            if image_url is not None:
                 user.student.image = image_url
             user.save()
-            print(user,"************************************************",user.student,"******************************************************")
+            print(
+                user,
+                "************************************************",
+                user.student,
+                "******************************************************",
+            )
 
             user.groups.add(role)
-            
 
             messages.success(request, "Successfully Added Student")
-            return redirect('admin_app:manage_student')
+            return redirect("admin_app:manage_student")
 
             # except:
             #     messages.error(request, "Failed to Add Student")
@@ -123,40 +172,37 @@ def add_student(request):
         student_form = StudentForm()
         parent_form = ParentForm()
     context = {
-            'title':'Add Student',
-            'custom_form': custom_form,
-            'student_form': student_form,
-            'parent_form': parent_form
-        }
-    return render(request, 'students/add_student.html', context)
+        "title": "Add Student",
+        "custom_form": custom_form,
+        "student_form": student_form,
+        "parent_form": parent_form,
+    }
+    return render(request, "students/add_student.html", context)
 
 
-
-
-
-@permission_required('student_management_app.student_bulk_upload', raise_exception=True)
+@permission_required("student_management_app.student_bulk_upload",
+                     raise_exception=True)
 def student_file_upload(request):
     if request.method == "GET":
-        return render(request, 'students/file_upload.html')
+        return render(request, "students/file_upload.html")
     else:
         excel_file = request.FILES["studentfile"]
         data_frame = pd.read_excel(excel_file)
 
-    csv_file = 'studentrecord.csv'
+    csv_file = "studentrecord.csv"
     data_frame.to_csv(csv_file, index=False)
-    
+
     # if not csv_file.name.endswith('.csv'):
     #     print("Invalid file")
 
-        
     # data_set = pd.read_csv(csv_file, encoding='latin-1')
-    with open(csv_file, 'r', encoding='latin-1') as f:
+    with open(csv_file, "r", encoding="latin-1") as f:
         data_set = f.read()
     io_string = io.StringIO(data_set)
     next(io_string)
-    
-    file_data = csv.reader(io_string, delimiter=',', quotechar="|")
-    
+
+    file_data = csv.reader(io_string, delimiter=",", quotechar="|")
+
     for column in file_data:
         join_year = column[1]
         batch = join_year[0:4]
@@ -170,115 +216,124 @@ def student_file_upload(request):
         section = column[7]
         program = column[8]
         status = column[9]
-        student_contact = column[10]#this is for  mobile no (field in my csv file)
-        student_email  = column[11]
-       
-    
-        father_name=column[12],
-        father_phone=column[13],
-        # home_phone[3:len-3] 
-        mother_name=column[14],
-        mother_phone=column[15],
-      
+        # this is for  mobile no (field in my csv file)
+        student_contact = column[10]
+        student_email = column[11]
+
+        father_name = (column[12],)
+        father_phone = (column[13],)
+        # home_phone[3:len-3]
+        mother_name = (column[14],)
+        mother_phone = (column[15],)
 
         permanent_address = column[16]
         temporary_address = column[17]
-        
+
         dob_es_parse = ""
-        if (column[18]!="" ):
-            dob_es_parse = parse(column[18]).date() #this change from 8/10/2020 to 2020-8-10 i.e in python format
-        
-        dob_bs_parse=""
-        if (column[19]!="" ):
+        if column[18] != "":
+            # this change from 8/10/2020 to 2020-8-10 i.e in python format
+            dob_es_parse = parse(column[18]).date()
+
+        dob_bs_parse = ""
+        if column[19] != "":
             dob_bs_parse = parse(column[19]).date()
         blood_group = column[20]
         gpa = column[21]
-        previous_school =  column[22]  
+        previous_school = column[22]
         optional_subject = column[23]
-        local_guardian_name=column[24],
-        local_guardian_phone=column[25]
+        local_guardian_name = (column[24],)
+        local_guardian_phone = column[25]
         # dob_es_parse = datetime.datetime.strptime(dob_es, "%Y-%m-%d")
 
-        father_name = ''.join(father_name)
-        father_phone = ''.join(father_phone)
-        mother_name = ''.join(mother_name)
-        mother_phone = ''.join(mother_phone)
-        local_guardian_name = ''.join(local_guardian_name)
-        local_guardian_phone = ''.join(local_guardian_phone)
+        father_name = "".join(father_name)
+        father_phone = "".join(father_phone)
+        mother_name = "".join(mother_name)
+        mother_phone = "".join(mother_phone)
+        local_guardian_name = "".join(local_guardian_name)
+        local_guardian_phone = "".join(local_guardian_phone)
         if column[4] != "":
             fname = column[4].split()[0]
         else:
-            fname = ''
-        
-        # student_username = fname.lower() + f'{student_id}'
-        student_username = f'{student_id}'#this is student_id
+            fname = ""
 
-        parent_role = Group.objects.get(name='Parent')
-        father_username = "p" +  student_username 
+        # student_username = fname.lower() + f'{student_id}'
+        student_username = f"{student_id}"  # this is student_id
+
+        parent_role = Group.objects.get(name="Parent")
+        father_username = "p" + student_username
         # if CustomUser.objects.filter(username = father_username).exists():
         #     print("Already exists")
         # else:
         Father_object = CustomUser.objects.create_user(
-        username=father_username, password='password', user_type=parent_role, full_name = father_name
-    )
-        
+            username=father_username,
+            password="password",
+            user_type=parent_role,
+            full_name=father_name,
+        )
+
         Father_object.parent.father_name = father_name
         Father_object.parent.mother_name = mother_name
         Father_object.parent.father_phone = father_phone
         Father_object.parent.mother_phone = mother_phone
         Father_object.parent.local_guardian_name = local_guardian_name
-        Father_object.parent.local_guardian_phone =  local_guardian_phone
+        Father_object.parent.local_guardian_phone = local_guardian_phone
         Father_object.groups.add(parent_role)
         Father_object.parent.save()
-        
+
         # sem_obj, created= Semester.objects.get_or_create(
         #     name=batch,
         #     course_category = request.user.adminuser.course_category
         # )
 
         # sem = sem_obj
-        role = Group.objects.get(name = 'Student')
+        role = Group.objects.get(name="Student")
         # ---
-        # username_from_file = column[28]  
-        student_username = f'{student_id}'
-        if CustomUser.objects.filter(username = student_username).exists():
+        # username_from_file = column[28]
+        student_username = f"{student_id}"
+        if CustomUser.objects.filter(username=student_username).exists():
             print("Already exists")
         else:
-            customuser_object = CustomUser.objects.create_user(username = student_username,
-                                                           password='password', 
-                                                           email=student_email,
-                                                           user_type=role,
-                                                           full_name=fullName
-                                                           )
-        
- 
+            customuser_object = CustomUser.objects.create_user(
+                username=student_username,
+                password="password",
+                email=student_email,
+                user_type=role,
+                full_name=fullName,
+            )
+
         # ---
-        customuser_object.student.course_category = get_object_or_404(CourseCategory, course_name = request.user.adminuser.course_category)
+        customuser_object.student.course_category = get_object_or_404(
+            CourseCategory, course_name=request.user.adminuser.course_category
+        )
         customuser_object.student.stu_id = student_id
         customuser_object.student.roll_no = roll_no
         customuser_object.student.gender = gender
         customuser_object.student.shift = shift
-        semester_object = Semester.objects.get(name = batch, course = Course.objects.get(course_name = program))
-        customuser_object.student.semester =  semester_object
-        
-        if (section != ""): 
-            section_obj, created = Section.objects.get_or_create(semester = semester_object, 
-                                                                 section_name = section, 
-                                                                #  course_category = sem_obj.course_category
-                                                                 )
-            customuser_object.student.section =  section_obj
-       
+        semester_object = Semester.objects.get(
+            name=batch, course=Course.objects.get(course_name=program)
+        )
+        customuser_object.student.semester = semester_object
+
+        if section != "":
+            section_obj, created = Section.objects.get_or_create(
+                semester=semester_object,
+                section_name=section,
+                #  course_category = sem_obj.course_category
+            )
+            customuser_object.student.section = section_obj
+
         # customuser_object.student.course = course
         # customuser_object.student.faculty = column[10]
-        customuser_object.student.course = Course.objects.get(course_name = program)
+        customuser_object.student.course = Course.objects.get(
+            course_name=program)
         customuser_object.student.status = status
         customuser_object.student.contact = student_contact
         customuser_object.student.permanent_address = permanent_address
         customuser_object.student.temporary_address = temporary_address
-        
-        if dob_es_parse!="":
+
+        if dob_es_parse != "":
             customuser_object.student.dob = dob_es_parse
-        elif dob_bs_parse!="":
+        elif dob_bs_parse != "":
             customuser_object.student.dob = dob_bs_parse
         else:
             customuser_object.student.dob = datetime.date.today()
@@ -296,83 +351,90 @@ def student_file_upload(request):
         #         subject_id = customuser_object.student.optional_subject,
         #         semester = customuser_object.student.semester
         #     )
-        
-    messages.success(request,"Students are successfully uploaded.")    
-    return redirect('admin_app:manage_student')
 
+    messages.success(request, "Students are successfully uploaded.")
+    return redirect("admin_app:manage_student")
 
 
 def student_bulk_photo_upload(request):
-    if request.method == 'POST':
-        photos = request.FILES.getlist('photos')
+    if request.method == "POST":
+        photos = request.FILES.getlist("photos")
         image_name = []
         for photo in photos:
             name = os.path.splitext(str(photo))
             image_name.append(name)
-            
+
         student_id = []
         for username in image_name:
             student_id.append(username[0])
-            
-        for uname,photo in zip(student_id,photos):
-            student_obj = Student.objects.get(student_user__username = uname)
-            student_obj.image = photo
-            student_obj.save(update_fields = ['image'])
-            messages.success(request,'Photos are uploaded successfully')
-            
-    context = {
-        'title':'Bulk Photo Upload'
-    }
-    
-    return render(request,'students/student_bulk_photo_upload.html', context)
 
-@permission_required('student_management_app.print_student_id_card', raise_exception=True)
+        for uname, photo in zip(student_id, photos):
+            student_obj = Student.objects.get(student_user__username=uname)
+            student_obj.image = photo
+            student_obj.save(update_fields=["image"])
+            messages.success(request, "Photos are uploaded successfully")
+
+    context = {"title": "Bulk Photo Upload"}
+
+    return render(request, "students/student_bulk_photo_upload.html", context)
+
+
+@permission_required(
+    "student_management_app.print_student_id_card", raise_exception=True
+)
 def student_id_card(request, pk):
     student = get_object_or_404(Student, pk=pk)
-    bachelor_category = get_object_or_404(CourseCategory,course_name = 'Bachelor')
+    bachelor_category = get_object_or_404(
+        CourseCategory, course_name="Bachelor")
     context = {
-        'title': 'Id Card',
-        'student': student,
-        'bachelor_category':bachelor_category
+        "title": "Id Card",
+        "student": student,
+        "bachelor_category": bachelor_category,
     }
-    return render(request,'students/print_id_card.html', context)
+    return render(request, "students/print_id_card.html", context)
 
 
 def bulk_print_id_card(request):
-    bachelor_category = get_object_or_404(CourseCategory,course_name = 'Bachelor')
+    bachelor_category = get_object_or_404(
+        CourseCategory, course_name="Bachelor")
     count = int(request.POST.get("count"))
     i = 1
     students = []
-    while (i<=count):
-        students.append(get_object_or_404(Student, pk=request.POST.get(str(i))))
-        i+=1
-    context = {
-        'students':students,
-        'bachelor_category':bachelor_category
-    }
-    return render(request,'students/bulk_print_id_card.html', context)
+    while i <= count:
+        students.append(
+            get_object_or_404(
+                Student,
+                pk=request.POST.get(
+                    str(i))))
+        i += 1
+    context = {"students": students, "bachelor_category": bachelor_category}
+    return render(request, "students/bulk_print_id_card.html", context)
 
 
-
-# this is for ajax part (my ajax is success with title with title but file cannot upload so i am using above views for )
+# this is for ajax part (my ajax is success with title with title but file
+# cannot upload so i am using above views for )
 @csrf_exempt
-@permission_required('student_management_app.add_student_document', raise_exception=True)
+@permission_required(
+    "student_management_app.add_student_document", raise_exception=True
+)
 def add_student_document(request, student_id):  # for ajax part
-
     student = get_object_or_404(Student, pk=student_id)
 
     # add_document_submit come from formData action
-    if request.method == "POST" and request.POST['action'] == "add_document_submit":
-
+    if request.method == "POST" and request.POST["action"] == "add_document_submit":
         form = DocumentFileForm(request.POST, request.FILES)
         if form.is_valid():
             document_id = request.POST["documentid"]  # this is hidden field
             title = request.POST.get("title")
             file = request.FILES["file"]
 
-            if(document_id == ''):  # if there is no product id then it has to insert data clicking on save button
+            # if there is no product id then it has to insert data clicking on
+            # save button
+            if (document_id == ""):
                 document = form.save(commit=False)
-                # when i add_file then it must be the file of particular student with their respective id and i can retrieve this using _set see in view_student views function
+                # when i add_file then it must be the file of particular
+                # student with their respective id and i can retrieve this
+                # using _set see in view_student views function
                 document.student = student
 
             else:  # if not id then edit data clicking on save button
@@ -380,16 +442,25 @@ def add_student_document(request, student_id):  # for ajax part
                 document.id = document_id  # for updating particular field
                 document.student = student
 
-            # when i add_file then it must be the file of particular student with their respective id and i can retrieve this using _set see in view_student views function
+            # when i add_file then it must be the file of particular student
+            # with their respective id and i can retrieve this using _set see
+            # in view_student views function
             document.save()
             # this filter data to show in ajax but commit filter for database
             document_value = DocumentFile.objects.filter(
                 student=student).values()
             document_data = list(document_value)  # change to json
 
-            return JsonResponse({'status': 'True', 'document_data': document_data, 'message': 'Document is Successfully Saved'}, safe=False)
+            return JsonResponse(
+                {
+                    "status": "True",
+                    "document_data": document_data,
+                    "message": "Document is Successfully Saved",
+                },
+                safe=False,
+            )
         else:
-            return JsonResponse({'status': 0})
+            return JsonResponse({"status": 0})
 
 
 def attendance_filter_form(request):
@@ -397,415 +468,502 @@ def attendance_filter_form(request):
     return attendance_form
 
 
-
 # attendance details of particular student
 def attendance_view(request):
-
-    if request.method == 'POST' and 'attendance_submit' in request.POST:
+    if request.method == "POST" and "attendance_submit" in request.POST:
         attendance_form = StudentAttendanceDateFilterForm(request.POST)
-        start_date = request.POST.get('start_date')
-        end_date = request.POST.get('end_date')
-        start_data_parse = datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
-        end_data_parse = datetime.datetime.strptime(end_date, "%Y-%m-%d").date()
+        start_date = request.POST.get("start_date")
+        end_date = request.POST.get("end_date")
+        start_data_parse = datetime.datetime.strptime(
+            start_date, "%Y-%m-%d").date()
+        end_data_parse = datetime.datetime.strptime(
+            end_date, "%Y-%m-%d").date()
 
         # subject_id = request.POST.get('subject')  # from hidden input
         # subject = get_object_or_404(Subject, pk=subject_id)
 
-        student_id = request.POST.get('student')  # from hidden input
+        student_id = request.POST.get("student")  # from hidden input
         student = get_object_or_404(Student, pk=student_id)
-        
-        attendance = Attendance.objects.filter(attendance_date__range=(start_data_parse, end_data_parse),
-                                            #    subject = subject_id
-                                               )
 
-        # i add course in student  so access subject for student based on course in the collge only.
-        student_attendance = AttendanceReport.objects.filter(student=student_id, attendance__in = attendance)  # or filter(student = student_id, attendance__attendance_date = month)
-        total_present=AttendanceReport.objects.filter(student=student_id, attendance__in = attendance,status = 'Present').count()
-        total_absent=AttendanceReport.objects.filter(student=student_id, attendance__in = attendance,status = 'Absent(Not Informed').count()
-        return [student_attendance,total_present,total_absent]  
+        attendance = Attendance.objects.filter(
+            attendance_date__range=(start_data_parse, end_data_parse),
+            #    subject = subject_id
+        )
+
+        # i add course in student  so access subject for student based on
+        # course in the collge only.
+        student_attendance = AttendanceReport.objects.filter(
+            student=student_id, attendance__in=attendance
+        )  # or filter(student = student_id, attendance__attendance_date = month)
+        total_present = AttendanceReport.objects.filter(
+            student=student_id, attendance__in=attendance, status="Present"
+        ).count()
+        total_absent = AttendanceReport.objects.filter(
+            student=student_id,
+            attendance__in=attendance,
+            status="Absent(Not Informed").count()
+        return [student_attendance, total_present, total_absent]
 
 
+""" This is the student attendance view by admin """
 
-''' This is the student attendance view by admin '''
-@permission_required('student_management_app.view_student_profile', raise_exception=True)
+
+@permission_required(
+    "student_management_app.view_student_profile", raise_exception=True
+)
 def view_student(request, student_id):
-
     try:
         student = get_object_or_404(Student, pk=student_id)
-    except:
-        return render(request, '404.html')
-    
-    student_files =  student.documentfile_set.all()
-    courses = selectedcourses.objects.filter(student_id = student)
-    
-    if request.method == 'POST' and 'attendance_submit' in request.POST:
+    except BaseException:
+        return render(request, "404.html")
+
+    student_files = student.documentfile_set.all()
+    courses = selectedcourses.objects.filter(student_id=student)
+
+    if request.method == "POST" and "attendance_submit" in request.POST:
         attendance_form = StudentAttendanceDateFilterForm(request.POST)
-        start_date = request.POST.get('start_date')
-        end_date = request.POST.get('end_date')
-        start_data_parse = datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
-        end_data_parse = datetime.datetime.strptime(end_date, "%Y-%m-%d").date()
+        start_date = request.POST.get("start_date")
+        end_date = request.POST.get("end_date")
+        start_data_parse = datetime.datetime.strptime(
+            start_date, "%Y-%m-%d").date()
+        end_data_parse = datetime.datetime.strptime(
+            end_date, "%Y-%m-%d").date()
 
         # subject_id = request.POST.get('subject')  # from hidden input
         # subject = get_object_or_404(Subject, pk=subject_id)
 
-        student_id = request.POST.get('student')  # from hidden input
+        student_id = request.POST.get("student")  # from hidden input
         student = get_object_or_404(Student, pk=student_id)
-        
-        attendance = Attendance.objects.filter(attendance_date__range=(start_data_parse, end_data_parse),
-                                            #    subject = subject_id
-                                               )
 
-        # i add course in student  so access subject for student based on course in the collge only.
-        student_attendance = AttendanceReport.objects.filter(student=student_id, attendance__in = attendance)  # or filter(student = student_id, attendance__attendance_date = month)
-        total_present=AttendanceReport.objects.filter(student=student_id, attendance__in = attendance,status = 'Present').count()
-        total_absent=AttendanceReport.objects.filter(student=student_id, attendance__in = attendance, status__in = ['Absent(Not Informed)','Absent(Informed)']).count()
-    
+        attendance = Attendance.objects.filter(
+            attendance_date__range=(start_data_parse, end_data_parse),
+            #    subject = subject_id
+        )
+
+        # i add course in student  so access subject for student based on
+        # course in the collge only.
+        student_attendance = AttendanceReport.objects.filter(
+            student=student_id, attendance__in=attendance
+        )  # or filter(student = student_id, attendance__attendance_date = month)
+        total_present = AttendanceReport.objects.filter(
+            student=student_id, attendance__in=attendance, status="Present"
+        ).count()
+        total_absent = AttendanceReport.objects.filter(
+            student=student_id,
+            attendance__in=attendance,
+            status__in=["Absent(Not Informed)", "Absent(Informed)"],
+        ).count()
+
         context = {
-                'title':'View Student Details',
-                'student':student,
-                'student_files':student_files,
-                'form': DocumentFileForm(),
-                 'attendance_reports': student_attendance,#for report list after post request
-                'attendance_form':  StudentAttendanceDateFilterForm(initial = {
-                                                                    # 'subject':subject,
-                                                                          'start_date':start_data_parse,
-                                                                          'end_date':end_data_parse}),
-                'total_present':total_present,
-                'total_absent':total_absent,
-                'selectedcourses':courses
-                
-                
+            "title": "View Student Details",
+            "student": student,
+            "student_files": student_files,
+            "form": DocumentFileForm(),
+            "attendance_reports": student_attendance,  # for report list after post request
+            "attendance_form": StudentAttendanceDateFilterForm(
+                initial={
+                    # 'subject':subject,
+                    "start_date": start_data_parse,
+                    "end_date": end_data_parse,
                 }
-        
-        
-        return render(request, 'students/views/main_view.html',context)
-            
+            ),
+            "total_present": total_present,
+            "total_absent": total_absent,
+            "selectedcourses": courses,
+        }
+
+        return render(request, "students/views/main_view.html", context)
+
     context = {
-                'title':'View Student Details',
-                'student':student,
-                'student_files':student_files,
-                'form': DocumentFileForm(),
-                'attendance_form': attendance_filter_form(request),
-                 'selectedcourses':courses,
-                
-                }
-    return render(request, 'students/views/main_view.html',context)
+        "title": "View Student Details",
+        "student": student,
+        "student_files": student_files,
+        "form": DocumentFileForm(),
+        "attendance_form": attendance_filter_form(request),
+        "selectedcourses": courses,
+    }
+    return render(request, "students/views/main_view.html", context)
 
 
 def student_view_by_parent(request):
-    parent = get_object_or_404(Parent, parent_user = request.user.id)
+    parent = get_object_or_404(Parent, parent_user=request.user.id)
     childrens = parent.student_set.all()
-    context = {
-        'title':'Childred Details',
-        'childrens':childrens
-        
-    }
-    return render(request,'children/child_view.html', context)
+    context = {"title": "Childred Details", "childrens": childrens}
+    return render(request, "children/child_view.html", context)
 
 
-''' This is the student attendance view by parent and teacher '''
+""" This is the student attendance view by parent and teacher """
+
+
 def student_attendance_view(request, student_id):
     try:
         student = get_object_or_404(Student, pk=student_id)
-    except:
-        return render(request, '404.html')
-    
+    except BaseException:
+        return render(request, "404.html")
+
     # student_attendance, total_present,total_absent = attendance_view(request)
-    if request.method == 'POST':
+    if request.method == "POST":
         attendance_form = StudentAttendanceDateFilterForm(request.POST)
-        start_date = request.POST.get('start_date')
-        end_date = request.POST.get('end_date')
-        start_data_parse = datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
-        end_data_parse = datetime.datetime.strptime(end_date, "%Y-%m-%d").date()
+        start_date = request.POST.get("start_date")
+        end_date = request.POST.get("end_date")
+        start_data_parse = datetime.datetime.strptime(
+            start_date, "%Y-%m-%d").date()
+        end_data_parse = datetime.datetime.strptime(
+            end_date, "%Y-%m-%d").date()
 
         # subject_id = request.POST.get('subject')  # from hidden input
         # subject = get_object_or_404(Subject, pk=subject_id)
 
-        student_id = request.POST.get('student')  # from hidden input
+        student_id = request.POST.get("student")  # from hidden input
         student = get_object_or_404(Student, pk=student_id)
-        
-        attendance = Attendance.objects.filter(attendance_date__range=(start_data_parse, end_data_parse)
-                                            #    , subject = subject_id
-                                               )
-        # i add course in student  so access subject for student based on course in the collge only.
-        student_attendance = AttendanceReport.objects.filter(student=student_id, attendance__in = attendance)  # or filter(student = student_id, attendance__attendance_date = month)
-        total_present=AttendanceReport.objects.filter(student=student_id, attendance__in = attendance,status = 'Present').count()
-        total_absent=AttendanceReport.objects.filter(student=student_id, attendance__in = attendance,status__in = ['Absent(Not Informed)','Absent(Informed)']).count()
+
+        attendance = Attendance.objects.filter(
+            attendance_date__range=(start_data_parse, end_data_parse)
+            #    , subject = subject_id
+        )
+        # i add course in student  so access subject for student based on
+        # course in the collge only.
+        student_attendance = AttendanceReport.objects.filter(
+            student=student_id, attendance__in=attendance
+        )  # or filter(student = student_id, attendance__attendance_date = month)
+        total_present = AttendanceReport.objects.filter(
+            student=student_id, attendance__in=attendance, status="Present"
+        ).count()
+        total_absent = AttendanceReport.objects.filter(
+            student=student_id,
+            attendance__in=attendance,
+            status__in=["Absent(Not Informed)", "Absent(Informed)"],
+        ).count()
         context = {
-        'title':'Attendance Details',
-        'student':student,
-        'attendance_reports': student_attendance,
-        'attendance_form':  StudentAttendanceDateFilterForm(initial = {
-            # 'subject':subject,
-                                                                          'start_date':start_data_parse,
-                                                                          'end_date':end_data_parse}),#for report list after post request
-        'total_present':total_present,
-        'total_absent':total_absent
-        
-    }
-        return render(request,'students/attendance/attendance_view.html', context)
-    
+            "title": "Attendance Details",
+            "student": student,
+            "attendance_reports": student_attendance,
+            "attendance_form": StudentAttendanceDateFilterForm(
+                initial={
+                    # 'subject':subject,
+                    "start_date": start_data_parse,
+                    "end_date": end_data_parse,
+                }
+            ),  # for report list after post request
+            "total_present": total_present,
+            "total_absent": total_absent,
+        }
+        return render(
+            request,
+            "students/attendance/attendance_view.html",
+            context)
+
     context = {
-        'title':'Student Details',
-        'student':student,
-        'attendance_form':  StudentAttendanceDateFilterForm(),
-        
+        "title": "Student Details",
+        "student": student,
+        "attendance_form": StudentAttendanceDateFilterForm(),
     }
-    return render(request,'students/attendance/attendance_view.html', context)
+    return render(request, "students/attendance/attendance_view.html", context)
 
 
+""" Teacher attendance view by admin """
 
-''' Teacher attendance view by admin '''
+
 def teacher_attendance_view(request, teacher_id):
     try:
         teacher = get_object_or_404(Staff, pk=teacher_id)
-    except:
-        return render(request, '404.html')
-    
-    # teacher_attendance, total_present,total_absent = attendance_view(request)
-    if request.method == 'POST':
-        attendance_form = TeacherAttendanceDateFilterForm(request.POST)
-        start_date = request.POST.get('start_date')
-        end_date = request.POST.get('end_date')
-        start_data_parse = datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
-        end_data_parse = datetime.datetime.strptime(end_date, "%Y-%m-%d").date()
+    except BaseException:
+        return render(request, "404.html")
 
-        teacher_id = request.POST.get('teacher')  # from hidden input
+    # teacher_attendance, total_present,total_absent = attendance_view(request)
+    if request.method == "POST":
+        attendance_form = TeacherAttendanceDateFilterForm(request.POST)
+        start_date = request.POST.get("start_date")
+        end_date = request.POST.get("end_date")
+        start_data_parse = datetime.datetime.strptime(
+            start_date, "%Y-%m-%d").date()
+        end_data_parse = datetime.datetime.strptime(
+            end_date, "%Y-%m-%d").date()
+
+        teacher_id = request.POST.get("teacher")  # from hidden input
         teacher = get_object_or_404(Staff, pk=teacher_id)
-        
-        attendance = Attendance.objects.filter(attendance_date__range=(start_data_parse, end_data_parse)
-                                               )
-        # i add course in teacher  so access subject for teacher based on course in the collge only.
-        teacher_attendance = AttendanceReport.objects.filter(staff=teacher_id, attendance__in = attendance)  
-        total_present=AttendanceReport.objects.filter(staff=teacher_id, attendance__in = attendance,status = 'Present').count()
-        total_absent=AttendanceReport.objects.filter(staff=teacher_id, attendance__in = attendance,status__in = ['Absent(Not Informed)','Absent(Informed)']).count()
+
+        attendance = Attendance.objects.filter(
+            attendance_date__range=(start_data_parse, end_data_parse)
+        )
+        # i add course in teacher  so access subject for teacher based on
+        # course in the collge only.
+        teacher_attendance = AttendanceReport.objects.filter(
+            staff=teacher_id, attendance__in=attendance
+        )
+        total_present = AttendanceReport.objects.filter(
+            staff=teacher_id, attendance__in=attendance, status="Present"
+        ).count()
+        total_absent = AttendanceReport.objects.filter(
+            staff=teacher_id,
+            attendance__in=attendance,
+            status__in=["Absent(Not Informed)", "Absent(Informed)"],
+        ).count()
         context = {
-        'title':'Attendance Details',
-        'teacher':teacher,
-        'attendance_reports': teacher_attendance,
-        'attendance_form':  TeacherAttendanceDateFilterForm(initial = {
-                                                                          'start_date':start_data_parse,
-                                                                          'end_date':end_data_parse}),#for report list after post request
-        'total_present':total_present,
-        'total_absent':total_absent
-        
-    }
-        return render(request,'teachers/views/attendance/attendance_view.html', context)
-    
+            "title": "Attendance Details",
+            "teacher": teacher,
+            "attendance_reports": teacher_attendance,
+            "attendance_form": TeacherAttendanceDateFilterForm(
+                initial={
+                    "start_date": start_data_parse,
+                    "end_date": end_data_parse}
+            ),  # for report list after post request
+            "total_present": total_present,
+            "total_absent": total_absent,
+        }
+        return render(
+            request, "teachers/views/attendance/attendance_view.html", context
+        )
+
     context = {
-        'title':'Teacher Details',
-        'teacher':teacher,
-        'attendance_form':  TeacherAttendanceDateFilterForm(),
-        
+        "title": "Teacher Details",
+        "teacher": teacher,
+        "attendance_form": TeacherAttendanceDateFilterForm(),
     }
-    return render(request,'teachers/views/attendance/attendance_view.html', context)
+    return render(
+        request,
+        "teachers/views/attendance/attendance_view.html",
+        context)
 
 
 def student_view_own_attendance(request):
-        
     # student_attendance, total_present,total_absent = attendance_view(request)
-    if request.method == 'POST':
+    if request.method == "POST":
         attendance_form = StudentAttendanceDateFilterForm(request.POST)
-        start_date = request.POST.get('start_date')
-        end_date = request.POST.get('end_date')
-        start_data_parse = datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
-        end_data_parse = datetime.datetime.strptime(end_date, "%Y-%m-%d").date()
+        start_date = request.POST.get("start_date")
+        end_date = request.POST.get("end_date")
+        start_data_parse = datetime.datetime.strptime(
+            start_date, "%Y-%m-%d").date()
+        end_data_parse = datetime.datetime.strptime(
+            end_date, "%Y-%m-%d").date()
 
- 
-        
-        attendance = Attendance.objects.filter(attendance_date__range=(start_data_parse, end_data_parse)
-                                            #    , subject = subject_id
-                                               )
+        attendance = Attendance.objects.filter(
+            attendance_date__range=(start_data_parse, end_data_parse)
+            #    , subject = subject_id
+        )
 
-        # i add course in student  so access subject for student based on course in the collge only.
-        student_attendance = AttendanceReport.objects.filter(student=request.user.student.pk, attendance__in = attendance)  # or filter(student = student_id, attendance__attendance_date = month)
-        total_present=AttendanceReport.objects.filter(student=request.user.student.pk, attendance__in = attendance,status = 'Present').count()
-        total_absent=AttendanceReport.objects.filter(student=request.user.student.pk, attendance__in = attendance,status__in = ['Absent(Not Informed)','Absent(Informed)']).count()
+        # i add course in student  so access subject for student based on
+        # course in the collge only.
+        student_attendance = AttendanceReport.objects.filter(
+            student=request.user.student.pk, attendance__in=attendance
+        )  # or filter(student = student_id, attendance__attendance_date = month)
+        total_present = AttendanceReport.objects.filter(
+            student=request.user.student.pk,
+            attendance__in=attendance,
+            status="Present").count()
+        total_absent = AttendanceReport.objects.filter(
+            student=request.user.student.pk,
+            attendance__in=attendance,
+            status__in=["Absent(Not Informed)", "Absent(Informed)"],
+        ).count()
         context = {
-        'title':'Attendance Details',
-        'attendance_reports': student_attendance,
-        'attendance_form':  StudentAttendanceDateFilterForm(initial = {
-            # 'subject':subject,
-                                                                          'start_date':start_data_parse,
-                                                                          'end_date':end_data_parse}),#for report list after post request
-        'total_present':total_present,
-        'total_absent':total_absent
-        
-    }
-        return render(request,'students/attendance/attendance_view.html', context)
-    
+            "title": "Attendance Details",
+            "attendance_reports": student_attendance,
+            "attendance_form": StudentAttendanceDateFilterForm(
+                initial={
+                    # 'subject':subject,
+                    "start_date": start_data_parse,
+                    "end_date": end_data_parse,
+                }
+            ),  # for report list after post request
+            "total_present": total_present,
+            "total_absent": total_absent,
+        }
+        return render(
+            request,
+            "students/attendance/attendance_view.html",
+            context)
+
     context = {
-        'title':'Student Details',
-        'attendance_form':  StudentAttendanceDateFilterForm(),
-        
+        "title": "Student Details",
+        "attendance_form": StudentAttendanceDateFilterForm(),
     }
-    return render(request,'students/attendance/attendance_view.html', context)
+    return render(request, "students/attendance/attendance_view.html", context)
+
 
 # this is for edit student document(for edit it also goes to else part in add)
 @csrf_exempt
-@permission_required('student_management_app.edit_student_document', raise_exception=True)
+@permission_required(
+    "student_management_app.edit_student_document", raise_exception=True
+)
 def edit_student_document(request):
-
-    id = request.POST.get('documentid')
+    id = request.POST.get("documentid")
 
     if request.method == "POST":
-        id = request.POST.get('documentid')
+        id = request.POST.get("documentid")
 
     document = get_object_or_404(DocumentFile, pk=id)
-    # you can't serialize the object, because it's an Image. You have to serialize the string representation of it's path.
+    # you can't serialize the object, because it's an Image. You have to
+    # serialize the string representation of it's path.
     file_data = json.dumps(str(document.file))
-    document_data = {"id": document.id,
-                     "title": document.title, "file": file_data}
-    
+    document_data = {
+        "id": document.id,
+        "title": document.title,
+        "file": file_data}
+
     return JsonResponse(document_data, safe=False)
 
 
-
-@permission_required('student_management_app.delete_student_document', raise_exception=True)
+@permission_required(
+    "student_management_app.delete_student_document", raise_exception=True
+)
 def delete_student_document(request, student_id, document_id):
     try:
-        # i am using custom user so i use staff_user_id instead of normal document id = staff_id
+        # i am using custom user so i use staff_user_id instead of normal
+        # document id = staff_id
         document = get_object_or_404(DocumentFile, pk=document_id)
         document.delete()
-        messages.success(request, f'Document is Deleted Successfully')
-        return redirect('admin_app:view_student', student_id)
-    except:
-        messages.error(request, 'Failed To Delete Document')
-        return redirect('admin_app:view_student', student_id)
+        messages.success(request, f"Document is Deleted Successfully")
+        return redirect("admin_app:view_student", student_id)
+    except BaseException:
+        messages.error(request, "Failed To Delete Document")
+        return redirect("admin_app:view_student", student_id)
 
 
-
-
-
-@permission_required('student_management_app.change_student', raise_exception=True)
+@permission_required("student_management_app.change_student",
+                     raise_exception=True)
 def edit_student(request, student_id):
-
     student_form_instance = get_object_or_404(Student, pk=student_id)
-    custom_form_instance = get_object_or_404(CustomUser, pk=student_form_instance.student_user.pk)
+    custom_form_instance = get_object_or_404(
+        CustomUser, pk=student_form_instance.student_user.pk
+    )
     parent_form_instance = student_form_instance.guardian
 
-    if request.method == 'POST':
-        student_form = StudentForm(request.POST, request.FILES, instance=student_form_instance)
-    
-        custom_form = EditCustomUserForm(request.POST, instance=custom_form_instance)
+    if request.method == "POST":
+        student_form = StudentForm(
+            request.POST, request.FILES, instance=student_form_instance
+        )
+
+        custom_form = EditCustomUserForm(
+            request.POST, instance=custom_form_instance)
         parent_form = ParentForm(request.POST, instance=parent_form_instance)
-        
+
         try:
-            if student_form.is_valid() and custom_form.is_valid() and parent_form.is_valid():
+            if (
+                student_form.is_valid()
+                and custom_form.is_valid()
+                and parent_form.is_valid()
+            ):
                 student_form.save()
                 custom_form.save()
                 parent_form.save()
                 messages.success(request, "Successfully Edited Student")
-                return redirect('admin_app:manage_student')
-        except:
+                return redirect("admin_app:manage_student")
+        except BaseException:
             messages.error(request, "Failed to Update Student")
-            return redirect('admin_app:manage_student')
-        
+            return redirect("admin_app:manage_student")
+
     else:
         student_form = StudentForm(instance=student_form_instance)
         custom_form = EditCustomUserForm(instance=custom_form_instance)
         parent_form = ParentForm(instance=parent_form_instance)
 
-
     context = {
-               'title':'Edit Student', 
-                'student_form':student_form,
-               'custom_form':custom_form,
-               'parent_form':parent_form
-               }
-    return render(request, 'students/edit_student.html', context)
+        "title": "Edit Student",
+        "student_form": student_form,
+        "custom_form": custom_form,
+        "parent_form": parent_form,
+    }
+    return render(request, "students/edit_student.html", context)
 
 
-@permission_required('student_management_app.delete_student', raise_exception=True)
+@permission_required("student_management_app.delete_student",
+                     raise_exception=True)
 def delete_student(request, pk):
     # try:
     student_object = get_object_or_404(Student, pk=pk)
-    custom_form_instance = get_object_or_404(CustomUser, pk=student_object.student_user.pk)
+    custom_form_instance = get_object_or_404(
+        CustomUser, pk=student_object.student_user.pk
+    )
     custom_form_instance.delete()
     messages.success(
-        request, f'{student_object.student_user.username} is Deleted Successfully')
-    return redirect('admin_app:manage_student')
+        request,
+        f"{student_object.student_user.username} is Deleted Successfully")
+    return redirect("admin_app:manage_student")
     # except:
     #     messages.error(request, 'Failed To Delete Student')
     #     return redirect('admin_app:manage_student')
-    
+
 
 def make_student_inactive(request, pk):
-    
     user = get_object_or_404(Student, pk=pk)
     user.student_user.is_active = 0
     user.student_user.save()
-    messages.success(request, 'Student is inactive successfully')
-    return redirect('admin_app:manage_student')
-    
-    
-    
+    messages.success(request, "Student is inactive successfully")
+    return redirect("admin_app:manage_student")
+
+
 def restore_inactive_students(request, pk):
     user = get_object_or_404(CustomUser, pk=pk)
     user.is_active = 1
     user.save()
-    messages.success(request, 'Student is activated successfully')
-    return redirect('admin_app:inactive_students')
-    
-    
+    messages.success(request, "Student is activated successfully")
+    return redirect("admin_app:inactive_students")
 
 
-@permission_required('student_management_app.view_student', raise_exception=True)
-def inactive_students(request):    
-    
-    students = Student.objects.filter(student_user__is_active = 0)
-    search_form = StudentFormSearch(user = request.user)
-    semester_query = request.GET.get('semester')
-    section_query = request.GET.get('section')
-    group_query = request.GET.get('group')
-    
+@permission_required("student_management_app.view_student",
+                     raise_exception=True)
+def inactive_students(request):
+    students = Student.objects.filter(student_user__is_active=0)
+    search_form = StudentFormSearch(user=request.user)
+    semester_query = request.GET.get("semester")
+    section_query = request.GET.get("section")
+    group_query = request.GET.get("group")
+
     if semester_query and section_query and group_query:
-        search_students = Student.objects.filter(semester = semester_query, section = section_query,faculty = group_query)
-        context = {'students': search_students,'form':search_form}
-        return render(request, 'students/inactive_students.html', context)
-    
+        search_students = Student.objects.filter(
+            semester=semester_query, section=section_query, faculty=group_query
+        )
+        context = {"students": search_students, "form": search_form}
+        return render(request, "students/inactive_students.html", context)
+
     elif semester_query:
-        search_students = Student.objects.filter(semester = semester_query)
-        context = {'students': search_students,'form':search_form}
-        return render(request, 'students/inactive_students.html', context)
-    
+        search_students = Student.objects.filter(semester=semester_query)
+        context = {"students": search_students, "form": search_form}
+        return render(request, "students/inactive_students.html", context)
+
     elif section_query:
-        search_students = Student.objects.filter(section = section_query)
-        context = {'students': search_students,'form':search_form}
-        return render(request, 'students/inactive_students.html', context)
-    
+        search_students = Student.objects.filter(section=section_query)
+        context = {"students": search_students, "form": search_form}
+        return render(request, "students/inactive_students.html", context)
+
     elif group_query:
-        search_students = Student.objects.filter(faculty = group_query)
-        context = {'students': search_students,'form':search_form}
-        return render(request, 'students/inactive_students.html', context)
+        search_students = Student.objects.filter(faculty=group_query)
+        context = {"students": search_students, "form": search_form}
+        return render(request, "students/inactive_students.html", context)
     else:
         context = {
-            'title':'Inactive Students',
-            'students': students,
-            'form':search_form
-                }
-        return render(request, 'students/inactive_students.html', context)
+            "title": "Inactive Students",
+            "students": students,
+            "form": search_form,
+        }
+        return render(request, "students/inactive_students.html", context)
 
 
-
-@permission_required('student_management_app.view_student', raise_exception=True)
+@permission_required("student_management_app.view_student",
+                     raise_exception=True)
 def manage_student(request):
-
     # students = Student.objects.filter(student_user__is_active = 1)
-    
+
     # if request.user.adminuser.course_category == a_level_course_category:
     #     search_form = StudentFormSearch(user = request.user)
     # if request.user.adminuser.course_category in [bachelor_course_category,master_course_category]:
     #     search_form = StudentSearch(user = request.user)
 
-    semester_query = request.GET.get('filter_semester')
-    course_query = request.GET.get('filter_course')
-    course_category_query = request.GET.get('course_category')
-    section_query = request.GET.get('section')
-    search_form = StudentSearch(user = request.user,initial = {
-        'course_category':course_category_query,'filter_course':course_query,
-        'filter_semester':semester_query,'section':section_query})
-    
+    semester_query = request.GET.get("filter_semester")
+    course_query = request.GET.get("filter_course")
+    course_category_query = request.GET.get("course_category")
+    section_query = request.GET.get("section")
+    search_form = StudentSearch(
+        user=request.user,
+        initial={
+            "course_category": course_category_query,
+            "filter_course": course_query,
+            "filter_semester": semester_query,
+            "section": section_query,
+        },
+    )
+
     # group_query = request.GET.get('group')
 
     # if course_category_query:
@@ -817,42 +975,40 @@ def manage_student(request):
     #     context = {'students': search_students,'form':search_form}
     #     return render(request, 'students/manage_student.html', context)
     if semester_query and section_query:
-        search_students = Student.objects.filter(semester = semester_query, section = section_query,student_user__is_active = 1)
-        context = {'students': search_students,'form':search_form}
-        return render(request, 'students/manage_student.html', context)
-    
+        search_students = Student.objects.filter(
+            semester=semester_query,
+            section=section_query,
+            student_user__is_active=1)
+        context = {"students": search_students, "form": search_form}
+        return render(request, "students/manage_student.html", context)
+
     if semester_query:
-        search_students = Student.objects.filter(semester = semester_query,student_user__is_active = 1)
-        context = {'students': search_students,'form':search_form}
-        return render(request, 'students/manage_student.html', context)
-    
-  
+        search_students = Student.objects.filter(
+            semester=semester_query, student_user__is_active=1
+        )
+        context = {"students": search_students, "form": search_form}
+        return render(request, "students/manage_student.html", context)
+
     # else:
     context = {
-        'title':'Manage Student',
+        "title": "Manage Student",
         # 'students': students,
-            'form':search_form,
-            'status':True
-            }
-    return render(request, 'students/manage_student_api.html', context)
-
-
+        "form": search_form,
+        "status": True,
+    }
+    return render(request, "students/manage_student_api.html", context)
 
 
 def student_log(request):
     students_logs = Student.history.all()
     context = {
-        'title':'Student Log',
-         'students_logs':students_logs,
+        "title": "Student Log",
+        "students_logs": students_logs,
     }
-    return render(request,'students/loghistory/history.html',context)
-
+    return render(request, "students/loghistory/history.html", context)
 
 
 def delete_log(request):
     Student.history.all().delete()
-    messages.success(request,"Students logs are deleted successfully.")
-    return redirect('student:student_log')
-
-
-
+    messages.success(request, "Students logs are deleted successfully.")
+    return redirect("student:student_log")

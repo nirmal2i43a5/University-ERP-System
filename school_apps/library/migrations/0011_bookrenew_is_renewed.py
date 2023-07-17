@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('library', '0010_auto_20230714_1900'),
+        ("library", "0010_auto_20230714_1900"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='bookrenew',
-            name='is_renewed',
+            model_name="bookrenew",
+            name="is_renewed",
             field=models.BooleanField(default=False),
         ),
     ]

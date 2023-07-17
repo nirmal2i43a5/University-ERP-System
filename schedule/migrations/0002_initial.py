@@ -6,50 +6,70 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('schedule', '0001_initial'),
-        ('contenttypes', '0002_remove_content_type_name'),
+        ("schedule", "0001_initial"),
+        ("contenttypes", "0002_remove_content_type_name"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='event',
-            name='creator',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='creator', to=settings.AUTH_USER_MODEL, verbose_name='creator'),
+            model_name="event",
+            name="creator",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="creator",
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="creator",
+            ),
         ),
         migrations.AddField(
-            model_name='event',
-            name='rule',
-            field=models.ForeignKey(blank=True, help_text="Select '----' for a one time only event.", null=True, on_delete=django.db.models.deletion.SET_NULL, to='schedule.rule', verbose_name='rule'),
+            model_name="event",
+            name="rule",
+            field=models.ForeignKey(
+                blank=True,
+                help_text="Select '----' for a one time only event.",
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to="schedule.rule",
+                verbose_name="rule",
+            ),
         ),
         migrations.AddField(
-            model_name='calendarrelation',
-            name='calendar',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='schedule.calendar', verbose_name='calendar'),
+            model_name="calendarrelation",
+            name="calendar",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to="schedule.calendar",
+                verbose_name="calendar",
+            ),
         ),
         migrations.AddField(
-            model_name='calendarrelation',
-            name='content_type',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='contenttypes.contenttype'),
+            model_name="calendarrelation",
+            name="content_type",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to="contenttypes.contenttype",
+            ),
         ),
         migrations.AlterIndexTogether(
-            name='occurrence',
-            index_together={('start', 'end')},
+            name="occurrence",
+            index_together={("start", "end")},
         ),
         migrations.AlterIndexTogether(
-            name='eventrelation',
-            index_together={('content_type', 'object_id')},
+            name="eventrelation",
+            index_together={("content_type", "object_id")},
         ),
         migrations.AlterIndexTogether(
-            name='event',
-            index_together={('start', 'end')},
+            name="event",
+            index_together={("start", "end")},
         ),
         migrations.AlterIndexTogether(
-            name='calendarrelation',
-            index_together={('content_type', 'object_id')},
+            name="calendarrelation",
+            index_together={("content_type", "object_id")},
         ),
     ]

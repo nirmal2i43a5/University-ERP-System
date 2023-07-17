@@ -4,15 +4,14 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('library', '0014_rename_fine_libraryfine'),
+        ("library", "0014_rename_fine_libraryfine"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='libraryfine',
-            old_name='member',
-            new_name='fine_member',
+            model_name="libraryfine",
+            old_name="member",
+            new_name="fine_member",
         ),
     ]

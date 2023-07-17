@@ -11,27 +11,26 @@ from functools import partial as curry
 from school_apps.notifications.models import Notification
 
 
-
 class UserLoggingMiddleware(object):
     ip_address = None
+
     def __init__(self, get_response):
         self.get_response = get_response
-    
-    
+
     def __call__(self, request):
         self.process_request(request)
         response = self.get_response(request)
         return response
 
     def process_request(self, request):
-        if request.method not in ('GET', 'HEAD', 'OPTIONS', 'TRACE'):
-            if hasattr(request, 'user') and request.user.is_authenticated:
+        if request.method not in ("GET", "HEAD", "OPTIONS", "TRACE"):
+            if hasattr(request, "user") and request.user.is_authenticated:
                 user = request.user
             else:
                 user = None
 
             session = request.session.session_key
-            self.ip_address = request.META.get('REMOTE_ADDR', None)
+            self.ip_address = request.META.get("REMOTE_ADDR", None)
             update_post_save_info = curry(
                 self._update_post_save_info,
                 user,
@@ -44,48 +43,53 @@ class UserLoggingMiddleware(object):
             )
             signals.post_save.connect(
                 update_post_save_info,
-                dispatch_uid=(self.__class__, request,),
-                weak=False
+                dispatch_uid=(
+                    self.__class__,
+                    request,
+                ),
+                weak=False,
             )
             signals.post_delete.connect(
                 update_post_delete_info,
-                dispatch_uid=(self.__class__, request,),
-                weak=False
+                dispatch_uid=(
+                    self.__class__,
+                    request,
+                ),
+                weak=False,
             )
 
     def _save_to_log(self, instance, action, user):
         print("----------------------------------")
         # pass
         content_type = ContentType.objects.get_for_model(instance)
-        if content_type.app_label != 'user_log' and user:
-            object_id = instance.id if hasattr(instance, 'id') else 0
-            userlog = UserLog( 
+        if content_type.app_label != "user_log" and user:
+            object_id = instance.id if hasattr(instance, "id") else 0
+            userlog = UserLog(
                 object_id=object_id,
                 app_name=content_type.app_label,
                 model_name=content_type.model,
                 action=action,
-                object_instance=serializers.serialize('json', [instance]),
+                object_instance=serializers.serialize("json", [instance]),
                 user=user,
                 ip=self.ip_address,
             )
             if UserLog.objects.all().count():
-                last_log = UserLog.objects.latest('id')
+                last_log = UserLog.objects.latest("id")
                 if not last_log.__eq__(userlog):
                     userlog.save()
             else:
                 userlog.save()
-                    
+
     def _update_post_save_info(
             self,
             user,
             session,
             sender,
             instance,
-            **kwargs
-    ):
-        if sender in [UserLog,LogEntry,Notification,Session]:
+            **kwargs):
+        if sender in [UserLog, LogEntry, Notification, Session]:
             return None
-        if kwargs['created']:
+        if kwargs["created"]:
             self._save_to_log(instance, UserLog.ACTION_TYPE_CREATE, user)
         else:
             self._save_to_log(instance, UserLog.ACTION_TYPE_UPDATE, user)
@@ -96,8 +100,7 @@ class UserLoggingMiddleware(object):
             session,
             sender,
             instance,
-            **kwargs
-    ):
-        if sender in [UserLog,LogEntry,Notification, Session]:
+            **kwargs):
+        if sender in [UserLog, LogEntry, Notification, Session]:
             return None
         self._save_to_log(instance, UserLog.ACTION_TYPE_DELETE, user)

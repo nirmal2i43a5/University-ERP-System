@@ -4,20 +4,27 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('library', '0007_auto_20230714_1547'),
+        ("library", "0007_auto_20230714_1547"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Fine',
+            name="Fine",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
             ],
         ),
         migrations.RemoveField(
-            model_name='bookrenew',
-            name='expirydate',
+            model_name="bookrenew",
+            name="expirydate",
         ),
     ]

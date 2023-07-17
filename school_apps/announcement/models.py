@@ -1,4 +1,3 @@
-
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -8,17 +7,16 @@ from student_management_app.models import CustomUser
 
 class Notice(models.Model):
     title = models.CharField(max_length=100, blank=True)
-    file = models.FileField(upload_to='Notices', null=True, blank=True)
+    file = models.FileField(upload_to="Notices", null=True, blank=True)
     notice = RichTextField(null=True, blank=True)
-    created_by=models.ForeignKey(CustomUser,on_delete=models.CASCADE, null=True)
-    status = models.BooleanField(default = True)
+    created_by = models.ForeignKey(
+        CustomUser, on_delete=models.CASCADE, null=True)
+    status = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
-
 
     class Meta:
-        db_table = 'tbl_notice'
+        db_table = "tbl_notice"
         verbose_name = _("notice")
         verbose_name_plural = _("notices")
 
@@ -30,14 +28,13 @@ class Holiday(models.Model):
     title = models.CharField(max_length=100)
     from_date = models.DateField()
     to_date = models.DateField()
-    image = models.FileField(upload_to='holiday_images', null=True, blank=True)
+    image = models.FileField(upload_to="holiday_images", null=True, blank=True)
     details = RichTextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
 
     class Meta:
-        db_table = 'tbl_Holiday'
+        db_table = "tbl_Holiday"
         verbose_name = _("holiday")
         verbose_name_plural = _("holidays")
 
@@ -46,4 +43,3 @@ class Holiday(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-

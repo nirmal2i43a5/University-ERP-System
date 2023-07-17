@@ -4,18 +4,17 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('library', '0006_auto_20230714_1545'),
+        ("library", "0006_auto_20230714_1545"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='bookreturn',
-            name='isbn',
+            model_name="bookreturn",
+            name="isbn",
         ),
         migrations.RemoveField(
-            model_name='bookreturn',
-            name='title',
+            model_name="bookreturn",
+            name="title",
         ),
     ]

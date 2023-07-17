@@ -26,13 +26,15 @@ urlpatterns = [
     url(r"^$", ListView.as_view(model=Calendar), name="calendar_list"),
     url(
         r"^calendar/year/(?P<calendar_slug>[-\w]+)/$",
-        CalendarByPeriodsView.as_view(template_name="schedule/calendar_year.html"),
+        CalendarByPeriodsView.as_view(
+            template_name="schedule/calendar_year.html"),
         name="year_calendar",
         kwargs={"period": Year},
     ),
     url(
         r"^calendar/tri_month/(?P<calendar_slug>[-\w]+)/$",
-        CalendarByPeriodsView.as_view(template_name="schedule/calendar_tri_month.html"),
+        CalendarByPeriodsView.as_view(
+            template_name="schedule/calendar_tri_month.html"),
         name="tri_month_calendar",
         kwargs={"period": Month},
     ),
@@ -46,19 +48,22 @@ urlpatterns = [
     ),
     url(
         r"^calendar/month/(?P<calendar_slug>[-\w]+)/$",
-        CalendarByPeriodsView.as_view(template_name="schedule/calendar_month.html"),
+        CalendarByPeriodsView.as_view(
+            template_name="schedule/calendar_month.html"),
         name="month_calendar",
         kwargs={"period": Month},
     ),
     url(
         r"^calendar/week/(?P<calendar_slug>[-\w]+)/$",
-        CalendarByPeriodsView.as_view(template_name="schedule/calendar_week.html"),
+        CalendarByPeriodsView.as_view(
+            template_name="schedule/calendar_week.html"),
         name="week_calendar",
         kwargs={"period": Week},
     ),
     url(
         r"^calendar/daily/(?P<calendar_slug>[-\w]+)/$",
-        CalendarByPeriodsView.as_view(template_name="schedule/calendar_day.html"),
+        CalendarByPeriodsView.as_view(
+            template_name="schedule/calendar_day.html"),
         name="day_calendar",
         kwargs={"period": Day},
     ),
@@ -67,7 +72,6 @@ urlpatterns = [
         CalendarView.as_view(),
         name="calendar_home",
     ),
-    
     # Event Urls
     url(
         r"^event/create/(?P<calendar_slug>[-\w]+)/$",
@@ -131,7 +135,4 @@ urlpatterns = [
     ),
     url(r"^api/select_create/$", api_select_create, name="api_select_create"),
     url(r"^$", ListView.as_view(queryset=Calendar.objects.all()), name="schedule"),
-    
-    
-    
 ]

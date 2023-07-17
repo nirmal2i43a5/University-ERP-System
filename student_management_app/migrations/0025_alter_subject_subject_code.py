@@ -5,16 +5,17 @@ import django.utils.timezone
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('student_management_app', '0024_auto_20230713_1837'),
+        ("student_management_app", "0024_auto_20230713_1837"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='subject',
-            name='subject_code',
-            field=models.CharField(default=django.utils.timezone.now, max_length=255, unique=True),
+            model_name="subject",
+            name="subject_code",
+            field=models.CharField(
+                default=django.utils.timezone.now, max_length=255, unique=True
+            ),
             preserve_default=False,
         ),
     ]

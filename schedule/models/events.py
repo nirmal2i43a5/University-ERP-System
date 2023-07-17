@@ -87,8 +87,7 @@ class Event(models.Model):
         Calendar, on_delete=models.CASCADE, verbose_name=_("calendar")
     )
     color_event = models.CharField(_("Color event"), blank=True, max_length=10)
-    
-    
+
     objects = EventManager()
 
     class Meta:
@@ -176,7 +175,8 @@ class Event(models.Model):
                 final_occurrences.append(occ)
         # then add persisted occurrences which originated outside of this period but now
         # fall within it
-        final_occurrences += occ_replacer.get_additional_occurrences(start, end)
+        final_occurrences += occ_replacer.get_additional_occurrences(
+            start, end)
         return final_occurrences
 
     def get_rrule_object(self, tzinfo):
@@ -204,8 +204,11 @@ class Event(models.Model):
         if end is None:
             end = start + (self.end - self.start)
         return Occurrence(
-            event=self, start=start, end=end, original_start=start, original_end=end
-        )
+            event=self,
+            start=start,
+            end=end,
+            original_start=start,
+            original_end=end)
 
     def get_occurrence(self, date):
         use_naive = timezone.is_naive(date)
@@ -227,7 +230,8 @@ class Event(models.Model):
                 return Occurrence.objects.get(event=self, original_start=date)
             except Occurrence.DoesNotExist:
                 if use_naive:
-                    next_occurrence = timezone.make_naive(next_occurrence, tzinfo)
+                    next_occurrence = timezone.make_naive(
+                        next_occurrence, tzinfo)
                 return self._create_occurrence(next_occurrence)
 
     def _get_occurrence_list(self, start, end):
@@ -256,7 +260,8 @@ class Event(models.Model):
 
             o_starts = []
 
-            # Occurrences that start before the timespan but ends inside or after timespan
+            # Occurrences that start before the timespan but ends inside or
+            # after timespan
             closest_start = start_rule.before(start, inc=False)
             if closest_start is not None and closest_start + duration > start:
                 o_starts.append(closest_start)
@@ -334,7 +339,8 @@ class Event(models.Model):
         for index, nxt in enumerate(generator):
             if max_occurrences and index > max_occurrences - 1:
                 break
-            if len(trickies) > 0 and (nxt is None or nxt.start > trickies[0].start):
+            if len(trickies) > 0 and (
+                    nxt is None or nxt.start > trickies[0].start):
                 yield trickies.pop(0)
             yield occ_replacer.get_occurrence(nxt)
 
@@ -375,8 +381,9 @@ class Event(models.Model):
             ):
                 sp = start_params[param]
                 if sp == rule_params[param] or (
-                    hasattr(rule_params[param], "__iter__") and sp in rule_params[param]
-                ):
+                    hasattr(
+                        rule_params[param],
+                        "__iter__") and sp in rule_params[param]):
                     event_params[param] = [sp]
                 else:
                     event_params[param] = rule_params[param]
@@ -475,7 +482,11 @@ class EventRelationManager(models.Manager):
     #         eventrelation__event = event
     #     )
 
-    def get_events_for_object(self, content_object, distinction="", inherit=True):
+    def get_events_for_object(
+            self,
+            content_object,
+            distinction="",
+            inherit=True):
         """
         returns a queryset full of events, that relate to the object through, the
         distinction
@@ -554,7 +565,10 @@ class EventRelation(models.Model):
     may not scale well.  If you use this keep that in mind.
     """
 
-    event = models.ForeignKey(Event, on_delete=models.CASCADE, verbose_name=_("event"))
+    event = models.ForeignKey(
+        Event,
+        on_delete=models.CASCADE,
+        verbose_name=_("event"))
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.IntegerField(db_index=True)
     content_object = fields.GenericForeignKey("content_type", "object_id")
@@ -574,7 +588,10 @@ class EventRelation(models.Model):
 
 
 class Occurrence(models.Model):
-    event = models.ForeignKey(Event, on_delete=models.CASCADE, verbose_name=_("event"))
+    event = models.ForeignKey(
+        Event,
+        on_delete=models.CASCADE,
+        verbose_name=_("event"))
     title = models.CharField(_("title"), max_length=255, blank=True)
     description = models.TextField(_("description"), blank=True)
     start = models.DateTimeField(_("start"), db_index=True)
@@ -695,7 +712,8 @@ class Occurrence(models.Model):
 
     def __hash__(self):
         if not self.pk:
-            raise TypeError("Model instances without primary key value are unhashable")
+            raise TypeError(
+                "Model instances without primary key value are unhashable")
         return hash(self.pk)
 
     def __eq__(self, other):

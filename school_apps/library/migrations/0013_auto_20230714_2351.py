@@ -6,47 +6,66 @@ import django.utils.timezone
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('library', '0012_bookreturn_is_returned'),
+        ("library", "0012_bookreturn_is_returned"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='fine',
-            name='book',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='library.bookentry'),
+            model_name="fine",
+            name="book",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="library.bookentry",
+            ),
         ),
         migrations.AddField(
-            model_name='fine',
-            name='fine_amount',
+            model_name="fine",
+            name="fine_amount",
             field=models.DecimalField(decimal_places=2, default=1, max_digits=10),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='fine',
-            name='is_paid',
+            model_name="fine",
+            name="is_paid",
             field=models.BooleanField(default=False),
         ),
         migrations.AddField(
-            model_name='fine',
-            name='member',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='library.librarymemberprofile'),
+            model_name="fine",
+            name="member",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="library.librarymemberprofile",
+            ),
         ),
         migrations.AddField(
-            model_name='fine',
-            name='payment_date',
-            field=models.DateTimeField(auto_now_add=True, default=django.utils.timezone.now),
+            model_name="fine",
+            name="payment_date",
+            field=models.DateTimeField(
+                auto_now_add=True, default=django.utils.timezone.now
+            ),
             preserve_default=False,
         ),
         migrations.AlterField(
-            model_name='bookrenew',
-            name='book_issue',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='bookrenew', to='library.bookissue'),
+            model_name="bookrenew",
+            name="book_issue",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="bookrenew",
+                to="library.bookissue",
+            ),
         ),
         migrations.AlterField(
-            model_name='bookreturn',
-            name='book_issue',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='bookreturns', to='library.bookissue'),
+            model_name="bookreturn",
+            name="book_issue",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="bookreturns",
+                to="library.bookissue",
+            ),
         ),
     ]

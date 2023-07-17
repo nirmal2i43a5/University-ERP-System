@@ -18,4 +18,3 @@ def convert_to_bs(ad_date):
     bs_year, bs_month, bs_day = _ad_to_bs(year, month, day)
     formatted_date = "{}-{:02}-{:02}".format(bs_year, bs_month, bs_day)
     return formatted_date
-

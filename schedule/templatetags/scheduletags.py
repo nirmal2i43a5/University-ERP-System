@@ -39,23 +39,25 @@ def month_table(context, calendar, month, size="regular", shift=None):
 
 @register.inclusion_tag("schedule/_day_cell.html", takes_context=True)
 def day_cell(context, calendar, day, month, size="regular"):
-    context.update({"calendar": calendar, "day": day, "month": month, "size": size})
+    context.update({"calendar": calendar, "day": day,
+                   "month": month, "size": size})
     return context
 
 
 @register.inclusion_tag("schedule/_daily_table.html", takes_context=True)
 def daily_table(context, day, start=8, end=20, increment=30):
     """
-      Display a nice table with occurrences and action buttons.
-      Arguments:
-      start - hour at which the day starts
-      end - hour at which the day ends
-      increment - size of a time slot (in minutes)
+    Display a nice table with occurrences and action buttons.
+    Arguments:
+    start - hour at which the day starts
+    end - hour at which the day ends
+    increment - size of a time slot (in minutes)
     """
     user = context["request"].user
     addable = CHECK_EVENT_PERM_FUNC(None, user)
     if "calendar" in context:
-        addable = addable and CHECK_CALENDAR_PERM_FUNC(context["calendar"], user)
+        addable = addable and CHECK_CALENDAR_PERM_FUNC(
+            context["calendar"], user)
     context["addable"] = addable
     day_part = day.get_time_slot(
         day.start + datetime.timedelta(hours=start),
@@ -80,23 +82,27 @@ def options(context, occurrence):
     )
     context["view_occurrence"] = occurrence.get_absolute_url()
     user = context["request"].user
-    if CHECK_EVENT_PERM_FUNC(occurrence.event, user) and CHECK_CALENDAR_PERM_FUNC(
-        occurrence.event.calendar, user
-    ):
+    if CHECK_EVENT_PERM_FUNC(
+            occurrence.event,
+            user) and CHECK_CALENDAR_PERM_FUNC(
+            occurrence.event.calendar,
+            user):
         context["edit_occurrence"] = occurrence.get_edit_url()
         context["cancel_occurrence"] = occurrence.get_cancel_url()
-        context["delete_event"] = reverse("delete_event", args=(occurrence.event.id,))
-        context["edit_event"] = reverse(
-            "edit_event", args=(occurrence.event.calendar.slug, occurrence.event.id)
-        )
+        context["delete_event"] = reverse(
+            "delete_event", args=(occurrence.event.id,))
+        context["edit_event"] = reverse("edit_event", args=(
+            occurrence.event.calendar.slug, occurrence.event.id))
     else:
         context["edit_event"] = context["delete_event"] = ""
     return context
 
 
-@register.inclusion_tag("schedule/_create_event_options.html", takes_context=True)
+@register.inclusion_tag("schedule/_create_event_options.html",
+                        takes_context=True)
 def create_event_url(context, calendar, slot):
-    context.update({"calendar": calendar, "MEDIA_URL": getattr(settings, "MEDIA_URL")})
+    context.update(
+        {"calendar": calendar, "MEDIA_URL": getattr(settings, "MEDIA_URL")})
     lookup_context = {"calendar_slug": calendar.slug}
     context["create_event_url"] = "{}{}".format(
         reverse("calendar_create_event", kwargs=lookup_context),
@@ -146,8 +152,7 @@ class CreateCalendarNode(template.Node):
 
     def render(self, context):
         context[self.context_var] = Calendar.objects.get_or_create_calendar_for_object(
-            self.content_object.resolve(context), self.distinction, name=self.name
-        )
+            self.content_object.resolve(context), self.distinction, name=self.name)
         return ""
 
 
@@ -173,14 +178,12 @@ def get_or_create_calendar(parser, token):
             context_var = contents[as_index + 1]
         else:
             raise template.TemplateSyntaxError(
-                "%r tag requires an a context variable: %r <content_object> [named <calendar name>] [by <distinction>] as <context_var>"
-                % (token.split_contents()[0], token.split_contents()[0])
-            )
+                "%r tag requires an a context variable: %r <content_object> [named <calendar name>] [by <distinction>] as <context_var>" %
+                (token.split_contents()[0], token.split_contents()[0]))
     else:
         raise template.TemplateSyntaxError(
-            "%r tag follows form %r <content_object> [named <calendar name>] [by <distinction>] as <context_var>"
-            % (token.split_contents()[0], token.split_contents()[0])
-        )
+            "%r tag follows form %r <content_object> [named <calendar name>] [by <distinction>] as <context_var>" %
+            (token.split_contents()[0], token.split_contents()[0]))
     return CreateCalendarNode(obj, distinction, context_var, name)
 
 
@@ -211,12 +214,11 @@ def prev_url(target, calendar, period):
         return ""
 
     return mark_safe(
-        '<a href="%s%s"><span class="glyphicon glyphicon-circle-arrow-left"></span></a>'
-        % (
-            reverse(target, kwargs={"calendar_slug": slug}),
-            querystring_for_date(period.prev().start),
-        )
-    )
+        '<a href="%s%s"><span class="glyphicon glyphicon-circle-arrow-left"></span></a>' %
+        (reverse(
+            target, kwargs={
+                "calendar_slug": slug}), querystring_for_date(
+            period.prev().start), ))
 
 
 @register.simple_tag
@@ -229,12 +231,11 @@ def next_url(target, calendar, period):
         return ""
 
     return mark_safe(
-        '<a href="%s%s"><span class="glyphicon glyphicon-circle-arrow-right"></span></a>'
-        % (
-            reverse(target, kwargs={"calendar_slug": slug}),
-            querystring_for_date(period.next().start),
-        )
-    )
+        '<a href="%s%s"><span class="glyphicon glyphicon-circle-arrow-right"></span></a>' %
+        (reverse(
+            target, kwargs={
+                "calendar_slug": slug}), querystring_for_date(
+            period.next().start), ))
 
 
 @register.inclusion_tag("schedule/_prevnext.html")
@@ -258,14 +259,15 @@ def detail(occurrence):
 
 def _cook_slots(period, increment):
     """
-        Prepare slots to be displayed on the left hand side
-        calculate dimensions (in px) for each slot.
-        Arguments:
-        period - time period for the whole series
-        increment - slot size in minutes
+    Prepare slots to be displayed on the left hand side
+    calculate dimensions (in px) for each slot.
+    Arguments:
+    period - time period for the whole series
+    increment - slot size in minutes
     """
     tdiff = datetime.timedelta(minutes=increment)
-    num = int((period.end - period.start).total_seconds()) // int(tdiff.total_seconds())
+    num = int((period.end - period.start).total_seconds()
+              ) // int(tdiff.total_seconds())
     s = period.start
     slots = []
     for i in range(num):

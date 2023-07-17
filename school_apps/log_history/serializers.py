@@ -4,6 +4,7 @@ from rest_framework import serializers
 from student_management_app.models import CustomUser
 from school_apps.log_history.models import UserLog
 
+
 class CustomUserSerializer(ModelSerializer):
     # employee = EmployeeSerializer()
     # employee_id = serializers.ReadOnlyField(source="employee.employee_id",default="")
@@ -13,10 +14,12 @@ class CustomUserSerializer(ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = '__all__'
+        fields = "__all__"
+
 
 class UserLogSerializer(ModelSerializer):
     user = CustomUserSerializer(read_only=True)
+
     class Meta:
         model = UserLog
-        fields = '__all__'
+        fields = "__all__"

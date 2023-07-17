@@ -8,7 +8,7 @@ from dateutil.rrule import (
     SA,
     SECONDLY,
     SU,
-    TH, 
+    TH,
     TU,
     WE,
     WEEKLY,
@@ -60,7 +60,14 @@ class Rule(models.Model):
     frequency = models.CharField(_("frequency"), choices=freqs, max_length=10)
     params = models.TextField(_("params"), blank=True)
 
-    _week_days = {"MO": MO, "TU": TU, "WE": WE, "TH": TH, "FR": FR, "SA": SA, "SU": SU}
+    _week_days = {
+        "MO": MO,
+        "TU": TU,
+        "WE": WE,
+        "TH": TH,
+        "FR": FR,
+        "SA": SA,
+        "SU": SU}
 
     class Meta:
         verbose_name = _("rule")
@@ -103,14 +110,8 @@ class Rule(models.Model):
             if len(param) != 2:
                 continue
 
-            param = (
-                str(param[0]).lower(),
-                [
-                    x
-                    for x in [self._weekday_or_number(v) for v in param[1].split(",")]
-                    if x is not None
-                ],
-            )
+            param = (str(param[0]).lower(), [x for x in [self._weekday_or_number(
+                v) for v in param[1].split(",")] if x is not None], )
 
             if len(param[1]) == 1:
                 param_value = self._weekday_or_number(param[1][0])

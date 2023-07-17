@@ -47,29 +47,30 @@ from schedule.utils import (
 from django.views import View
 from django.contrib.auth.mixins import (
     LoginRequiredMixin,
-    PermissionRequiredMixin # new
+    PermissionRequiredMixin,  # new
 )
 from django.contrib.auth.decorators import permission_required
 from school_apps.notifications.utilities import create_notification
+
+
 class CalendarCreateView(PermissionRequiredMixin, View):
-    permission_required = 'schedule.add_calendar'
-    
+    permission_required = "schedule.add_calendar"
+
     def get(self, request, *args, **kwargs):
         form = CalendarForm
         context = {
-            'title':'Calendar',
-            'form':form,
+            "title": "Calendar",
+            "form": form,
             # 'calendar_slug':calendar_slug,
-            
         }
-        return render(request,'add_calendar.html',context)
+        return render(request, "add_calendar.html", context)
+
     def post(self, request, *args, **kwargs):
         form = CalendarForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('manage_event')
-    
-    
+            return redirect("manage_event")
+
 
 class CalendarViewPermissionMixin:
     @classmethod
@@ -113,11 +114,14 @@ class CalendarView(CalendarMixin, DetailView):
 
 class FullCalendarView(CalendarMixin, DetailView):
     template_name = "fullcalendar.html"
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         context["calendar_slug"] = self.kwargs.get("calendar_slug")
         # context['event_detail'] = get_object_or_404(Event, id = calendar_slug.id)
-        context['events'] = Event.objects.filter(start__gte = datetime.datetime.today())#values('title', 'id', 'start', 'end')
+        context["events"] = Event.objects.filter(
+            start__gte=datetime.datetime.today()
+        )  # values('title', 'id', 'start', 'end')
         return context
 
 
@@ -192,7 +196,10 @@ class CreateOccurrenceView(OccurrenceEditMixin, CreateView):
     template_name = "schedule/edit_occurrence.html"
 
 
-class CancelOccurrenceView(OccurrenceEditMixin, ModelFormMixin, ProcessFormView):
+class CancelOccurrenceView(
+        OccurrenceEditMixin,
+        ModelFormMixin,
+        ProcessFormView):
     template_name = "schedule/cancel_occurrence.html"
 
     def post(self, request, *args, **kwargs):
@@ -219,10 +226,9 @@ class EventView(EventMixin, DetailView):
 
 
 class EditEventView(PermissionRequiredMixin, EventEditMixin, UpdateView):
-
     form_class = EventForm
     template_name = "schedule/create_event.html"
-    permission_required = 'schedule.change_event'
+    permission_required = "schedule.change_event"
 
     # just customize redirect url other id default
     def form_valid(self, form):
@@ -239,8 +245,8 @@ class EditEventView(PermissionRequiredMixin, EventEditMixin, UpdateView):
             original_end=F("original_end") + dte,
         )
         event.save()
-        return redirect('manage_event')
-    
+        return redirect("manage_event")
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         context["calendar_slug"] = self.kwargs.get("calendar_slug")
@@ -252,7 +258,7 @@ class EditEventView(PermissionRequiredMixin, EventEditMixin, UpdateView):
 class CreateEventView(PermissionRequiredMixin, EventEditMixin, CreateView):
     form_class = EventForm
     template_name = "schedule/create_event.html"
-    permission_required = 'schedule.add_event'
+    permission_required = "schedule.add_event"
     # login_url = '/'
     # redirect_field_name = 'redirect_to'
     # just customize redirect url other id default
@@ -260,11 +266,19 @@ class CreateEventView(PermissionRequiredMixin, EventEditMixin, CreateView):
     def form_valid(self, form):
         event = form.save(commit=False)
         event.creator = self.request.user
-        event.calendar = get_object_or_404(Calendar, slug=self.kwargs["calendar_slug"])
+        event.calendar = get_object_or_404(
+            Calendar, slug=self.kwargs["calendar_slug"])
         event.save()
-        title = form.cleaned_data['title']
-        create_notification(self, post=title,notification_type=1,created_by=event.creator,type='event')
-        return redirect('manage_event')
+        title = form.cleaned_data["title"]
+        create_notification(
+            self,
+            post=title,
+            notification_type=1,
+            created_by=event.creator,
+            type="event",
+        )
+        return redirect("manage_event")
+
     #     # #for passing slug while in add event link
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
@@ -301,11 +315,12 @@ class CreateEventView(PermissionRequiredMixin, EventEditMixin, CreateView):
 
 class DeleteEventView(PermissionRequiredMixin, EventEditMixin, DeleteView):
     template_name = "schedule/delete_event.html"
-    permission_required = 'schedule.delete_event'
+    permission_required = "schedule.delete_event"
 
     def get_success_url(self):  # redirect to fullcalendar with respective slug
         #    return reverse('manage_event',args=[self.object.calendar.slug])
-        return reverse('manage_event')
+        return reverse("manage_event")
+
 
 # class ListEvent(ListView):
 #     template_name = 'schedule/manage_event.html'
@@ -313,41 +328,37 @@ class DeleteEventView(PermissionRequiredMixin, EventEditMixin, DeleteView):
 #     context_object_name = 'events'
 
 #     # #for passing slug while in add event link
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data()
-    #     context["calendar_slug"] = self.kwargs.get("calendar_slug")
-    #     return context
+# def get_context_data(self, **kwargs):
+#     context = super().get_context_data()
+#     context["calendar_slug"] = self.kwargs.get("calendar_slug")
+#     return context
 
 
-
-
-  
-class ListEventView(CalendarMixin, View):    
-    def get(self,request, *args, **kwargs):
+class ListEventView(CalendarMixin, View):
+    def get(self, request, *args, **kwargs):
         events = Event.objects.all()
         try:
-            
-            calendar = Calendar.objects.filter(name = 'event').first()
-        except:
-            return render(request,'slug_404_error.html')
-        context =  {'events': events, 
-                    'calendar': calendar,
-                    }
-        return render(request, 'schedule/manage_event.html',context)
+            calendar = Calendar.objects.filter(name="event").first()
+        except BaseException:
+            return render(request, "slug_404_error.html")
+        context = {
+            "events": events,
+            "calendar": calendar,
+        }
+        return render(request, "schedule/manage_event.html", context)
 
-       # def get_context_data(self, **kwargs):
+    # def get_context_data(self, **kwargs):
     #     context = super().get_context_data()
     #     context["calendar_slug"] = self.kwargs.get("calendar_slug")
     #     context['events'] = Event.objects.all()
     #     # context['event_detail'] = get_object_or_404(Event, id = calendar_slug.id)
     #     return context
-    
 
 
 def EventDetailView(request, id):
     event_detail = get_object_or_404(Event, pk=id)
-    context = {'event_detail': event_detail}
-    return render(request, 'schedule/event_detail.html', context)
+    context = {"event_detail": event_detail}
+    return render(request, "schedule/event_detail.html", context)
 
 
 def get_occurrence(
@@ -375,9 +386,12 @@ def get_occurrence(
         event = get_object_or_404(Event, id=event_id)
         date = timezone.make_aware(
             datetime.datetime(
-                int(year), int(month), int(day), int(
-                    hour), int(minute), int(second)
-            ),
+                int(year),
+                int(month),
+                int(day),
+                int(hour),
+                int(minute),
+                int(second)),
             tzinfo,
         )
         occurrence = event.get_occurrence(date)
@@ -429,7 +443,6 @@ def api_occurrences(request):
 
 
 def _api_occurrences(start, end, calendar_slug, timezone):
-
     if not start or not end:
         raise ValueError("Start and end parameters are required")
 
@@ -442,7 +455,8 @@ def _api_occurrences(start, end, calendar_slug, timezone):
                     return datetime.datetime.strptime(ddatetime, "%Y-%m-%d")
                 except ValueError:
                     # try a different date string format first before failing
-                    return datetime.datetime.strptime(ddatetime, "%Y-%m-%dT%H:%M:%S")
+                    return datetime.datetime.strptime(
+                        ddatetime, "%Y-%m-%dT%H:%M:%S")
 
     else:
 
@@ -490,8 +504,7 @@ def _api_occurrences(start, end, calendar_slug, timezone):
     for calendar in calendars:
         # create flat list of events from each calendar
         event_list += calendar.events.filter(start__lte=end).filter(
-            Q(end_recurring_period__gte=start) | Q(
-                end_recurring_period__isnull=True)
+            Q(end_recurring_period__gte=start) | Q(end_recurring_period__isnull=True)
         )
 
     for event in event_list:
@@ -544,7 +557,7 @@ def _api_occurrences(start, end, calendar_slug, timezone):
 
 @require_POST
 @check_calendar_permissions
-@permission_required('schedule.change_event', raise_exception=True)
+@permission_required("schedule.change_event", raise_exception=True)
 def api_move_or_resize_by_code(request):
     response_data = {}
     user = request.user
@@ -561,7 +574,7 @@ def api_move_or_resize_by_code(request):
     return JsonResponse(response_data)
 
 
-@permission_required('schedule.change_event', raise_exception=True)
+@permission_required("schedule.change_event", raise_exception=True)
 def _api_move_or_resize_by_code(user, id, existed, delta, resize, event_id):
     response_data = {}
     response_data["status"] = "PERMISSION DENIED"
@@ -592,11 +605,12 @@ def _api_move_or_resize_by_code(user, id, existed, delta, resize, event_id):
     return response_data
 
 
+"""This create event when u just touch date box"""
 
-'''This create event when u just touch date box'''
+
 @require_POST
 @check_calendar_permissions
-@permission_required('schedule.add_event', raise_exception=True)
+@permission_required("schedule.add_event", raise_exception=True)
 def api_select_create(request):
     response_data = {}
     start = request.POST.get("start")
@@ -608,8 +622,7 @@ def api_select_create(request):
     return JsonResponse(response_data)
 
 
-
-@permission_required('schedule.add_event', raise_exception=True)
+@permission_required("schedule.add_event", raise_exception=True)
 def _api_select_create(start, end, calendar_slug):
     start = dateutil.parser.parse(start)
     end = dateutil.parser.parse(end)

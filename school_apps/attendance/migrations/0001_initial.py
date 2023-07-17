@@ -5,32 +5,75 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Attendance',
+            name="Attendance",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('faculty', models.CharField(choices=[('', '-------Select Group-------'), ('Science', 'Science'), ('Non-Science', 'Non-Science')], max_length=100)),
-                ('attendance_date', models.DateField()),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "faculty",
+                    models.CharField(
+                        choices=[
+                            ("", "-------Select Group-------"),
+                            ("Science", "Science"),
+                            ("Non-Science", "Non-Science"),
+                        ],
+                        max_length=100,
+                    ),
+                ),
+                ("attendance_date", models.DateField()),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
             ],
         ),
         migrations.CreateModel(
-            name='AttendanceReport',
+            name="AttendanceReport",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('status', models.CharField(blank=True, choices=[('Present', 'Present'), ('Absent(Informed)', 'Absent(Informed)'), ('Absent(Not Informed)', 'Absent(Not Informed)'), ('Late', 'Late'), ('Excused', 'Excused')], max_length=50)),
-                ('remarks', models.CharField(blank=True, max_length=250, null=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now_add=True)),
-                ('attendance', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='attendance.attendance')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "status",
+                    models.CharField(
+                        blank=True,
+                        choices=[
+                            ("Present", "Present"),
+                            ("Absent(Informed)", "Absent(Informed)"),
+                            ("Absent(Not Informed)", "Absent(Not Informed)"),
+                            ("Late", "Late"),
+                            ("Excused", "Excused"),
+                        ],
+                        max_length=50,
+                    ),
+                ),
+                ("remarks", models.CharField(blank=True, max_length=250, null=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "attendance",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="attendance.attendance",
+                    ),
+                ),
             ],
         ),
     ]

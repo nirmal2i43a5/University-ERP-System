@@ -13,6 +13,7 @@ from student_management_system.title_slug import unique_slug_generator
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 
+
 class CalendarManager(models.Manager):
     """
     >>> user1 = User(username='tony')
@@ -66,7 +67,8 @@ class CalendarManager(models.Manager):
         else:
             return calendar_list[0]
 
-    def get_or_create_calendar_for_object(self, obj, distinction="", name=None):
+    def get_or_create_calendar_for_object(
+            self, obj, distinction="", name=None):
         """
         >>> user = User(username="jeremy")
         >>> user.save()
@@ -147,11 +149,9 @@ class Calendar(models.Model):
     class Meta:
         verbose_name = _("calendar")
         verbose_name_plural = _("calendars")
-        
+
     def __str__(self):
         return self.name
-
-
 
     @property
     def events(self):
@@ -164,7 +164,8 @@ class Calendar(models.Model):
         if Inheritable is set to true this relation will cascade to all events
         related to this calendar.
         """
-        CalendarRelation.objects.create_relation(self, obj, distinction, inheritable)
+        CalendarRelation.objects.create_relation(
+            self, obj, distinction, inheritable)
 
     def get_recent(self, amount=5):
         """
@@ -174,7 +175,8 @@ class Calendar(models.Model):
         amount is the amount of events you want in the queryset. The default is
         5.
         """
-        return self.events.order_by("-start").filter(start__lt=timezone.now())[:amount]
+        return self.events.order_by(
+            "-start").filter(start__lt=timezone.now())[:amount]
 
     def occurrences_after(self, date=None):
         return EventListManager(self.events.all()).occurrences_after(date)
@@ -194,8 +196,9 @@ class CalendarRelationManager(models.Manager):
         See CalendarRelation for help on distinction and inheritable
         """
         return CalendarRelation.objects.create(
-            calendar=calendar, distinction=distinction, content_object=content_object
-        )
+            calendar=calendar,
+            distinction=distinction,
+            content_object=content_object)
 
 
 class CalendarRelation(models.Model):
@@ -239,7 +242,6 @@ class CalendarRelation(models.Model):
 
     def __str__(self):
         return "{} - {}".format(self.calendar, self.content_object)
-
 
 
 @receiver(pre_save, sender=Calendar)

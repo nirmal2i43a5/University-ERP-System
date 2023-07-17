@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('academic', '0003_assignment_url_link'),
+        ("academic", "0003_assignment_url_link"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='assignment',
-            name='url_link',
+            model_name="assignment",
+            name="url_link",
             field=models.URLField(blank=True, null=True),
         ),
     ]

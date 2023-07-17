@@ -5,29 +5,42 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('student_management_app', '0002_alter_subject_semester'),
+        ("student_management_app", "0002_alter_subject_semester"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='SubjectChoices',
+            name="SubjectChoices",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('subject_name', models.CharField(max_length=250)),
-                ('subject_code', models.CharField(blank=True, max_length=255, null=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now_add=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("subject_name", models.CharField(max_length=250)),
+                (
+                    "subject_code",
+                    models.CharField(blank=True, max_length=255, null=True),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now_add=True)),
             ],
         ),
         migrations.RemoveField(
-            model_name='subject',
-            name='subject_code',
+            model_name="subject",
+            name="subject_code",
         ),
         migrations.AlterField(
-            model_name='subject',
-            name='subject_name',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='student_management_app.subjectchoices'),
+            model_name="subject",
+            name="subject_name",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to="student_management_app.subjectchoices",
+            ),
         ),
     ]

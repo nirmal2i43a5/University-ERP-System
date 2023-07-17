@@ -4,15 +4,16 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('courses', '0015_alter_studentgrades_exam_type'),
+        ("courses", "0015_alter_studentgrades_exam_type"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='term',
-            name='term_id',
-            field=models.BigAutoField(auto_created=True, primary_key=True, serialize=False),
+            model_name="term",
+            name="term_id",
+            field=models.BigAutoField(
+                auto_created=True, primary_key=True, serialize=False
+            ),
         ),
     ]

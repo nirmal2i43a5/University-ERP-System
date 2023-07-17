@@ -29,17 +29,17 @@ class bsdate(datetime.date):
         ad_year, ad_month, ad_day = _bs_to_ad(self.year, self.month, self.day)
         return addate(ad_year, ad_month, ad_day)
 
-    def strftime(self, fmt, lang='en'):
+    def strftime(self, fmt, lang="en"):
         for key in format_functions:
             if key in fmt:
                 fmt = fmt.replace(key, format_functions[key](self, lang))
         return fmt
 
-    def ctime(self, lang='en'):
-        return self.strftime(u"%a %b %d 00:00:00 %Y", lang)
+    def ctime(self, lang="en"):
+        return self.strftime("%a %b %d 00:00:00 %Y", lang)
 
-    def isoformat(self, lang='en'):
-        return self.strftime(u"%Y-%m-%d", lang)
+    def isoformat(self, lang="en"):
+        return self.strftime("%Y-%m-%d", lang)
 
     def timetuple(self):
         raise NotImplementedError
@@ -78,7 +78,6 @@ class bsdate(datetime.date):
 class addate(datetime.date):
     def __init__(self, year, month, day):
         self.bs_year, self.bs_month, self.bs_day = _ad_to_bs(year, month, day)
-
 
     @property
     def bsdate(self):

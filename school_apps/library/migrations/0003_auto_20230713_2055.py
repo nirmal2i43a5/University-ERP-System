@@ -4,30 +4,29 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('library', '0002_auto_20230713_2042'),
+        ("library", "0002_auto_20230713_2042"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='bookentry',
-            name='author',
+            model_name="bookentry",
+            name="author",
             field=models.CharField(blank=True, max_length=100, null=True),
         ),
         migrations.AlterField(
-            model_name='bookentry',
-            name='language',
+            model_name="bookentry",
+            name="language",
             field=models.TextField(blank=True, max_length=20, null=True),
         ),
         migrations.AlterField(
-            model_name='bookentry',
-            name='quantity',
+            model_name="bookentry",
+            name="quantity",
             field=models.IntegerField(blank=True, null=True),
         ),
         migrations.AlterField(
-            model_name='bookentry',
-            name='summary',
+            model_name="bookentry",
+            name="summary",
             field=models.TextField(blank=True, max_length=1000, null=True),
         ),
     ]

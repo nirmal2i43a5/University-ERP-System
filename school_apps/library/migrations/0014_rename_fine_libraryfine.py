@@ -4,14 +4,13 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('library', '0013_auto_20230714_2351'),
+        ("library", "0013_auto_20230714_2351"),
     ]
 
     operations = [
         migrations.RenameModel(
-            old_name='Fine',
-            new_name='LibraryFine',
+            old_name="Fine",
+            new_name="LibraryFine",
         ),
     ]

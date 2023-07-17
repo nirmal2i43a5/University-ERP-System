@@ -4,27 +4,26 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('library', '0009_bookrenew_expirydate'),
+        ("library", "0009_bookrenew_expirydate"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='bookrenew',
-            old_name='isbn',
-            new_name='book_issue',
+            model_name="bookrenew",
+            old_name="isbn",
+            new_name="book_issue",
         ),
         migrations.RemoveField(
-            model_name='bookrenew',
-            name='member_name',
+            model_name="bookrenew",
+            name="member_name",
         ),
         migrations.RemoveField(
-            model_name='bookrenew',
-            name='quantity',
+            model_name="bookrenew",
+            name="quantity",
         ),
         migrations.RemoveField(
-            model_name='bookrenew',
-            name='title',
+            model_name="bookrenew",
+            name="title",
         ),
     ]

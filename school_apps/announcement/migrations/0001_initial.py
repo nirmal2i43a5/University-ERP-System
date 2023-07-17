@@ -5,46 +5,63 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Holiday',
+            name="Holiday",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=100)),
-                ('from_date', models.DateField()),
-                ('to_date', models.DateField()),
-                ('image', models.FileField(blank=True, null=True, upload_to='holiday_images')),
-                ('details', ckeditor.fields.RichTextField()),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=100)),
+                ("from_date", models.DateField()),
+                ("to_date", models.DateField()),
+                (
+                    "image",
+                    models.FileField(blank=True, null=True, upload_to="holiday_images"),
+                ),
+                ("details", ckeditor.fields.RichTextField()),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
             ],
             options={
-                'verbose_name': 'holiday',
-                'verbose_name_plural': 'holidays',
-                'db_table': 'tbl_Holiday',
+                "verbose_name": "holiday",
+                "verbose_name_plural": "holidays",
+                "db_table": "tbl_Holiday",
             },
         ),
         migrations.CreateModel(
-            name='Notice',
+            name="Notice",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(blank=True, max_length=100)),
-                ('file', models.FileField(blank=True, null=True, upload_to='Notices')),
-                ('notice', ckeditor.fields.RichTextField(blank=True, null=True)),
-                ('status', models.BooleanField(default=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(blank=True, max_length=100)),
+                ("file", models.FileField(blank=True, null=True, upload_to="Notices")),
+                ("notice", ckeditor.fields.RichTextField(blank=True, null=True)),
+                ("status", models.BooleanField(default=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
             ],
             options={
-                'verbose_name': 'notice',
-                'verbose_name_plural': 'notices',
-                'db_table': 'tbl_notice',
+                "verbose_name": "notice",
+                "verbose_name_plural": "notices",
+                "db_table": "tbl_notice",
             },
         ),
     ]

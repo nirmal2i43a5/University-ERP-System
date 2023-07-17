@@ -4,15 +4,17 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('exam', '0003_auto_20210805_1219'),
+        ("exam", "0003_auto_20210805_1219"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='answersheet',
-            name='graded_sheet',
-            field=models.FileField(blank=True, null=True, upload_to='Student_answers/graded_sheets'),
+            model_name="answersheet",
+            name="graded_sheet",
+            field=models.FileField(
+                blank=True,
+                null=True,
+                upload_to="Student_answers/graded_sheets"),
         ),
     ]

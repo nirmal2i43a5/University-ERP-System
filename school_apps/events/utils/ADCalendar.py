@@ -1,5 +1,6 @@
 from .BaseCalendar import BaseCalendar
 
+
 class ADCalendar(BaseCalendar):
     def __init__(self, year_, month_, day_):
         super(ADCalendar, self).__init__(year_, month_, day_)
@@ -10,9 +11,9 @@ class ADCalendar(BaseCalendar):
         return [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
     def is_leap_year(self, year):
-        if year%4 == 0:
-            if year%100 == 0:
-                if year%400 == 0:
+        if year % 4 == 0:
+            if year % 100 == 0:
+                if year % 400 == 0:
                     return True
                 return False
             return True

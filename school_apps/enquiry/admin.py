@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Enquiry,Application
+from .models import Enquiry, Application
 
 # Register your models here.
 

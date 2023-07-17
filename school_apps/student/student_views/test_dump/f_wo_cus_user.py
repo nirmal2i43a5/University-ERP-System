@@ -1,4 +1,3 @@
-
 # # import pandas as pd
 # import csv,io
 # def student_file_upload(request):
@@ -10,7 +9,7 @@
 #         print("Invalid file")
 #     data_set = csv_file.read().decode('latin-1')
 #     io_string = io.StringIO(data_set)
-    
+
 #     next(io_string)
 #     file_data = csv.reader(io_string, delimiter=',', quotechar="|")
 #     for column in file_data:
@@ -39,7 +38,7 @@
 #         gpa = column[27]
 #         # parsing date
 #         # dob = datetime.datetime.strptime(dob_es, "%d/%m/%y")
-    
+
 #         parent_obj = Parent.objects.create(
 #         home_phone = home_phone,
 #         father_name=column[14],
@@ -49,16 +48,16 @@
 #         local_guardian_name=column[18],
 #         local_guardian_phone=column[19]
 #          )
-        
+
 #         fname = column[4].split()[0]
 #         # print(fname,"-------------------")
 #         stu_username = fname + f'{student_id}'
 #         # print(stu_username,"-------------username student")
 #         role = Group.objects.get(name = 'Student')
-        
+
 #         # customuser_object = CustomUser.objects.create_user(
 #         #         username = stu_username, password='password', user_type=role, full_name=column[4])
-        
+
 #         sem = Semester.objects.get(name = batch)
 #         # print(customuser_object,"--------------customur obj")
 #         student_obj = Student.objects.create(
@@ -85,5 +84,5 @@
 #             section = Section.objects.get(semester = sem, section_name = section),
 #         )
 #         print(student_obj.stu_id,"-------------student obj------------")
-        
+
 #     return HttpResponse("OK")

@@ -5,22 +5,36 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('student_management_app', '0024_auto_20230713_1837'),
-        ('library', '0001_initial'),
+        ("student_management_app", "0024_auto_20230713_1837"),
+        ("library", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='librarymemberprofile',
-            name='member',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, related_name='library_member_details', to='student_management_app.student'),
+            model_name="librarymemberprofile",
+            name="member",
+            field=models.ForeignKey(
+                default=1,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="library_member_details",
+                to="student_management_app.student",
+            ),
             preserve_default=False,
         ),
         migrations.AlterField(
-            model_name='librarymemberprofile',
-            name='status',
-            field=models.CharField(blank=True, choices=[('pending', 'pending'), ('approved', 'approved'), ('rejected', 'rejected')], default='pending', max_length=30, null=True),
+            model_name="librarymemberprofile",
+            name="status",
+            field=models.CharField(
+                blank=True,
+                choices=[
+                    ("pending", "pending"),
+                    ("approved", "approved"),
+                    ("rejected", "rejected"),
+                ],
+                default="pending",
+                max_length=30,
+                null=True,
+            ),
         ),
     ]

@@ -1,6 +1,8 @@
 from django.db import models
 from student_management_app.models import Department, Course
+
 # Create your models here.
+
 
 class formTemplate(models.Model):
     department = models.ForeignKey(Department, on_delete=models.CASCADE)

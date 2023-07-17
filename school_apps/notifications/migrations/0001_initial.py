@@ -4,25 +4,36 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Notification',
+            name="Notification",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('post', models.CharField(max_length=200, null=True)),
-                ('notification_type', models.IntegerField(choices=[(1, 'Added'), (2, 'Updated'), (3, 'Assignment')])),
-                ('is_seen', models.BooleanField(default=False)),
-                ('type', models.CharField(max_length=20)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("post", models.CharField(max_length=200, null=True)),
+                (
+                    "notification_type",
+                    models.IntegerField(
+                        choices=[(1, "Added"), (2, "Updated"), (3, "Assignment")]
+                    ),
+                ),
+                ("is_seen", models.BooleanField(default=False)),
+                ("type", models.CharField(max_length=20)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
             ],
             options={
-                'ordering': ['-created_at'],
+                "ordering": ["-created_at"],
             },
         ),
     ]

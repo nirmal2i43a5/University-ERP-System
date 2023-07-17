@@ -5,37 +5,40 @@ import django.utils.timezone
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('student_management_app', '0007_alter_student_contact'),
+        ("student_management_app", "0007_alter_student_contact"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='customuser',
-            name='created_at',
-            field=models.DateTimeField(auto_now_add=True, default=django.utils.timezone.now),
+            model_name="customuser",
+            name="created_at",
+            field=models.DateTimeField(
+                auto_now_add=True, default=django.utils.timezone.now
+            ),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='customuser',
-            name='updated_at',
+            model_name="customuser",
+            name="updated_at",
             field=models.DateTimeField(auto_now=True),
         ),
         migrations.AddField(
-            model_name='sessionyear',
-            name='created_at',
-            field=models.DateTimeField(auto_now_add=True, default=django.utils.timezone.now),
+            model_name="sessionyear",
+            name="created_at",
+            field=models.DateTimeField(
+                auto_now_add=True, default=django.utils.timezone.now
+            ),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='sessionyear',
-            name='updated_at',
+            model_name="sessionyear",
+            name="updated_at",
             field=models.DateTimeField(auto_now=True),
         ),
         migrations.AlterField(
-            model_name='coursecategory',
-            name='updated_at',
+            model_name="coursecategory",
+            name="updated_at",
             field=models.DateTimeField(auto_now=True),
         ),
     ]

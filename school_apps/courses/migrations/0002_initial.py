@@ -5,88 +5,131 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('courses', '0001_initial'),
-        ('student_management_app', '0001_initial'),
+        ("courses", "0001_initial"),
+        ("student_management_app", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='term_ranking',
-            name='student',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='student_management_app.student'),
+            model_name="term_ranking",
+            name="student",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to="student_management_app.student",
+            ),
         ),
         migrations.AddField(
-            model_name='term_ranking',
-            name='term',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='courses.term'),
+            model_name="term_ranking",
+            name="term",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="courses.term"
+            ),
         ),
         migrations.AddField(
-            model_name='term',
-            name='course_category',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='student_management_app.coursecategory'),
+            model_name="term",
+            name="course_category",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="student_management_app.coursecategory",
+            ),
         ),
         migrations.AddField(
-            model_name='studentgrades',
-            name='application_id',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='courses.application_form'),
+            model_name="studentgrades",
+            name="application_id",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to="courses.application_form",
+            ),
         ),
         migrations.AddField(
-            model_name='studentgrades',
-            name='exam_id',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='courses.exams'),
+            model_name="studentgrades",
+            name="exam_id",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="courses.exams"
+            ),
         ),
         migrations.AddField(
-            model_name='selectedcourses',
-            name='semester',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='student_management_app.semester'),
+            model_name="selectedcourses",
+            name="semester",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to="student_management_app.semester",
+            ),
         ),
         migrations.AddField(
-            model_name='selectedcourses',
-            name='student_id',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='course_student', to='student_management_app.student'),
+            model_name="selectedcourses",
+            name="student_id",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="course_student",
+                to="student_management_app.student",
+            ),
         ),
         migrations.AddField(
-            model_name='selectedcourses',
-            name='subject_id',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='student_management_app.subject'),
+            model_name="selectedcourses",
+            name="subject_id",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to="student_management_app.subject",
+            ),
         ),
         migrations.AddField(
-            model_name='exams',
-            name='semester',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='student_management_app.semester'),
+            model_name="exams",
+            name="semester",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="student_management_app.semester",
+            ),
         ),
         migrations.AddField(
-            model_name='exams',
-            name='subject_id',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='student_management_app.subject'),
+            model_name="exams",
+            name="subject_id",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to="student_management_app.subject",
+            ),
         ),
         migrations.AddField(
-            model_name='exams',
-            name='term',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='courses.term'),
+            model_name="exams",
+            name="term",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="courses.term"
+            ),
         ),
         migrations.AddField(
-            model_name='application_form',
-            name='exam',
-            field=models.ManyToManyField(through='courses.studentgrades', to='courses.Exams'),
+            model_name="application_form",
+            name="exam",
+            field=models.ManyToManyField(
+                through="courses.studentgrades", to="courses.Exams"
+            ),
         ),
         migrations.AddField(
-            model_name='application_form',
-            name='semester',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='student_management_app.semester'),
+            model_name="application_form",
+            name="semester",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to="student_management_app.semester",
+            ),
         ),
         migrations.AddField(
-            model_name='application_form',
-            name='student',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='student_management_app.student'),
+            model_name="application_form",
+            name="student",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to="student_management_app.student",
+            ),
         ),
         migrations.AddField(
-            model_name='application_form',
-            name='term',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='courses.term'),
+            model_name="application_form",
+            name="term",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="courses.term"
+            ),
         ),
     ]

@@ -5,21 +5,22 @@ import django.utils.timezone
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('student_management_app', '0015_alter_student_roll_no'),
+        ("student_management_app", "0015_alter_student_roll_no"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='student',
-            name='qr_code',
-            field=models.ImageField(blank=True, upload_to='student_Qrcodes/'),
+            model_name="student",
+            name="qr_code",
+            field=models.ImageField(blank=True, upload_to="student_Qrcodes/"),
         ),
         migrations.AlterField(
-            model_name='student',
-            name='roll_no',
-            field=models.CharField(default=django.utils.timezone.now, max_length=100, unique=True),
+            model_name="student",
+            name="roll_no",
+            field=models.CharField(
+                default=django.utils.timezone.now, max_length=100, unique=True
+            ),
             preserve_default=False,
         ),
     ]

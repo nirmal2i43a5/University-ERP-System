@@ -1,13 +1,11 @@
-
-
 from .base import *
 
 DEBUG = True
 # ALLOWED_HOSTS = []
-INSTALLED_APPS += ["debug_toolbar",
-                    # "silk"
-                    ]
-
+INSTALLED_APPS += [
+    "debug_toolbar",
+    # "silk"
+]
 
 
 MIDDLEWARE.insert(0, "debug_toolbar.middleware.DebugToolbarMiddleware")
@@ -23,17 +21,16 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # ==============================================================================
 # THIRD-PARTY APPS
-# ============================================================================== 
+# ==============================================================================
 
 SILKY_PYTHON_PROFILER = True
 SILKY_PYTHON_PROFILER_BINARY = True
 
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-      
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
     }
 }
 # DATABASES = {
@@ -58,7 +55,7 @@ DEBUG_TOOLBAR_PANELS = [
     # 'debug_toolbar.panels.settings.SettingsPanel',
     # 'debug_toolbar.panels.headers.HeadersPanel',
     # 'debug_toolbar.panels.request.RequestPanel',
-    'debug_toolbar.panels.sql.SQLPanel',
+    "debug_toolbar.panels.sql.SQLPanel",
     # 'debug_toolbar.panels.staticfiles.StaticFilesPanel',
     # 'debug_toolbar.panels.templates.TemplatesPanel',
     # 'debug_toolbar.panels.cache.CachePanel',
@@ -69,6 +66,6 @@ DEBUG_TOOLBAR_PANELS = [
 ]
 
 GRAPH_MODELS = {
-  'all_applications': True,
-  'group_models': True,
+    "all_applications": True,
+    "group_models": True,
 }

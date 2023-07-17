@@ -6,126 +6,268 @@ import school_apps.library.models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('student_management_app', '0008_auto_20230617_1318'),
+        ("student_management_app", "0008_auto_20230617_1318"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Barcode',
+            name="Barcode",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100)),
-                ('barcode', models.ImageField(blank=True, upload_to='barcode_images/')),
-                ('country_id', models.CharField(max_length=2)),
-                ('manufacturer_id', models.CharField(max_length=6)),
-                ('product_id', models.CharField(max_length=5)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=100)),
+                ("barcode", models.ImageField(blank=True, upload_to="barcode_images/")),
+                ("country_id", models.CharField(max_length=2)),
+                ("manufacturer_id", models.CharField(max_length=6)),
+                ("product_id", models.CharField(max_length=5)),
             ],
         ),
         migrations.CreateModel(
-            name='BookEntry',
+            name="BookEntry",
             fields=[
-                ('title', models.CharField(max_length=200)),
-                ('author', models.CharField(max_length=100)),
-                ('summary', models.TextField(max_length=1000)),
-                ('isbn', models.IntegerField(primary_key=True, serialize=False)),
-                ('language', models.TextField(max_length=20)),
-                ('quantity', models.IntegerField()),
-                ('price', models.FloatField(blank=True, null=True)),
-                ('created_at', models.DateTimeField(auto_now=True)),
+                ("title", models.CharField(max_length=200)),
+                ("author", models.CharField(max_length=100)),
+                ("summary", models.TextField(max_length=1000)),
+                ("isbn", models.IntegerField(primary_key=True, serialize=False)),
+                ("language", models.TextField(max_length=20)),
+                ("quantity", models.IntegerField()),
+                ("price", models.FloatField(blank=True, null=True)),
+                ("created_at", models.DateTimeField(auto_now=True)),
             ],
             options={
-                'verbose_name_plural': 'Book Entry',
+                "verbose_name_plural": "Book Entry",
             },
         ),
         migrations.CreateModel(
-            name='BookIssue',
+            name="BookIssue",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('isbn', models.CharField(max_length=200)),
-                ('quantity', models.IntegerField()),
-                ('issue_date', models.DateTimeField(auto_now_add=True)),
-                ('expirydate', models.DateField(default=school_apps.library.models.get_expiry)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("isbn", models.CharField(max_length=200)),
+                ("quantity", models.IntegerField()),
+                ("issue_date", models.DateTimeField(auto_now_add=True)),
+                (
+                    "expirydate",
+                    models.DateField(default=school_apps.library.models.get_expiry),
+                ),
             ],
             options={
-                'verbose_name_plural': 'Book Issue',
+                "verbose_name_plural": "Book Issue",
             },
         ),
         migrations.CreateModel(
-            name='Category',
+            name="Category",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(help_text='For example: science, History, Technical, Enclyclopedia, etc.', max_length=50, null=True)),
-                ('created_at', models.DateTimeField(auto_now=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(
+                        help_text="For example: science, History, Technical, Enclyclopedia, etc.",
+                        max_length=50,
+                        null=True,
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now=True)),
             ],
         ),
         migrations.CreateModel(
-            name='LibraryMemberProfile',
+            name="LibraryMemberProfile",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('status', models.CharField(choices=[('pending', 'pending'), ('approved', 'approved'), ('rejected', 'rejected')], default='pending', max_length=30)),
-                ('library_card_no', models.CharField(blank=True, max_length=100, null=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('member', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='library_member_details', to='student_management_app.student')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("pending", "pending"),
+                            ("approved", "approved"),
+                            ("rejected", "rejected"),
+                        ],
+                        default="pending",
+                        max_length=30,
+                    ),
+                ),
+                (
+                    "library_card_no",
+                    models.CharField(blank=True, max_length=100, null=True),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "member",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="library_member_details",
+                        to="student_management_app.student",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Return',
+            name="Return",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('date', models.DateField(auto_now_add=True)),
-                ('member', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='library.librarymemberprofile')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("date", models.DateField(auto_now_add=True)),
+                (
+                    "member",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="library.librarymemberprofile",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Issue',
+            name="Issue",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('date', models.DateField(auto_now_add=True)),
-                ('member', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='library.librarymemberprofile')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("date", models.DateField(auto_now_add=True)),
+                (
+                    "member",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="library.librarymemberprofile",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='BookReturn',
+            name="BookReturn",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('isbn', models.CharField(max_length=200)),
-                ('quantity', models.IntegerField()),
-                ('return_date', models.DateTimeField(auto_now_add=True)),
-                ('issue_id', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='library.issue')),
-                ('title', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='library.bookentry')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("isbn", models.CharField(max_length=200)),
+                ("quantity", models.IntegerField()),
+                ("return_date", models.DateTimeField(auto_now_add=True)),
+                (
+                    "issue_id",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="library.issue",
+                    ),
+                ),
+                (
+                    "title",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="library.bookentry",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='BookRenew',
+            name="BookRenew",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=200)),
-                ('quantity', models.IntegerField()),
-                ('member_name', models.CharField(max_length=200)),
-                ('renew_date', models.DateTimeField(auto_now_add=True)),
-                ('expirydate', models.DateField(default=school_apps.library.models.get_expiry)),
-                ('isbn', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='library.bookissue')),
-                ('member_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='library.librarymemberprofile')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=200)),
+                ("quantity", models.IntegerField()),
+                ("member_name", models.CharField(max_length=200)),
+                ("renew_date", models.DateTimeField(auto_now_add=True)),
+                (
+                    "expirydate",
+                    models.DateField(default=school_apps.library.models.get_expiry),
+                ),
+                (
+                    "isbn",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="library.bookissue",
+                    ),
+                ),
+                (
+                    "member_id",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="library.librarymemberprofile",
+                    ),
+                ),
             ],
         ),
         migrations.AddField(
-            model_name='bookissue',
-            name='issue_id',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='library.issue'),
+            model_name="bookissue",
+            name="issue_id",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="library.issue"
+            ),
         ),
         migrations.AddField(
-            model_name='bookissue',
-            name='title',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='library.bookentry'),
+            model_name="bookissue",
+            name="title",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="library.bookentry"
+            ),
         ),
         migrations.AddField(
-            model_name='bookentry',
-            name='category',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='library.category'),
+            model_name="bookentry",
+            name="category",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="library.category"
+            ),
         ),
     ]

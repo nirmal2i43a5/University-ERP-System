@@ -5,15 +5,14 @@ import django.utils.timezone
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('academic', '0002_initial'),
+        ("academic", "0002_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='assignment',
-            name='url_link',
+            model_name="assignment",
+            name="url_link",
             field=models.URLField(default=django.utils.timezone.now),
             preserve_default=False,
         ),

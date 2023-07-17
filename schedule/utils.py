@@ -12,6 +12,7 @@ from schedule.settings import (
     CHECK_OCCURRENCE_PERM_FUNC,
 )
 
+
 class EventListManager:
     """
     This class is responsible for doing functions on a list of events. It is
@@ -85,7 +86,10 @@ class OccurrenceReplacer:
 
     def has_occurrence(self, occ):
         try:
-            return (occ.event.id, occ.original_start, occ.original_end) in self.lookup
+            return (
+                occ.event.id,
+                occ.original_start,
+                occ.original_end) in self.lookup
         except TypeError:
             if not self.lookup:
                 return False
@@ -122,8 +126,8 @@ def get_occurrence(request, **kwargs):
 
     occurrence_id = get_kwarg_or_param(request, kwargs, "occurrence_id")
     return (
-        Occurrence.objects.filter(pk=occurrence_id).first() if occurrence_id else None
-    )
+        Occurrence.objects.filter(
+            pk=occurrence_id).first() if occurrence_id else None)
 
 
 def get_event(occurrence, request, **kwargs):
@@ -190,9 +194,9 @@ def check_event_permissions(function):
             return HttpResponseRedirect(settings.LOGIN_URL)
         occurrence, event, calendar = get_objects(request, **kwargs)
         if calendar:
-            allowed = CHECK_EVENT_PERM_FUNC(event, user) and CHECK_CALENDAR_PERM_FUNC(
-                calendar, user
-            )
+            allowed = CHECK_EVENT_PERM_FUNC(
+                event, user) and CHECK_CALENDAR_PERM_FUNC(
+                calendar, user)
             if not allowed:
                 return HttpResponseRedirect(settings.LOGIN_URL)
             # all checks passed
@@ -231,7 +235,13 @@ def coerce_date_dict(date_dict):
     of the parts are found return an empty tuple.
     """
     keys = ["year", "month", "day", "hour", "minute", "second"]
-    ret_val = {"year": 1, "month": 1, "day": 1, "hour": 0, "minute": 0, "second": 0}
+    ret_val = {
+        "year": 1,
+        "month": 1,
+        "day": 1,
+        "hour": 0,
+        "minute": 0,
+        "second": 0}
     modified = False
     for key in keys:
         try:

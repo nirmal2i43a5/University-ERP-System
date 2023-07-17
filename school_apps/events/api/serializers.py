@@ -1,22 +1,30 @@
-
 from django.db.models import fields
 from rest_framework.serializers import HyperlinkedModelSerializer
 from school_apps.events.models import Event
 
 from django_filters import FilterSet
 
+
 class EventSerializer(HyperlinkedModelSerializer):
     # url = HyperlinkedIdentityField(view_name="event_api:yearly_event")
-     # time_range = serializers.SerializerMethodField()
+    # time_range = serializers.SerializerMethodField()
 
     # def get_time_range(self, obj):
-    #     return '{} To {}'.format(obj.start_time, obj.end_time) 
+    #     return '{} To {}'.format(obj.start_time, obj.end_time)
     class Meta:
         model = Event
-        fields = ('id','title','event_day','start_time','end_time','category','description',)
-        
+        fields = (
+            "id",
+            "title",
+            "event_day",
+            "start_time",
+            "end_time",
+            "category",
+            "description",
+        )
+
 
 class EventFilter(FilterSet):
     class Meta:
         model = Event
-        fields = '__all__'
+        fields = "__all__"

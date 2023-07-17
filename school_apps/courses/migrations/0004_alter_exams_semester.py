@@ -5,16 +5,18 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('student_management_app', '0001_initial'),
-        ('courses', '0003_auto_20230419_2052'),
+        ("student_management_app", "0001_initial"),
+        ("courses", "0003_auto_20230419_2052"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='exams',
-            name='semester',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='student_management_app.semester'),
+            model_name="exams",
+            name="semester",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to="student_management_app.semester",
+            ),
         ),
     ]

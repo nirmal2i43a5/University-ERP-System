@@ -5,91 +5,234 @@ import student_management_system.validators
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Assignment',
+            name="Assignment",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=100)),
-                ('description', models.TextField()),
-                ('deadline', models.DateTimeField()),
-                ('file', models.FileField(blank=True, max_length=500, null=True, upload_to='Assignment_section', validators=[student_management_system.validators.validate_file_extension])),
-                ('draft', models.BooleanField(default=False, verbose_name='Save as Draft')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=100)),
+                ("description", models.TextField()),
+                ("deadline", models.DateTimeField()),
+                (
+                    "file",
+                    models.FileField(
+                        blank=True,
+                        max_length=500,
+                        null=True,
+                        upload_to="Assignment_section",
+                        validators=[
+                            student_management_system.validators.validate_file_extension
+                        ],
+                    ),
+                ),
+                (
+                    "draft",
+                    models.BooleanField(default=False, verbose_name="Save as Draft"),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
             ],
             options={
-                'verbose_name_plural': 'Assignment',
-                'db_table': 'tbl_Assignment',
+                "verbose_name_plural": "Assignment",
+                "db_table": "tbl_Assignment",
             },
         ),
         migrations.CreateModel(
-            name='Enotes',
+            name="Enotes",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=100)),
-                ('file', models.FileField(max_length=500, upload_to='e-notes', validators=[student_management_system.validators.validate_file_extension])),
-                ('note_category', models.CharField(choices=[('Subject Notes', 'Subject Notes'), ('Extra Notes', 'Extra Notes')], max_length=50)),
-                ('description', models.TextField()),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=100)),
+                (
+                    "file",
+                    models.FileField(
+                        max_length=500,
+                        upload_to="e-notes",
+                        validators=[
+                            student_management_system.validators.validate_file_extension
+                        ],
+                    ),
+                ),
+                (
+                    "note_category",
+                    models.CharField(
+                        choices=[
+                            ("Subject Notes", "Subject Notes"),
+                            ("Extra Notes", "Extra Notes"),
+                        ],
+                        max_length=50,
+                    ),
+                ),
+                ("description", models.TextField()),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
             ],
             options={
-                'verbose_name_plural': 'Syllabus',
-                'db_table': 'tbl_Enotes',
+                "verbose_name_plural": "Syllabus",
+                "db_table": "tbl_Enotes",
             },
         ),
         migrations.CreateModel(
-            name='Grade',
+            name="Grade",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('assignment_status', models.CharField(blank=True, choices=[('Assigned', 'Assigned'), ('Completed', 'Completed')], default='Assigned', max_length=50, null=True, verbose_name='Assignment Category')),
-                ('grade', models.PositiveIntegerField(blank=True, null=True)),
-                ('grade_status', models.BooleanField(default=False)),
-                ('feedback', models.CharField(blank=True, default='No feedback', max_length=255, null=True)),
-                ('answer_upload', models.FileField(max_length=500, null=True, upload_to='Assignment_grades', validators=[student_management_system.validators.img_pdf_file_validate_file_extension])),
-                ('date_submitted', models.DateTimeField(auto_now_add=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "assignment_status",
+                    models.CharField(
+                        blank=True,
+                        choices=[("Assigned", "Assigned"), ("Completed", "Completed")],
+                        default="Assigned",
+                        max_length=50,
+                        null=True,
+                        verbose_name="Assignment Category",
+                    ),
+                ),
+                ("grade", models.PositiveIntegerField(blank=True, null=True)),
+                ("grade_status", models.BooleanField(default=False)),
+                (
+                    "feedback",
+                    models.CharField(
+                        blank=True, default="No feedback", max_length=255, null=True
+                    ),
+                ),
+                (
+                    "answer_upload",
+                    models.FileField(
+                        max_length=500,
+                        null=True,
+                        upload_to="Assignment_grades",
+                        validators=[
+                            student_management_system.validators.img_pdf_file_validate_file_extension
+                        ],
+                    ),
+                ),
+                ("date_submitted", models.DateTimeField(auto_now_add=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
             ],
         ),
         migrations.CreateModel(
-            name='Routine',
+            name="Routine",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('routine_file', models.FileField(max_length=500, upload_to='College Routine', validators=[student_management_system.validators.img_pdf_doc_validator], verbose_name='Routine')),
-                ('college_year', models.CharField(blank=True, choices=[('2021', '2021'), ('2022', '2022'), ('2021', '2021'), ('2021', '2021')], max_length=50, null=True)),
-                ('day', models.CharField(blank=True, choices=[('SUNDAY', 'SUNDAY'), ('MONDAY', 'MONDAY'), ('TUESDAY', 'TUESDAY'), ('WEDNESDAY', 'WEDNESDAY'), ('THURSDAY', 'THURSDAY'), ('FRIDAY', 'FRIDAY'), ('SATURDAY', 'SATURDAY')], max_length=100, null=True)),
-                ('starting_time', models.TimeField(blank=True, null=True)),
-                ('ending_time', models.TimeField(blank=True, null=True)),
-                ('room', models.CharField(blank=True, max_length=100, null=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "routine_file",
+                    models.FileField(
+                        max_length=500,
+                        upload_to="College Routine",
+                        validators=[
+                            student_management_system.validators.img_pdf_doc_validator
+                        ],
+                        verbose_name="Routine",
+                    ),
+                ),
+                (
+                    "college_year",
+                    models.CharField(
+                        blank=True,
+                        choices=[
+                            ("2021", "2021"),
+                            ("2022", "2022"),
+                            ("2021", "2021"),
+                            ("2021", "2021"),
+                        ],
+                        max_length=50,
+                        null=True,
+                    ),
+                ),
+                (
+                    "day",
+                    models.CharField(
+                        blank=True,
+                        choices=[
+                            ("SUNDAY", "SUNDAY"),
+                            ("MONDAY", "MONDAY"),
+                            ("TUESDAY", "TUESDAY"),
+                            ("WEDNESDAY", "WEDNESDAY"),
+                            ("THURSDAY", "THURSDAY"),
+                            ("FRIDAY", "FRIDAY"),
+                            ("SATURDAY", "SATURDAY"),
+                        ],
+                        max_length=100,
+                        null=True,
+                    ),
+                ),
+                ("starting_time", models.TimeField(blank=True, null=True)),
+                ("ending_time", models.TimeField(blank=True, null=True)),
+                ("room", models.CharField(blank=True, max_length=100, null=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
             ],
             options={
-                'verbose_name_plural': 'Routines',
-                'db_table': 'tbl_Routine',
+                "verbose_name_plural": "Routines",
+                "db_table": "tbl_Routine",
             },
         ),
         migrations.CreateModel(
-            name='Syllabus',
+            name="Syllabus",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=100)),
-                ('file', models.FileField(max_length=500, upload_to='syllabus', validators=[student_management_system.validators.img_pdf_file_validate_file_extension])),
-                ('description', models.TextField()),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=100)),
+                (
+                    "file",
+                    models.FileField(
+                        max_length=500,
+                        upload_to="syllabus",
+                        validators=[
+                            student_management_system.validators.img_pdf_file_validate_file_extension
+                        ],
+                    ),
+                ),
+                ("description", models.TextField()),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
             ],
             options={
-                'verbose_name_plural': 'Syllabus',
-                'db_table': 'tbl_Syllabus',
+                "verbose_name_plural": "Syllabus",
+                "db_table": "tbl_Syllabus",
             },
         ),
     ]

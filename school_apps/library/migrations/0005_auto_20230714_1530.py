@@ -5,30 +5,37 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('library', '0004_alter_bookentry_category'),
+        ("library", "0004_alter_bookentry_category"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='bookissue',
-            name='issue_id',
+            model_name="bookissue",
+            name="issue_id",
         ),
         migrations.RemoveField(
-            model_name='bookreturn',
-            name='issue_id',
+            model_name="bookreturn",
+            name="issue_id",
         ),
         migrations.AddField(
-            model_name='bookissue',
-            name='issue_member',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='library.librarymemberprofile'),
+            model_name="bookissue",
+            name="issue_member",
+            field=models.ForeignKey(
+                default=1,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="library.librarymemberprofile",
+            ),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='bookreturn',
-            name='issue_member',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='library.librarymemberprofile'),
+            model_name="bookreturn",
+            name="issue_member",
+            field=models.ForeignKey(
+                default=1,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="library.librarymemberprofile",
+            ),
             preserve_default=False,
         ),
     ]

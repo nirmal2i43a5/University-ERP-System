@@ -2,5 +2,5 @@ from django.apps import AppConfig
 
 
 class EnquiryConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'school_apps.enquiry'
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "school_apps.enquiry"

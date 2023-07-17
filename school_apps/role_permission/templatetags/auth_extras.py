@@ -1,14 +1,15 @@
 from django import template
-from django.contrib.auth.models import Group 
+from django.contrib.auth.models import Group
 from django.core.cache import cache
 
 register = template.Library()
 
 # @register.filter(name='has_group')
-# def has_group(user, group_name): 
+# def has_group(user, group_name):
 #     return user.groups.filter(name=group_name).exists()
 
-@register.filter(name='has_group')
+
+@register.filter(name="has_group")
 def has_group(user, group_name):
     cache_key = f"has_group_{user.pk}_{group_name}"
     result = cache.get(cache_key)

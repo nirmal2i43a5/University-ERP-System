@@ -5,34 +5,38 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('student_management_app', '0004_auto_20230420_1339'),
+        ("student_management_app", "0004_auto_20230420_1339"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='subject',
-            name='subject_code',
+            model_name="subject",
+            name="subject_code",
             field=models.CharField(blank=True, max_length=255, null=True),
         ),
         migrations.AlterField(
-            model_name='subject',
-            name='semester',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='student_management_app.semester', verbose_name='Class'),
+            model_name="subject",
+            name="semester",
+            field=models.ForeignKey(
+                default=1,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="student_management_app.semester",
+                verbose_name="Class",
+            ),
             preserve_default=False,
         ),
         migrations.RemoveField(
-            model_name='subject',
-            name='subject_name',
+            model_name="subject",
+            name="subject_name",
         ),
         migrations.AddField(
-            model_name='subject',
-            name='subject_name',
+            model_name="subject",
+            name="subject_name",
             field=models.CharField(default=1, max_length=255),
             preserve_default=False,
         ),
         migrations.DeleteModel(
-            name='SubjectChoices',
+            name="SubjectChoices",
         ),
     ]

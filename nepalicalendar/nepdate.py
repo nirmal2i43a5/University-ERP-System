@@ -9,11 +9,10 @@ from . import events
 
 
 class NepDate(object):
-    """ Nepali Date class that implements a single nepali date
-    """
+    """Nepali Date class that implements a single nepali date"""
 
     def __init__(self, year, month, day):
-        """ Initializer for NepDate
+        """Initializer for NepDate
         Params:
             year : Year of the date
             month : Month of the date
@@ -27,18 +26,21 @@ class NepDate(object):
         self.en_date = None
 
     # def __unicode__(self):
-    #     return u"Bikram Sambat Date (%d:%d:%d)" % (self.year, self.month, self.day)
+    # return u"Bikram Sambat Date (%d:%d:%d)" % (self.year, self.month,
+    # self.day)
 
     def __unicode__(self):
-        return f'{self.year}-{self.month}-{self.day}'
-    
+        return f"{self.year}-{self.month}-{self.day}"
+
     def __str__(self):
         return self.__unicode__()
 
     def __eq__(self, other):
-        return self.year == other.year and \
-            self.month == other.month and \
-            self.day == other.day
+        return (
+            self.year == other.year
+            and self.month == other.month
+            and self.day == other.day
+        )
 
     def __gt__(self, other):
         if self.year == other.year:
@@ -46,7 +48,6 @@ class NepDate(object):
                 return self.day > other.day
             return self.month > other.month
         return self.year > other.year
-
 
     def __lt__(self, other):
         return (not self == other) and (not self > other)
@@ -76,18 +77,17 @@ class NepDate(object):
                 raise ValueError("Out of range")
             # The current day + days in timedelta fits in within the current
             # month
-            if days_remain + day <= values.NEPALI_MONTH_DAY_DATA[year][month - 1]:
+            if days_remain + \
+                    day <= values.NEPALI_MONTH_DAY_DATA[year][month - 1]:
                 day = day + days_remain
                 return NepDate(year, month, day).update()
             else:
-                days_remain -= values.NEPALI_MONTH_DAY_DATA[
-                    year][month - 1] - day + 1
+                days_remain -= values.NEPALI_MONTH_DAY_DATA[year][month - 1] - day + 1
                 day = 1
                 month += 1
                 if month > 12:
                     month = 1
                     year += 1
-
 
     def __sub__(self, other):
         """Subtraction for NepDate. Subtraction can be done with either
@@ -131,10 +131,12 @@ class NepDate(object):
         if greater.year > smaller.year:
             # First of all, get the days remaining in the smaller year
             # till year end
-            smaller_days_remain = NepDate(
-                smaller.year, 12, values.NEPALI_MONTH_DAY_DATA[
-                    smaller.year][12 - 1]
-            ) - smaller
+            smaller_days_remain = (
+                NepDate(
+                    smaller.year, 12, values.NEPALI_MONTH_DAY_DATA[smaller.year][12 - 1]
+                )
+                - smaller
+            )
 
             year_remain = range(smaller.year + 1, greater.year)
             for year in year_remain:
@@ -144,34 +146,46 @@ class NepDate(object):
             greater_days_remain = greater - \
                 NepDate(greater.year, 1, 1) + timedelta(1)
 
-            total_days = timedelta(days=num_days) + \
-                greater_days_remain + \
-                smaller_days_remain
+            total_days = (
+                timedelta(
+                    days=num_days) +
+                greater_days_remain +
+                smaller_days_remain)
             return multiplier * total_days
 
         # Same year
         if greater.month > smaller.month:
-            smaller_days_remain = NepDate(
-                smaller.year,
-                smaller.month,
-                values.NEPALI_MONTH_DAY_DATA[smaller.year][smaller.month - 1]
-            ) - smaller
+            smaller_days_remain = (
+                NepDate(
+                    smaller.year,
+                    smaller.month,
+                    values.NEPALI_MONTH_DAY_DATA[smaller.year][smaller.month - 1],
+                )
+                - smaller
+            )
 
             month_remain = range(smaller.month + 1, greater.month)
             for month in month_remain:
-                num_days += values.NEPALI_MONTH_DAY_DATA[
-                    smaller.year][month - 1]
+                num_days += values.NEPALI_MONTH_DAY_DATA[smaller.year][month - 1]
 
-            greater_days_remain = greater - NepDate(
-                greater.year, greater.month, 1) + timedelta(days=1)
+            greater_days_remain = (
+                greater -
+                NepDate(
+                    greater.year,
+                    greater.month,
+                    1) +
+                timedelta(
+                    days=1))
             # One is added to adjust for 1 gate. For example, if we're counting from
             # biasakh 12 to jestha 18, it will count from baisakh 12 to baisakh 30
             # Then again, from jeth 1 to jeth 18. In this process, jeth 1 is neglected
             # Hence, 1 is added here
 
-            total_days = timedelta(days=num_days) + \
-                greater_days_remain + \
-                smaller_days_remain
+            total_days = (
+                timedelta(
+                    days=num_days) +
+                greater_days_remain +
+                smaller_days_remain)
 
             return multiplier * total_days
 
@@ -203,12 +217,11 @@ class NepDate(object):
     @property
     def tithi(self):
         # Returns the tithi of the current day if possible
-        return tithis.TITHIS[self.year][self.month-1][self.day-1]
-
+        return tithis.TITHIS[self.year][self.month - 1][self.day - 1]
 
     @classmethod
     def from_ad_date(cls, date):
-        """ Gets a NepDate object from gregorian calendar date """
+        """Gets a NepDate object from gregorian calendar date"""
         functions.check_valid_ad_range(date)
         days = values.START_EN_DATE - date
 
@@ -219,42 +232,41 @@ class NepDate(object):
 
     @classmethod
     def from_bs_date(cls, year, month, day):
-        """ Create and update an NepDate object for bikram sambat date """
+        """Create and update an NepDate object for bikram sambat date"""
         return NepDate(year, month, day).update()
 
     @classmethod
     def today(today):
-        """ Returns today's date in nepali calendar """
+        """Returns today's date in nepali calendar"""
         return NepDate.from_ad_date(date.today())
 
     @classmethod
     def fromtimestamp(cls, timestamp):
-        """ Returns a NepDate object created from timestamp """
+        """Returns a NepDate object created from timestamp"""
         return NepDate.from_ad_date(date.fromtimestamp(timestamp))
 
     def weekday(self):
-        """ Returns weekday for the date.
+        """Returns weekday for the date.
         0 : Aaitabar
-        6 : Sanibar """
+        6 : Sanibar"""
         return (self.en_date.weekday() + 1) % 7
 
-
     def en_weekday(self):
-        """ Returns weekday with each week starting in monday
+        """Returns weekday with each week starting in monday
         monday = 0
-        sunday = 7 """
+        sunday = 7"""
         return self.en_date.weekday()
 
     def en_weekday_name(self):
-        """ Gets the weekday name in English language. For eg. Aaitabar"""
+        """Gets the weekday name in English language. For eg. Aaitabar"""
         return values.NEPALI_WEEKDAY_NAMES_EN[self.weekday()]
 
     def weekday_name(self):
-        """ Gets the weekday name in Nepali language. For eg. आइतवार"""
+        """Gets the weekday name in Nepali language. For eg. आइतवार"""
         return values.NEPALI_WEEKDAY_NAMES_NE[self.weekday()]
 
     def weekday_name_short(self):
-        """ Gets the short weekday name in nepali language. For eg. आइत for आइतवार"""
+        """Gets the short weekday name in nepali language. For eg. आइत for आइतवार"""
         return values.NEPALI_WEEKDAY_NAMES_SHORT_NE[self.weekday()]
 
     def en_month_name(self):
@@ -266,12 +278,11 @@ class NepDate(object):
         return values.NEPALI_MONTH_NAMES_NE[self.month]
 
     def ne_tithi_name(self):
-        """Nepali name for the tithi
-        """
+        """Nepali name for the tithi"""
         return tithis.NE_TITHI_NAMES[self.tithi]
 
-    def events_list(self):      
-        """ Returns the events today """
+    def events_list(self):
+        """Returns the events today"""
         evt = []
         evt.extend(events.NEPALI_EVENTS[self.month, self.day])
         evt.extend(events.ENGLISH_EVENTS[self.en_date.month, self.en_date.day])
@@ -279,7 +290,7 @@ class NepDate(object):
 
     def events_name(self):
         """Returns the name of events"""
-        return [name for name,holiday in self.events_list()]
+        return [name for name, holiday in self.events_list()]
 
     def is_event_holiday(self):
         """Returns if it is holiday due to an event today"""
@@ -288,22 +299,16 @@ class NepDate(object):
     def is_holiday(self):
         """Returns if it is holiday today
         It is holiday if it is sanibar or if there is some
-        event """
-        return self.weekday()==6 or self.is_event_holiday()
-
+        event"""
+        return self.weekday() == 6 or self.is_event_holiday()
 
     def update(self):
-        """ Updates information about the NepDate """
+        """Updates information about the NepDate"""
         functions.check_valid_bs_range(self)
         # Here's a trick to find the gregorian date:
         # We find the number of days from earliest nepali date to the current
         # day. We then add the number of days to the earliest english date
-        self.en_date = values.START_EN_DATE + \
-            (
-                self - NepDate(
-                    values.START_NP_YEAR,
-                    1,
-                    1
-                )
-            )
+        self.en_date = values.START_EN_DATE + (
+            self - NepDate(values.START_NP_YEAR, 1, 1)
+        )
         return self

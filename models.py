@@ -4,7 +4,8 @@
 #   * Make sure each model has one field with primary_key=True
 #   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
-# Feel free to rename the models, but don't rename db_table values or field names.
+# Feel free to rename the models, but don't rename db_table values or
+# field names.
 from ast import arg
 from msilib import Table
 from django.db import models
@@ -19,13 +20,13 @@ class AcademicGrade(models.Model):
     answer_upload = models.CharField(max_length=500, blank=True, null=True)
     date_submitted = models.DateTimeField()
     updated_at = models.DateTimeField()
-    assignment = models.ForeignKey('TblAssignment', models.DO_NOTHING)
-    student = models.ForeignKey('TblCustomuser', models.DO_NOTHING)
+    assignment = models.ForeignKey("TblAssignment", models.DO_NOTHING)
+    student = models.ForeignKey("TblCustomuser", models.DO_NOTHING)
     created_at = models.DateTimeField()
 
     class Meta:
         managed = False
-        db_table = 'academic_grade'
+        db_table = "academic_grade"
 
 
 class AttendanceAttendance(models.Model):
@@ -34,14 +35,26 @@ class AttendanceAttendance(models.Model):
     attendance_date = models.DateField(blank=True, null=True)
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
-    section = models.ForeignKey('TblSection', models.DO_NOTHING, blank=True, null=True)
-    semester = models.ForeignKey('TblSemester', models.DO_NOTHING, blank=True, null=True)
-    session_year = models.ForeignKey('TblSessionyear', models.DO_NOTHING, blank=True, null=True)
-    subject = models.ForeignKey('TblSubject', models.DO_NOTHING, blank=True, null=True)
+    section = models.ForeignKey(
+        "TblSection",
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
+    semester = models.ForeignKey(
+        "TblSemester", models.DO_NOTHING, blank=True, null=True
+    )
+    session_year = models.ForeignKey(
+        "TblSessionyear", models.DO_NOTHING, blank=True, null=True
+    )
+    subject = models.ForeignKey(
+        "TblSubject",
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
 
     class Meta:
         managed = False
-        db_table = 'attendance_attendance'
+        db_table = "attendance_attendance"
 
 
 class AttendanceAttendancereport(models.Model):
@@ -51,13 +64,23 @@ class AttendanceAttendancereport(models.Model):
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
     attendance = models.ForeignKey(AttendanceAttendance, models.DO_NOTHING)
-    extra_user = models.ForeignKey('TblExtrauser', models.DO_NOTHING, blank=True, null=True)
-    staff = models.ForeignKey('TblStaff', models.DO_NOTHING, blank=True, null=True)
-    student = models.ForeignKey('TblStudent', models.DO_NOTHING, blank=True, null=True)
+    extra_user = models.ForeignKey(
+        "TblExtrauser", models.DO_NOTHING, blank=True, null=True
+    )
+    staff = models.ForeignKey(
+        "TblStaff",
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
+    student = models.ForeignKey(
+        "TblStudent",
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
 
     class Meta:
         managed = False
-        db_table = 'attendance_attendancereport'
+        db_table = "attendance_attendancereport"
 
 
 class AuthGroup(models.Model):
@@ -65,29 +88,29 @@ class AuthGroup(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'auth_group'
+        db_table = "auth_group"
 
 
 class AuthGroupPermissions(models.Model):
     id = models.BigAutoField(primary_key=True)
     group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
-    permission = models.ForeignKey('AuthPermission', models.DO_NOTHING)
+    permission = models.ForeignKey("AuthPermission", models.DO_NOTHING)
 
     class Meta:
         managed = False
-        db_table = 'auth_group_permissions'
-        unique_together = (('group', 'permission'),)
+        db_table = "auth_group_permissions"
+        unique_together = (("group", "permission"),)
 
 
 class AuthPermission(models.Model):
     name = models.CharField(max_length=255)
-    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING)
+    content_type = models.ForeignKey("DjangoContentType", models.DO_NOTHING)
     codename = models.CharField(max_length=100)
 
     class Meta:
         managed = False
-        db_table = 'auth_permission'
-        unique_together = (('content_type', 'codename'),)
+        db_table = "auth_permission"
+        unique_together = (("content_type", "codename"),)
 
 
 class CoursesApplicationForm(models.Model):
@@ -97,13 +120,13 @@ class CoursesApplicationForm(models.Model):
     remarks = models.CharField(max_length=255)
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
-    semester = models.ForeignKey('TblSemester', models.DO_NOTHING)
-    student = models.ForeignKey('TblStudent', models.DO_NOTHING)
-    term = models.ForeignKey('CoursesTerm', models.DO_NOTHING)
+    semester = models.ForeignKey("TblSemester", models.DO_NOTHING)
+    student = models.ForeignKey("TblStudent", models.DO_NOTHING)
+    term = models.ForeignKey("CoursesTerm", models.DO_NOTHING)
 
     class Meta:
         managed = False
-        db_table = 'courses_application_form'
+        db_table = "courses_application_form"
 
 
 class CoursesExams(models.Model):
@@ -117,13 +140,15 @@ class CoursesExams(models.Model):
     pass_marks = models.IntegerField()
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
-    semester = models.ForeignKey('TblSemester', models.DO_NOTHING, blank=True, null=True)
-    subject_id = models.ForeignKey('TblSubject', models.DO_NOTHING)
-    term = models.ForeignKey('CoursesTerm', models.DO_NOTHING)
+    semester = models.ForeignKey(
+        "TblSemester", models.DO_NOTHING, blank=True, null=True
+    )
+    subject_id = models.ForeignKey("TblSubject", models.DO_NOTHING)
+    term = models.ForeignKey("CoursesTerm", models.DO_NOTHING)
 
     class Meta:
         managed = False
-        db_table = 'courses_exams'
+        db_table = "courses_exams"
 
 
 class CoursesSelectedcourses(models.Model):
@@ -131,13 +156,13 @@ class CoursesSelectedcourses(models.Model):
     year = models.IntegerField()
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
-    semester = models.ForeignKey('TblSemester', models.DO_NOTHING)
-    student_id = models.ForeignKey('TblStudent', models.DO_NOTHING)
-    subject_id = models.ForeignKey('TblSubject', models.DO_NOTHING)
+    semester = models.ForeignKey("TblSemester", models.DO_NOTHING)
+    student_id = models.ForeignKey("TblStudent", models.DO_NOTHING)
+    subject_id = models.ForeignKey("TblSubject", models.DO_NOTHING)
 
     class Meta:
         managed = False
-        db_table = 'courses_selectedcourses'
+        db_table = "courses_selectedcourses"
 
 
 class CoursesStudentgrades(models.Model):
@@ -150,12 +175,13 @@ class CoursesStudentgrades(models.Model):
     rank = models.IntegerField(blank=True, null=True)
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
-    application_id = models.ForeignKey(CoursesApplicationForm, models.DO_NOTHING)
+    application_id = models.ForeignKey(
+        CoursesApplicationForm, models.DO_NOTHING)
     exam_id = models.ForeignKey(CoursesExams, models.DO_NOTHING)
 
     class Meta:
         managed = False
-        db_table = 'courses_studentgrades'
+        db_table = "courses_studentgrades"
 
 
 class CoursesTerm(models.Model):
@@ -169,23 +195,27 @@ class CoursesTerm(models.Model):
     is_published = models.BooleanField()
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
-    course_category = models.ForeignKey('StudentManagementAppCoursecategory', models.DO_NOTHING, blank=True, null=True)
+    course_category = models.ForeignKey(
+        "StudentManagementAppCoursecategory",
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
 
     class Meta:
         managed = False
-        db_table = 'courses_term'
+        db_table = "courses_term"
 
 
 class CoursesTermRanking(models.Model):
     id = models.BigAutoField(primary_key=True)
     total_marks = models.IntegerField()
     rank = models.IntegerField()
-    student = models.ForeignKey('TblStudent', models.DO_NOTHING)
+    student = models.ForeignKey("TblStudent", models.DO_NOTHING)
     term = models.ForeignKey(CoursesTerm, models.DO_NOTHING)
 
     class Meta:
         managed = False
-        db_table = 'courses_term_ranking'
+        db_table = "courses_term_ranking"
 
 
 class DjangoAdminLog(models.Model):
@@ -194,12 +224,14 @@ class DjangoAdminLog(models.Model):
     object_repr = models.CharField(max_length=200)
     action_flag = models.SmallIntegerField()
     change_message = models.TextField()
-    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING, blank=True, null=True)
-    user = models.ForeignKey('TblCustomuser', models.DO_NOTHING)
+    content_type = models.ForeignKey(
+        "DjangoContentType", models.DO_NOTHING, blank=True, null=True
+    )
+    user = models.ForeignKey("TblCustomuser", models.DO_NOTHING)
 
     class Meta:
         managed = False
-        db_table = 'django_admin_log'
+        db_table = "django_admin_log"
 
 
 class DjangoContentType(models.Model):
@@ -208,8 +240,8 @@ class DjangoContentType(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'django_content_type'
-        unique_together = (('app_label', 'model'),)
+        db_table = "django_content_type"
+        unique_together = (("app_label", "model"),)
 
 
 class DjangoMigrations(models.Model):
@@ -220,7 +252,7 @@ class DjangoMigrations(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'django_migrations'
+        db_table = "django_migrations"
 
 
 class DjangoSession(models.Model):
@@ -230,22 +262,31 @@ class DjangoSession(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'django_session'
+        db_table = "django_session"
 
 
 class ExamAnswersheet(models.Model):
     id = models.BigAutoField(primary_key=True)
     answer_upload = models.CharField(max_length=100, blank=True, null=True)
     graded_sheet = models.CharField(max_length=100, blank=True, null=True)
-    questionpaper_status = models.CharField(max_length=50, blank=True, null=True)
+    questionpaper_status = models.CharField(
+        max_length=50, blank=True, null=True)
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
-    exam = models.ForeignKey(CoursesExams, models.DO_NOTHING, blank=True, null=True)
-    student = models.ForeignKey('TblStudent', models.DO_NOTHING, blank=True, null=True)
+    exam = models.ForeignKey(
+        CoursesExams,
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
+    student = models.ForeignKey(
+        "TblStudent",
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
 
     class Meta:
         managed = False
-        db_table = 'exam_answersheet'
+        db_table = "exam_answersheet"
 
 
 class ExamExamattendance(models.Model):
@@ -253,14 +294,26 @@ class ExamExamattendance(models.Model):
     attendance_date = models.DateField(blank=True, null=True)
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
-    section = models.ForeignKey('TblSection', models.DO_NOTHING, blank=True, null=True)
-    semester = models.ForeignKey('TblSemester', models.DO_NOTHING, blank=True, null=True)
-    session_year = models.ForeignKey('TblSessionyear', models.DO_NOTHING, blank=True, null=True)
-    subject = models.ForeignKey('TblSubject', models.DO_NOTHING, blank=True, null=True)
+    section = models.ForeignKey(
+        "TblSection",
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
+    semester = models.ForeignKey(
+        "TblSemester", models.DO_NOTHING, blank=True, null=True
+    )
+    session_year = models.ForeignKey(
+        "TblSessionyear", models.DO_NOTHING, blank=True, null=True
+    )
+    subject = models.ForeignKey(
+        "TblSubject",
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
 
     class Meta:
         managed = False
-        db_table = 'exam_examattendance'
+        db_table = "exam_examattendance"
 
 
 class ExamExamattendancereport(models.Model):
@@ -270,13 +323,23 @@ class ExamExamattendancereport(models.Model):
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
     attendance = models.ForeignKey(ExamExamattendance, models.DO_NOTHING)
-    extra_user = models.ForeignKey('TblExtrauser', models.DO_NOTHING, blank=True, null=True)
-    staff = models.ForeignKey('TblStaff', models.DO_NOTHING, blank=True, null=True)
-    student = models.ForeignKey('TblStudent', models.DO_NOTHING, blank=True, null=True)
+    extra_user = models.ForeignKey(
+        "TblExtrauser", models.DO_NOTHING, blank=True, null=True
+    )
+    staff = models.ForeignKey(
+        "TblStaff",
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
+    student = models.ForeignKey(
+        "TblStudent",
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
 
     class Meta:
         managed = False
-        db_table = 'exam_examattendancereport'
+        db_table = "exam_examattendancereport"
 
 
 class ExamQuestion(models.Model):
@@ -287,11 +350,13 @@ class ExamQuestion(models.Model):
     has_sub_question = models.BooleanField()
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
-    question_paper = models.ForeignKey('ExamQuestionpaper', models.DO_NOTHING, blank=True, null=True)
+    question_paper = models.ForeignKey(
+        "ExamQuestionpaper", models.DO_NOTHING, blank=True, null=True
+    )
 
     class Meta:
         managed = False
-        db_table = 'exam_question'
+        db_table = "exam_question"
 
 
 class ExamQuestiongrade(models.Model):
@@ -300,12 +365,20 @@ class ExamQuestiongrade(models.Model):
     feedback = models.TextField()
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
-    question = models.ForeignKey(ExamQuestion, models.DO_NOTHING, blank=True, null=True)
-    student = models.ForeignKey('TblStudent', models.DO_NOTHING, blank=True, null=True)
+    question = models.ForeignKey(
+        ExamQuestion,
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
+    student = models.ForeignKey(
+        "TblStudent",
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
 
     class Meta:
         managed = False
-        db_table = 'exam_questiongrade'
+        db_table = "exam_questiongrade"
 
 
 class ExamQuestionpaper(models.Model):
@@ -314,11 +387,15 @@ class ExamQuestionpaper(models.Model):
     draft = models.BooleanField()
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
-    exam = models.OneToOneField(CoursesExams, models.DO_NOTHING, blank=True, null=True)
+    exam = models.OneToOneField(
+        CoursesExams,
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
 
     class Meta:
         managed = False
-        db_table = 'exam_questionpaper'
+        db_table = "exam_questionpaper"
 
 
 class ExamSubquestion(models.Model):
@@ -328,12 +405,18 @@ class ExamSubquestion(models.Model):
     question_description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
-    question = models.ForeignKey(ExamQuestion, models.DO_NOTHING, blank=True, null=True)
-    question_paper = models.ForeignKey(ExamQuestionpaper, models.DO_NOTHING, blank=True, null=True)
+    question = models.ForeignKey(
+        ExamQuestion,
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
+    question_paper = models.ForeignKey(
+        ExamQuestionpaper, models.DO_NOTHING, blank=True, null=True
+    )
 
     class Meta:
         managed = False
-        db_table = 'exam_subquestion'
+        db_table = "exam_subquestion"
 
 
 class ExamSubquestiongrade(models.Model):
@@ -342,12 +425,12 @@ class ExamSubquestiongrade(models.Model):
     feedback = models.TextField()
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
-    student = models.ForeignKey('TblStudent', models.DO_NOTHING)
+    student = models.ForeignKey("TblStudent", models.DO_NOTHING)
     sub_question = models.ForeignKey(ExamSubquestion, models.DO_NOTHING)
 
     class Meta:
         managed = False
-        db_table = 'exam_subquestiongrade'
+        db_table = "exam_subquestiongrade"
 
 
 class LibraryBarcode(models.Model):
@@ -360,7 +443,7 @@ class LibraryBarcode(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'library_barcode'
+        db_table = "library_barcode"
 
 
 class LibraryBookentry(models.Model):
@@ -372,11 +455,11 @@ class LibraryBookentry(models.Model):
     quantity = models.IntegerField()
     price = models.FloatField(blank=True, null=True)
     created_at = models.DateTimeField()
-    category = models.ForeignKey('LibraryCategory', models.DO_NOTHING)
+    category = models.ForeignKey("LibraryCategory", models.DO_NOTHING)
 
     class Meta:
         managed = False
-        db_table = 'library_bookentry'
+        db_table = "library_bookentry"
 
 
 class LibraryBookissue(models.Model):
@@ -385,12 +468,12 @@ class LibraryBookissue(models.Model):
     quantity = models.IntegerField()
     issue_date = models.DateTimeField()
     expirydate = models.DateField()
-    issue_id = models.ForeignKey('LibraryIssue', models.DO_NOTHING)
+    issue_id = models.ForeignKey("LibraryIssue", models.DO_NOTHING)
     title = models.ForeignKey(LibraryBookentry, models.DO_NOTHING)
 
     class Meta:
         managed = False
-        db_table = 'library_bookissue'
+        db_table = "library_bookissue"
 
 
 class LibraryBookrenew(models.Model):
@@ -401,11 +484,13 @@ class LibraryBookrenew(models.Model):
     renew_date = models.DateTimeField()
     expirydate = models.DateField()
     isbn = models.ForeignKey(LibraryBookissue, models.DO_NOTHING)
-    member_id = models.ForeignKey('LibraryLibrarymemberprofile', models.DO_NOTHING)
+    member_id = models.ForeignKey(
+        "LibraryLibrarymemberprofile",
+        models.DO_NOTHING)
 
     class Meta:
         managed = False
-        db_table = 'library_bookrenew'
+        db_table = "library_bookrenew"
 
 
 class LibraryBookreturn(models.Model):
@@ -413,12 +498,14 @@ class LibraryBookreturn(models.Model):
     isbn = models.CharField(max_length=200)
     quantity = models.IntegerField()
     return_date = models.DateTimeField()
-    issue_id = models.ForeignKey('LibraryIssue', models.DO_NOTHING, blank=True, null=True)
+    issue_id = models.ForeignKey(
+        "LibraryIssue", models.DO_NOTHING, blank=True, null=True
+    )
     title = models.ForeignKey(LibraryBookentry, models.DO_NOTHING)
 
     class Meta:
         managed = False
-        db_table = 'library_bookreturn'
+        db_table = "library_bookreturn"
 
 
 class LibraryCategory(models.Model):
@@ -428,17 +515,19 @@ class LibraryCategory(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'library_category'
+        db_table = "library_category"
 
 
 class LibraryIssue(models.Model):
     id = models.BigAutoField(primary_key=True)
     date = models.DateField()
-    member = models.ForeignKey('LibraryLibrarymemberprofile', models.DO_NOTHING)
+    member = models.ForeignKey(
+        "LibraryLibrarymemberprofile",
+        models.DO_NOTHING)
 
     class Meta:
         managed = False
-        db_table = 'library_issue'
+        db_table = "library_issue"
 
 
 class LibraryLibrarymemberprofile(models.Model):
@@ -466,8 +555,12 @@ class LibraryLibrarymemberprofile(models.Model):
     library_card_no = models.CharField(max_length=100, blank=True, null=True)
     membership_started_at = models.DateTimeField(blank=True, null=True)
     membership_ended_at = models.DateTimeField(blank=True, null=True)
-    opac_id = models.CharField(db_column='OPAC_id', max_length=100, blank=True, null=True)  # Field name made lowercase.
-    opac_password = models.CharField(db_column='OPAC_password', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    opac_id = models.CharField(
+        db_column="OPAC_id", max_length=100, blank=True, null=True
+    )  # Field name made lowercase.
+    opac_password = models.CharField(
+        db_column="OPAC_password", max_length=100, blank=True, null=True
+    )  # Field name made lowercase.
     qr_code = models.CharField(max_length=100, blank=True, null=True)
     created_at = models.DateTimeField()
     approved_by = models.CharField(max_length=250, blank=True, null=True)
@@ -477,11 +570,13 @@ class LibraryLibrarymemberprofile(models.Model):
     remarks = models.CharField(max_length=500, blank=True, null=True)
     rejected_remarks = models.CharField(max_length=500, blank=True, null=True)
     borrowed_books = models.IntegerField()
-    member = models.OneToOneField('TblCustomuser', models.DO_NOTHING, blank=True, null=True)
+    member = models.OneToOneField(
+        "TblCustomuser", models.DO_NOTHING, blank=True, null=True
+    )
 
     class Meta:
         managed = False
-        db_table = 'library_librarymemberprofile'
+        db_table = "library_librarymemberprofile"
 
 
 class LibraryReturn(models.Model):
@@ -491,7 +586,7 @@ class LibraryReturn(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'library_return'
+        db_table = "library_return"
 
 
 class LogHistoryUserlog(models.Model):
@@ -503,11 +598,11 @@ class LogHistoryUserlog(models.Model):
     object_instance = models.TextField()
     ip = models.GenericIPAddressField(blank=True, null=True)
     created_at = models.DateTimeField()
-    user = models.ForeignKey('TblCustomuser', models.DO_NOTHING)
+    user = models.ForeignKey("TblCustomuser", models.DO_NOTHING)
 
     class Meta:
         managed = False
-        db_table = 'log_history_userlog'
+        db_table = "log_history_userlog"
 
 
 class NotificationsNotification(models.Model):
@@ -517,11 +612,13 @@ class NotificationsNotification(models.Model):
     is_seen = models.BooleanField()
     type = models.CharField(max_length=20)
     created_at = models.DateTimeField()
-    created_by = models.ForeignKey('TblCustomuser', models.DO_NOTHING, blank=True, null=True)
+    created_by = models.ForeignKey(
+        "TblCustomuser", models.DO_NOTHING, blank=True, null=True
+    )
 
     class Meta:
         managed = False
-        db_table = 'notifications_notification'
+        db_table = "notifications_notification"
 
 
 class ScheduleCalendar(models.Model):
@@ -531,7 +628,7 @@ class ScheduleCalendar(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'schedule_calendar'
+        db_table = "schedule_calendar"
 
 
 class ScheduleCalendarrelation(models.Model):
@@ -544,7 +641,7 @@ class ScheduleCalendarrelation(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'schedule_calendarrelation'
+        db_table = "schedule_calendarrelation"
 
 
 class ScheduleEvent(models.Model):
@@ -558,12 +655,18 @@ class ScheduleEvent(models.Model):
     end_recurring_period = models.DateTimeField(blank=True, null=True)
     color_event = models.CharField(max_length=10)
     calendar = models.ForeignKey(ScheduleCalendar, models.DO_NOTHING)
-    creator = models.ForeignKey('TblCustomuser', models.DO_NOTHING, blank=True, null=True)
-    rule = models.ForeignKey('ScheduleRule', models.DO_NOTHING, blank=True, null=True)
+    creator = models.ForeignKey(
+        "TblCustomuser", models.DO_NOTHING, blank=True, null=True
+    )
+    rule = models.ForeignKey(
+        "ScheduleRule",
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
 
     class Meta:
         managed = False
-        db_table = 'schedule_event'
+        db_table = "schedule_event"
 
 
 class ScheduleEventrelation(models.Model):
@@ -575,7 +678,7 @@ class ScheduleEventrelation(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'schedule_eventrelation'
+        db_table = "schedule_eventrelation"
 
 
 class ScheduleOccurrence(models.Model):
@@ -593,7 +696,7 @@ class ScheduleOccurrence(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'schedule_occurrence'
+        db_table = "schedule_occurrence"
 
 
 class ScheduleRule(models.Model):
@@ -605,7 +708,7 @@ class ScheduleRule(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'schedule_rule'
+        db_table = "schedule_rule"
 
 
 class SilkProfile(models.Model):
@@ -619,22 +722,26 @@ class SilkProfile(models.Model):
     func_name = models.CharField(max_length=300)
     exception_raised = models.BooleanField()
     dynamic = models.BooleanField()
-    request = models.ForeignKey('SilkRequest', models.DO_NOTHING, blank=True, null=True)
+    request = models.ForeignKey(
+        "SilkRequest",
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
 
     class Meta:
         managed = False
-        db_table = 'silk_profile'
+        db_table = "silk_profile"
 
 
 class SilkProfileQueries(models.Model):
     id = models.BigAutoField(primary_key=True)
     profile = models.ForeignKey(SilkProfile, models.DO_NOTHING)
-    sqlquery = models.ForeignKey('SilkSqlquery', models.DO_NOTHING)
+    sqlquery = models.ForeignKey("SilkSqlquery", models.DO_NOTHING)
 
     class Meta:
         managed = False
-        db_table = 'silk_profile_queries'
-        unique_together = (('profile', 'sqlquery'),)
+        db_table = "silk_profile_queries"
+        unique_together = (("profile", "sqlquery"),)
 
 
 class SilkRequest(models.Model):
@@ -658,7 +765,7 @@ class SilkRequest(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'silk_request'
+        db_table = "silk_request"
 
 
 class SilkResponse(models.Model):
@@ -671,7 +778,7 @@ class SilkResponse(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'silk_response'
+        db_table = "silk_response"
 
 
 class SilkSqlquery(models.Model):
@@ -680,13 +787,17 @@ class SilkSqlquery(models.Model):
     end_time = models.DateTimeField(blank=True, null=True)
     time_taken = models.FloatField(blank=True, null=True)
     traceback = models.TextField()
-    request = models.ForeignKey(SilkRequest, models.DO_NOTHING, blank=True, null=True)
+    request = models.ForeignKey(
+        SilkRequest,
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
     identifier = models.IntegerField()
     analysis = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'silk_sqlquery'
+        db_table = "silk_sqlquery"
 
 
 class StudentManagementAppBranch(models.Model):
@@ -695,7 +806,7 @@ class StudentManagementAppBranch(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'student_management_app_branch'
+        db_table = "student_management_app_branch"
 
 
 class StudentManagementAppCoursecategory(models.Model):
@@ -706,7 +817,7 @@ class StudentManagementAppCoursecategory(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'student_management_app_coursecategory'
+        db_table = "student_management_app_coursecategory"
 
 
 class StudentManagementAppDepartment(models.Model):
@@ -715,41 +826,48 @@ class StudentManagementAppDepartment(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'student_management_app_department'
+        db_table = "student_management_app_department"
 
 
 class StudentManagementAppSemesterteacher(models.Model):
     id = models.BigAutoField(primary_key=True)
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
-    semester = models.ForeignKey('TblSemester', models.DO_NOTHING, blank=True, null=True)
-    teacher = models.ForeignKey('TblCustomuser', models.DO_NOTHING)
+    semester = models.ForeignKey(
+        "TblSemester", models.DO_NOTHING, blank=True, null=True
+    )
+    teacher = models.ForeignKey("TblCustomuser", models.DO_NOTHING)
 
     class Meta:
         managed = False
-        db_table = 'student_management_app_semesterteacher'
+        db_table = "student_management_app_semesterteacher"
 
 
 class StudentManagementAppSubjectteacher(models.Model):
     id = models.BigAutoField(primary_key=True)
-    section = models.ForeignKey('TblSection', models.DO_NOTHING, blank=True, null=True)
-    subject = models.ForeignKey('TblSubject', models.DO_NOTHING)
-    teacher = models.ForeignKey('TblCustomuser', models.DO_NOTHING)
-    semester = models.ForeignKey('TblSemester', models.DO_NOTHING, blank=True, null=True)
+    section = models.ForeignKey(
+        "TblSection",
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
+    subject = models.ForeignKey("TblSubject", models.DO_NOTHING)
+    teacher = models.ForeignKey("TblCustomuser", models.DO_NOTHING)
+    semester = models.ForeignKey(
+        "TblSemester", models.DO_NOTHING, blank=True, null=True
+    )
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
 
     class Meta:
         managed = False
-        db_table = 'student_management_app_subjectteacher'
-        unique_together = (('subject', 'section'),)
+        db_table = "student_management_app_subjectteacher"
+        unique_together = (("subject", "section"),)
 
 
 class TblAdminuser(models.Model):
-
     class Meta:
         managed = False
-        db_table = 'tbl_Adminuser'
+        db_table = "tbl_Adminuser"
 
 
 class TblAssignment(models.Model):
@@ -761,16 +879,35 @@ class TblAssignment(models.Model):
     draft = models.BooleanField()
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
-    subject = models.ForeignKey('TblSubject', models.DO_NOTHING, db_column='Subject_id', blank=True, null=True)  # Field name made lowercase.
-    section = models.ForeignKey('TblSection', models.DO_NOTHING, blank=True, null=True)
-    semester = models.ForeignKey('TblSemester', models.DO_NOTHING)
-    teacher = models.ForeignKey('TblCustomuser', models.DO_NOTHING, blank=True, null=True)
-    course = models.ForeignKey('TblCourse', models.DO_NOTHING, blank=True, null=True)
-    course_category = models.ForeignKey(StudentManagementAppCoursecategory, models.DO_NOTHING, blank=True, null=True)
+    subject = models.ForeignKey(
+        "TblSubject",
+        models.DO_NOTHING,
+        db_column="Subject_id",
+        blank=True,
+        null=True)  # Field name made lowercase.
+    section = models.ForeignKey(
+        "TblSection",
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
+    semester = models.ForeignKey("TblSemester", models.DO_NOTHING)
+    teacher = models.ForeignKey(
+        "TblCustomuser", models.DO_NOTHING, blank=True, null=True
+    )
+    course = models.ForeignKey(
+        "TblCourse",
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
+    course_category = models.ForeignKey(
+        StudentManagementAppCoursecategory,
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
 
     class Meta:
         managed = False
-        db_table = 'tbl_Assignment'
+        db_table = "tbl_Assignment"
 
 
 class TblCertificatetemplate(models.Model):
@@ -793,11 +930,15 @@ class TblCertificatetemplate(models.Model):
     footer_middle_text = models.TextField()
     footer_right_text = models.TextField()
     background_image = models.CharField(max_length=100)
-    student = models.ForeignKey('TblStudent', models.DO_NOTHING, blank=True, null=True)
+    student = models.ForeignKey(
+        "TblStudent",
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
 
     class Meta:
         managed = False
-        db_table = 'tbl_Certificatetemplate'
+        db_table = "tbl_Certificatetemplate"
 
 
 class TblComplain(models.Model):
@@ -808,11 +949,11 @@ class TblComplain(models.Model):
     attachment = models.CharField(max_length=500)
     created_at = models.DateField()
     updated_at = models.DateField()
-    user = models.OneToOneField('TblCustomuser', models.DO_NOTHING)
+    user = models.OneToOneField("TblCustomuser", models.DO_NOTHING)
 
     class Meta:
         managed = False
-        db_table = 'tbl_Complain'
+        db_table = "tbl_Complain"
 
 
 class TblCourse(models.Model):
@@ -822,12 +963,20 @@ class TblCourse(models.Model):
     course_description = models.TextField()
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
-    course_category = models.ForeignKey(StudentManagementAppCoursecategory, models.DO_NOTHING, blank=True, null=True)
-    department = models.ForeignKey(StudentManagementAppDepartment, models.DO_NOTHING, blank=True, null=True)
+    course_category = models.ForeignKey(
+        StudentManagementAppCoursecategory,
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
+    department = models.ForeignKey(
+        StudentManagementAppDepartment,
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
 
     class Meta:
         managed = False
-        db_table = 'tbl_Course'
+        db_table = "tbl_Course"
 
 
 class TblCustomuser(models.Model):
@@ -843,11 +992,15 @@ class TblCustomuser(models.Model):
     date_joined = models.DateTimeField()
     full_name = models.CharField(max_length=255)
     email = models.CharField(max_length=254, blank=True, null=True)
-    user_type = models.ForeignKey(AuthGroup, models.DO_NOTHING, blank=True, null=True)
+    user_type = models.ForeignKey(
+        AuthGroup,
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
 
     class Meta:
         managed = False
-        db_table = 'tbl_Customuser'
+        db_table = "tbl_Customuser"
 
 
 class TblCustomuserGroups(models.Model):
@@ -857,8 +1010,8 @@ class TblCustomuserGroups(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'tbl_Customuser_groups'
-        unique_together = (('customuser', 'group'),)
+        db_table = "tbl_Customuser_groups"
+        unique_together = (("customuser", "group"),)
 
 
 class TblCustomuserUserPermissions(models.Model):
@@ -868,8 +1021,8 @@ class TblCustomuserUserPermissions(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'tbl_Customuser_user_permissions'
-        unique_together = (('customuser', 'permission'),)
+        db_table = "tbl_Customuser_user_permissions"
+        unique_together = (("customuser", "permission"),)
 
 
 class TblDocumentfile(models.Model):
@@ -878,14 +1031,28 @@ class TblDocumentfile(models.Model):
     file = models.CharField(max_length=500)
     created_at = models.DateField()
     updated_at = models.DateField()
-    extra_user = models.ForeignKey('TblExtrauser', models.DO_NOTHING, blank=True, null=True)
-    parent = models.ForeignKey('TblParent', models.DO_NOTHING, blank=True, null=True)
-    staff = models.ForeignKey('TblStaff', models.DO_NOTHING, blank=True, null=True)
-    student = models.ForeignKey('TblStudent', models.DO_NOTHING, blank=True, null=True)
+    extra_user = models.ForeignKey(
+        "TblExtrauser", models.DO_NOTHING, blank=True, null=True
+    )
+    parent = models.ForeignKey(
+        "TblParent",
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
+    staff = models.ForeignKey(
+        "TblStaff",
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
+    student = models.ForeignKey(
+        "TblStudent",
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
 
     class Meta:
         managed = False
-        db_table = 'tbl_Documentfile'
+        db_table = "tbl_Documentfile"
 
 
 class TblEnotes(models.Model):
@@ -896,15 +1063,23 @@ class TblEnotes(models.Model):
     description = models.TextField()
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
-    course = models.ForeignKey(TblCourse, models.DO_NOTHING, blank=True, null=True)
-    course_category = models.ForeignKey(StudentManagementAppCoursecategory, models.DO_NOTHING, blank=True, null=True)
-    semester = models.ForeignKey('TblSemester', models.DO_NOTHING)
-    subject = models.ForeignKey('TblSubject', models.DO_NOTHING)
-    section = models.ForeignKey('TblSection', models.DO_NOTHING)
+    course = models.ForeignKey(
+        TblCourse,
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
+    course_category = models.ForeignKey(
+        StudentManagementAppCoursecategory,
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
+    semester = models.ForeignKey("TblSemester", models.DO_NOTHING)
+    subject = models.ForeignKey("TblSubject", models.DO_NOTHING)
+    section = models.ForeignKey("TblSection", models.DO_NOTHING)
 
     class Meta:
         managed = False
-        db_table = 'tbl_Enotes'
+        db_table = "tbl_Enotes"
 
 
 class TblExtrauser(models.Model):
@@ -919,13 +1094,21 @@ class TblExtrauser(models.Model):
     status = models.BooleanField()
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
-    branch = models.ForeignKey(StudentManagementAppBranch, models.DO_NOTHING, blank=True, null=True)
-    extra_user = models.OneToOneField(TblCustomuser, models.DO_NOTHING, blank=True, null=True)
-    role = models.ForeignKey(AuthGroup, models.DO_NOTHING, blank=True, null=True)
+    branch = models.ForeignKey(
+        StudentManagementAppBranch, models.DO_NOTHING, blank=True, null=True
+    )
+    extra_user = models.OneToOneField(
+        TblCustomuser, models.DO_NOTHING, blank=True, null=True
+    )
+    role = models.ForeignKey(
+        AuthGroup,
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
 
     class Meta:
         managed = False
-        db_table = 'tbl_Extrauser'
+        db_table = "tbl_Extrauser"
 
 
 class TblHoliday(models.Model):
@@ -940,7 +1123,7 @@ class TblHoliday(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'tbl_Holiday'
+        db_table = "tbl_Holiday"
 
 
 class TblOptionalsubject(models.Model):
@@ -950,12 +1133,12 @@ class TblOptionalsubject(models.Model):
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
     course = models.ForeignKey(TblCourse, models.DO_NOTHING)
-    semester = models.ForeignKey('TblSemester', models.DO_NOTHING)
+    semester = models.ForeignKey("TblSemester", models.DO_NOTHING)
     staff_user = models.ForeignKey(TblCustomuser, models.DO_NOTHING)
 
     class Meta:
         managed = False
-        db_table = 'tbl_Optionalsubject'
+        db_table = "tbl_Optionalsubject"
 
 
 class TblParent(models.Model):
@@ -965,8 +1148,10 @@ class TblParent(models.Model):
     father_phone = models.CharField(max_length=30, blank=True, null=True)
     mother_name = models.CharField(max_length=100, blank=True, null=True)
     mother_phone = models.CharField(max_length=30, blank=True, null=True)
-    local_guardian_name = models.CharField(max_length=100, blank=True, null=True)
-    local_guardian_phone = models.CharField(max_length=30, blank=True, null=True)
+    local_guardian_name = models.CharField(
+        max_length=100, blank=True, null=True)
+    local_guardian_phone = models.CharField(
+        max_length=30, blank=True, null=True)
     father_email = models.CharField(max_length=254, blank=True, null=True)
     father_profession = models.CharField(max_length=255, blank=True, null=True)
     father_office = models.CharField(max_length=100, blank=True, null=True)
@@ -978,11 +1163,13 @@ class TblParent(models.Model):
     status = models.BooleanField()
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
-    parent_user = models.OneToOneField(TblCustomuser, models.DO_NOTHING, blank=True, null=True)
+    parent_user = models.OneToOneField(
+        TblCustomuser, models.DO_NOTHING, blank=True, null=True
+    )
 
     class Meta:
         managed = False
-        db_table = 'tbl_Parent'
+        db_table = "tbl_Parent"
 
 
 class TblRoutine(models.Model):
@@ -993,16 +1180,28 @@ class TblRoutine(models.Model):
     starting_time = models.TimeField(blank=True, null=True)
     ending_time = models.TimeField(blank=True, null=True)
     room = models.CharField(max_length=100, blank=True, null=True)
-    course = models.ForeignKey(TblCourse, models.DO_NOTHING, blank=True, null=True)
-    course_category = models.ForeignKey(StudentManagementAppCoursecategory, models.DO_NOTHING, blank=True, null=True)
-    section = models.ForeignKey('TblSection', models.DO_NOTHING, blank=True, null=True)
-    semester = models.ForeignKey('TblSemester', models.DO_NOTHING)
+    course = models.ForeignKey(
+        TblCourse,
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
+    course_category = models.ForeignKey(
+        StudentManagementAppCoursecategory,
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
+    section = models.ForeignKey(
+        "TblSection",
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
+    semester = models.ForeignKey("TblSemester", models.DO_NOTHING)
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
 
     class Meta:
         managed = False
-        db_table = 'tbl_Routine'
+        db_table = "tbl_Routine"
 
 
 class TblSection(models.Model):
@@ -1012,25 +1211,39 @@ class TblSection(models.Model):
     description = models.TextField()
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
-    course_category = models.ForeignKey(StudentManagementAppCoursecategory, models.DO_NOTHING, blank=True, null=True)
-    semester = models.ForeignKey('TblSemester', models.DO_NOTHING, blank=True, null=True)
-    staff = models.ForeignKey(TblCustomuser, models.DO_NOTHING, blank=True, null=True)
-    course = models.ForeignKey(TblCourse, models.DO_NOTHING, blank=True, null=True)
+    course_category = models.ForeignKey(
+        StudentManagementAppCoursecategory,
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
+    semester = models.ForeignKey(
+        "TblSemester", models.DO_NOTHING, blank=True, null=True
+    )
+    staff = models.ForeignKey(
+        TblCustomuser,
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
+    course = models.ForeignKey(
+        TblCourse,
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
 
     class Meta:
         managed = False
-        db_table = 'tbl_Section'
+        db_table = "tbl_Section"
 
 
 class TblSectionSubject(models.Model):
     id = models.BigAutoField(primary_key=True)
     section = models.ForeignKey(TblSection, models.DO_NOTHING)
-    subject = models.ForeignKey('TblSubject', models.DO_NOTHING)
+    subject = models.ForeignKey("TblSubject", models.DO_NOTHING)
 
     class Meta:
         managed = False
-        db_table = 'tbl_Section_subject'
-        unique_together = (('section', 'subject'),)
+        db_table = "tbl_Section_subject"
+        unique_together = (("section", "subject"),)
 
 
 class TblSemester(models.Model):
@@ -1039,12 +1252,20 @@ class TblSemester(models.Model):
     semester_value = models.IntegerField(blank=True, null=True)
     description = models.TextField()
     status = models.BooleanField()
-    course_category = models.ForeignKey(StudentManagementAppCoursecategory, models.DO_NOTHING, blank=True, null=True)
-    course = models.ForeignKey(TblCourse, models.DO_NOTHING, blank=True, null=True)
+    course_category = models.ForeignKey(
+        StudentManagementAppCoursecategory,
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
+    course = models.ForeignKey(
+        TblCourse,
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
 
     class Meta:
         managed = False
-        db_table = 'tbl_Semester'
+        db_table = "tbl_Semester"
 
 
 class TblSessionyear(models.Model):
@@ -1054,7 +1275,7 @@ class TblSessionyear(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'tbl_Sessionyear'
+        db_table = "tbl_Sessionyear"
 
 
 class TblSettings(models.Model):
@@ -1070,7 +1291,7 @@ class TblSettings(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'tbl_Settings'
+        db_table = "tbl_Settings"
 
 
 class TblSociallink(models.Model):
@@ -1086,7 +1307,8 @@ class TblSociallink(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'tbl_Sociallink'
+        db_table = "tbl_Sociallink"
+
 
 class TblStaff(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -1100,23 +1322,29 @@ class TblStaff(models.Model):
     updated_at = models.DateTimeField()
     image = models.CharField(max_length=100, blank=True, null=True)
     status = models.BooleanField()
-    department = models.ForeignKey(StudentManagementAppDepartment, models.DO_NOTHING, blank=True, null=True)
+    department = models.ForeignKey(
+        StudentManagementAppDepartment,
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
     staff_user = models.OneToOneField(TblCustomuser, models.DO_NOTHING)
 
     class Meta:
         managed = False
-        db_table = 'tbl_Staff'
+        db_table = "tbl_Staff"
 
 
 class TblStaffCourses(models.Model):
     id = models.BigAutoField(primary_key=True)
     staff = models.ForeignKey(TblStaff, models.DO_NOTHING)
-    coursecategory = models.ForeignKey(StudentManagementAppCoursecategory, models.DO_NOTHING)
+    coursecategory = models.ForeignKey(
+        StudentManagementAppCoursecategory, models.DO_NOTHING
+    )
 
     class Meta:
         managed = False
-        db_table = 'tbl_Staff_courses'
-        unique_together = (('staff', 'coursecategory'),)
+        db_table = "tbl_Staff_courses"
+        unique_together = (("staff", "coursecategory"),)
 
 
 class TblStudent(models.Model):
@@ -1135,10 +1363,15 @@ class TblStudent(models.Model):
     dob = models.DateField(blank=True, null=True)
     blood_group = models.CharField(max_length=25)
     gpa = models.CharField(max_length=50, blank=True, null=True)
-    previous_school_name = models.CharField(max_length=100, blank=True, null=True)
+    previous_school_name = models.CharField(
+        max_length=100, blank=True, null=True)
     image = models.CharField(max_length=100, blank=True, null=True)
     barcode = models.CharField(max_length=100)
-    register_no = models.CharField(unique=True, max_length=250, blank=True, null=True)
+    register_no = models.CharField(
+        unique=True,
+        max_length=250,
+        blank=True,
+        null=True)
     religion = models.CharField(max_length=100, blank=True, null=True)
     remarks = models.CharField(max_length=255, blank=True, null=True)
     extra_curricular_activities = models.CharField(max_length=255)
@@ -1146,20 +1379,52 @@ class TblStudent(models.Model):
     country = models.CharField(max_length=50, blank=True, null=True)
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
-    course = models.ForeignKey(TblCourse, models.DO_NOTHING, blank=True, null=True)
-    course_category = models.ForeignKey(StudentManagementAppCoursecategory, models.DO_NOTHING, blank=True, null=True)
-    group = models.ForeignKey('TblStudentgroup', models.DO_NOTHING, blank=True, null=True)
-    guardian = models.ForeignKey(TblParent, models.DO_NOTHING, blank=True, null=True)
-    optional_subject = models.ForeignKey('TblSubject', models.DO_NOTHING, blank=True, null=True)
-    section = models.ForeignKey(TblSection, models.DO_NOTHING, blank=True, null=True)
-    semester = models.ForeignKey(TblSemester, models.DO_NOTHING, blank=True, null=True)
-    student_user = models.OneToOneField(TblCustomuser, models.DO_NOTHING, blank=True, null=True)
-    subject = models.ForeignKey('TblSubject', models.DO_NOTHING, blank=True, null=True)
-    transport = models.ForeignKey('TblTransport', models.DO_NOTHING, blank=True, null=True)
+    course = models.ForeignKey(
+        TblCourse,
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
+    course_category = models.ForeignKey(
+        StudentManagementAppCoursecategory,
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
+    group = models.ForeignKey(
+        "TblStudentgroup", models.DO_NOTHING, blank=True, null=True
+    )
+    guardian = models.ForeignKey(
+        TblParent,
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
+    optional_subject = models.ForeignKey(
+        "TblSubject", models.DO_NOTHING, blank=True, null=True
+    )
+    section = models.ForeignKey(
+        TblSection,
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
+    semester = models.ForeignKey(
+        TblSemester,
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
+    student_user = models.OneToOneField(
+        TblCustomuser, models.DO_NOTHING, blank=True, null=True
+    )
+    subject = models.ForeignKey(
+        "TblSubject",
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
+    transport = models.ForeignKey(
+        "TblTransport", models.DO_NOTHING, blank=True, null=True
+    )
 
     class Meta:
         managed = False
-        db_table = 'tbl_Student'
+        db_table = "tbl_Student"
 
 
 class TblStudentgroup(models.Model):
@@ -1168,7 +1433,7 @@ class TblStudentgroup(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'tbl_Studentgroup'
+        db_table = "tbl_Studentgroup"
 
 
 class TblSubject(models.Model):
@@ -1178,13 +1443,21 @@ class TblSubject(models.Model):
     subject_code = models.CharField(max_length=255, blank=True, null=True)
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
-    course = models.ForeignKey(TblCourse, models.DO_NOTHING, blank=True, null=True)
-    course_category = models.ForeignKey(StudentManagementAppCoursecategory, models.DO_NOTHING, blank=True, null=True)
+    course = models.ForeignKey(
+        TblCourse,
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
+    course_category = models.ForeignKey(
+        StudentManagementAppCoursecategory,
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
     semester = models.ForeignKey(TblSemester, models.DO_NOTHING)
 
     class Meta:
         managed = False
-        db_table = 'tbl_Subject'
+        db_table = "tbl_Subject"
 
 
 class TblSyllabus(models.Model):
@@ -1192,16 +1465,24 @@ class TblSyllabus(models.Model):
     title = models.CharField(max_length=100)
     file = models.CharField(max_length=500)
     description = models.TextField()
-    course_category = models.ForeignKey(StudentManagementAppCoursecategory, models.DO_NOTHING, blank=True, null=True)
+    course_category = models.ForeignKey(
+        StudentManagementAppCoursecategory,
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
     semester = models.ForeignKey(TblSemester, models.DO_NOTHING)
-    course = models.ForeignKey(TblCourse, models.DO_NOTHING, blank=True, null=True)
+    course = models.ForeignKey(
+        TblCourse,
+        models.DO_NOTHING,
+        blank=True,
+        null=True)
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
     subject = models.ForeignKey(TblSubject, models.DO_NOTHING)
 
     class Meta:
         managed = False
-        db_table = 'tbl_Syllabus'
+        db_table = "tbl_Syllabus"
 
 
 class TblTransport(models.Model):
@@ -1216,7 +1497,7 @@ class TblTransport(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'tbl_Transport'
+        db_table = "tbl_Transport"
 
 
 class TblUserrole(models.Model):
@@ -1226,7 +1507,7 @@ class TblUserrole(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'tbl_Userrole'
+        db_table = "tbl_Userrole"
 
 
 class TblNotice(models.Model):
@@ -1237,8 +1518,10 @@ class TblNotice(models.Model):
     status = models.BooleanField()
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
-    created_by = models.ForeignKey(TblCustomuser, models.DO_NOTHING, blank=True, null=True)
+    created_by = models.ForeignKey(
+        TblCustomuser, models.DO_NOTHING, blank=True, null=True
+    )
 
     class Meta:
         managed = False
-        db_table = 'tbl_notice'
+        db_table = "tbl_notice"

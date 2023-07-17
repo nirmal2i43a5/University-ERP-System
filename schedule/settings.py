@@ -3,7 +3,8 @@ from django.conf import settings
 # whether to display cancelled occurrences
 # (if they are displayed then they have a css class "cancelled")
 # this controls behaviour of Period.classify_occurrence method
-SHOW_CANCELLED_OCCURRENCES = getattr(settings, "SHOW_CANCELLED_OCCURRENCES", False)
+SHOW_CANCELLED_OCCURRENCES = getattr(
+    settings, "SHOW_CANCELLED_OCCURRENCES", False)
 
 # Callable used to check if a user has edit permissions to event
 # (and occurrence). Used by check_edit_permission decorator
@@ -13,12 +14,13 @@ CHECK_EVENT_PERM_FUNC = getattr(settings, "CHECK_EVENT_PERM_FUNC", None)
 if not CHECK_EVENT_PERM_FUNC:
 
     def check_event_permission(ob, user):
-        return user.is_authenticated    
+        return user.is_authenticated
 
     CHECK_EVENT_PERM_FUNC = check_event_permission
 
 # Callable used to check if a user has edit permissions to occurrence
-CHECK_OCCURRENCE_PERM_FUNC = getattr(settings, "CHECK_OCCURRENCE_PERM_FUNC", None)
+CHECK_OCCURRENCE_PERM_FUNC = getattr(
+    settings, "CHECK_OCCURRENCE_PERM_FUNC", None)
 
 if not CHECK_OCCURRENCE_PERM_FUNC:
 
@@ -54,7 +56,8 @@ if not GET_EVENTS_FUNC:
     GET_EVENTS_FUNC = get_events
 
 # URL to redirect to to after an occurrence is canceled
-OCCURRENCE_CANCEL_REDIRECT = getattr(settings, "OCCURRENCE_CANCEL_REDIRECT", None)
+OCCURRENCE_CANCEL_REDIRECT = getattr(
+    settings, "OCCURRENCE_CANCEL_REDIRECT", None)
 
 SCHEDULER_PREVNEXT_LIMIT_SECONDS = getattr(
     settings, "SCHEDULER_PREVNEXT_LIMIT_SECONDS", 62208000
@@ -62,5 +65,9 @@ SCHEDULER_PREVNEXT_LIMIT_SECONDS = getattr(
 
 USE_FULLCALENDAR = getattr(settings, "USE_FULLCALENDAR", False)
 
-# This name is used when a new event is created through selecting in fullcalendar
-EVENT_NAME_PLACEHOLDER = getattr(settings, "EVENT_NAME_PLACEHOLDER", "Event Name")
+# This name is used when a new event is created through selecting in
+# fullcalendar
+EVENT_NAME_PLACEHOLDER = getattr(
+    settings,
+    "EVENT_NAME_PLACEHOLDER",
+    "Event Name")

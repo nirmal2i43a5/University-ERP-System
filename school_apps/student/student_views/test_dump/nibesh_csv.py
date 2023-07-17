@@ -14,7 +14,7 @@
 # ​
 #     if not csv_file.name.endswith('.csv'):
 #         print("Invalid file")
-    
+
 #     data_set = csv_file.read().decode('UTF-8')
 #     io_string = io.StringIO(data_set)
 #     next(io_string)
@@ -51,6 +51,6 @@
 #         optional_subject = column[25]
 #         gpa = column[26]
 # ​
-#         student_obj= 
+#         student_obj=
 # ​
 #     return HttpResponse("OK")

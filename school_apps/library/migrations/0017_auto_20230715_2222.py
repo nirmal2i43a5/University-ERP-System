@@ -4,22 +4,31 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('library', '0016_alter_libraryfine_book'),
+        ("library", "0016_alter_libraryfine_book"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='SetFine',
+            name="SetFine",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('amount', models.DecimalField(decimal_places=2, max_digits=10)),
+                ("id",
+                 models.BigAutoField(
+                     auto_created=True,
+                     primary_key=True,
+                     serialize=False,
+                     verbose_name="ID",
+                 ),
+                 ),
+                ("amount",
+                 models.DecimalField(
+                     decimal_places=2,
+                     max_digits=10)),
             ],
         ),
         migrations.RenameField(
-            model_name='libraryfine',
-            old_name='book',
-            new_name='book_issue',
+            model_name="libraryfine",
+            old_name="book",
+            new_name="book_issue",
         ),
     ]

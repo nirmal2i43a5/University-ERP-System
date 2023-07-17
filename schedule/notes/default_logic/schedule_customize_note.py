@@ -1,17 +1,18 @@
-I am using calendar_base_test.html for ohter fields like yearly,tri month.so include this base to the .html tag which is not fully customisze but that u only want to test
+I am using calendar_base_test.html for ohter fields like yearly, tri month.so include this base to the .html tag which is not fully customisze but that u only want to test
 
 EXTRA IDEAS:
 --------------
-https://gitter.im/llazzaro/django-scheduler
+https: // gitter.im / llazzaro / django - scheduler
 
 
 1) ADD AND CUSTOMIZE BUTTON FOR DIFFERENT DAYS VIEWS
------------------------------------------------
+- ----------------------------------------------
 
     header: {
             left: 'prev,next today',
             center: 'title',
-            right: 'month,agendaWeek,agendaDay,agendaThreeDay,listWeek'#similarly i can add other button for this view
+            # similarly i can add other button for this view
+            right: 'month,agendaWeek,agendaDay,agendaThreeDay,listWeek'
         },
     
     

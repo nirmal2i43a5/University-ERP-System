@@ -3,19 +3,19 @@ Defines the NepCal class
 """
 
 from datetime import timedelta
+
 # from . import values, functions, NepDate
 from nepalicalendar.nepdate import values, functions, NepDate
 
 
 class NepCal(object):
-    """ Nepali calendar class.
-    """
+    """Nepali calendar class."""
 
     def __init__(self):
         pass
 
     def __unicode__(self):
-        return u"Nepcal class"
+        return "Nepcal class"
 
     def __str__(self):
         return self.__unicode__()
@@ -31,7 +31,6 @@ class NepCal(object):
         functions.check_valid_bs_range(NepDate(year, month, 1))
         return values.NEPALI_MONTH_DAY_DATA[year][month - 1]
 
-
     @classmethod
     def itermonthdates(cls, year, month):
         """
@@ -40,7 +39,7 @@ class NepCal(object):
         and all days before the start of the month or after the end of the month
         that are required to get a complete week.
         """
-        
+
         curday = NepDate.from_bs_date(year, month, 1)
         start_weekday = curday.weekday()
         # Start_weekday represents the number of days we have to pad
@@ -63,11 +62,9 @@ class NepCal(object):
         for i in range(1, remain + 1):
             yield (curday + timedelta(days=i))
 
-
     @classmethod
     def itermonthdays(cls, year, month):
-        """Similar to itermonthdates but returns day number instead of NepDate object
-        """
+        """Similar to itermonthdates but returns day number instead of NepDate object"""
         for day in NepCal.itermonthdates(year, month):
             if day.month == month:
                 yield day.day
@@ -76,8 +73,7 @@ class NepCal(object):
 
     @classmethod
     def itermonthdays2(cls, year, month):
-        """Similar to itermonthdays2 but returns tuples of day and weekday.
-        """
+        """Similar to itermonthdays2 but returns tuples of day and weekday."""
         for day in NepCal.itermonthdates(year, month):
             if day.month == month:
                 yield (day.day, day.weekday())
@@ -86,7 +82,7 @@ class NepCal(object):
 
     @classmethod
     def monthdatescalendar(cls, year, month):
-        """ Returns a list of week in a month. A week is a list of NepDate objects """
+        """Returns a list of week in a month. A week is a list of NepDate objects"""
         weeks = []
         week = []
         for day in NepCal.itermonthdates(year, month):
@@ -96,7 +92,6 @@ class NepCal(object):
                 weeks.append(week)
                 week = []
         if len(week) > 0:
-         
             weeks.append(week)
         return weeks
 
@@ -114,11 +109,11 @@ class NepCal(object):
         if len(week) > 0:
             weeks.append(week)
         return weeks
-    
+
     @classmethod
     def monthdays2calendar(cls, year, month):
-        """ Return a list of the weeks in the month month of the year as full weeks.
-        Weeks are lists of seven tuples of day numbers and weekday numbers. """
+        """Return a list of the weeks in the month month of the year as full weeks.
+        Weeks are lists of seven tuples of day numbers and weekday numbers."""
         weeks = []
         week = []
         for day in NepCal.itermonthdays2(year, month):

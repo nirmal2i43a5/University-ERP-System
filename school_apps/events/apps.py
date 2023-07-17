@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class EventsConfig(AppConfig):
-    name = 'school_apps.events'
+    name = "school_apps.events"

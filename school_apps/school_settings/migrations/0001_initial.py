@@ -4,28 +4,37 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='MisSetting',
+            name="MisSetting",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('logo', models.ImageField(blank=True, null=True, upload_to='logo')),
-                ('site_title', models.CharField(blank=True, max_length=100, null=True)),
-                ('phone_no', models.CharField(blank=True, max_length=20, null=True)),
-                ('system_email', models.CharField(blank=True, max_length=100, null=True)),
-                ('address', models.CharField(blank=True, max_length=100, null=True)),
-                ('academic_year', models.IntegerField(blank=True, null=True)),
-                ('footer', models.CharField(blank=True, max_length=100, null=True)),
-                ('version', models.CharField(blank=True, max_length=50, null=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("logo", models.ImageField(blank=True, null=True, upload_to="logo")),
+                ("site_title", models.CharField(blank=True, max_length=100, null=True)),
+                ("phone_no", models.CharField(blank=True, max_length=20, null=True)),
+                (
+                    "system_email",
+                    models.CharField(blank=True, max_length=100, null=True),
+                ),
+                ("address", models.CharField(blank=True, max_length=100, null=True)),
+                ("academic_year", models.IntegerField(blank=True, null=True)),
+                ("footer", models.CharField(blank=True, max_length=100, null=True)),
+                ("version", models.CharField(blank=True, max_length=50, null=True)),
             ],
             options={
-                'db_table': 'tbl_Settings',
+                "db_table": "tbl_Settings",
             },
         ),
     ]

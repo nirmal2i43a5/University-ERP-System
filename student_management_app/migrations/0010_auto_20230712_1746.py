@@ -4,30 +4,39 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('student_management_app', '0009_alter_student_roll_no'),
+        ("student_management_app", "0009_alter_student_roll_no"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='student',
-            name='gender',
-            field=models.CharField(choices=[('Male', 'Male'), ('Female', 'Female'), ('Others', 'Others')], default='Male', max_length=100, null=True),
+            model_name="student",
+            name="gender",
+            field=models.CharField(
+                choices=[("Male", "Male"), ("Female", "Female"), ("Others", "Others")],
+                default="Male",
+                max_length=100,
+                null=True,
+            ),
         ),
         migrations.AlterField(
-            model_name='student',
-            name='roll_no',
+            model_name="student",
+            name="roll_no",
             field=models.CharField(blank=True, max_length=100, null=True),
         ),
         migrations.AlterField(
-            model_name='student',
-            name='shift',
-            field=models.CharField(blank=True, choices=[('Morning', 'Morning'), ('Day', 'Day')], max_length=100, null=True),
+            model_name="student",
+            name="shift",
+            field=models.CharField(
+                blank=True,
+                choices=[("Morning", "Morning"), ("Day", "Day")],
+                max_length=100,
+                null=True,
+            ),
         ),
         migrations.AlterField(
-            model_name='student',
-            name='stu_id',
+            model_name="student",
+            name="stu_id",
             field=models.CharField(max_length=100, unique=True),
         ),
     ]

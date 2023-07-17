@@ -6,66 +6,66 @@ nepalicalendar
 
 import datetime
 
-NEPDIGITS = [u'०',u'१',u'२',u'३',u'४',u'५',u'६',u'७',u'८',u'९']
+NEPDIGITS = ["०", "१", "२", "३", "४", "५", "६", "७", "८", "९"]
 
 NEPALI_MONTH_NAMES_EN = {
-    1: u"Baisakh",
-    2: u"Jestha",
-    3: u"Ashad",
-    4: u"Shrawan",
-    5: u"Bhadra",
-    6: u"Asoj",
-    7: u"Kartik",
-    8: u"Mangshir",
-    9: u"Poush",
-    10: u"Magh",
-    11: u"Falgun",
-    12: u"Chaitra"
+    1: "Baisakh",
+    2: "Jestha",
+    3: "Ashad",
+    4: "Shrawan",
+    5: "Bhadra",
+    6: "Asoj",
+    7: "Kartik",
+    8: "Mangshir",
+    9: "Poush",
+    10: "Magh",
+    11: "Falgun",
+    12: "Chaitra",
 }
 
 NEPALI_MONTH_NAMES_NE = {
-    1: u"बैशाख",
-    2: u"जेठ",
-    3: u"असार",
-    4: u"साउन",
-    5: u"भदौ",
-    6: u"असोज",
-    7: u"कार्तिक",
-    8: u"मंसिर",
-    9: u"पौष",
-    10: u"माघ",
-    11: u"फाल्गुण",
-    12: u"चैत",
+    1: "बैशाख",
+    2: "जेठ",
+    3: "असार",
+    4: "साउन",
+    5: "भदौ",
+    6: "असोज",
+    7: "कार्तिक",
+    8: "मंसिर",
+    9: "पौष",
+    10: "माघ",
+    11: "फाल्गुण",
+    12: "चैत",
 }
 
 NEPALI_WEEKDAY_NAMES_NE = {
-    0: u"आइतवार",
-    1: u"सोमवार",
-    2: u"मंगलवार",
-    3: u"वुधवार",
-    4: u"विहीवार",
-    5: u"शुक्रवार",
-    6: u"शनिवार",
+    0: "आइतवार",
+    1: "सोमवार",
+    2: "मंगलवार",
+    3: "वुधवार",
+    4: "विहीवार",
+    5: "शुक्रवार",
+    6: "शनिवार",
 }
 
 NEPALI_WEEKDAY_NAMES_EN = {
-    0: u"Aaitabar",
-    1: u"Sombar",
-    2: u"Mangalbar",
-    3: u"Budhabar",
-    4: u"Bihibar",
-    5: u"Sukrabar",
-    6: u"Sanibar",
+    0: "Aaitabar",
+    1: "Sombar",
+    2: "Mangalbar",
+    3: "Budhabar",
+    4: "Bihibar",
+    5: "Sukrabar",
+    6: "Sanibar",
 }
 
 NEPALI_WEEKDAY_NAMES_SHORT_NE = {
-    0: u"आइत",
-    1: u"सोम",
-    2: u"मंगल",
-    3: u"वुध",
-    4: u"विही",
-    5: u"शुक्र",
-    6: u"शनि",
+    0: "आइत",
+    1: "सोम",
+    2: "मंगल",
+    3: "वुध",
+    4: "विही",
+    5: "शुक्र",
+    6: "शनि",
 }
 
 # Number of days in months of each year

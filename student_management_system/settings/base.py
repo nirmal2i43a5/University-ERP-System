@@ -13,10 +13,13 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 from decouple import config
 
-import dj_database_url#for heroky database
+import dj_database_url  # for heroky database
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+BASE_DIR = os.path.dirname(
+    os.path.dirname(
+        os.path.dirname(
+            os.path.abspath(__file__))))
 
 
 # Quick-start development settings - unsuitable for production
@@ -31,84 +34,76 @@ SECRET_KEY = config("SECRET_KEY")
 
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    
-    #local_apps
-    'student_management_app',
-    'school_apps.attendance.apps.AttendanceConfig',
-    'school_apps.school_settings.apps.SchoolSettingsConfig',
-    'school_apps.role_permission.apps.RolePermissionConfig',
-    'school_apps.user_profile.apps.UserProfileConfig',
-    'school_apps.transports.apps.TransportsConfig',
-    'school_apps.announcement.apps.AnnouncementConfig',
-    'school_apps.academic.apps.AcademicConfig',
-    'school_apps.routine.apps.RoutineConfig',
-    'school_apps.complain.apps.ComplainConfig',
-     'school_apps.student.apps.StudentsConfig',
-    'school_apps.teacher.apps.TeachersConfig',
-    'school_apps.courses.apps.CoursesConfig',
-    'school_apps.parents.apps.ParentsConfig',
-    'school_apps.library.apps.LibraryConfig',
-    'school_apps.admin_user.apps.AdminUserConfig',
-    'school_apps.email_sms.apps.EmailSmsConfig',
-    'viewer.apps.ViewerConfig',
-    'school_apps.extrausers.apps.ExtrausersConfig',
-    'school_apps.notifications.apps.NotificationsConfig',
-     'school_apps.administrator.apps.AdministratorConfig',
-    'school_apps.student_certificate.apps.StudentCertificateConfig',
-    'school_apps.customusers.apps.CustomusersConfig',
-    'school_apps.log_history.apps.LogHistoryConfig',
-    'school_apps.classroom.apps.ClassroomConfig',
-     'school_apps.events.apps.EventsConfig',
-    # ------------------I have commented the functionality of this app -----------------------
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    # local_apps
+    "student_management_app",
+    "school_apps.attendance.apps.AttendanceConfig",
+    "school_apps.school_settings.apps.SchoolSettingsConfig",
+    "school_apps.role_permission.apps.RolePermissionConfig",
+    "school_apps.user_profile.apps.UserProfileConfig",
+    "school_apps.transports.apps.TransportsConfig",
+    "school_apps.announcement.apps.AnnouncementConfig",
+    "school_apps.academic.apps.AcademicConfig",
+    "school_apps.routine.apps.RoutineConfig",
+    "school_apps.complain.apps.ComplainConfig",
+    "school_apps.student.apps.StudentsConfig",
+    "school_apps.teacher.apps.TeachersConfig",
+    "school_apps.courses.apps.CoursesConfig",
+    "school_apps.parents.apps.ParentsConfig",
+    "school_apps.library.apps.LibraryConfig",
+    "school_apps.admin_user.apps.AdminUserConfig",
+    "school_apps.email_sms.apps.EmailSmsConfig",
+    "viewer.apps.ViewerConfig",
+    "school_apps.extrausers.apps.ExtrausersConfig",
+    "school_apps.notifications.apps.NotificationsConfig",
+    "school_apps.administrator.apps.AdministratorConfig",
+    "school_apps.student_certificate.apps.StudentCertificateConfig",
+    "school_apps.customusers.apps.CustomusersConfig",
+    "school_apps.log_history.apps.LogHistoryConfig",
+    "school_apps.classroom.apps.ClassroomConfig",
+    "school_apps.events.apps.EventsConfig",
+    # ------------------I have commented the functionality of this app -------
     #   'school_apps.enquiry.apps.EnquiryConfig',
     # 'school_apps.visitor.apps.VisitorConfig',
-     'school_apps.exam.apps.ExamConfig',
+    "school_apps.exam.apps.ExamConfig",
     # 'school_apps.inventory.apps.InventoryConfig',
     #    'school_apps.formapi.apps.FormapiConfig',
     # ----------------------------------------------------------------------------
-     
- 
-    #-----------third_party--------------'
-    
-    'crispy_forms',
-    'django_countries',
-    'django_filters',
-    'django_extensions',
-    'compressor',
-    'rest_framework',
-    'rest_framework_datatables',
-    'schedule',
-    'ckeditor',
-    'widget_tweaks',
-    'mathfilters',
-    'djangobower',
-    'dbbackup',
-
+    # -----------third_party--------------'
+    "crispy_forms",
+    "django_countries",
+    "django_filters",
+    "django_extensions",
+    "compressor",
+    "rest_framework",
+    "rest_framework_datatables",
+    "schedule",
+    "ckeditor",
+    "widget_tweaks",
+    "mathfilters",
+    "djangobower",
+    "dbbackup",
 ]
-
 
 
 MIDDLEWARE = [
     #  'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
     # 'simple_history.middleware.HistoryRequestMiddleware',#for simple history
-    'school_apps.user_profile.middleware.LoginRequiredMiddleware',
-    
-        # ===============user log middleware=================
-    'school_apps.log_history.user_log_middleware.UserLoggingMiddleware',
+    "school_apps.user_profile.middleware.LoginRequiredMiddleware",
+    # ===============user log middleware=================
+    "school_apps.log_history.user_log_middleware.UserLoggingMiddleware",
 ]
 
 # SESSION_ENGINE =[
@@ -123,76 +118,62 @@ MIDDLEWARE = [
 # CORS_ORIGIN_ALLOW_ALL = True
 
 
-ROOT_URLCONF = 'student_management_system.urls'
+ROOT_URLCONF = "student_management_system.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR,'templates')],
-        'APP_DIRS': True,
-        'OPTIONS': {
-        #  'loaders': [
-        #     ('django.template.loaders.cached.Loader', [
-        #         'django.template.loaders.filesystem.Loader',
-        #         'django.template.loaders.app_directories.Loader',
-        #         'path.to.custom.Loader',
-        #     ]),
-        # ],
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-                
-                # for notification 
-                'school_apps.notifications.context_processors.notifications_data',
-                
-                #for calendar link to sidebar
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            #  'loaders': [
+            #     ('django.template.loaders.cached.Loader', [
+            #         'django.template.loaders.filesystem.Loader',
+            #         'django.template.loaders.app_directories.Loader',
+            #         'path.to.custom.Loader',
+            #     ]),
+            # ],
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+                # for notification
+                "school_apps.notifications.context_processors.notifications_data",
+                # for calendar link to sidebar
                 # 'schedule.context_processors.fullcalendar_link',
-                
-                #for dyanamic settings footer and others
-                'school_apps.school_settings.context_processors.settings_detail',
-                
+                # for dyanamic settings footer and others
+                "school_apps.school_settings.context_processors.settings_detail",
             ],
-             'libraries':{
-            'check_namespace': 'student_management_system.templatetags.check_namespace',
-
-            
-            }
+            "libraries": {
+                "check_namespace": "student_management_system.templatetags.check_namespace",
+            },
         },
     },
 ]
 
 
-WSGI_APPLICATION = 'student_management_system.wsgi.application'
+WSGI_APPLICATION = "student_management_system.wsgi.application"
 
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 
-
-
-
-
-
-
-
-
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -200,9 +181,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'Asia/Kathmandu'
+TIME_ZONE = "Asia/Kathmandu"
 
 USE_I18N = True
 
@@ -214,57 +195,47 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATICFILES_FINDERS = [
-    #django schedular
-'djangobower.finders.BowerFinder',
-
-# #for staticfiles_dirs
- 'django.contrib.staticfiles.finders.FileSystemFinder',
- 'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#   'compressor.finders.CompressorFinder',
-#  'django.contrib.staticfiles.finders.DefaultStorageFinder',
-
+    # django schedular
+    "djangobower.finders.BowerFinder",
+    # #for staticfiles_dirs
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    #   'compressor.finders.CompressorFinder',
+    #  'django.contrib.staticfiles.finders.DefaultStorageFinder',
 ]
 
-BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'static/calendar_static')
-BOWER_INSTALLED_APPS = (
-    'jquery',
-    'jquery-ui',
-    'bootstrap'
-)
+BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, "static/calendar_static")
+BOWER_INSTALLED_APPS = ("jquery", "jquery-ui", "bootstrap")
 
 
 # rest framework
 REST_FRAMEWORK = {
-    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
-    'DATETIME_FORMAT': "%m/%d/%Y %H:%M:%S",
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
+    "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
+    "DATETIME_FORMAT": "%m/%d/%Y %H:%M:%S",
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.TokenAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
     ),
-    'DEFAULT_PERMISSIONS_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
+    "DEFAULT_PERMISSIONS_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_RENDERER_CLASSES": (
+        "rest_framework.renderers.JSONRenderer",
+        "rest_framework.renderers.BrowsableAPIRenderer",
+        "rest_framework_datatables.renderers.DatatablesRenderer",
     ),
-    'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',
-        'rest_framework_datatables.renderers.DatatablesRenderer',
+    "DEFAULT_FILTER_BACKENDS": (
+        "rest_framework_datatables.filters.DatatablesFilterBackend",
     ),
-    'DEFAULT_FILTER_BACKENDS': (
-        'rest_framework_datatables.filters.DatatablesFilterBackend',
-    ),
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework_datatables.pagination.DatatablesPageNumberPagination',
-    'DATETIME_FORMAT': "%Y-%m-%d %H:%M:%S",
+    "DEFAULT_PAGINATION_CLASS": "rest_framework_datatables.pagination.DatatablesPageNumberPagination",
+    "DATETIME_FORMAT": "%Y-%m-%d %H:%M:%S",
 }
 
 AUTH_USER_MODEL = "student_management_app.CustomUser"
 
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR,'static')
-    ]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 # when using collectstatic use static_root
-STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 
 STATICFILES_FINDERS = (
@@ -276,7 +247,7 @@ STATICFILES_FINDERS = (
 
 COMPRESS_JS_FILTERS = ["compressor.filters.jsmin.JSMinFilter"]
 COMPRESS_ENABLED = True
-COMPRESS_CSS_HASHING_METHOD = 'content'
+COMPRESS_CSS_HASHING_METHOD = "content"
 COMPRESS_CSS_FILTERS = [
     "compressor.filters.css_default.CssAbsoluteFilter",
     "compressor.filters.cssmin.CSSMinFilter",
@@ -284,23 +255,23 @@ COMPRESS_CSS_FILTERS = [
 # COMPRESS_ENABLED = True
 # COMPRESS_OFFLINE = True
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR,'media/')
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
+CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 
 # AUTHENTICATION_BACKENDS=[
-#     # 'student_management_app.views.EmailAuth.EmailBackEnd',#for login with email 
+#     # 'student_management_app.views.EmailAuth.EmailBackEnd',#for login with email
 #     'django.contrib.auth.backends.ModelBackend'
 #     ]
 
-LOGIN_URL = '/accounts/login/'
-LOGIN_REDIRECT_URL = '/home/'
+LOGIN_URL = "/accounts/login/"
+LOGIN_REDIRECT_URL = "/home/"
 LOGIN_EXEMPT_URLS = (
-    r'^logout/$',
-    r'^password/reset/.*$',
-    r'^reset/.*$',
-    r'^enquiry/enquiry_students/api/*$',
+    r"^logout/$",
+    r"^password/reset/.*$",
+    r"^reset/.*$",
+    r"^enquiry/enquiry_students/api/*$",
 )
 
 
@@ -313,36 +284,48 @@ LOGIN_EXEMPT_URLS = (
 # DEFAULT_FROM_EMAIL = 'TestSite Team <noreply@example.com>'
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.mailtrap.io'
-EMAIL_HOST_USER = '48e6bcce5ff237'
-EMAIL_HOST_PASSWORD = '0f60990ad6e465'
-EMAIL_PORT = '2525'
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.mailtrap.io"
+EMAIL_HOST_USER = "48e6bcce5ff237"
+EMAIL_HOST_PASSWORD = "0f60990ad6e465"
+EMAIL_PORT = "2525"
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 
 
-
 CKEDITOR_CONFIGS = {
-    'default': {
+    "default": {
         # 'toolbar': 'full',
-        'height': 100,
-        'width': 500,
-        
-        'toolbar': 'Custom',
-        
-         'toolbar_Custom': [
-         
-             ['Format','Styles','FontSize', 'TextColor','BGColor','Bold','Italic','Underline','Strike',
-             'NumberedList','BulletedList','Outdent','Indent','JustifyLeft','JustifyCenter','JustifyRight', 'Link', 'Unlink',],
-         ],
-        
+        "height": 100,
+        "width": 500,
+        "toolbar": "Custom",
+        "toolbar_Custom": [
+            [
+                "Format",
+                "Styles",
+                "FontSize",
+                "TextColor",
+                "BGColor",
+                "Bold",
+                "Italic",
+                "Underline",
+                "Strike",
+                "NumberedList",
+                "BulletedList",
+                "Outdent",
+                "Indent",
+                "JustifyLeft",
+                "JustifyCenter",
+                "JustifyRight",
+                "Link",
+                "Unlink",
+            ],
+        ],
     },
 }
 
-DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
-DBBACKUP_STORAGE_OPTIONS = {'location': os.path.join(BASE_DIR,'dbbackup')}
+DBBACKUP_STORAGE = "django.core.files.storage.FileSystemStorage"
+DBBACKUP_STORAGE_OPTIONS = {"location": os.path.join(BASE_DIR, "dbbackup")}
 
 
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

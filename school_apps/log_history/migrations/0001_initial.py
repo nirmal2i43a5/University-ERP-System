@@ -5,29 +5,65 @@ import django.utils.timezone
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='UserLog',
+            name="UserLog",
             fields=[
-                ('id', models.BigAutoField(editable=False, primary_key=True, serialize=False)),
-                ('object_id', models.PositiveIntegerField(blank=True, null=True, verbose_name='object ID')),
-                ('app_name', models.CharField(max_length=30, verbose_name='application name')),
-                ('model_name', models.CharField(max_length=30, verbose_name='model name')),
-                ('action', models.PositiveSmallIntegerField(choices=[(1, 'created'), (2, 'updated'), (3, 'deleted')], verbose_name='action')),
-                ('object_instance', models.TextField(default='[]', verbose_name='object values after the action')),
-                ('ip', models.GenericIPAddressField(blank=True, null=True, verbose_name='IP')),
-                ('created_at', models.DateTimeField(default=django.utils.timezone.now, verbose_name='date and time when the changes were made')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        editable=False, primary_key=True, serialize=False
+                    ),
+                ),
+                (
+                    "object_id",
+                    models.PositiveIntegerField(
+                        blank=True, null=True, verbose_name="object ID"
+                    ),
+                ),
+                (
+                    "app_name",
+                    models.CharField(max_length=30, verbose_name="application name"),
+                ),
+                (
+                    "model_name",
+                    models.CharField(max_length=30, verbose_name="model name"),
+                ),
+                (
+                    "action",
+                    models.PositiveSmallIntegerField(
+                        choices=[(1, "created"), (2, "updated"), (3, "deleted")],
+                        verbose_name="action",
+                    ),
+                ),
+                (
+                    "object_instance",
+                    models.TextField(
+                        default="[]", verbose_name="object values after the action"
+                    ),
+                ),
+                (
+                    "ip",
+                    models.GenericIPAddressField(
+                        blank=True, null=True, verbose_name="IP"
+                    ),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(
+                        default=django.utils.timezone.now,
+                        verbose_name="date and time when the changes were made",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'User Log',
-                'verbose_name_plural': 'User Log',
-                'ordering': ('-created_at',),
+                "verbose_name": "User Log",
+                "verbose_name_plural": "User Log",
+                "ordering": ("-created_at",),
             },
         ),
     ]

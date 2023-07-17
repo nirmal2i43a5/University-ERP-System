@@ -5,15 +5,15 @@ import school_apps.library.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('library', '0008_auto_20230714_1857'),
+        ("library", "0008_auto_20230714_1857"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='bookrenew',
-            name='expirydate',
-            field=models.DateField(default=school_apps.library.models.get_expiry),
+            model_name="bookrenew",
+            name="expirydate",
+            field=models.DateField(
+                default=school_apps.library.models.get_expiry),
         ),
     ]

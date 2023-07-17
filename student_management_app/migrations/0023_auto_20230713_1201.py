@@ -5,20 +5,21 @@ import django.utils.timezone
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('student_management_app', '0022_alter_student_stu_id'),
+        ("student_management_app", "0022_alter_student_stu_id"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='parent',
-            name='home_phone',
+            model_name="parent",
+            name="home_phone",
         ),
         migrations.AlterField(
-            model_name='student',
-            name='roll_no',
-            field=models.CharField(default=django.utils.timezone.now, max_length=100, unique=True),
+            model_name="student",
+            name="roll_no",
+            field=models.CharField(
+                default=django.utils.timezone.now, max_length=100, unique=True
+            ),
             preserve_default=False,
         ),
     ]

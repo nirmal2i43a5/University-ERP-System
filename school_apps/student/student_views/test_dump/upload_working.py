@@ -5,13 +5,13 @@
 #         csv_file = request.FILES['studentfile']
 #     if not csv_file.name.endswith('.csv'):
 #         print("Invalid file")
-        
+
 #     data_set = csv_file.read().decode('latin-1')
 #     io_string = io.StringIO(data_set)
 #     next(io_string)
-    
+
 #     file_data = csv.reader(io_string, delimiter=',', quotechar="|")
-    
+
 #     for column in file_data:
 #         batch = column[1]#batch
 #         student_id = column[2]
@@ -35,7 +35,7 @@
 #         gpa = column[27]
 #         # parsing date
 #         # dob = datetime.datetime.strptime(dob_es, "%d/%m/%y")
-    
+
 #         parent_obj = Parent.objects.create(
 #         home_phone = home_phone,
 #         father_name=column[14],
@@ -45,14 +45,14 @@
 #         local_guardian_name=column[18],
 #         local_guardian_phone=column[19]
 #         )
-        
+
 #         fname = column[4].split()[0]
 #         stu_username = fname.lower() + f'{student_id}'
 #         role = Group.objects.get(name = 'Student')
 #         # ---
 #         customuser_object = CustomUser.objects.create_user(username = stu_username, password='password', user_type=role, full_name=column[4])
 #         sem = Semester.objects.get(name = batch)
-     
+
 #         customuser_object.student.stu_id = column[2]
 #         customuser_object.student.roll_no = roll_no
 #         customuser_object.student.gender = gender
@@ -74,5 +74,5 @@
 #         customuser_object.student.guardian = parent_obj
 #         customuser_object.save()
 #         customuser_object.groups.add(role)
-        
+
 #     return HttpResponse("OK")

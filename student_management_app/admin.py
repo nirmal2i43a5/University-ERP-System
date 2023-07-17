@@ -1,6 +1,21 @@
 from django.contrib import admin
-from student_management_app.models import (Staff,CustomUser,Subject,Staff,Student, DocumentFile,
-                                           Course, Parent, ExtraUser, AdminUser,CertificateTemplate,Complain, Semester, SubjectTeacher,SemesterTeacher)
+from student_management_app.models import (
+    Staff,
+    CustomUser,
+    Subject,
+    Staff,
+    Student,
+    DocumentFile,
+    Course,
+    Parent,
+    ExtraUser,
+    AdminUser,
+    CertificateTemplate,
+    Complain,
+    Semester,
+    SubjectTeacher,
+    SemesterTeacher,
+)
 
 # # # from django.contrib.auth.admin import UserAdmin
 
@@ -20,4 +35,3 @@ admin.site.register(SemesterTeacher)
 # admin.site.register(Course)
 # # # admin.site.register(CertificateTemplate)
 # # # admin.site.register(Complain)
-
