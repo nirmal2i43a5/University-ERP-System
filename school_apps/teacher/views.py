@@ -27,6 +27,7 @@ from student_management_app.models import (
 from django.urls import reverse
 from django.db.models import Q, Model
 from django.db.models.query import QuerySet
+from django.contrib.auth.decorators import permission_required
 
 # def index(request):
 #     # if request.method == 'POST':
@@ -73,6 +74,8 @@ def subscore(request):
     return render(request, "teacher/dump.html", context)
 
 
+@permission_required("courses.add_studentgrades",
+                     raise_exception=True)
 def submitscore(request):
     teacher = get_object_or_404(CustomUser, id=request.user.id)
     term_id = request.POST["term_id"]
@@ -136,6 +139,9 @@ def submitscore(request):
     return HttpResponseRedirect(reverse("courses:addexammarks"))
 
 
+
+@permission_required("courses.change_studentgrades",
+                     raise_exception=True)
 def editsubmitscore(request):
     term = get_object_or_404(Term, term_id=request.POST["term_id"])
     # section_id = request.POST['section_id']

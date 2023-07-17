@@ -4,3 +4,9 @@ similarly to student
 
 ================================================================
 If possible try to provide such permision automatically 
+
+
+
+Teachers :: 
+courses.add_studentgrades
+courses.change_studentgrades

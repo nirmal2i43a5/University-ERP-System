@@ -27,14 +27,15 @@ from datetime import datetime as dtime
 import csv
 from django.contrib.auth.models import Group
 
+from django.contrib.auth.decorators import permission_required
 
-# # Create your views here.
 
 
 def index(request):
     return render(request, "courses/index.html")
 
-
+@permission_required("courses.add_term",
+                     raise_exception=True)
 def addterm(request):
     term_form = TermForm()
     if request.method == "POST":
@@ -60,6 +61,8 @@ def editterm(request):
     pass
 
 
+@permission_required("courses.view_term",
+                     raise_exception=True)
 def viewterm(request):
     terms = Term.objects.all()
 
@@ -67,6 +70,8 @@ def viewterm(request):
     return render(request, "courses/viewterm.html", context)
 
 
+@permission_required("courses.view_exams",
+                     raise_exception=True)
 def checkterm_exams(request, pk):
     term = Term.objects.get(pk=pk)
     exams = Exams.objects.filter(term=term)
@@ -76,6 +81,8 @@ def checkterm_exams(request, pk):
     return render(request, "courses/checkterm_exams.html", context)
 
 
+@permission_required("courses.add_exams",
+                     raise_exception=True)
 def addexam(request):
     subjects = Subject.objects.all()
     # classes = Class.objects.all
@@ -281,11 +288,16 @@ def viewresults(request):
                   {"results": results, "exam": selectedexam})
 
 
+@permission_required("courses.change_term",
+                     raise_exception=True)
 def publishresults(request):
     terms = Term.objects.all()
     return render(request, "courses/publishtermresults.html", {"terms": terms})
 
 
+
+@permission_required("courses.change_term",
+                     raise_exception=True)
 def toggle_results(request, pk):
     terms = Term.objects.all()
     selected_term = Term.objects.get(pk=pk)
@@ -364,6 +376,8 @@ def studentsmarksentry(request, id):
                   {"student": student, "exams": exams})
 
 
+@permission_required("courses.add_studentgrades",
+                     raise_exception=True)
 def submitscores(request):
     student = get_object_or_404(
         Student, student_user__username=request.POST["student_id"]
@@ -424,6 +438,9 @@ def confirmAjax(request):
     return render(request, "courses/examapplication.html", {"form": form})
 
 
+
+@permission_required("courses.add_application_form",
+                     raise_exception=True)
 def confirmapplication(request):
     app_id = request.GET.get("application_radio")
     application = get_object_or_404(application_form, pk=app_id)
@@ -707,7 +724,8 @@ def printexamreport(request, pk):
 # ----------------------------------------------------------------------------------------------------------------------
 # add exam marks
 
-
+@permission_required("courses.add_studentgrades",
+                     raise_exception=True)
 def addexammarks(request):
     terms = (
         Term.objects.all()
@@ -737,6 +755,8 @@ def addexammarks(request):
     return render(request, "courses/addexamgrades.html", context)
 
 
+@permission_required("courses.add_studentgrades",
+                     raise_exception=True)
 def examsAjax(request):
     section_id = request.GET.get("section_id")
     class_id = request.GET.get("class_id")
