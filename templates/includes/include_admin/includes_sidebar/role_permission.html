@@ -1,16 +1,8 @@
 
 
-    <li class="nav-item">
-      <a href="#" class="nav-link">
-        <i class="fas  fa-user-lock"></i>
-        <p>
-          Role Management
-          <i class="fas fa-angle-left right"></i>
 
-        </p>
-      </a>
-      <ul class="nav nav-treeview">
-        <li class="nav-item ml-3">
+
+ <li class="nav-item ml-3">
           <a href="{% url 'role_app:add_role' %}" class="nav-link">
             <i class="far  fa-circle"></i>
             <p>
@@ -29,13 +21,8 @@
           </a>
         </li>
 
-      </ul>
-    </li>
 
-
-
-
-    <li class="nav-item">
+    {% comment %} <li class="nav-item">
       <a href="#" class="nav-link">
         <i class="fas  fa-user-check"></i>
         <p>
@@ -65,7 +52,7 @@
         </li>
 
       </ul>
-    </li>
+    </li> {% endcomment %}
 
  
 

@@ -883,6 +883,8 @@ def fill_exam_select(request):
     return render(request, "courses/examlist.html", context)
 
 
+@permission_required("courses.add_application_form",
+                     raise_exception=True)
 def massexamapplication(request):
     terms = Term.objects.filter(
         course_category=request.user.adminuser.course_category)
@@ -971,6 +973,8 @@ def massexamapplication(request):
     return render(request, "courses/massexamapplication.html", context=context)
 
 
+@permission_required("courses.change_application_form",
+                     raise_exception=True)
 def toggle_application(request, pk):
     application = application_form.objects.get(pk=pk)
     print(application.status)

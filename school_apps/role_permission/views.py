@@ -67,7 +67,16 @@ class UserRoleMange(PermissionRequiredMixin, SuccessMessageMixin, ListView):
         context = super().get_context_data(**kwargs)
         context["title"] = "Manage Role"
         return context
+@permission_required('view.add_group')
+def manage_role(request):
+    roles = Group.objects.exclude(name__in=['Bachelor-Admin', 'Master-Admin', 'Admin','Super-Admin'])  # Add the group names you want to exclude
 
+    context = {
+        'roles': roles,
+        'title': 'Manage Role',
+    }
+
+    return render(request, 'roles/manage_role.html', context)
 
 class UserPermissionCreate(
         PermissionRequiredMixin,

@@ -8,3 +8,25 @@
 .help help-tooltip help-icon {
     color: white;
 }
+
+.selector ul.selector-chooser {
+    float: left;
+    width: 22px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    margin: 10em 5px 0 5px;
+    padding: 0;
+}
+label {
+    font-weight: normal;
+    color: #000000;
+    font-size: 13px;
+}
+input[type=text], input[type=password], input[type=email], input[type=url], input[type=number], input[type=tel], textarea, select, .vTextField {
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 5px 6px;
+    margin-top: 0;
+    color: #000000;
+    background-color: #ffffff;
+}

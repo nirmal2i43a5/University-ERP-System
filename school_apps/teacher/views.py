@@ -29,11 +29,6 @@ from django.db.models import Q, Model
 from django.db.models.query import QuerySet
 from django.contrib.auth.decorators import permission_required
 
-# def index(request):
-#     # if request.method == 'POST':
-#     #     request.session['teacherID'] = request.POST['teacherID']
-#     teacher = get_object_or_404(Teacher, staff_user = request.user.id)
-#     return render (request, 'teacher/index.html', {'teacher':teacher})
 
 
 def addscore(request):
@@ -192,79 +187,6 @@ def editsubmitscore(request):
     return HttpResponseRedirect(reverse("courses:addexammarks"))
 
 
-#     failed_attempts=[]
-
-
-#     selected_subject = term.subject_id
-#     print("subject: " + selected_subject.__str__())
-# students = studentgrades.objects.filter(exam_id__subject_id=selected_subject)
-#     grades= studentgrades.objects.create()
-
-#     failed_attempts=[]
-#     entries=0
-#     # if (students):
-#     for student in students:
-#         try:
-#             marks=float(request.GET[student.application_id.student.student_user.full_name])
-#             if (str(student.application_id.student.student_user.username) in request.GET.getlist('absent')):
-#                 student.is_absent = True
-#                 student.marks = 0
-#             else:
-#                 student.is_absent = False
-#                 student.marks = marks
-#             student.save()
-#             entries+=1
-#         except Exception as e:
-#             print(e)
-#             failed_attempts.append(student.application_id.student)
-#     else:
-#         print("Error")
-
-#     for item in studentgrades.objects.filter(exam_id=exam):
-#         item.rank = studentgrades.objects.filter(exam_id =exam, marks__gt=item.marks).count()+1
-#         item.save()
-#     #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#     #term_ranking
-
-#     selected_term = exam.term
-#     term_students = studentgrades.objects.filter(exam_id__term=selected_term)
-
-#     students_list = application_form.objects.filter(term=selected_term).values_list('student').distinct()
-
-#     print('students_list: ', students_list , "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
-#     for item in students_list:
-#         total_marks = 0
-#         grades = studentgrades.objects.filter(application_id__student = item, exam_id__term=selected_term)
-#         print('grades', grades, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-
-#         for grade in grades:
-#             total_marks+= grade.marks
-
-#         obj,created = term_ranking.objects.get_or_create(term=selected_term, student=Student.objects.get(pk=item[0]))
-#         obj.total_marks=total_marks
-#         obj.save()
-
-#     all_t_ranks = term_ranking.objects.filter(term=selected_term, student__in = students_list)
-
-#     print("\n ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n")
-#     for t_rank in all_t_ranks:
-#         t_rank.rank = term_ranking.objects.filter(total_marks__gt=t_rank.total_marks, student__in=students_list).count()+1
-#         t_rank.save()
-#         print(t_rank, type(t_rank), t_rank.total_marks, 'rank= ',t_rank.rank, "___________________________________")
-
-# #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-#     if (len(failed_attempts)==0):
-#         messages.success(request, "Marks entry for " + str(entries) + " students successful")
-#         return HttpResponseRedirect(reverse('courses:addexammarks'))
-#         #return HttpResponse("OK")
-#     else:
-#         messages.error(request, "Marks entry for " + str(len(failed_attempts)) + " students unsuccessful")
-#         # return HttpResponse("not ok" + str(len(failed_attempts)))
-#         return HttpResponseRedirect(reverse('courses:addexammarks'))
-
-
 def studentlist(request):
     teacher = get_object_or_404(CustomUser, id=request.user.id)
     return render(request, "teacher/studentlist.html", {"teacher": teacher})
@@ -319,11 +241,7 @@ def examsAjax(request):
 
     for item in subjectobject:
         section.append(item.section)
-    print(
-        "section",
-        section,
-        "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
-    )
+
 
     student_data = studentgrades.objects.filter(
         Q(exam_id=selected_exam) & Q(application_id__student__section__in=section)
@@ -410,8 +328,7 @@ def uploadcsv(request):
                 marks__gt=item.marks).count() + 1)
         item.save()
 
-    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    # term_ranking
+
 
     exam = Exams.objects.get(pk=exam_pk)
     selected_term = exam.term
@@ -421,15 +338,12 @@ def uploadcsv(request):
         .distinct()
     )
 
-    print("students_list: ", students_list,
-          "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
     for item in students_list:
         total_marks = 0
         grades = studentgrades.objects.filter(
             application_id__student=item, exam_id__term=selected_term
         )
-        print("grades", grades, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
         for grade in grades:
             total_marks += grade.marks
@@ -441,25 +355,10 @@ def uploadcsv(request):
         obj.save()
 
     all_t_ranks = term_ranking.objects.filter(term=selected_term)
-
-    print(
-        "\n ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n"
-    )
     for t_rank in all_t_ranks:
         t_rank.rank = (term_ranking.objects.filter(
             total_marks__gt=t_rank.total_marks).count() + 1)
         t_rank.save()
-        print(
-            t_rank,
-            type(t_rank),
-            t_rank.total_marks,
-            "rank= ",
-            t_rank.rank,
-            "___________________________________",
-        )
-
-    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
     messages.success(request, "Marks upload successful")
     return HttpResponseRedirect(reverse("home"))
 

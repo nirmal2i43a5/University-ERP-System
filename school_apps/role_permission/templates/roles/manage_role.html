@@ -42,10 +42,10 @@
                   <td>{{ role.name }}</td>
                   <!-- <td>{{ role.created_date }}</td> -->
                   <td>
-                    <a href="{% url 'role_app:edit_role' role.id %}" class="btn btn-success btn-xs" data-placement="top"
-                      data-toggle="tooltip" title="Edit"><i class="fas fa-sm fa-edit"></i></a>
-                    <a href="" class="btn btn-danger btn-xs"    
-                    data-placement='top' data-toggle='tooltip' title='Delete'><i class="fas fa-sm fa-trash-alt"></i></a>
+                    <a href="{% url 'role_app:edit_role' role.id %}" class="btn btn-success btn-sm" data-placement="top"
+                      data-toggle="tooltip" title="Edit"><i class="fas fa-sm fa-edit"></i> Update Permission</a>
+                    {% comment %} <a href="" class="btn btn-danger btn-xs"    
+                    data-placement='top' data-toggle='tooltip' title='Delete'><i class="fas fa-sm fa-trash-alt"></i></a> {% endcomment %}
                   
                     <!-- <button  class="btn btn-danger btn-xs"  data-target='#deleteStudent-{{ student.student_user.id }}' data-toggle="modal"><i
                       class="fas fa-sm fa-trash-alt"></i></button> -->
