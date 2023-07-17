@@ -57,16 +57,18 @@ class UserRoleUpdate(PermissionRequiredMixin, SuccessMessageMixin, UpdateView):
         return context
 
 
-class UserRoleMange(PermissionRequiredMixin, SuccessMessageMixin, ListView):
-    model = Group
-    template_name = "roles/manage_role.html"
-    context_object_name = "roles"
-    permission_required = "view.add_group"
+# class UserRoleMange(PermissionRequiredMixin, SuccessMessageMixin, ListView):
+#     model = Group
+#     template_name = "roles/manage_role.html"
+#     context_object_name = "roles"
+#     permission_required = "view.add_group"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["title"] = "Manage Role"
-        return context
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context["title"] = "Manage Role"
+#         return context
+    
+
 @permission_required('view.add_group')
 def manage_role(request):
     roles = Group.objects.exclude(name__in=['Bachelor-Admin', 'Master-Admin', 'Admin','Super-Admin'])  # Add the group names you want to exclude

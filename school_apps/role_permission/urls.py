@@ -2,7 +2,7 @@ from django.urls import path
 from .views import (
     UserRoleCreate,
     UserRoleUpdate,
-    UserRoleMange,
+    # UserRoleMange,
     UserPermissionCreate,
     user_permission_manage,
     save_permission,manage_role
@@ -25,7 +25,7 @@ urlpatterns = [
         user_permission_manage,
         name="manage_permission"),
     path("save_permission/", save_permission, name="save_permission"),
-    path(
-        "permission-management/", UserRoleMange.as_view(), name="permission-management"
-    ),
+    # path(
+    #     "permission-management/", UserRoleMange.as_view(), name="permission-management"
+    # ),
 ]
