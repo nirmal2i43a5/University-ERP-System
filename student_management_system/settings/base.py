@@ -233,9 +233,9 @@ AUTH_USER_MODEL = "student_management_app.CustomUser"
 
 STATIC_URL = "/static/"
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "staticfiles")]
 # when using collectstatic use static_root
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 
 STATICFILES_FINDERS = (
