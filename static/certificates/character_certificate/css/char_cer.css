@@ -1,0 +1,230 @@
+:root {
+    --primary-color: #0a408a;
+  }
+  *,
+  *::after,
+  *::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html {
+    font-size: 62.5%;
+  }
+  
+  body {
+    font-size: 1.6rem;
+  }
+  
+  /* main wrapper or content wrapper */
+  
+  .main-content {
+    /* max-width: 90rem; */
+    /* min-width: 65rem; */
+    width: 90rem;
+    margin: 0 auto;
+    position: relative;
+  }
+  
+  .certificate__background {
+    /* padding: 2rem 3rem;
+    background: url("../../Certificate/background.png");
+    background-size: cover;
+    height: 80vh; */
+    height: 80vh;
+    width: 100%;
+    padding: 4rem;
+  }
+  
+  .certificate__background img {
+    /* width: 900px; */
+    width: 100%;
+    margin: 0 auto;
+    /* height: 100%; */
+    /* height: 100%; */
+    display: block;
+  
+    /* for alignment */
+    position: relative;
+  }
+  
+  /* header */
+  .header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    /* alignment in the background image */
+    position: absolute;
+    top: 47px;
+    left: 5%;
+  
+    /* testing */
+  
+    max-width: 80rem;
+  }
+  
+  .header > * {
+    flex-grow: 1;
+  }
+  
+  /* certificate__number */
+  .certificate__number {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+  
+  .certificate__number label {
+    color: var(--primary-color);
+    font-weight: bold;
+  }
+  
+  .certificate__number input {
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    border: 2px solid var(--primary-color);
+    background: transparent;
+    outline: none;
+  
+    /* testing */
+    width: 13rem;
+  }
+  
+  /* college__info */
+  .college__info {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .logo {
+    width: 30%;
+    height: 8.5rem;
+    margin-top: -2rem;
+  }
+  
+  .logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  
+  /* college__details */
+  .college__details {
+    display: flex;
+    flex-direction: column;
+    color: var(--primary-color);
+  }
+  
+  .college__details span {
+    font-weight: lighter;
+  }
+  
+  /* profile photo */
+  .profile__photo {
+    margin-left: -28%;
+    width: 6.3rem;
+    height: 10.6rem;
+    border: 3px solid var(--primary-color);
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .profile__photo span {
+    display: block;
+  }
+  
+  /* certificate__body */
+  .certificate__body {
+    display: flex;
+    flex-direction: column;
+  
+    /* position for making it inside certificate border */
+    position: absolute;
+    bottom: 5rem;
+    top: 60%;
+    /* width: 800px; */
+    height: 396px;
+    justify-content: space-between;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: url("{% static 'certificates/character_certificate/images/Certificate/logo--2.png' %}") no-repeat center;
+    background-size: 22%;
+    /* width: 70%; */
+ 
+  }
+
+  .character__certificate-image {
+    margin-top: 1.5rem;
+    width: 500px;
+    align-self: center;
+    text-align: center;
+  }
+  
+  /* certificate__descripiton */
+  .certificate__descripiton {
+    margin-right: 3rem;
+    margin-left: 2rem;
+    font-size: 1.8rem;
+    line-height: 1.8;
+    text-align: justify;
+  }
+  
+  .certificate__footer {
+    width: 800px;
+    /* margin-top: 6.5rem; */
+  }
+  
+
+
+  .character__certificate-image img,
+  .certificate__footer img {
+    width: 100%;
+  }
+
+
+  .principle__signature {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    align-items: center;
+  
+    /* alignment */
+    top: -16px;
+    right: -25px;
+  
+    gap: 0.1rem;
+  }
+  
+  /* @media (max-width: 900px) {
+    html {
+      font-size: 55%;
+    }
+  
+    .certificate__background img {
+      width: 100%;
+    }
+  
+    .header {
+      width: 614px;
+      left: 10%;
+    }
+  
+    .character__certificate-image img,
+    .certificate__footer img {
+      width: 512px;
+    }
+  
+    .certificate__body {
+      height: 364px;
+    }
+  
+    .certificate__descripiton {
+      font-size: 1.8rem;
+    }
+  } */

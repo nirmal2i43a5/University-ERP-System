@@ -59,7 +59,7 @@
             
                 <div class="input-group-btn ">
                   <button type="submit" class="btn btn-primary"><strong>SEARCH</strong></button>
-                  {% if request.user|has_group:'Teacher' %}
+                  {% comment %} {% if request.user|has_group:'Teacher' %}
 
                 <a
                 href="{% url 'mis_main_home' %}"
@@ -67,7 +67,7 @@
               >
                 <strong>Back</strong>
               </a>
-              {% endif %}
+              {% endif %} {% endcomment %}
     
                 </div>
               </div>

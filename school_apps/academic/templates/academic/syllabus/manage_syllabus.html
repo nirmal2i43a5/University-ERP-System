@@ -42,13 +42,11 @@
           </a>
           {% endif %}
        
-          {% if request.user.is_superuser %}
-          <table id="dataTable" class="table table-sm  table-striped table-bordered table-hover  text-nowrap  dataTable no-footer">
-                  {% else %}
+        
+
                   
           <table id="example"  cellspacing="0" width="100%" class=" table table-sm  table-striped table-bordered table-hover  text-nowrap  no-footer">
           
-          {% endif %}
           
               <thead>
                 <tr>
@@ -153,15 +151,7 @@
   
   
   });
-  $(function () {
-    $('#example').DataTable({
-        dom: 'lrftip',
-        responsive: true
-  
-        
-       
-    });
-  });
+ 
   </script>
 
 {% endblock custom_js %}

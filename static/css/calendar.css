@@ -1,0 +1,176 @@
+
+
+/* Contains title & nav */
+.monthly-header {
+    position: relative;
+    text-align:center;
+    padding:10px;
+    background: #fff;
+    height: 60px;
+    box-sizing: border-box;
+}
+.monthly-header-title {
+    font-size:2em;
+    text-transform: uppercase;
+
+}
+
+/* Day of the week headings */
+.monthly-day-title-wrap {
+    display:table;
+    table-layout:fixed;
+    width:100%;
+    background: #ddd;
+    border-bottom: 1px solid #EBEBEB;
+}
+.monthly-day-title-wrap div {
+    width: 14.28%!important;
+    display:table-cell;
+    box-sizing:border-box;
+    position: relative;
+    text-align:center;
+    text-transform: uppercase;
+    font-size:2em;
+}
+
+/* Calendar days wrapper */
+.monthly-day-wrap {
+    display:table;
+    table-layout:fixed;
+    width:100%;
+    overflow: hidden;
+}
+
+.monthly-week {
+    display:table-row;
+    width:80%;
+}
+
+/* Calendar Days */
+.monthly-day, .monthly-day-blank, .monthly-day-today {
+    width: 14.28%!important;
+    display:table-cell;
+    vertical-align: top;
+    box-sizing:border-box;
+    position: relative;
+    font-weight: bold;
+    color:inherit;
+    background: #fff;
+    box-shadow: 0 0 0 1px #EBEBEB;
+    -webkit-transition: .25s;
+    transition:.25s;
+    padding:0;
+    text-decoration: none;
+}
+
+/* Trick to make the days' width equal their height */
+.monthly-day:before {
+    content: "";
+    display: block;
+    padding-top: 100%;
+    float: left;
+}
+
+/* Hover effect for non event calendar days */
+.monthly-day-wrap > a:hover {
+    background: #A1C2E3;
+}
+
+/* Days that are part of previous or next month */
+.monthly-day-blank {
+    background:#EEE;
+}
+
+.monthly-day-today {
+    background:#EEF;
+}
+
+
+/* Event calendar day number styles */
+.monthly-day-number {
+    position: absolute;
+    line-height: 1em;
+    top:12px;
+    left:12px;
+    font-size:1em;
+}
+
+.monthly-day-nep {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    font-size: 4em;
+    text-align:center;
+    text-decoration: none;
+    color:#999;
+}
+
+.monthly-day-tithi {
+    position: absolute;
+    line-height: 1em;
+    top:12px;
+    right:12px;
+    font-size:1em;
+}
+
+.monthly-day-events {
+    position: absolute;
+    bottom: 12px;
+    width: 100%;
+    text-align:center;
+    font-size: 1em;
+}
+
+/* Make the calendar more or less responsive */
+@media screen and (max-width: 767px) {
+    .monthly-day-nep {
+        font-size:1em;
+    }
+
+    .monthly-day-title-wrap div {
+        font-size:1em;
+    }
+
+    .monthly-header-title {
+        font-size:1.5em;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .monthly-day-number {
+        font-size:0.8em;
+    }
+
+    .monthly-day-nep {
+        font-size:2em;
+    }
+
+    .monthly-day-title-wrap div {
+        font-size:1.5em;
+    }
+
+    .monthly-header-title {
+        font-size:1.9em;
+    }
+
+}
+
+/* tablets/desktops and up ----------- */
+@media (min-width: 992px) and (max-width: 1199px) {
+    .monthly-day-nep {
+        font-size:3em;
+    }
+}
+
+/* large desktops and up ----------- */
+@media screen and (min-width: 1200px) {
+    .monthly-day-nep {
+        font-size:4em;
+    }
+}
+
+
+.holiday * {
+    color:#b33;
+}

@@ -31,7 +31,7 @@
         <div class="card pb-2" style="background:#f2f2f2;" >
           <div class="card-header" style="background:#435EBE;">
             <h3 class="card-title  text-white text-uppercase" > 
-              {% if request.user|has_group:'Teacher' %}
+              {% comment %} {% if request.user|has_group:'Teacher' %}
 
               <a
               href="{% url 'teacher:teacher_attendance_home' %}"
@@ -39,7 +39,7 @@
             >
               <strong><i class="fas fa-backward text-capitalize"></i> Back </strong>
             </a>
-            {% endif %}
+            {% endif %} {% endcomment %}
               
               STUDENT ATTENDANCE REPORT</h3>
           </div>

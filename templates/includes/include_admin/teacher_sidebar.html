@@ -240,7 +240,7 @@
       </a>
     </li>
 
-    <li class="nav-item ml-3">
+    {% comment %} <li class="nav-item ml-3">
       {% url 'teacher:student_view_by_teacher' as my_student_url  %}
       <a href="{% url 'teacher:student_view_by_teacher' %}" class=" nav-item nav-link {% if request.path == my_student_url %} active{% endif %}">
              <i class="far fa-xs fa-circle"></i>
@@ -250,7 +250,7 @@
 
         </p>
       </a>
-    </li>
+    </li> {% endcomment %}
     
     <!-- <li class="nav-item ml-3">
       <a href="{% url 'teacher:checkstudents' %}" class="nav-link">

@@ -21,7 +21,7 @@
         <div class="card">
           
           <div class="card-header" style="background:#435EBE;color:white;">
-                  {% if request.user|has_group:'Teacher' %}
+                  {% comment %} {% if request.user|has_group:'Teacher' %}
 
                   <a
                   href="{% url 'mis_main_home' %}"
@@ -29,7 +29,7 @@
                 >
                   <strong class="text-capitalize text-white mb-1"><i class="fas fa-backward "></i>  Back</strong>
                 </a>
-                {% endif %}
+                {% endif %} {% endcomment %}
                   <span>{{title}}</span>
 
    
