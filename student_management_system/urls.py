@@ -55,7 +55,7 @@ urlpatterns = [
     # path('home/',superuser_home, name ="superuser_home"),
     # path('home/', admin_home,name = 'admin-home'),
     path("dashboard/", main_home.as_view(), name="dashboard"),
-    # path('mis/home/', mis_main_home, name ="mis_main_home"),
+    path('mis/home/', mis_main_home, name ="mis_main_home"),
     path(
         "teacher/exam-grade/home/",
         teacher_grade_home,

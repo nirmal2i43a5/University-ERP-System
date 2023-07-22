@@ -72,7 +72,7 @@ def add_user(request):
             extra_username = fname.lower()
             test_username = full_name.lower().replace(" ", "_")
             user = CustomUser.objects.create_user(
-                username=test_username,
+                username=extra_username,
                 password="password",
                 email=email,
                 user_type=group,
@@ -154,6 +154,7 @@ def edit_user(request, user_id):
         "title": "Edit ExtraUser",
     }
     return render(request, "users/edit_user.html", context)
+
 
 
 @permission_required("student_management_app.delete_extrauser",

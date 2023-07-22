@@ -22,12 +22,12 @@
           <div class="card-header" style="background:#435EBE;color:white;">
             {% if request.user|has_group:'Teacher' %}
           
-            <a
+            {% comment %} <a
             href="{% url 'mis_main_home' %}"
             class="btn btn-sm btn-rounded float-right "
           >
             <strong class="text-capitalize text-white mb-1"><i class="fas fa-backward "></i>  Back</strong>
-          </a>
+          </a> {% endcomment %}
           {% endif %}
             <span>{{title}}</span>
           

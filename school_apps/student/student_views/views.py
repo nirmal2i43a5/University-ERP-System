@@ -205,9 +205,10 @@ def student_file_upload(request):
     for column in file_data:
         join_year = column[1]
         batch = join_year[0:4]
-        if column[2] != "":
-            str_to_float = float(column[2])
-        student_id = int(str_to_float)
+        # if column[2] != "":
+            
+        #     str_to_float = float(column[2])
+        student_id = column[2]
         roll_no = column[3]
         fullName = column[4]
         gender = column[5]
