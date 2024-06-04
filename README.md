@@ -1,3 +1,5 @@
+## Some Features of Admin Portal 
+
 ![1](https://github.com/nirmal2i43a5/College-Management-System/assets/53563750/bea9664d-570b-4a9b-8d71-81b8cbb0971c)
 
 ![2](https://github.com/nirmal2i43a5/College-Management-System/assets/53563750/630ca7bb-e927-49b4-929c-f92b1199923a)
