@@ -1,3 +1,8 @@
+
+A scalable University ERP platform that centralizes core campus workflows including admissions/registration, student information management, course enrollment, attendance, and assessment management, built with maintainability and data integrity in mind.
+
+
+
 ## Some Features of Admin Portal 
 
 ![1](https://github.com/nirmal2i43a5/College-Management-System/assets/53563750/bea9664d-570b-4a9b-8d71-81b8cbb0971c)
